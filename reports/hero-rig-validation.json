@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "fix": "hero arm attachment and weapon grip",
+  "unitTests": 129,
+  "typechecks": [
+    "core",
+    "cocos",
+    "tools"
+  ],
+  "cocos": {
+    "version": "3.8.8",
+    "target": "Web Desktop",
+    "officialCliExitCode": 36
+  },
+  "visualChecks": {
+    "method": "in-app browser manual inspection through native UI; developer mode at 0.25x speed with frozen enemy AI",
+    "checks": [
+      "neutral shoulder seams and arm sides",
+      "plate and robe shoulder coverage",
+      "bow handle aligned to palm",
+      "staff shaft aligned to palm",
+      "sword and staff strikes with outward wrist rotation",
+      "left-facing locomotion and mirrored casting"
+    ],
+    "screenshots": [
+      "34-hero-arms-fixed.png",
+      "35-hero-gear-fixed.png",
+      "36-hero-attack-fixed.png",
+      "37-hero-bow-grip.png",
+      "38-hero-staff-grip.png",
+      "39-hero-staff-attack.png",
+      "40-hero-mirrored-walk.png",
+      "41-hero-mirrored-cast.png",
+      "42-hero-arms-detail.png"
+    ]
+  },
+  "assets": "Original PNGs and metadata unchanged; rig transforms and attachment coordinates only."
+}

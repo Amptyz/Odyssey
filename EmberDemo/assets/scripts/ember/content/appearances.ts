@@ -17,6 +17,15 @@ export const UNIT_SPRITES:Record<string,UnitSprite>={
   frostling:{atlas:'ruin-sprite',pixelScale:.20,height:58,tint:'#B2E8FF',clips:CLIPS},
   grovewarden:{atlas:'grovewarden',pixelScale:.30,height:90,tint:'#FFFFFF',clips:CLIPS},
 };
+/** Screen-left / screen-right in the unmirrored paper doll. Coordinates are local rig units.
+ * The atlas arm tops lean inward: frame 3 belongs on the left, frame 2 on the right.
+ * Anchor the actual shoulder joint, not the center of the trimmed image's top edge.
+ */
+export interface HeroArmAttachment {frame:number;width:number;height:number;anchor:[number,number];shoulder:[number,number];grip:[number,number]}
+export const HERO_ARM_ATTACHMENTS:Record<'left'|'right',HeroArmAttachment>={
+  left:{frame:3,width:8,height:19,anchor:[.74,.93],shoulder:[-7.9,32.6],grip:[.28,.15]},
+  right:{frame:2,width:8,height:19,anchor:[.24,.93],shoulder:[9.5,34.2],grip:[.74,.15]},
+};
 export interface EnvironmentAppearance {
   atlas:AtlasId;frames:{pillar:number;rubble:number;shrub:number;foliage:number;crystal:number;arch:number;waterfall:number;paving:number;crest:number};
   waterOuter:string;waterInner:string;seam:string;
@@ -46,9 +55,9 @@ export const EQUIPMENT_APPEARANCES:Record<string,EquipmentAppearance>={
   rangerHood:{layer:'head',shape:'hood',color:'#527D65',accent:'#BDD29B'},
 };
 
-export interface EquipmentSprite {frame:number;width:number;height:number;anchorY?:number;y?:number}
+export interface EquipmentSprite {frame:number;width:number;height:number;anchorX?:number;anchorY?:number;y?:number}
 export const EQUIPMENT_SPRITES:Record<string,EquipmentSprite>={
- copperSword:{frame:0,width:13,height:42,anchorY:.2},starStaff:{frame:1,width:16,height:48,anchorY:.2},windBow:{frame:2,width:21,height:42,anchorY:.2},towerShield:{frame:3,width:24,height:32,anchorY:.5},
+ copperSword:{frame:0,width:13,height:42,anchorX:.52,anchorY:.2},starStaff:{frame:1,width:16,height:48,anchorX:.617,anchorY:.2},windBow:{frame:2,width:21,height:42,anchorX:.825,anchorY:.55},towerShield:{frame:3,width:24,height:32,anchorY:.5},
  copperPlate:{frame:4,width:29,height:27,y:27},starRobe:{frame:5,width:29,height:27,y:27},rangerLeather:{frame:6,width:29,height:27,y:27},
  ironHelm:{frame:7,width:35,height:35,y:47},arcaneCirclet:{frame:8,width:29,height:11,y:48},rangerHood:{frame:9,width:35,height:35,y:47},
 };
