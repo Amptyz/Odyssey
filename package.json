@@ -1,6 +1,6 @@
 {
   "name": "project-ember-core",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Project Ember demo, Cocos Creator 3.8.8",
   "scripts": {
@@ -16,7 +16,8 @@
     "playthrough": "node --import tsx scripts/playthrough.ts",
     "typecheck:tools": "tsc -p tsconfig.tools.json",
     "test:controls": "node --import tsx scripts/browser-controls.ts",
-    "test:content": "node --import tsx scripts/browser-content.ts"
+    "test:content": "node --import tsx scripts/browser-content.ts",
+    "test:art": "node --import tsx scripts/browser-art.ts"
   },
   "devDependencies": {
     "@cocos/creator-types": "3.8.7",

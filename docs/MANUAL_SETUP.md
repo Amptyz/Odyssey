@@ -17,7 +17,7 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-依赖安装在仓库根目录。`pnpm check` 检查纯逻辑、Cocos 官方类型、工具脚本和 64 项单元测试，并编译核心代码；它不代替 Cocos 发布构建。
+依赖安装在仓库根目录。`pnpm check` 检查纯逻辑、Cocos 官方类型、工具脚本和 68 项单元测试，并编译核心代码；它不代替 Cocos 发布构建。
 
 ## 3. 导入已配置的 Cocos 工程
 
@@ -31,7 +31,7 @@ pnpm check
 - 场景、预制体、素材在 `EmberDemo/assets/`；请通过编辑器移动 / 重命名资源，并同时提交对应 `.meta`，避免改变资源标识而破坏引用。
 - 提交源码、测试、锁文件、工程 `settings/`、`.creator/` 和 `build-templates/`。
 - 不提交 `node_modules/`、`.pnpm-store/`、`library/`、`temp/`、`profiles/`、本地安装记录和构建输出。仓库已配置忽略规则。
-- 当前美术由代码生成，无外部素材，也不依赖 Git LFS。以后加入大贴图、PSD、模型或音频时再配置 LFS；制作源文件可放仓库根目录 `art-source/`，游戏导出资源放在 `EmberDemo/assets/`。
+- 当前 5 张透明 PNG 已在 `EmberDemo/assets/resources/art/living-ruins/`，参考图、提示词及检查报告在 `art-source/living-ruins-v1/`，都由普通 Git 管理，不需要在线生成或额外下载。以后大 PSD、模型或音频可采用 LFS；见 ART_PIPELINE.md。Python / Pillow 只用于重新计算新增图集的切片，不是运行游戏的依赖。
 - 根目录是唯一 Git 仓库，EmberDemo 是普通子目录，不是 submodule。
 
 日常开发流程：`git pull` → 必要时 `pnpm install --frozen-lockfile` → 修改 → `pnpm check` → 编辑器预览 / 构建 → `git add`、`git commit`、`git push`。
@@ -53,6 +53,7 @@ pnpm check
 ```bash
 pnpm test:controls
 pnpm test:content
+pnpm test:art
 node --import tsx scripts/browser-playthrough.ts
 ```
 
@@ -75,4 +76,5 @@ pnpm smoke
 
 - [Cocos 下载](https://www.cocos.com/creator-download)
 - [创建场景及挂载脚本](https://docs.cocos.com/creator/3.8/manual/en/getting-started/helloworld/)
+- [官方命令行构建](https://docs.cocos.com/creator/3.8/manual/zh/editor/publish/publish-in-command-line.html)
 - [自定义构建模板](https://docs.cocos.com/creator/3.8/manual/zh/editor/publish/custom-project-build-template.html)

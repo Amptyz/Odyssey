@@ -6,6 +6,7 @@ import { perk } from '../content/perks';
 import type { GameCommand } from '../platform/protocol';
 import type { WorldSnapshot } from '../simulation/GameWorld';
 import type { Vec2 } from '../utils/math';
+import { ArtLibrary } from './ArtLibrary';
 import { drawShop } from './ShopPanel';
 import { equipment,EQUIPMENT_SLOTS } from '../content/equipment';
 import { box,color,graphics,setText,text,uiNode } from './Primitives';
@@ -18,23 +19,24 @@ export class Hud {
   onControlMode?:(mode:ControlMode)=>void;
   private readonly overlay:Node;private signature='';private regions:HitRegion[]=[];
   private shopPage=0;private debug=false;private state?:WorldSnapshot;
-  constructor(root:Node,private readonly send:(c:GameCommand)=>void) {
+  constructor(root:Node,private readonly send:(c:GameCommand)=>void,private readonly art:ArtLibrary) {
     const hud=uiNode('HUD',root),bg=graphics('HUD panels',hud);
     box(bg,-616,256,292,82,'#20373DEE',12);box(bg,354,206,262,132,'#20373DEE',12);
+    box(bg,-235,296,470,40,'#20373DEE',10);
     text('Title',hud,'余 烬 试 炼',17,-470,315,260,30,'#ECDBB7');
     this.hp=text('Health values',hud,'',13,-470,272,250,25,'#C9DED2');this.meter=graphics('HP meter',hud);
     this.wave=text('Wave',hud,'',14,0,316,450,38,'#E9DBBD');
     text('Perks title',hud,'试炼印记',14,475,315,220,30,'#ECDBB7');
     this.boonList=text('Perks',hud,'尚未获得增益',13,480,261,235,76,'#B7CFC6');
-    this.hint=text('Control hint',hud,'',13,-40,-341,1000,26,'#B6C7C3');
+    this.hint=text('Control hint',hud,'',13,-40,-341,1000,26,'#36585B');
     for(const [i,id] of SKILL_SLOTS.entries()){
       const x=-165+i*110,node=uiNode(`Skill ${id}`,hud,100,74);node.setPosition(x,-286);
       const g=graphics('Cooldown plate',node),key=text('Key',node,id,24,-28,3,40,40,'#E7D2A5');
       const name=text('Skill name',node,skill(DEFAULT_LOADOUT[id]).name,12,8,-23,96,24,'#BFCFC8');
       const cd=text('Cooldown',node,'',17,18,5,58,30);this.skills.push({id,g,cd,key,name});
     }
-    text('Debug toggle',hud,'F3 · DEBUG',11,552,-340,150,26,'#A3BDB4');
-    this.debugLabel=text('Debug details',hud,'',11,-470,-287,285,100,'#B9D7CB');this.debugLabel.node.active=false;
+    text('Debug toggle',hud,'F3 · DEBUG',11,552,-340,150,26,'#36585B');
+    this.debugLabel=text('Debug details',hud,'',11,-470,-287,285,100,'#294C4D');this.debugLabel.node.active=false;
     this.overlay=uiNode('Modal overlay',root);this.setControlMode('classic');
   }
   setControlMode(mode:ControlMode):void {
@@ -77,7 +79,7 @@ export class Hud {
     this.overlay.active=s.phase!=='fighting'||s.paused;if(!this.overlay.active)return;
     const veil=graphics('Veil',this.overlay);box(veil,-640,-360,1280,720,'#10242CEB',0);
     if(s.phase==='ready'){
-      text('Eyebrow',this.overlay,'PROJECT EMBER   /   v0.3',13,0,222,600,30,'#9ABDB4');
+      text('Eyebrow',this.overlay,'PROJECT EMBER   /   v0.4',13,0,222,600,30,'#9ABDB4');
       text('Game title',this.overlay,'余 烬 试 炼',56,0,172,800,100,'#EFE2C1');
       text('Subtitle',this.overlay,`探索${mapDefinition(s.mapId).name}，穿过 ${s.totalWaves} 场试炼。`,19,0,109,650,40,'#B5CFC4');
       this.modeButtons(45);
@@ -89,9 +91,9 @@ export class Hud {
       this.button('燃烧弹 → 尸爆',-280,-216,245,()=>this.send({type:'Start',lab:'burn'}),'#3E5559');
       this.button('尸爆 → 电弧',0,-216,245,()=>this.send({type:'Start',lab:'arc'}),'#3E5559');
       this.button('奥能储备 → 双重施法',280,-216,245,()=>this.send({type:'Start',lab:'reserve'}),'#3E5559');
-      text('Seed',this.overlay,`固定种子 ${s.seed}  ·  URL 可使用 ?seed=1234  ·  所有素材离线生成`,12,0,-285,900,30,'#88A6A1');
+      text('Seed',this.overlay,`固定种子 ${s.seed}  ·  URL 可使用 ?seed=1234  ·  素材随工程提供`,12,0,-285,900,30,'#88A6A1');
     }else if(s.phase==='shop'){
-      drawShop(this.overlay,s,this.shopPage,p=>{this.shopPage=p;this.signature='';},this.button.bind(this),this.send);
+      drawShop(this.overlay,s,this.shopPage,p=>{this.shopPage=p;this.signature='';},this.button.bind(this),this.send,this.art);
     }else if(s.paused){
       text('Pause title',this.overlay,'火种暂歇',42,0,160,700,80,'#EFE2C1');
       this.modeButtons(98);

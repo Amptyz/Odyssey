@@ -1,0 +1,111 @@
+{
+  "ruin-sprite": {
+    "size": [
+      1254,
+      1254
+    ],
+    "frames": 16,
+    "xCuts": [
+      0,
+      320,
+      635,
+      977,
+      1254
+    ],
+    "yCuts": [
+      0,
+      322,
+      627,
+      940,
+      1254
+    ],
+    "sha256": "0103ffdba3da3e68959083192bbd98b3411d76ad9268d04697329364e01a04f6",
+    "transparentPixels": 974418
+  },
+  "grovewarden": {
+    "size": [
+      1254,
+      1254
+    ],
+    "frames": 16,
+    "xCuts": [
+      0,
+      314,
+      627,
+      949,
+      1254
+    ],
+    "yCuts": [
+      0,
+      313,
+      617,
+      940,
+      1254
+    ],
+    "sha256": "c859a0529dfac9cda77fe928353331fee2cc1baf3aca4d0ec8399ccd4dbb267e",
+    "transparentPixels": 693815
+  },
+  "hero-parts": {
+    "size": [
+      1536,
+      1024
+    ],
+    "frames": 6,
+    "xCuts": [
+      0,
+      512,
+      1024,
+      1536
+    ],
+    "yCuts": [
+      0,
+      512,
+      1024
+    ],
+    "sha256": "2c24138649ab38e90ee1d9afa393fb3484e4e9ffea4a68b6523cf3c5ccd78b8e",
+    "transparentPixels": 1222592
+  },
+  "equipment": {
+    "size": [
+      1448,
+      1086
+    ],
+    "frames": 12,
+    "xCuts": [
+      0,
+      373,
+      724,
+      1086,
+      1448
+    ],
+    "yCuts": [
+      0,
+      400,
+      724,
+      1086
+    ],
+    "sha256": "95166e28c33e2773d77fdd6bac46d0dc16f5fea5b1165294775e589930c42570",
+    "transparentPixels": 1067896
+  },
+  "environment": {
+    "size": [
+      1254,
+      1254
+    ],
+    "frames": 9,
+    "xCuts": [
+      0,
+      418,
+      830,
+      1254
+    ],
+    "yCuts": [
+      0,
+      423,
+      836,
+      1254
+    ],
+    "sha256": "01593c677b11ab515491df85cc1c0d13c624230b7b8fdc0ff44233c8f861d5d5",
+    "transparentPixels": 947863
+  }
+}

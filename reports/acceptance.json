@@ -1,10 +1,10 @@
 {
   "date": "2026-10-15",
   "timezone": "Asia/Shanghai",
-  "overall": "v0.3-classless-skill-rewards-and-deterministic-equipment",
+  "overall": "v0.4-simplified-living-ruins-art-and-modular-animation",
   "blocker": null,
   "unitTests": {
-    "passed": 64,
+    "passed": 68,
     "failed": 0
   },
   "coreTypecheck": "passed",
@@ -14,25 +14,29 @@
     "seeds": 10,
     "victory": 7,
     "defeat": 3,
-    "defaultSeed1234": "victory"
+    "defaultSeed1234": "victory",
+    "version": "Historical v0.3, before the warden substitution; current gameplay verified by browser-art and browser-content"
   },
-  "headlessStress": "passed; see benchmark.json",
+  "headlessStress": "Historical v0.3 simulation benchmark; not rerun for this art release",
   "cocosProjectImport": "passed; official Empty(2D), editor-created Main.scene and Canvas/GameBootstrap",
   "browserSmoke": "Historical smoke passed; v0.3 revalidated by full playthrough, dual-control and build progression browser tests",
-  "screenshots": "Current v0.3 screenshots: reports/14-opening-shop.png through reports/18-build-victory.png",
-  "webDesktopBuild": "v0.3 passed with official Creator 3.8.8 at 2026-10-15 21:31:58 Asia/Shanghai",
+  "screenshots": "v0.4 reports/19-neutral-art.png, 20-living-ruins.png, 21-equipped-art.png, 22-grovewarden.png, 23-art-victory.png; equipment progression refreshed in 14-18",
+  "webDesktopBuild": "v0.4 passed: official Creator 3.8.8 UI build at 22:25:16; final isolated-copy CLI build at 22:39:21 Asia/Shanghai, exit 36; final runtime scripts match source hashes",
   "renderFps": "not benchmarked; 50-enemy stress measures simulation only",
   "cocosVersion": "3.8.8",
   "dashboardVersion": "2.2.2",
-  "browserPlaythrough": "v0.3 passed: QWER, 3 rewards, 27 kills, victory, shop continuation, restart, resize, local-only HTTP resources",
+  "browserPlaythrough": "v0.4 art run passed: normal equipment purchases, three waves including grovewarden, 27 kills and victory; see browser-art.json",
   "limitations": [
     "No long-duration browser memory soak test",
     "Safari and Firefox not tested",
     "Defeat logic tested in simulation; failure menu not separately browser-tested",
-    "No persistent inventory, selling, refunds or cross-run currency; basic bow attacks currently use immediate hits"
+    "No persistent inventory, selling, refunds or cross-run currency; basic bow attacks currently use immediate hits",
+    "Two mirrored facings; no eight-direction or Spine source assets",
+    "Ranged enemies reuse small-spirit animation; frost map shares ruins props",
+    "Skill/projectile effects remain geometric; no environment layout editor"
   ],
-  "dualControls": "v0.3 passed: 31 real-browser checks; original controls plus new shop transitions; see browser-controls.json",
-  "cleanCheckout": "Historical v0.2 export passed frozen-lockfile installation and checks; v0.3 uses unchanged dependencies and passed pnpm check in the working checkout",
+  "dualControls": "v0.4 passed: 31 browser checks; see browser-controls.json",
+  "cleanCheckout": "Final Cocos CLI build used an independent source/assets/settings copy without library, temp, profiles or build caches; pnpm check ran in the main checkout",
   "architecture": {
     "skills": "9 hero skills, shared starting loadout, reward choice plus explicit slot replacement; skill synergy requirements",
     "effects": "typed effect handlers, status instances, strongest-refresh burn/slow",
@@ -41,9 +45,11 @@
       "ember: 20x20, 3 waves, 27 enemies",
       "frost: 24x16, 2 waves, 13 enemies"
     ],
-    "assets": "Geometric equipment layers shared by actor and shop preview; sprite/animation loading remains future work",
+    "assets": "Five local RGBA PNG atlases / 59 regions; ArtLibrary, appearance registries, per-appearance clips, six-part neutral HeroRig and equipment anchors shared by arena/shop",
     "equipment": "10 fixed-price items, 3 slots, inventory, non-stacking derived stats, stage-gated atomic purchases and appearance layers",
     "economy": "160 starting gold; wave payout 100 + 20 * (wave - 1); no random shop stock; per-map shopAfterWaves"
   },
-  "browserContent": "v0.3 passed: 26 real-browser checks; fixed shop, funds, equipment switching/removal, skill reward cancellation and E replacement, 2 waves, 13 kills, 2 rewards, restart and resize; see browser-content.json"
+  "browserContent": "v0.4 passed: 26 checks including equipment preview, replacement ice skill projectile and slow, two waves / 13 kills / two rewards, restart and resize; see browser-content.json",
+  "browserArt": "v0.4 passed: 14 checks, real frame/pose observations, pause freezes animation, no browser errors or external HTTP resources; see browser-art.json",
+  "video": "Local-only optional recording: reports/24-art-playthrough.webm"
 }

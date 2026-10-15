@@ -41,7 +41,7 @@ export class CombatEngine {
     const event: CombatEvent = { type:'OnHit', sourceId:hit.sourceId, targetId:target.id,
       cause:hit.cause, depth, skillId:hit.skillId, tags:hit.tags ?? [hit.cause], amount:hit.amount, rootId };
     this.queue.push(event);
-    this.cue({kind:'damage',at:{x:target.x,y:target.y},amount:hit.amount,cause:hit.cause});
+    this.cue({kind:'damage',actorId:target.id,at:{x:target.x,y:target.y},amount:hit.amount,cause:hit.cause});
     if (target.hp<=0) {
       target.alive = false; this.metrics.kills++;
       this.queue.push({...event,type:'OnKill'});

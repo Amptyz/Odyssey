@@ -51,7 +51,15 @@ try{
     enemySlow ||= s.hero.statuses.some(x=>x.id==='slow'&&x.skillId==='frostBolt');
     shotIdentity ||= s.projectiles.some(p=>p.skillId==='icebolt');
     const enemies=s.units.filter(u=>u.team==='enemy'&&u.alive).sort((a,b)=>Math.hypot(a.x-s.hero.x,a.y-s.hero.y)-Math.hypot(b.x-s.hero.x,b.y-s.hero.y));
-    const target=enemies[0];if(target){await aim(target.x,target.y);if(!mouseHeld){await page.mouse.down();mouseHeld=true;}await page.keyboard.press('q');if(s.loadout.E==='icebolt')await page.keyboard.press('e');}
+    const target=enemies[0];
+    // Verify the acquired skill in isolation before burst damage can kill its target
+    // between snapshots. Short-lived projectiles require finer sampling than the bot loop.
+    if(target&&s.loadout.E==='icebolt'&&!iceHit){
+      await page.mouse.up();mouseHeld=false;await aim(target.x,target.y);await page.keyboard.press('e');await page.keyboard.press('Space');
+      for(let i=0;i<24;i++){await page.waitForTimeout(25);const sample=await state();shotIdentity ||= sample.projectiles.some(p=>p.skillId==='icebolt');iceHit ||= sample.units.some(u=>u.team==='enemy'&&u.statuses.some(x=>x.id==='slow'&&x.skillId==='icebolt'));enemySlow ||= sample.hero.statuses.some(x=>x.id==='slow'&&x.skillId==='frostBolt');}
+      continue;
+    }
+    if(target){await aim(target.x,target.y);if(!mouseHeld){await page.mouse.down();mouseHeld=true;}await page.keyboard.press('q');if(s.loadout.E==='icebolt')await page.keyboard.press('e');}
     await page.keyboard.press('Space');if(enemies.filter(e=>Math.hypot(e.x-s.hero.x,e.y-s.hero.y)<3.8).length>=2)await page.keyboard.press('r');
     if(iceHit&&!savedCombat){await page.screenshot({path:'reports/17-equipped-combat.png'});savedCombat=true;}
     await page.waitForTimeout(120);

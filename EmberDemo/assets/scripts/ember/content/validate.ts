@@ -3,7 +3,8 @@ import { ENEMIES,enemy } from './enemies';
 import { MAPS,mapDefinition } from './maps';
 import { PERKS } from './perks';
 import { STATUSES } from './statuses';
-import { EFFECT_APPEARANCES,UNIT_APPEARANCES,EQUIPMENT_APPEARANCES } from './appearances';
+import { EFFECT_APPEARANCES,UNIT_APPEARANCES,EQUIPMENT_APPEARANCES,EQUIPMENT_SPRITES,UNIT_SPRITES,ENVIRONMENT_APPEARANCES } from './appearances';
+import { ATLAS_FRAMES } from './art-manifest';
 import { EQUIPMENT,SHOP_CATALOG,EQUIPMENT_SLOTS,equipment } from './equipment';
 import { ECONOMY } from './progression';
 import { HERO } from './config';
@@ -13,6 +14,18 @@ function positive(value:number,path:string):void {requireContent(Number.isFinite
 /** Run at startup and in tests so missing content references fail before combat. */
 export function validateContent():void {
   requireContent(UNIT_APPEARANCES[HERO.appearance],'hero appearance');
+  for(const [id,frames] of Object.entries(ATLAS_FRAMES))for(const [index,frame] of frames.entries()){
+    requireContent(frame.rect.every(Number.isFinite)&&frame.rect[0]>=0&&frame.rect[1]>=0&&frame.rect[2]>0&&frame.rect[3]>0,`art.${id}.${index}.rect`);
+    requireContent(frame.pivot.every(Number.isFinite),`art.${id}.${index}.pivot`);
+  }
+  for(const [id,visual] of Object.entries(UNIT_SPRITES)){
+    positive(visual.pixelScale,`art.${id}.scale`);positive(visual.height,`art.${id}.height`);
+    for(const [state,clip] of Object.entries(visual.clips)){
+      positive(clip.fps,`art.${id}.${state}.fps`);
+      requireContent(clip.frames.length>0&&clip.frames.every(i=>Number.isInteger(i)&&ATLAS_FRAMES[visual.atlas][i]),`art.${id}.${state}.frames`);
+    }
+  }
+  for(const [id,visual] of Object.entries(ENVIRONMENT_APPEARANCES))requireContent(Object.values(visual.frames).every(i=>Number.isInteger(i)&&ATLAS_FRAMES[visual.atlas][i]),`environment.${id}.frames`);
   for(const id of Object.keys(SKILLS) as (keyof typeof SKILLS)[]){
     const s=skill(id);positive(s.cooldown,`skills.${id}.cooldown`);requireContent(EFFECT_APPEARANCES[s.appearance],`skills.${id}.appearance`);
     const b=s.behavior;
@@ -20,12 +33,13 @@ export function validateContent():void {
     if(b.kind==='projectile'||b.kind==='area')for(const status of b.onHit??[]){requireContent(STATUSES[status.id],`skills.${id}.status`);positive(status.duration,`skills.${id}.status duration`);positive(status.power,`skills.${id}.status power`);}
   }
   for(const id of Object.keys(ENEMIES) as (keyof typeof ENEMIES)[]){
-    const e=enemy(id);requireContent(UNIT_APPEARANCES[e.appearance],`enemies.${id}.appearance`);
+    const e=enemy(id);requireContent(UNIT_APPEARANCES[e.appearance]&&UNIT_SPRITES[e.appearance],`enemies.${id}.appearance`);
     for(const [key,value] of Object.entries(e))if(typeof value==='number')positive(value,`enemies.${id}.${key}`);
     if(e.behavior==='ranged')requireContent(e.skillId&&SKILLS[e.skillId]&&skill(e.skillId).behavior.kind==='projectile',`enemies.${id}.projectile skill`);
   }
   for(const id of Object.keys(MAPS) as (keyof typeof MAPS)[]){
     const m=mapDefinition(id);requireContent(Number.isInteger(m.width)&&m.width>=4&&Number.isInteger(m.height)&&m.height>=4,`maps.${id}.size`);
+    requireContent(ENVIRONMENT_APPEARANCES[m.environment],`maps.${id}.environment`);
     requireContent(m.heroSpawn.x>HERO.radius&&m.heroSpawn.x<m.width-HERO.radius&&m.heroSpawn.y>HERO.radius&&m.heroSpawn.y<m.height-HERO.radius,`maps.${id}.heroSpawn`);
     requireContent(m.waves.length>0,`maps.${id}.waves`);positive(m.spawnDistance,`maps.${id}.spawnDistance`);
     requireContent(m.spawnMargin>0&&m.spawnMargin<Math.min(m.width,m.height)/2,`maps.${id}.spawnMargin`);
@@ -43,6 +57,8 @@ export function validateContent():void {
   requireContent(SHOP_CATALOG.length===Object.keys(EQUIPMENT).length&&new Set(SHOP_CATALOG).size===SHOP_CATALOG.length,'shop catalog');
   for(const id of SHOP_CATALOG){const e=equipment(id);requireContent(EQUIPMENT_SLOTS.includes(e.slot),`equipment.${id}.slot`);positive(e.price,`equipment.${id}.price`);requireContent(Number.isInteger(e.price),`equipment.${id}.integer price`);
     requireContent(EQUIPMENT_APPEARANCES[e.appearance]?.layer===e.slot,`equipment.${id}.appearance layer`);
+    const sprite=EQUIPMENT_SPRITES[e.appearance];requireContent(sprite&&ATLAS_FRAMES.equipment[sprite.frame],`equipment.${id}.sprite`);
+    positive(sprite.width,`equipment.${id}.sprite width`);positive(sprite.height,`equipment.${id}.sprite height`);
     for(const [key,value] of Object.entries(e.stats))requireContent(Number.isFinite(value)&&value>=0,`equipment.${id}.stats.${key}`);}
   for(const [key,value] of Object.entries(ECONOMY))requireContent(Number.isInteger(value)&&value>=0,`economy.${key}`);
   const ids=new Set<string>();

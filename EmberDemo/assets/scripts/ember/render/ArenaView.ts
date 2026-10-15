@@ -1,16 +1,18 @@
 import { Graphics, Label, Node } from 'cc';
-import { HERO } from '../content/config';
 import { enemy } from '../content/enemies';
 import { mapDefinition,type MapId } from '../content/maps';
 import { skill } from '../content/skills';
 import { STATUSES } from '../content/statuses';
 import { EFFECT_APPEARANCES } from '../content/appearances';
-import { drawUnit,drawHero,equipmentVisualKey } from './UnitVisuals';
+import { ArtLibrary } from './ArtLibrary';
+import { AnimatedUnit } from './AnimatedUnit';
+import { EnvironmentView } from './EnvironmentView';
+import { motionPose } from '../content/animation';
 import type { Unit, WorldSnapshot } from '../simulation/GameWorld';
 import { lerp, type Vec2 } from '../utils/math';
 import { DEFAULT_PROJECTION, fitMapProjection, worldToScreen, type Projection } from './IsoProjection';
-import { box,color,disk,graphics,polygon,setText,text,uiNode } from './Primitives';
-interface UnitView {node:Node;body:Graphics;bars:Graphics;ring:Graphics;kind:Unit['kind'];appearanceKey?:string}
+import { box,color,disk,graphics,setText,text,uiNode } from './Primitives';
+interface UnitView {node:Node;body:AnimatedUnit;bars:Graphics;ring:Graphics;kind:Unit['kind']}
 /** Nodes are retained/recycled. Only dynamic vector paths are redrawn. */
 export class ArenaView {
   readonly camera:Projection={...DEFAULT_PROJECTION,origin:{x:0,y:265}};
@@ -20,55 +22,39 @@ export class ArenaView {
   private readonly targeting:Graphics;
   private readonly units=new Map<string,UnitView>();
   private readonly spare:UnitView[]=[];
+  private readonly environment:EnvironmentView;private visualTime=0;private lastTick=0;
   private readonly obstacles:{node:Node;y:number}[]=[];
   private readonly numbers:Label[]=[];
-  constructor(private readonly root:Node) {
-    const backdrop=graphics('Backdrop',root);box(backdrop,-640,-360,1280,720,'#192B31',0);
-    this.floor=graphics('Arena tiles',root);this.targeting=graphics('Ground indicators',root);
-    this.objects=uiNode('Depth sorted actors and props',root);
+  constructor(private readonly root:Node,private readonly art:ArtLibrary) {
+    const backdrop=graphics('Backdrop',root);box(backdrop,-640,-360,1280,720,'#A9D0CC',0);
+    this.floor=graphics('Arena tiles',root);const ground=uiNode('Ground textures',root);this.targeting=graphics('Ground indicators',root);
+    this.objects=uiNode('Depth sorted actors and props',root);this.environment=new EnvironmentView(this.floor,ground,this.objects,art);
     this.projectiles=graphics('Projectile batch',root);this.effects=graphics('Effect batch',root);
     for(let i=0;i<40;i++) {const label=text(`Floating number ${i}`,root,'',17,0,0,140,36);label.node.active=false;this.numbers.push(label);}
   }
   configureMap(id:MapId):void {
     if(this.mapId===id)return;this.mapId=id;const map=mapDefinition(id);Object.assign(this.camera,fitMapProjection(map));
-    for(const obstacle of this.obstacles)obstacle.node.destroy();this.obstacles.length=0;
-    // The arena slab has a visible side face, while the playfield stays fully 2D.
-    const floor=this.floor;floor.clear();
-    const corners=[{x:0,y:0},{x:map.width,y:0},{x:map.width,y:map.height},{x:0,y:map.height}].map(p=>worldToScreen(p,this.camera));
-    polygon(floor,[corners[1]!,corners[2]!,corners[3]!,{x:corners[3]!.x,y:corners[3]!.y-16},{x:corners[2]!.x,y:corners[2]!.y-16},{x:corners[1]!.x,y:corners[1]!.y-16}],map.theme.edge);
-    for(let x=0;x<map.width;x++)for(let y=0;y<map.height;y++) {
-      const points=[{x,y},{x:x+1,y},{x:x+1,y:y+1},{x,y:y+1}].map(p=>worldToScreen(p,this.camera));
-      const border=x===0||y===0||x===map.width-1||y===map.height-1;
-      polygon(floor,points,border?map.theme.border:(x+y)%2===0?map.theme.floorA:map.theme.floorB,'#B5C3AC');
-    }
-    const crest=worldToScreen(map.heroSpawn,this.camera);
-    floor.strokeColor=color('#A6B89F');floor.lineWidth=2;floor.ellipse(crest.x,crest.y,100,50);floor.stroke();
-    floor.ellipse(crest.x,crest.y,90,45);floor.stroke();
-    for(const obstacle of map.obstacles) {
-      const node=uiNode(obstacle.id,this.objects);const p=worldToScreen(obstacle,this.camera);node.setPosition(p.x,p.y);
-      const g=graphics('Stone',node),r=obstacle.radius*27,h=obstacle.height;
-      g.fillColor=color('#687B7055');g.ellipse(6,-3,r+8,r*0.6);g.fill();
-      polygon(g,[{x:-r,y:0},{x:0,y:-r/2},{x:0,y:h-r/2},{x:-r,y:h}],'#7E9891');
-      polygon(g,[{x:0,y:-r/2},{x:r,y:0},{x:r,y:h},{x:0,y:h-r/2}],map.theme.stone);
-      polygon(g,[{x:-r,y:h},{x:0,y:h-r/2},{x:r,y:h},{x:0,y:h+r/2}],'#E3E3C9','#A9B8A2');
-      if(h>30){box(g,-3,h/2-5,6,15,map.theme.accent,2);disk(g,0,h,4,'#F2D99D');}
-      this.obstacles.push({node,y:p.y});
-    }
+    this.obstacles.length=0;this.obstacles.push(...this.environment.configure(map,this.camera));
   }
-  update(state:WorldSnapshot,alpha:number,pointer:Vec2):void {
+
+  update(state:WorldSnapshot,alpha:number,pointer:Vec2,dt=0):void {
     this.configureMap(state.mapId);
-    const alive=new Set(state.units.filter(u=>u.alive).map(u=>u.id));
+    if(state.tick<this.lastTick)this.visualTime=state.time;this.lastTick=state.tick;
+    if(!state.paused)this.visualTime=state.phase==='fighting'?state.time:Math.max(this.visualTime,state.time)+Math.min(dt,.05);
+    this.environment.update(this.visualTime);
+    const visible=(u:Unit)=>u.alive||this.visualTime-u.diedAt<.9;
+    const alive=new Set(state.units.filter(visible).map(u=>u.id));
     for(const [id,view] of this.units)if(!alive.has(id)){view.node.active=false;this.spare.push(view);this.units.delete(id);}
     const order=[...this.obstacles];
-    for(const u of state.units)if(u.alive) {
+    for(const u of state.units)if(visible(u)) {
       let v=this.units.get(u.id);
-      if(!v){v=this.spare.pop() ?? this.makeView(u.kind);v.node.active=true;if(v.kind!==u.kind){v.kind=u.kind;this.drawBody(v);}this.units.set(u.id,v);}
-      if(u.kind==='hero'){const key=equipmentVisualKey(state.equipment);if(v.appearanceKey!==key){drawHero(v.body,state.equipment);v.appearanceKey=key;}}
+      if(!v){v=this.spare.pop() ?? this.makeView(u.kind);v.node.active=true;if(v.kind!==u.kind){v.kind=u.kind;v.body.node.destroy();v.body=new AnimatedUnit(v.node,u.kind,this.art);v.body.node.setSiblingIndex(1);}this.units.set(u.id,v);}
+      v.body.update(motionPose(u,this.visualTime),state.equipment);
       const p=worldToScreen({x:lerp(u.previous.x,u.x,alpha),y:lerp(u.previous.y,u.y,alpha)},this.camera);
       v.node.setPosition(p.x,p.y);order.push({node:v.node,y:p.y});
-      const bar=v.bars;bar.clear();box(bar,-19,47,38,5,'#354D49',2);box(bar,-18,48,36*u.hp/u.maxHp,3,u.kind==='hero'?'#95D4B5':'#DA957E',1);
+      const bar=v.bars;bar.node.active=u.alive;bar.node.setPosition(0,v.body.height-47+4);bar.clear();box(bar,-19,47,38,5,'#354D49',2);box(bar,-18,48,36*u.hp/u.maxHp,3,u.kind==='hero'?'#95D4B5':'#DA957E',1);
       if(u.shield>0)box(bar,-18,54,36*Math.min(1,u.shield/65),3,'#A3CFE3',1);
-      const ring=v.ring;ring.clear();
+      const ring=v.ring;ring.clear();if(!u.alive)continue;ring.fillColor=color('#405A4730');ring.ellipse(0,-1,u.kind==='warden'?30:18,u.kind==='warden'?13:8);ring.fill();
       if(u.id===state.targetId){ring.strokeColor=color('#FFF4D6');ring.lineWidth=3;ring.ellipse(0,0,21,11);ring.stroke();}
       if(u.kind==='hero'){ring.strokeColor=color('#F2DDAB');ring.lineWidth=2;ring.ellipse(0,0,19,10);ring.stroke();}
       if(u.shield>0){ring.strokeColor=color('#BDE5EF');ring.lineWidth=2;ring.ellipse(0,20,24,31);ring.stroke();}
@@ -79,10 +65,11 @@ export class ArenaView {
     this.drawGround(state,pointer);this.drawProjectiles(state,alpha);this.drawEffects(state);
   }
   private makeView(kind:Unit['kind']):UnitView {
-    const node=uiNode('Unit',this.objects);const ring=graphics('Indicators',node),body=graphics('Body',node),bars=graphics('Health',node);
-    const v={node,body,bars,ring,kind};this.drawBody(v);return v;
+    const node=uiNode('Unit',this.objects);const ring=graphics('Indicators',node),body=new AnimatedUnit(node,kind,this.art),bars=graphics('Health',node);
+    return {node,body,bars,ring,kind};
   }
-  private drawBody(v:UnitView):void {v.appearanceKey=undefined;drawUnit(v.body,v.kind==='hero'?HERO.appearance:enemy(v.kind).appearance);}
+  debug(){return{time:this.visualTime,units:Array.from(this.units,([id,v])=>({id,...v.body.debug()}))};}
+
   private drawGround(state:WorldSnapshot,pointer:Vec2):void {
     const g=this.targeting;g.clear();
     if(state.phase!=='fighting'||state.paused)return;
@@ -106,7 +93,7 @@ export class ArenaView {
     for(const cue of state.cues){const p=worldToScreen(cue.at,this.camera),life=cue.ttl/cue.duration;
       if(cue.kind==='damage'||cue.kind==='heal'){
         const label=this.numbers[index++];if(!label)continue;label.node.active=true;label.node.setPosition(p.x,p.y+62+(1-life)*25);
-        label.color=color(cue.kind==='heal'?'#E0FFE6':cue.cause==='burn'?'#FFDC9E':'#FFF9E8');
+        label.color=color(cue.kind==='heal'?'#245E4D':cue.cause==='burn'?'#9D4B25':'#503F32');
         setText(label,`${cue.kind==='heal'?'+':''}${Math.round(cue.amount??0)}`);
       }else if(cue.kind==='arc'&&cue.to){const to=worldToScreen(cue.to,this.camera);
         g.strokeColor=color(cue.cause==='basic'?'#FFF2BF':'#D4E7FF');g.lineWidth=cue.cause==='basic'?2:3;

@@ -17,7 +17,7 @@ flowchart LR
   Combat --> Effects[EffectHandlers / StatusSystem]
   World --> Snapshot[脱离引擎的快照]
   Snapshot --> View[ArenaView / Hud]
-  Visuals[外观定义 / UnitVisuals] --> View
+  Visuals[外观定义 / ArtLibrary / AnimatedUnit] --> View
 ```
 
 - `GameWorld` 负责时间、实体、移动、波次和系统调度，不再按 Q/W/E/R 分支执行技能，也不按敌人种类分支执行 AI。
@@ -62,7 +62,7 @@ icebolt: {
 
 `content/enemies.ts` 将敌人 ID 与 `behavior`、`skillId`、`appearance` 分开。
 
-霜灯守卫 `frostling` 共用 ranged 行为，使用 frostBolt 和 frostling 外观，因此无需在 GameWorld 中为它添加判断。
+霜叶精灵 `frostling` 共用 ranged 行为，使用 frostBolt 和 frostling 外观，因此无需在 GameWorld 中为它添加判断。
 
 - 同行为变种：加敌人定义、外观定义，然后加入地图刷怪列表。
 - 新行为：扩展 `EnemyBehaviorId` 与 `ai/EnemyBehaviors.ts` 的更新函数，可复用追击 / 攻击前摇，也可实现自己的移动策略。行为通过上下文访问寻路、移动、伤害和技能施放。
@@ -70,7 +70,7 @@ icebolt: {
 
 ## 添加地图
 
-在 `content/maps.ts` 注册地图：名字、宽高、英雄出生点、敌人出生间距、障碍、波次、初始技能、`shopAfterWaves`（在哪些非最终波之后开店）和颜色主题。地图选择按钮自动枚举注册表。
+在 `content/maps.ts` 注册地图：名字、宽高、英雄出生点、敌人出生间距、障碍、波次、初始技能、`shopAfterWaves`（在哪些非最终波之后开店）、环境外观 ID 和颜色主题。地图选择按钮自动枚举注册表。
 
 寻路边界、地面绘制、出生范围、镜头居中和 HUD 总波次数全部读取同一份定义。
 
@@ -97,19 +97,19 @@ icebolt: {
 - 换装只更新生命上限并截断超出的当前生命，不回补生命，防止反复换装回血。第一波开始补满装备后的生命上限；其余波次仅恢复 30 点。
 - 新属性先扩展 `StatBonus / HeroStats / deriveStats`，再在实际消费位置应用；装备不直接改技能数据。新装备槽还需扩展 `EQUIPMENT_SLOTS`、槽名和表现层绘制顺序。
 
-## 装备外观与后续贴图和动画接入
+## 贴图、动画与装备外观
 
-`content/appearances.ts` 保存稳定外观 ID 和占位配色；`render/UnitVisuals.ts` 负责几何绘制。战斗逻辑只认实体、技能和事件，不依赖 Graphics、Sprite 或素材文件名。
+`content/appearances.ts` 使用稳定外观 ID：`UNIT_SPRITES` 配置图集、比例、色调和动作片段；`EQUIPMENT_SPRITES` 配置装备帧、尺寸和挂点；`ENVIRONMENT_APPEARANCES` 配置地图素材角色与水色。`content/art-manifest.ts` 保存真实像素区域，和 Cocos `.meta` 独立。启动检查引用，测试验证区域没有越过 PNG 边界。
 
-`EQUIPMENT_APPEARANCES` 定义装备外观和所属层；`UnitVisuals.drawHero` 按身体 → 头部 → 武器绘制，`ArenaView` 只在装备签名改变时重画角色，商店使用同一绘制入口。切换装备不需要销毁角色实体。正式资源应为这些槽位提供统一脚底锚点、朝向、动画时序与挂点，否则容易出现装备漂移。
+`ArtLibrary` 预加载本地透明 PNG 并共享 Texture2D / SpriteFrame；`AnimatedUnit` 按外观 ID 播放怪物序列帧。`HeroRig` 使用六个中性身体部件及三个装备层，战场和商店共用；换装仅重建变化的装备组合，不更改角色实体。
 
-目前仍为几何占位图，尚未实现 SpriteAtlas / AnimationClip 加载器。确定美术方案后，下一步是在表现层加入预制体或精灵动画视图，并保持以下约定：
+`GameWorld` 快照包含 `facing / action / hurtAt / diedAt`，`motionPose` 将其转换为 idle / walk / attack / cast / hurt / death。伤害、攻击间隔及冷却仍由固定步进控制，动画不回调游戏规则。暂停冻结表现时间；战斗结束时允许死亡动画播完。死亡视图短暂保留并淡出，不再参与碰撞和选择。
 
-- 地面脚底作为根节点锚点，沿用深度排序和独立血条，贴图大小不改变碰撞半径。
-- 逻辑快照的移动速度、攻击前摇、生命和技能事件驱动动画；伤害判定继续由固定步进决定。
-- 用外观 ID 关联素材清单；更换角色图片不改 AI、技能伤害或地图规则。
-- 原始制作文件放仓库根目录 `art-source/`，导出资源放 `EmberDemo/assets/`，资源及 `.meta` 一起提交；体积较大的素材加入 LFS。
-- 帧尺寸、朝向数量、序列帧还是骨骼动画、轮廓 / 光照风格需要在美术方案中确定，本轮没有替这些选择预设结论。
+古树守卫用较大的图集和独立数值，复用近战 AI；本轮只把第三波的一只普通近战替换为守卫，总敌人数仍为 27。重拳为现有单目标近战的视觉表现，没有新增范围攻击判定。
+
+当前两个地图共用遗迹素材，霜镜回廊使用冷色地板与水色；环境布局为按地图尺寸适配的模板。地图障碍沿用碰撞配置，植物及瀑布主要在通行边界外。全新关卡布局可以扩展 `EnvironmentView`，不影响导航定义。旧 `UnitVisuals.ts` 保留作几何版本参考，运行时已改用贴图视图。
+
+制作规范、帧序、换装挂点、素材来源与当前限制见 [ART_PIPELINE.md](ART_PIPELINE.md)。
 
 ## 验证
 
@@ -120,6 +120,7 @@ pnpm playthrough
 node --import tsx scripts/browser-playthrough.ts
 pnpm test:controls
 pnpm test:content
+pnpm test:art
 ```
 
 `test:content` 使用种子 7、真实键鼠和正常数值通关霜镜回廊，覆盖开局商店、跨页购买、余额不足、技能奖励 / 取消 / E 槽替换、波间收入、购弓、换装、卸下、外观预览、缩放、双向减速和重开清空本局。

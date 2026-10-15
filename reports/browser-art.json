@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "checks": [
+    "five local art atlases loaded",
+    "normal catalog equips bow and armor",
+    "pause freezes animation frames and poses",
+    "normal three-wave run including elite completed with 27 kills",
+    "grovewarden atlas is used by the final-wave elite",
+    "observed rendered hero:idle",
+    "observed rendered hero:walk",
+    "observed rendered hero:cast",
+    "observed rendered hero:attack",
+    "observed rendered enemy:walk",
+    "observed rendered enemy:attack",
+    "observed rendered enemy:hurt",
+    "observed rendered enemy:death",
+    "no browser errors or external HTTP resources"
+  ],
+  "states": [
+    "hero:idle",
+    "hero:walk",
+    "enemy:walk",
+    "enemy:attack",
+    "hero:cast",
+    "enemy:cast",
+    "hero:attack",
+    "enemy:hurt",
+    "enemy:death",
+    "enemy:idle",
+    "hero:hurt"
+  ],
+  "errors": [],
+  "external": [],
+  "end": {
+    "phase": "victory",
+    "kills": 27,
+    "hp": 233.60000000000008,
+    "time": 29.233333333333945
+  },
+  "timestamp": "2026-10-15T14:41:01.783Z"
+}

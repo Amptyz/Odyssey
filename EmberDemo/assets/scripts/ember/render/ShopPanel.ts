@@ -2,15 +2,16 @@ import type { Node } from 'cc';
 import { equipment,SHOP_CATALOG,EQUIPMENT_SLOTS,SLOT_NAMES } from '../content/equipment';
 import type { WorldSnapshot } from '../simulation/GameWorld';
 import type { GameCommand } from '../platform/protocol';
-import { drawHero } from './UnitVisuals';
+import { HeroRig } from './HeroRig';
+import { ArtLibrary } from './ArtLibrary';
 import { box,graphics,text } from './Primitives';
 type Button=(title:string,x:number,y:number,width:number,action:()=>void,fill?:string)=>void;
-export function drawShop(root:Node,s:WorldSnapshot,page:number,setPage:(p:number)=>void,button:Button,send:(c:GameCommand)=>void):void {
+export function drawShop(root:Node,s:WorldSnapshot,page:number,setPage:(p:number)=>void,button:Button,send:(c:GameCommand)=>void,art:ArtLibrary):void {
   text('Shop title',root,'旅 人 工 坊',34,0,300,800,55,'#EFE2C1');
   text('Shop subtitle',root,`${s.wave===0?'启程整备':`第 ${s.wave} 波后的整备`}  ·  金币 ${s.gold}  ·  固定货架，自由搭配，无职业限制`,16,0,253,1120,34,'#B8D4C7');
   const panel=graphics('Equipment preview panel',root);box(panel,-595,-209,285,430,'#243F46',14);
   text('Preview title',root,'装备即外观',20,-455,186,250,40,'#ECD8AF');
-  const body=graphics('Equipped hero preview',root);body.node.setPosition(-455,6);body.node.setScale(2.7,2.7,1);drawHero(body,s.equipment);
+  const body=new HeroRig(root,art);body.node.setPosition(-455,-8);body.node.setScale(2.5,2.5,1);body.equip(s.equipment);
   const stats=s.stats;
   text('Build stats',root,`装备属性（不含被动增益）\n生命上限 ${stats.maxHp}    护甲 ${stats.armor}\n普攻 ${stats.attackDamage}    射程 ${stats.attackRange.toFixed(1)}\n攻速 ${(1/stats.attackInterval).toFixed(2)}/秒    移速 ${stats.speed.toFixed(1)}\n技能威力 ${Math.round(stats.skillPower*100)}%\n技能冷却 ${Math.round(stats.cooldownMultiplier*100)}%`,14,-453,-107,255,170,'#D0DFD1');
   const pages=Math.ceil(SHOP_CATALOG.length/6);
