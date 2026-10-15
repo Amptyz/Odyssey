@@ -1,7 +1,7 @@
 import { SKILLS,skill,SKILL_SLOTS,HERO_SKILLS } from './skills';
 import { ENEMIES,enemy } from './enemies';
 import { MAPS,mapDefinition } from './maps';
-import { PERKS } from './perks';
+import { LAB_PRESETS,PERKS } from './perks';
 import { STATUSES } from './statuses';
 import { EFFECT_APPEARANCES,UNIT_APPEARANCES,EQUIPMENT_APPEARANCES,EQUIPMENT_SPRITES,UNIT_SPRITES,ENVIRONMENT_APPEARANCES } from './appearances';
 import { ATLAS_FRAMES } from './art-manifest';
@@ -71,8 +71,26 @@ export function validateContent():void {
   for(const [key,value] of Object.entries(ECONOMY))requireContent(Number.isInteger(value)&&value>=0,`economy.${key}`);
   const ids=new Set<string>();
   for(const data of PERKS){const p:PerkDefinition=data;requireContent(!ids.has(p.id),`duplicate perk ${p.id}`);ids.add(p.id);
+    for(const key of ['speedMultiplier','attackMultiplier','maxHpMultiplier'] as const)if(p[key]!==undefined)positive(p[key]!,`perks.${p.id}.${key}`);
+    if(p.critChance!==undefined)requireContent(p.critChance>=0&&p.critChance<=1,`perks.${p.id}.critChance`);
+    if(p.trueBonusRatio!==undefined)positive(p.trueBonusRatio,`perks.${p.id}.trueBonusRatio`);
     for(const rule of p.rules){if(rule.skillId)requireContent(SKILLS[rule.skillId],`perks.${p.id}.skillId`);
+      if(rule.cooldown!==undefined)positive(rule.cooldown,`perks.${p.id}.cooldown`);
+      if(rule.every!==undefined)requireContent(Number.isInteger(rule.every)&&rule.every>0,`perks.${p.id}.every`);
+      if(rule.healthBelow!==undefined)requireContent(rule.healthBelow>0&&rule.healthBelow<=1,`perks.${p.id}.healthBelow`);
       if(rule.targetStatus)requireContent(STATUSES[rule.targetStatus],`perks.${p.id}.targetStatus`);
-      if(rule.effect.type==='status')requireContent(STATUSES[rule.effect.status.id],`perks.${p.id}.status`);}
+      const e=rule.effect;
+      if(e.type==='status'){requireContent(STATUSES[e.status.id],`perks.${p.id}.status`);positive(e.status.power,`perks.${p.id}.status.power`);positive(e.status.duration,`perks.${p.id}.status.duration`);}
+      for(const [key,value] of Object.entries(e))if(typeof value==='number')requireContent(Number.isFinite(value)&&value>=0,`perks.${p.id}.effect.${key}`);
+      if(e.type==='missiles'){
+        requireContent(Number.isInteger(e.count)&&e.count>0&&e.count<=8,`perks.${p.id}.missile count`);
+        for(const key of ['speed','range','radius'] as const)positive(e[key],`perks.${p.id}.${key}`);
+        requireContent(EFFECT_APPEARANCES[e.appearance],`perks.${p.id}.appearance`);
+        if(e.distanceScale!==undefined)positive(e.distanceScale,`perks.${p.id}.distanceScale`);
+      }
+      if(e.type==='regenerate')positive(e.duration,`perks.${p.id}.duration`);
+      if(e.type==='trail'){positive(e.delay,`perks.${p.id}.delay`);positive(e.radius,`perks.${p.id}.radius`);requireContent(EFFECT_APPEARANCES[e.appearance],`perks.${p.id}.appearance`);}
+    }
   }
+  for(const [id,preset] of Object.entries(LAB_PRESETS))requireContent(preset.length>0&&new Set(preset).size===preset.length&&preset.every(p=>ids.has(p)),`labs.${id}`);
 }

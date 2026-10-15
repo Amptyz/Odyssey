@@ -18,7 +18,7 @@ export class Hud {
   private readonly hint:Label;private mode:ControlMode='classic';
   onControlMode?:(mode:ControlMode)=>void;
   private readonly overlay:Node;private signature='';private regions:HitRegion[]=[];
-  private shopPage=0;private debug=false;private state?:WorldSnapshot;
+  private shopPage=0;private debug=false;private state?:WorldSnapshot;private inspectPerks=false;private perkPage=0;
   constructor(root:Node,private readonly send:(c:GameCommand)=>void,private readonly art:ArtLibrary) {
     const hud=uiNode('HUD',root),bg=graphics('HUD panels',hud);
     box(bg,-616,256,292,82,'#20373DEE',12);box(bg,354,206,262,132,'#20373DEE',12);
@@ -80,7 +80,7 @@ export class Hud {
     this.overlay.active=s.phase!=='fighting'||s.paused;if(!this.overlay.active)return;
     const veil=graphics('Veil',this.overlay);box(veil,-640,-360,1280,720,'#10242CEB',0);
     if(s.phase==='ready'){
-      text('Eyebrow',this.overlay,'PROJECT EMBER   /   v0.4',13,0,222,600,30,'#9ABDB4');
+      text('Eyebrow',this.overlay,'PROJECT EMBER   /   v0.5',13,0,222,600,30,'#9ABDB4');
       text('Game title',this.overlay,'余 烬 试 炼',56,0,172,800,100,'#EFE2C1');
       text('Subtitle',this.overlay,`探索${mapDefinition(s.mapId).name}，穿过 ${s.totalWaves} 场试炼。`,19,0,109,650,40,'#B5CFC4');
       this.modeButtons(45);
@@ -88,19 +88,35 @@ export class Hud {
       this.button(`地图：${mapDefinition(s.mapId).name}`, -330,-106,285,()=>{const ids=Object.keys(MAPS) as MapId[];this.send({type:'SelectMap',mapId:ids[(ids.indexOf(s.mapId)+1)%ids.length]!});},'#3E5559');
       text('No class',this.overlay,'无职业限制 · 技能自由组合',15,330,-106,285,46,'#B8D4C7');
       this.button('启程整备  ↵',0,-106,256,()=>this.send({type:'Start'}));
-      text('Lab title',this.overlay,'火焰联动实验 / 使用烬火弹与预设印记',12,0,-169,680,30,'#97B7B0');
+      text('Lab title',this.overlay,'联动实验 / 预装增益组合 · 海克斯数值已适配 PvE',12,0,-169,800,30,'#97B7B0');
       this.button('燃烧弹 → 尸爆',-280,-216,245,()=>this.send({type:'Start',lab:'burn'}),'#3E5559');
       this.button('尸爆 → 电弧',0,-216,245,()=>this.send({type:'Start',lab:'arc'}),'#3E5559');
       this.button('奥能储备 → 双重施法',280,-216,245,()=>this.send({type:'Start',lab:'reserve'}),'#3E5559');
-      text('Seed',this.overlay,`固定种子 ${s.seed}  ·  URL 可使用 ?seed=1234  ·  素材随工程提供`,12,0,-285,900,30,'#88A6A1');
+      this.button('海克斯 · 法术爆发',-280,-276,245,()=>this.send({type:'Start',lab:'hexMage'}),'#4E6074');
+      this.button('海克斯 · 普攻联动',0,-276,245,()=>this.send({type:'Start',lab:'hexAttack'}),'#526B64');
+      this.button('海克斯 · 冲刺续航',280,-276,245,()=>this.send({type:'Start',lab:'hexSurvive'}),'#70684F');
+      text('Seed',this.overlay,`固定种子 ${s.seed}  ·  正常启程从零选择增益  ·  本轮新增 12 个海克斯`,12,0,-328,960,25,'#88A6A1');
     }else if(s.phase==='shop'){
       drawShop(this.overlay,s,this.shopPage,p=>{this.shopPage=p;this.signature='';},this.button.bind(this),this.send,this.art);
+    }else if(s.paused&&this.inspectPerks){
+      text('Build title',this.overlay,'本局增益',34,0,265,850,60,'#EFE2C1');
+      const pages=Math.max(1,Math.ceil(s.perks.length/4));this.perkPage=Math.min(this.perkPage,pages-1);
+      for(const [i,id] of s.perks.slice(this.perkPage*4,this.perkPage*4+4).entries()){
+        const p=perk(id),x=i%2===0?-265:265,y=i<2?110:-90,g=graphics(`Inspect ${id}`,this.overlay);box(g,x-245,y-85,490,170,'#2D464C',12);
+        text('Name',this.overlay,p.name,22,x,y+48,450,40,p.color);text('Description',this.overlay,p.description,16,x,y-13,440,100,'#C2D6CA');
+      }
+      if(!s.perks.length)text('Empty build',this.overlay,'完成波次后，可从奖励中选择增益。',20,0,30,800,80,'#C2D6CA');
+      this.button('上一页',-290,-253,220,()=>{this.perkPage=(this.perkPage+pages-1)%pages;this.signature='';},'#3E5559');
+      this.button(`返回暂停 · ${this.perkPage+1}/${pages}`,0,-253,280,()=>{this.inspectPerks=false;this.signature='';});
+      this.button('下一页',290,-253,220,()=>{this.perkPage=(this.perkPage+1)%pages;this.signature='';},'#3E5559');
+      text('Hex rules note',this.overlay,'PvE 适配数值 · 战斗已暂停 · 触发冷却和计数在每波开始时重置',13,0,-319,1100,35,'#A5C2B5');
     }else if(s.paused){
       text('Pause title',this.overlay,'火种暂歇',42,0,160,700,80,'#EFE2C1');
       this.modeButtons(98);
       const help=this.mode==='wasd'?'WASD：沿屏幕方向移动，松开即停\n左键按住：朝指针普攻    右键 / Q：朝指针施放主技能\n空格 / E / R：使用当前槽位技能':'右键：移动    /    左键按住：朝指针普攻\nQ / W / E / R：使用当前槽位技能';
       text('Help',this.overlay,help+'\n红色圆环 / 射线：敌人攻击预警    F3：调试信息\n增益可选主动技能；选择后用 1–4 确认替换槽位。',17,0,-28,1000,200,'#CDDCD0');
       this.button('继续试炼  ESC',-145,-164,250,()=>this.send({type:'TogglePause'}));this.button('重新开始',145,-164,250,()=>this.send({type:'Restart'}),'#675B58');
+      this.button(`查看本局增益 · ${s.perks.length}`,0,-230,330,()=>{this.inspectPerks=true;this.perkPage=0;this.signature='';},'#3E5559');
     }else if(s.phase==='reward'&&s.pendingSkill){
       text('Skill acquired',this.overlay,`选择技能：${skill(s.pendingSkill).name}`,32,0,225,1000,60,'#EFE2C1');
       text('Skill description',this.overlay,SKILL_DESCRIPTIONS[s.pendingSkill]+'  选择要替换的槽位。',17,0,159,1060,55,'#BED9CD');
@@ -120,7 +136,7 @@ export class Hud {
         box(g,x-148,-129,296,250,'#2D464C',14);box(g,x-148,116,296,5,p.color,2);
         text('Perk number',this.overlay,`${i+1} · ${choice.kind==='skill'?'主动技能':'被动增益'}`,13,x,85,240,30,p.color);
         text('Perk name',this.overlay,p.name,25,x,40,250,50,'#F1E4C7');
-        text('Perk description',this.overlay,p.description,16,x,-38,250,110,'#C2D6CA');
+        text('Perk description',this.overlay,p.description,16,x,-43,260,145,'#C2D6CA');
         this.button(`选择  ${i+1}`,x,-174,250,()=>this.send({type:'ChooseReward',choiceId:id}));
         this.regions.push({x,y:0,width:296,height:250,action:()=>this.send({type:'ChooseReward',choiceId:id})});
       }

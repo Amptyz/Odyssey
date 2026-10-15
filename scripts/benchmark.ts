@@ -6,7 +6,8 @@ import { PERKS } from '../EmberDemo/assets/scripts/ember/content/perks';
 const world=new GameWorld(1234);world.command({type:'Start'});world.command({type:'LeaveShop'});
 for(const [id,a] of world.actors)if(a.team==='enemy')world.actors.delete(id);
 world.hero.maxHp=world.hero.hp=1e9;
-for(let i=0;i<50;i++)world.spawnEnemy(i%3===0?'ranged':'melee',{x:1+(i%10)*1.8,y:1+Math.floor(i/10)*3.5},1e7);
+// Both sides are endurance fixtures: keep all 50 bodies alive even with max-HP on-hit effects.
+for(let i=0;i<50;i++)world.spawnEnemy(i%3===0?'ranged':'melee',{x:1+(i%10)*1.8,y:1+Math.floor(i/10)*3.5},1e12);
 for(const p of PERKS)world.combat.addPerk(p.id);
 const times:number[]=[],heap:number[]=[];
 const gc=(globalThis as typeof globalThis&{gc?:()=>void}).gc;
@@ -25,7 +26,7 @@ for(let i=0;i<3600;i++) {
 const sorted=[...times].sort((a,b)=>a-b),sum=times.reduce((a,b)=>a+b,0);
 const report={timestamp:new Date().toISOString(),scope:'Headless TypeScript simulation + detached snapshot; not renderer FPS',
   environment:{node:process.version,platform:process.platform,arch:process.arch,cpu:os.cpus()[0]?.model,gc:!!gc},
-  seed:1234,enemies:50,ticks:3600,simulatedSeconds:120,meanTickMs:sum/times.length,p95TickMs:sorted[Math.floor(sorted.length*0.95)],maxTickMs:sorted.at(-1),
+  seed:1234,enemies:50,fixtureHp:{hero:1e9,enemy:1e12},ticks:3600,simulatedSeconds:120,actualTicks:world.tickCount,meanTickMs:sum/times.length,p95TickMs:sorted[Math.floor(sorted.length*0.95)],maxTickMs:sorted.at(-1),
   heapStartBytes:startHeap,heapAfterEach20Seconds:heap,retainedHeapDeltaBytes:heap.at(-1)!-startHeap,
   metrics:world.combat.metrics,historyLength:world.combat.history.length,cues:world.cues.length,projectiles:world.projectiles.length};
 mkdirSync('reports',{recursive:true});writeFileSync('reports/benchmark.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));

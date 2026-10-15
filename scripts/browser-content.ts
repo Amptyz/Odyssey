@@ -10,7 +10,7 @@ const ui=async(x:number,y:number)=>{const b=(await page.locator('canvas').boundi
 const click=async(x:number,y:number)=>{const p=await ui(x,y);await page.mouse.click(p.x,p.y);await page.waitForTimeout(100);};
 const aim=async(x:number,y:number)=>{const p=await page.evaluate(p=>(window as any).__EMBER__.screen(p.x,p.y),{x,y});const at=await ui(p.x,p.y);await page.mouse.move(at.x,at.y);};
 try{
-  await page.goto('http://127.0.0.1:8080/?debug=1&seed=7');await page.waitForFunction(()=>!!(window as any).__EMBER__?.snapshot().stats);
+  await page.goto('http://127.0.0.1:8080/?debug=1&seed=16');await page.waitForFunction(()=>!!(window as any).__EMBER__?.snapshot().stats);
   check((await state()).mapId==='ember','original map defaults correctly');await click(-330,-106);
   let s=await state();check(s.mapId==='frost'&&s.totalWaves===2&&s.loadout.Q==='fireball','frost uses the same classless initial loadout');
   await click(145,45);await click(0,-106);s=await state();check(s.phase==='shop'&&s.gold===160&&s.time===0,'opening shop has deterministic starting gold');
@@ -26,7 +26,7 @@ try{
       await page.mouse.up();mouseHeld=false;rewards.push(s.wave);
       check(new Set(s.choices.map(c=>c.id)).size===3&&s.choices.some(c=>c.kind==='skill'),'reward includes distinct passive and skill choices');
       if(s.wave===1){
-        const c=s.choices.find(c=>c.kind==='skill'&&c.skillId==='icebolt');check(!!c,'seed 7 offers ice skill through normal reward generation');
+        const c=s.choices.find(c=>c.kind==='skill'&&c.skillId==='icebolt');check(!!c,'seed 16 offers ice skill through normal reward generation');
         await page.keyboard.press(String(s.choices.findIndex(x=>x.id===c!.id)+1));await page.waitForTimeout(100);
         check((await state()).pendingSkill==='icebolt'&&(await state()).loadout.E==='dash','skill selection waits for replacement confirmation');
         await page.screenshot({path:'reports/15-skill-replacement.png'});

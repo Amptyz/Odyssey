@@ -1,11 +1,13 @@
-import { distance } from '../utils/math';
+import { direction,distance } from '../utils/math';
 import { applyStatus } from './StatusSystem';
-import type { Actor,CastResult,CombatCue,CombatEvent,Effect,Hit } from './types';
+import type { Actor,CastResult,CombatCue,CombatEvent,CombatHooks,Effect,Hit,MissileEffect } from './types';
 import type { CollisionWorld } from './CollisionWorld';
 export interface EffectContext {
   source:Actor;target:Actor;event:CombatEvent;ruleId:string;actors:Map<string,Actor>;collision:CollisionWorld;
   primed:Set<string>;healCooldown:Map<string,number>;castResult?:CastResult;maxDepth:number;
   cue:(cue:CombatCue)=>void;damage:(hit:Hit)=>void;drop:()=>void;
+  hooks:CombatHooks;heal:(amount:number)=>void;onHit:()=>void;
+  regenerate:(ratio:number,duration:number)=>void;trail:(effect:Extract<Effect,{type:'trail'}>)=>void;
 }
 type Handler<K extends Effect['type']>=(context:EffectContext,effect:Extract<Effect,{type:K}>)=>void;
 type Handlers = {[K in Effect['type']]:Handler<K>};
@@ -14,15 +16,44 @@ const handlers:Handlers = {
   prime:({source,primed})=>{primed.add(source.id);},
   empower:({source,primed,castResult},effect)=>{if(castResult){castResult.damageMultiplier*=effect.multiplier;primed.delete(source.id);}},
   extraShot:({castResult})=>{if(castResult)castResult.shots++;},
-  heal:({source,healCooldown,ruleId,cue},effect)=>{
+  heal:({source,healCooldown,ruleId,heal},effect)=>{
     const key=`${source.id}:${ruleId}`;
     if(!source.alive||(healCooldown.get(key)??0)>0)return;
-    const amount=Math.min(effect.amount,source.maxHp-source.hp);source.hp+=amount;healCooldown.set(key,effect.cooldown);
-    if(amount>0)cue({kind:'heal',at:{...source},amount});
+    healCooldown.set(key,effect.cooldown);heal(effect.amount);
+  },
+  onHit:ctx=>ctx.onHit(),
+  cooldown:({source,hooks},effect)=>{if(source.alive)hooks.reduceCooldown?.(source.id,effect.seconds);},
+  bonusDamage:(ctx,effect)=>ctx.damage({sourceId:ctx.source.id,targetId:ctx.target.id,amount:ctx.source.maxHp*effect.maxHpRatio,cause:'augment',proc:true,unscaled:true,depth:ctx.event.depth+1,rootId:ctx.event.rootId,tags:['on-hit']}),
+  regenerate:({regenerate},effect)=>regenerate(effect.maxHpRatio,effect.duration),
+  trail:({trail},effect)=>trail(effect),
+  missiles:(ctx,effect)=>missiles(ctx,effect),
+  healNova:(ctx,effect)=>{
+    const victim=ctx.collision.targets(ctx.actors.values(),ctx.source.team,{kind:'circle',center:ctx.source,radius:effect.radius})
+      .sort((a,b)=>distance(a,ctx.source)-distance(b,ctx.source)||a.id.localeCompare(b.id))[0];
+    if(!victim)return;
+    ctx.cue({kind:'arc',at:{...ctx.source},to:{...victim},appearance:'mist'});
+    ctx.damage({sourceId:ctx.source.id,targetId:victim.id,amount:ctx.event.amount*effect.ratio,cause:'augment',proc:true,unscaled:true,depth:ctx.event.depth+1,rootId:ctx.event.rootId,tags:['healing']});
   },
   explode:(ctx,effect)=>chain(ctx,effect),
   arc:(ctx,effect)=>chain(ctx,effect),
 };
+function missiles(ctx:EffectContext,effect:MissileEffect):void {
+  if(!ctx.source.alive||ctx.event.depth>=ctx.maxDepth)return;
+  let aim=ctx.event.aim??direction(ctx.source,ctx.target);
+  if(effect.aim==='secondary'){
+    const end={x:ctx.source.x+aim.x*effect.range,y:ctx.source.y+aim.y*effect.range};
+    const primary=ctx.collision.firstImpact(ctx.actors.values(),ctx.source.team,ctx.source,end,effect.radius)?.actor;
+    const victim=ctx.collision.targets(ctx.actors.values(),ctx.source.team,{kind:'circle',center:ctx.source,radius:effect.range},primary?.id)
+      .sort((a,b)=>distance(a,ctx.source)-distance(b,ctx.source)||a.id.localeCompare(b.id))[0];
+    if(!victim)return;aim=direction(ctx.source,victim);
+  }
+  if(!aim.x&&!aim.y)return;
+  const angle=Math.atan2(aim.y,aim.x),damage=effect.damage+(effect.attackRatio??0)*(ctx.hooks.attackDamage?.(ctx.source.id)??0);
+  for(let i=0;i<effect.count;i++){
+    const a=angle+(i-(effect.count-1)/2)*effect.spread;
+    ctx.hooks.projectile?.(ctx.source,{x:Math.cos(a),y:Math.sin(a)},effect,damage);
+  }
+}
 function chain(ctx:EffectContext,effect:Extract<Effect,{type:'explode'|'arc'}>):void {
   const {event,source,target}=ctx;
   if(event.depth>=ctx.maxDepth){ctx.drop();return;}
@@ -32,7 +63,7 @@ function chain(ctx:EffectContext,effect:Extract<Effect,{type:'explode'|'arc'}>):
   if(effect.type==='explode')ctx.cue({kind:'explosion',at:{...target},radius:effect.radius});
   for(const victim of victims){
     if(effect.type==='arc')ctx.cue({kind:'arc',at:{...target},to:{...victim}});
-    ctx.damage({sourceId:source.id,targetId:victim.id,amount:effect.damage,cause:effect.type==='arc'?'arc':'explosion',depth:event.depth+1,rootId:event.rootId,tags:[effect.type]});
+    ctx.damage({sourceId:source.id,targetId:victim.id,amount:effect.damage,cause:effect.type==='arc'?'arc':'explosion',depth:event.depth+1,rootId:event.rootId,tags:[effect.type],proc:true});
   }
 }
 export function executeEffect(context:EffectContext,effect:Effect):void {

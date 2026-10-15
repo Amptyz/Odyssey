@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-10-15T17:33:33.402682+00:00",
+  "version": "0.5.0",
+  "newHexes": 12,
+  "totalPerks": 20,
+  "unitTests": 115,
+  "browserChecks": {
+    "hexes": 21,
+    "controls": 31,
+    "hitboxes": 14,
+    "art": 14,
+    "content": 26
+  },
+  "browserCheckTotal": 106,
+  "cocos": {
+    "version": "3.8.8",
+    "platform": "web-desktop",
+    "result": "success",
+    "exitCode": 36,
+    "sourceMatchesBuild": true
+  },
+  "sourceDigest": "09ff2cc0ed91695e8df4bd4f76c8ffc6d51c96eee16edf98e0d646ee6e45aba4",
+  "normalBot": {
+    "victory": 9,
+    "defeat": 1,
+    "defaultSeedVictory": true
+  },
+  "preview": "http://127.0.0.1:8080/"
+}

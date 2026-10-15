@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "checks": [
+    "hexMage: visible menu opens normal shop with advertised preset",
+    "glass cannon reduces base maximum HP",
+    "glass cannon also scales purchased armor HP",
+    "hexMage: normal wave starts",
+    "hexMage: additional projectiles visible in real combat",
+    "infernal conduit attaches a real stacked status",
+    "jeweled gauntlet produces critical hit feedback",
+    "hexAttack: visible menu opens normal shop with advertised preset",
+    "hexAttack: normal wave starts",
+    "hexAttack: additional projectiles visible in real combat",
+    "typhoon secondary and directional basic bullets coexist",
+    "fourth basic release produces light-em-up volley",
+    "hexSurvive: visible menu opens normal shop with advertised preset",
+    "hexSurvive: normal wave starts",
+    "earthwake follows actual cursor-directed dash",
+    "pause freezes delayed hitbox",
+    "owned augment descriptions can be inspected while paused",
+    "earthwake resolves once after delay",
+    "dawnbringer regenerates after real enemy damage",
+    "effective regeneration triggers death-ring damage",
+    "no browser runtime errors"
+  ],
+  "errors": [],
+  "timestamp": "2026-10-15T17:29:53.055Z"
+}

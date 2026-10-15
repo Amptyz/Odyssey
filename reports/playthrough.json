@@ -5,130 +5,129 @@
       "seed": 0,
       "phase": "victory",
       "wave": 3,
-      "time": 28.366666666667236,
-      "hp": 111,
+      "time": 27.46666666666719,
+      "hp": 69,
       "kills": 27,
       "perks": [
-        "swift",
-        "leech",
-        "burn"
+        "double",
+        "earthwake",
+        "etherealWeapon"
       ]
     },
     {
       "seed": 1,
       "phase": "victory",
       "wave": 3,
-      "time": 27.06666666666717,
-      "hp": 95,
+      "time": 31.633333333334065,
+      "hp": 100,
       "kills": 27,
       "perks": [
-        "double",
-        "corpse",
-        "arc"
+        "infernalConduit",
+        "swift",
+        "double"
       ]
     },
     {
       "seed": 2,
-      "phase": "victory",
+      "phase": "defeat",
       "wave": 3,
-      "time": 29.53333333333396,
-      "hp": 100,
-      "kills": 27,
+      "time": 22.633333333333617,
+      "hp": 0,
+      "kills": 22,
       "perks": [
-        "corpse",
-        "double",
-        "swift"
+        "glassCannon",
+        "infernalConduit"
       ]
     },
     {
       "seed": 42,
       "phase": "victory",
       "wave": 3,
-      "time": 33.833333333333975,
-      "hp": 147,
+      "time": 32.36666666666739,
+      "hp": 155,
       "kills": 27,
       "perks": [
-        "rhythm",
+        "lightEmUp",
         "leech",
-        "corpse"
+        "double"
       ]
     },
     {
       "seed": 1234,
       "phase": "victory",
       "wave": 3,
-      "time": 30.633333333334015,
-      "hp": 153,
+      "time": 28.366666666667236,
+      "hp": 55,
       "kills": 27,
       "perks": [
-        "leech",
-        "rhythm",
-        "burn"
+        "typhoon",
+        "reserve",
+        "etherealWeapon"
       ]
     },
     {
       "seed": 2026,
       "phase": "victory",
       "wave": 3,
-      "time": 24.900000000000396,
-      "hp": 137,
+      "time": 23.733333333333672,
+      "hp": 106,
       "kills": 27,
       "perks": [
-        "arc",
-        "burn",
-        "leech"
+        "rhythm",
+        "magicMissile",
+        "double"
       ]
     },
     {
       "seed": 31415,
       "phase": "victory",
       "wave": 3,
-      "time": 30.900000000000695,
-      "hp": 142,
+      "time": 33.833333333333975,
+      "hp": 149,
       "kills": 27,
       "perks": [
-        "leech",
+        "dawnbringer",
         "burn",
-        "reserve"
+        "double"
       ]
     },
     {
       "seed": 65535,
       "phase": "victory",
       "wave": 3,
-      "time": 32.83333333333403,
-      "hp": 106,
+      "time": 29.633333333333965,
+      "hp": 67,
       "kills": 27,
       "perks": [
-        "leech",
-        "burn",
-        "corpse"
+        "arc",
+        "rhythm",
+        "typhoon"
       ]
     },
     {
       "seed": 99999,
       "phase": "victory",
       "wave": 3,
-      "time": 36.03333333333385,
-      "hp": 45,
+      "time": 31.633333333334065,
+      "hp": 143,
       "kills": 27,
       "perks": [
-        "swift",
-        "burn",
-        "rhythm"
+        "typhoon",
+        "leech",
+        "mysticPunch"
       ]
     },
     {
       "seed": 4294967295,
       "phase": "victory",
       "wave": 3,
-      "time": 30.233333333333995,
-      "hp": 82,
+      "time": 34.66666666666726,
+      "hp": 106,
       "kills": 27,
       "perks": [
-        "arc",
-        "burn",
-        "rhythm"
+        "reserve",
+        "double",
+        "etherealWeapon"
       ]
     }
   ]

@@ -76,6 +76,7 @@ export class ArenaView {
     const aim=worldToScreen(pointer,this.camera);g.strokeColor=color('#FBF5D4');g.lineWidth=1.5;
     g.ellipse(aim.x,aim.y,9,5);g.stroke();g.moveTo(aim.x-13,aim.y);g.lineTo(aim.x+13,aim.y);g.stroke();
     if(state.destination){const p=worldToScreen(state.destination,this.camera);g.strokeColor=color('#548C8A');g.lineWidth=3;g.ellipse(p.x,p.y,14,7);g.stroke();}
+    for(const zone of state.zones)this.capsule(g,zone.from,zone.to,zone.radius,'#BE9E5EAA',1.5);
     for(const swing of state.swings)this.sector(g,swing.center,swing.facing,swing.radius,swing.arc,swing.age<swing.windup?'#BCA37966':'#99744ACC',swing.age<swing.windup?1:3);
     for(const e of state.units)if(e.alive&&e.windup>0&&e.kind!=='hero'&&enemy(e.kind).behavior==='melee'){
       const cfg=enemy(e.kind);this.sector(g,e,{x:e.aim.x-e.x,y:e.aim.y-e.y},cfg.range,cfg.attackArc??Math.PI/2,'#D8756288',2);
@@ -97,8 +98,9 @@ export class ArenaView {
     for(const cue of state.cues){const p=worldToScreen(cue.at,this.camera),life=cue.ttl/cue.duration;
       if(cue.kind==='damage'||cue.kind==='heal'){
         const label=this.numbers[index++];if(!label)continue;label.node.active=true;label.node.setPosition(p.x,p.y+62+(1-life)*25);
-        label.color=color(cue.kind==='heal'?'#245E4D':cue.cause==='burn'?'#9D4B25':'#503F32');
-        setText(label,`${cue.kind==='heal'?'+':''}${Math.round(cue.amount??0)}`);
+        label.color=color(cue.kind==='heal'?'#245E4D':cue.critical?'#A65738':cue.trueDamage?'#446B87':cue.cause==='burn'?'#9D4B25':'#503F32');
+        setText(label,`${cue.kind==='heal'?'+':''}${Math.round(cue.amount??0)}${cue.critical?'!':''}`);
+      }else if(cue.kind==='quake'&&cue.to){this.capsule(g,cue.at,cue.to,cue.radius??.85,'#C49B53',Math.max(1,life*4));
       }else if(cue.kind==='swing'&&cue.facing){this.sector(g,cue.at,cue.facing,cue.radius??1,cue.arc??Math.PI/2,cue.cause==='enemy'?'#D87562':'#C79D58',Math.max(1,life*3));
       }else if(cue.kind==='arc'&&cue.to){const to=worldToScreen(cue.to,this.camera);
         g.strokeColor=color(cue.cause==='basic'?'#FFF2BF':'#D4E7FF');g.lineWidth=cue.cause==='basic'?2:3;
@@ -112,6 +114,14 @@ export class ArenaView {
     const origin=worldToScreen(center,this.camera),angle=Math.atan2(facing.y,facing.x);g.strokeColor=color(tint);g.lineWidth=width;g.moveTo(origin.x,origin.y);
     for(let i=0;i<=24;i++){const a=angle-arc/2+arc*i/24,p=worldToScreen({x:center.x+Math.cos(a)*radius,y:center.y+Math.sin(a)*radius},this.camera);g.lineTo(p.x,p.y);}
     g.lineTo(origin.x,origin.y);g.stroke();
+  }
+  private capsule(g:Graphics,from:Vec2,to:Vec2,radius:number,tint:string,width:number):void {
+    const angle=Math.atan2(to.y-from.y,to.x-from.x),points:Vec2[]=[];
+    for(const [center,start] of [[to,angle-Math.PI/2],[from,angle+Math.PI/2]] as const)for(let i=0;i<=12;i++){
+      const a=start+Math.PI*i/12;points.push(worldToScreen({x:center.x+Math.cos(a)*radius,y:center.y+Math.sin(a)*radius},this.camera));
+    }
+    g.strokeColor=color(tint);g.lineWidth=width;g.moveTo(points[0]!.x,points[0]!.y);
+    for(const p of points.slice(1))g.lineTo(p.x,p.y);g.close();g.stroke();
   }
   private drawColliders(state:WorldSnapshot,enabled:boolean):void {
     const g=this.colliders;g.clear();if(!enabled)return;g.lineWidth=1.5;
