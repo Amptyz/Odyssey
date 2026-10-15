@@ -29,4 +29,4 @@ export interface Rule {
   event: CombatEvent['type']; skillId?: SkillId; causes?: readonly Cause[]; skillTags?:readonly string[];
   targetStatus?: StatusId; sourcePrimed?: boolean; effect: Effect;
 }
-export interface PerkDefinition { id: string; name: string; description: string; color: string; rules: readonly Rule[]; requiresSkillTags?:readonly string[]; speedMultiplier?: number; attackMultiplier?: number }
+export interface PerkDefinition { id: string; name: string; description: string; color: string; rules: readonly Rule[]; requiresSkillTags?:readonly string[]; requiresSkillGroups?:readonly (readonly string[])[]; speedMultiplier?: number; attackMultiplier?: number }

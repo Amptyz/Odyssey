@@ -5,12 +5,12 @@ import { mapDefinition,type MapId } from '../content/maps';
 import { skill } from '../content/skills';
 import { STATUSES } from '../content/statuses';
 import { EFFECT_APPEARANCES } from '../content/appearances';
-import { drawUnit } from './UnitVisuals';
+import { drawUnit,drawHero,equipmentVisualKey } from './UnitVisuals';
 import type { Unit, WorldSnapshot } from '../simulation/GameWorld';
 import { lerp, type Vec2 } from '../utils/math';
 import { DEFAULT_PROJECTION, fitMapProjection, worldToScreen, type Projection } from './IsoProjection';
 import { box,color,disk,graphics,polygon,setText,text,uiNode } from './Primitives';
-interface UnitView {node:Node;body:Graphics;bars:Graphics;ring:Graphics;kind:Unit['kind']}
+interface UnitView {node:Node;body:Graphics;bars:Graphics;ring:Graphics;kind:Unit['kind'];appearanceKey?:string}
 /** Nodes are retained/recycled. Only dynamic vector paths are redrawn. */
 export class ArenaView {
   readonly camera:Projection={...DEFAULT_PROJECTION,origin:{x:0,y:265}};
@@ -63,6 +63,7 @@ export class ArenaView {
     for(const u of state.units)if(u.alive) {
       let v=this.units.get(u.id);
       if(!v){v=this.spare.pop() ?? this.makeView(u.kind);v.node.active=true;if(v.kind!==u.kind){v.kind=u.kind;this.drawBody(v);}this.units.set(u.id,v);}
+      if(u.kind==='hero'){const key=equipmentVisualKey(state.equipment);if(v.appearanceKey!==key){drawHero(v.body,state.equipment);v.appearanceKey=key;}}
       const p=worldToScreen({x:lerp(u.previous.x,u.x,alpha),y:lerp(u.previous.y,u.y,alpha)},this.camera);
       v.node.setPosition(p.x,p.y);order.push({node:v.node,y:p.y});
       const bar=v.bars;bar.clear();box(bar,-19,47,38,5,'#354D49',2);box(bar,-18,48,36*u.hp/u.maxHp,3,u.kind==='hero'?'#95D4B5':'#DA957E',1);
@@ -81,7 +82,7 @@ export class ArenaView {
     const node=uiNode('Unit',this.objects);const ring=graphics('Indicators',node),body=graphics('Body',node),bars=graphics('Health',node);
     const v={node,body,bars,ring,kind};this.drawBody(v);return v;
   }
-  private drawBody(v:UnitView):void {drawUnit(v.body,v.kind==='hero'?HERO.appearance:enemy(v.kind).appearance);}
+  private drawBody(v:UnitView):void {v.appearanceKey=undefined;drawUnit(v.body,v.kind==='hero'?HERO.appearance:enemy(v.kind).appearance);}
   private drawGround(state:WorldSnapshot,pointer:Vec2):void {
     const g=this.targeting;g.clear();
     if(state.phase!=='fighting'||state.paused)return;

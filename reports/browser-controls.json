@@ -26,6 +26,7 @@
     "restart retains chosen mode",
     "WASD mouse attack clears first wave",
     "mouse basic attacks deal damage",
+    "reward opens shop",
     "WASD reward choice advances wave",
     "resized pause-menu selector works",
     "focus loss pauses even with repeated notifications",
@@ -33,5 +34,5 @@
     "no browser errors: "
   ],
   "errors": [],
-  "timestamp": "2026-10-15T12:22:51.236Z"
+  "timestamp": "2026-10-15T13:29:13.185Z"
 }

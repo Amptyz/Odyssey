@@ -24,7 +24,7 @@ try{
   await page.screenshot({path:'reports/08-control-selection.png'});
   await page.reload();await page.waitForFunction(()=>!!(window as any).__EMBER__?.controls);
   check(await mode()==='wasd','selection persists across reload');
-  await click(0,-106);check((await state()).phase==='fighting','start with WASD');
+  await click(0,-106);await page.keyboard.press('Enter');await page.waitForTimeout(100);check((await state()).phase==='fighting','start with WASD');
   // Real keyboard input, screen-space cardinal directions, no simulation mutations.
   for(const [key,signX,signY] of [['w',0,1],['s',0,-1],['a',-1,0],['d',1,0]] as const){
     const a=await hero();await page.keyboard.down(key);await page.waitForTimeout(230);await page.keyboard.up(key);await page.waitForTimeout(80);const b=await hero();
@@ -52,7 +52,7 @@ try{
   await page.keyboard.press('Escape');await page.waitForTimeout(80);await click(145,98);
   await page.screenshot({path:'reports/09-wasd-help.png'});
   await click(145,-164);check((await state()).phase==='ready'&&await mode()==='wasd','restart retains chosen mode');
-  await click(0,-106);
+  await click(0,-106);await page.keyboard.press('Enter');await page.waitForTimeout(100);
   // Normal combat: held mouse attacks plus Q/Space/R; no HP/damage/cooldown cheats.
   const deadline=Date.now()+45000;let basicHit=false,mouseHeld=false;
   while(Date.now()<deadline){
@@ -65,7 +65,7 @@ try{
   }
   await page.mouse.up();const won=await state();check(won.phase==='reward','WASD mouse attack clears first wave');check(basicHit,'mouse basic attacks deal damage');
   await page.screenshot({path:'reports/10-wasd-reward.png'});
-  await page.keyboard.press('1');await page.waitForTimeout(100);check((await state()).wave===2,'WASD reward choice advances wave');
+  await page.keyboard.press('1');await page.waitForTimeout(100);check((await state()).phase==='shop','reward opens shop');await page.keyboard.press('Enter');await page.waitForTimeout(100);check((await state()).wave===2,'WASD reward choice advances wave');
   await page.keyboard.press('Escape');await page.waitForTimeout(100);
   await page.setViewportSize({width:960,height:640});await page.waitForTimeout(150);
   await click(-145,98);check(await mode()==='classic','resized pause-menu selector works');await click(145,98);

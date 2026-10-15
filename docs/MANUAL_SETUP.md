@@ -17,7 +17,7 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-依赖安装在仓库根目录。`pnpm check` 检查纯逻辑、Cocos 官方类型、工具脚本和 48 项单元测试，并编译核心代码；它不代替 Cocos 发布构建。
+依赖安装在仓库根目录。`pnpm check` 检查纯逻辑、Cocos 官方类型、工具脚本和 64 项单元测试，并编译核心代码；它不代替 Cocos 发布构建。
 
 ## 3. 导入已配置的 Cocos 工程
 

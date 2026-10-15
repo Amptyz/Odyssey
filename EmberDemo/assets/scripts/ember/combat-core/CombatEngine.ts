@@ -20,12 +20,14 @@ export class CombatEngine {
   private primed = new Set<string>();
   private healCooldown = new Map<string, number>();
   private castResult?: CastResult;
-  constructor(readonly actors: Map<string,Actor>, private readonly cue: (cue: CombatCue) => void = () => {}) {}
+  constructor(readonly actors: Map<string,Actor>, private readonly cue: (cue: CombatCue) => void = () => {},private readonly damagePolicy:(hit:Hit,target:Actor)=>number=hit=>hit.amount) {}
   addPerk(id: PerkId): void { this.perks.add(id); }
   isPrimed(id: string): boolean { return this.primed.has(id); }
   damage(hit: Hit): void {
     const target = this.actors.get(hit.targetId), depth = hit.depth ?? 0;
     if (!target?.alive || !Number.isFinite(hit.amount) || hit.amount<=0) return;
+    hit={...hit,amount:this.damagePolicy(hit,target)};
+    if(!Number.isFinite(hit.amount)||hit.amount<=0)return;
     const rootId = hit.rootId ?? ++this.rootSerial;
     if (depth>MAX_CHAIN_DEPTH || (this.budget.get(rootId) ?? 0)>=EVENT_BUDGET) { this.metrics.dropped++; return; }
     const absorbed = Math.min(target.shield, hit.amount);

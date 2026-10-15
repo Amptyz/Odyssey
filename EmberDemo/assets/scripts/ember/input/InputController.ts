@@ -83,14 +83,17 @@ export class InputController {
   private onKey(e:EventKeyboard):void {
     if(this.held.has(e.keyCode))return;this.held.add(e.keyCode);
     const skill=this.mode==='wasd'?(e.keyCode===KeyCode.SPACE?'W':e.keyCode===KeyCode.KEY_W?undefined:KEY_SKILLS[e.keyCode]):KEY_SKILLS[e.keyCode];
+    if(skill&&this.state?.phase==='reward'&&this.state.pendingSkill){this.port.send({type:'ConfirmSkill',slot:skill});return;}
     if(skill)this.port.send({type:'CastSlot',slot:skill,point:this.pointer});
     else if(e.keyCode===KeyCode.ESCAPE)this.port.send({type:'TogglePause'});
     else if(e.keyCode===KeyCode.F3)this.hud.toggleDebug();
     else if(e.keyCode===KeyCode.DIGIT_1)this.hud.keyChoice(0);
     else if(e.keyCode===KeyCode.DIGIT_2)this.hud.keyChoice(1);
     else if(e.keyCode===KeyCode.DIGIT_3)this.hud.keyChoice(2);
+    else if(e.keyCode===KeyCode.DIGIT_4)this.hud.keyChoice(3);
     else if(e.keyCode===KeyCode.ENTER) {
-      if(this.state?.phase==='ready')this.port.send({type:'Start'});
+      if(this.state?.phase==='shop')this.port.send({type:'LeaveShop'});
+      else if(this.state?.phase==='ready')this.port.send({type:'Start'});
       else if(this.state?.phase==='victory'||this.state?.phase==='defeat')this.port.send({type:'Restart'});
     }
   }

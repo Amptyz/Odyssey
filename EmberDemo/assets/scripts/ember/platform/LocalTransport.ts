@@ -7,7 +7,7 @@ export class LocalTransport implements CommandPort {
   constructor(readonly seed=1234) { this.world=new GameWorld(seed); }
   send(command:GameCommand):void {
     if(command.type==='SelectMap'&&this.world.phase==='ready'&&Object.prototype.hasOwnProperty.call(MAPS,command.mapId)){this.world=new GameWorld(this.seed,command.mapId);return;}
-    if(command.type==='Restart') {const {mapId,loadout}=this.world;this.world=new GameWorld(this.seed,mapId);Object.assign(this.world.loadout,loadout);return;}
+    if(command.type==='Restart') {this.world=new GameWorld(this.seed,this.world.mapId);return;}
     this.world.command(command);
   }
   snapshot() { return this.world.snapshot(); }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-15T12:19:14.972Z",
+  "timestamp": "2026-10-15T13:31:41.863Z",
   "scope": "Headless TypeScript simulation + detached snapshot; not renderer FPS",
   "environment": {
     "node": "v26.0.0",
@@ -12,19 +12,19 @@
   "enemies": 50,
   "ticks": 3600,
   "simulatedSeconds": 120,
-  "meanTickMs": 0.11595092500000001,
-  "p95TickMs": 0.25595899999996163,
-  "maxTickMs": 8.719875000000002,
-  "heapStartBytes": 8204064,
+  "meanTickMs": 0.15726703472222167,
+  "p95TickMs": 0.43345900000002757,
+  "maxTickMs": 14.311791999999997,
+  "heapStartBytes": 8367256,
   "heapAfterEach20Seconds": [
-    8838656,
-    8880496,
-    8836960,
-    8863928,
-    8893072,
-    8916208
+    9033160,
+    9075672,
+    9034592,
+    9067312,
+    9110384,
+    9130480
   ],
-  "retainedHeapDeltaBytes": 712144,
+  "retainedHeapDeltaBytes": 763224,
   "metrics": {
     "processed": 1246,
     "dropped": 0,

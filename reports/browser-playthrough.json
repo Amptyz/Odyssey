@@ -7,32 +7,68 @@
     {
       "wave": 1,
       "choices": [
-        "leech",
-        "burn",
-        "double"
+        {
+          "id": "perk:leech",
+          "kind": "perk",
+          "perkId": "leech"
+        },
+        {
+          "id": "perk:burn",
+          "kind": "perk",
+          "perkId": "burn"
+        },
+        {
+          "id": "skill:frostNova",
+          "kind": "skill",
+          "skillId": "frostNova"
+        }
       ]
     },
     {
       "wave": 2,
       "choices": [
-        "arc",
-        "corpse",
-        "double"
+        {
+          "id": "perk:reserve",
+          "kind": "perk",
+          "perkId": "reserve"
+        },
+        {
+          "id": "perk:swift",
+          "kind": "perk",
+          "perkId": "swift"
+        },
+        {
+          "id": "skill:icebolt",
+          "kind": "skill",
+          "skillId": "icebolt"
+        }
       ]
     },
     {
       "wave": 3,
       "choices": [
-        "rhythm",
-        "burn",
-        "double"
+        {
+          "id": "perk:rhythm",
+          "kind": "perk",
+          "perkId": "rhythm"
+        },
+        {
+          "id": "perk:swift",
+          "kind": "perk",
+          "perkId": "swift"
+        },
+        {
+          "id": "skill:ironGuard",
+          "kind": "skill",
+          "skillId": "ironGuard"
+        }
       ]
     }
   ],
   "end": {
     "phase": "victory",
-    "time": 36.06666666666718,
-    "hp": 144
+    "time": 35.03333333333391,
+    "hp": 28
   },
   "skills": [
     "Q",
@@ -46,5 +82,5 @@
     "width": 960,
     "height": 540
   },
-  "timestamp": "2026-10-15T12:18:47.186Z"
+  "timestamp": "2026-10-15T13:29:29.310Z"
 }

@@ -25,23 +25,24 @@ try {
   await page.waitForFunction(()=>!!(window as any).__EMBER__);
   await page.locator('canvas').click({position:{x:10,y:10}});
   // Exercise W/E through keyboard, then start the normal three-wave run afresh.
-  await page.keyboard.press('Enter');
+  await page.keyboard.press('Enter'); await page.waitForTimeout(80);if((await state()).phase==='shop'){await page.keyboard.press('Enter');await page.waitForTimeout(80);}
   const aim=await point(13,10); await page.mouse.move(aim.x,aim.y);
   await page.keyboard.press('w'); await page.keyboard.press('e'); await page.waitForTimeout(250);
   const skills=await state();
   assert(skills.hero.shield>0&&skills.cooldowns.W>0,'W shield failed');
   assert(skills.cooldowns.E>0&&skills.hero.x>11,'E dash failed');
   await page.evaluate(()=>(window as any).__EMBER__.send({type:'Restart'}));
-  await page.keyboard.press('Enter');
+  await page.keyboard.press('Enter'); await page.waitForTimeout(80);if((await state()).phase==='shop'){await page.keyboard.press('Enter');await page.waitForTimeout(80);}
   const deadline=Date.now()+120000;
   let castR=false;
   while(Date.now()<deadline){
     const s=await state();
     if(s.phase==='victory'||s.phase==='defeat')break;
+    if(s.phase==='shop'){await page.keyboard.press('Enter');await page.waitForTimeout(80);continue;}
     if(s.phase==='reward'){
       rewards.push({wave:s.wave,choices:s.choices});
-      assert(s.choices.length===3&&new Set(s.choices).size===3,'Reward choices invalid');
-      const best=s.choices.findIndex(id=>id==='burn'||id==='leech');
+      assert(s.choices.length===3&&new Set(s.choices.map(c=>c.id)).size===3,'Reward choices invalid');
+      const best=s.choices.findIndex(c=>c.kind==='perk'&&(c.perkId==='burn'||c.perkId==='leech'));
       await page.keyboard.press(String(best<0?1:best+1)); await page.waitForTimeout(80);continue;
     }
     const enemies=s.units.filter(u=>u.team==='enemy'&&u.alive).sort((a,b)=>Math.hypot(a.x-s.hero.x,a.y-s.hero.y)-Math.hypot(b.x-s.hero.x,b.y-s.hero.y));
@@ -59,7 +60,7 @@ try {
   assert(end.phase==='victory','Three-wave run failed: '+end.phase);
   assert(rewards.length===3&&castR,'Missing wave reward or R cast');
   assert(errors.length===0&&external.length===0,'Runtime errors or external resources');
-  await page.keyboard.press('Enter'); await page.waitForTimeout(100);
+  await page.keyboard.press('Enter'); await page.waitForTimeout(80);if((await state()).phase==='shop'){await page.keyboard.press('Enter');await page.waitForTimeout(80);} await page.waitForTimeout(100);
   assert((await state()).phase==='ready','Victory restart failed');
   await page.setViewportSize({width:960,height:640});await page.waitForTimeout(250);
   const bounds=await page.locator('canvas').boundingBox();

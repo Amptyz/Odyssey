@@ -3,7 +3,7 @@ import { writeFileSync,mkdirSync } from 'node:fs';
 import os from 'node:os';
 import { GameWorld } from '../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import { PERKS } from '../EmberDemo/assets/scripts/ember/content/perks';
-const world=new GameWorld(1234);world.command({type:'Start'});
+const world=new GameWorld(1234);world.command({type:'Start'});world.command({type:'LeaveShop'});
 for(const [id,a] of world.actors)if(a.team==='enemy')world.actors.delete(id);
 world.hero.maxHp=world.hero.hp=1e9;
 for(let i=0;i<50;i++)world.spawnEnemy(i%3===0?'ranged':'melee',{x:1+(i%10)*1.8,y:1+Math.floor(i/10)*3.5},1e7);

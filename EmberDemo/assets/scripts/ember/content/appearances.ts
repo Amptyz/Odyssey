@@ -10,3 +10,18 @@ export const EFFECT_APPEARANCES:Record<string,{color:string;core:string}> = {
   fire:{color:'#E4A16C',core:'#FFF0B6'},ice:{color:'#83CEEE',core:'#E5FFFF'},
   mist:{color:'#B59CC6',core:'#F3C6E1'},shield:{color:'#BFECF2',core:'#E8FDFF'},
 };
+
+/** Stable appearance IDs are independent of item IDs and gameplay values. */
+export interface EquipmentAppearance {layer:'weapon'|'body'|'head';shape:'sword'|'staff'|'bow'|'shield'|'armor'|'robe'|'leather'|'helm'|'circlet'|'hood';color:string;accent:string}
+export const EQUIPMENT_APPEARANCES:Record<string,EquipmentAppearance>={
+  copperSword:{layer:'weapon',shape:'sword',color:'#E8C69B',accent:'#BD6E4E'},
+  starStaff:{layer:'weapon',shape:'staff',color:'#BAA1E5',accent:'#8DEBFF'},
+  windBow:{layer:'weapon',shape:'bow',color:'#CDA87C',accent:'#BDE1A7'},
+  towerShield:{layer:'weapon',shape:'shield',color:'#779DBB',accent:'#E2E6C2'},
+  copperPlate:{layer:'body',shape:'armor',color:'#AA705E',accent:'#E5BD82'},
+  starRobe:{layer:'body',shape:'robe',color:'#7663B0',accent:'#D6C4F4'},
+  rangerLeather:{layer:'body',shape:'leather',color:'#608C6D',accent:'#D4C596'},
+  ironHelm:{layer:'head',shape:'helm',color:'#8CA7B8',accent:'#F1D4A0'},
+  arcaneCirclet:{layer:'head',shape:'circlet',color:'#E5C882',accent:'#C2A0F1'},
+  rangerHood:{layer:'head',shape:'hood',color:'#527D65',accent:'#BDD29B'},
+};

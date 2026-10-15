@@ -32,7 +32,7 @@ try{
     return{x:bounds.x+bounds.width/2+p.x*scale,y:bounds.y+bounds.height/2-(p.y+(body?22:0))*scale};
   };
   check((await state()).phase==='ready','启动状态错误');await page.screenshot({path:'reports/01-start.png'});
-  await clickUI(0,-106);await page.waitForTimeout(100);check((await state()).phase==='fighting','点击开始失败');
+  await clickUI(0,-106);await page.waitForTimeout(100);await page.keyboard.press('Enter');await page.waitForTimeout(100);check((await state()).phase==='fighting','点击开始失败');
   const move=await point(12,10);await page.mouse.click(move.x,move.y,{button:'right'});await page.waitForTimeout(750);
   check((await state()).hero.x>10.4,'右键移动未生效');
   await page.keyboard.press('q');await page.waitForTimeout(80);check((await state()).cooldowns.Q>0,'Q 未施放');
@@ -49,7 +49,7 @@ try{
     await page.waitForTimeout(180);
   }
   check((await state()).phase==='reward','60 秒内未进入奖励界面');await page.screenshot({path:'reports/03-reward.png'});
-  await page.keyboard.press('1');await page.waitForTimeout(100);check((await state()).wave===2,'增益选择未推进波次');
+  await page.keyboard.press('1');await page.waitForTimeout(100);await page.keyboard.press('Enter');await page.waitForTimeout(100);check((await state()).wave===2,'增益选择未推进波次');
   await page.keyboard.press('Escape');await page.waitForTimeout(100);check((await state()).paused,'暂停失败');
   await page.setViewportSize({width:960,height:640});await page.waitForTimeout(250);await page.screenshot({path:'reports/04-resize.png'});
   await clickUI(145,-164);await page.waitForTimeout(100);check((await state()).phase==='ready','重新开始失败');

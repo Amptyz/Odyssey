@@ -4,7 +4,7 @@ import { LocalTransport } from '../../EmberDemo/assets/scripts/ember/platform/Lo
 import { HERO, SKILLS } from '../../EmberDemo/assets/scripts/ember/content/config';
 import { distance } from '../../EmberDemo/assets/scripts/ember/utils/math';
 function run(w:GameWorld,seconds:number,hz=60) { for(let i=0;i<seconds*hz;i++)w.advance(1/hz); }
-function start(seed=1234) {const w=new GameWorld(seed);w.command({type:'Start'});return w;}
+function start(seed=1234) {const w=new GameWorld(seed);w.command({type:'Start'});w.command({type:'LeaveShop'});return w;}
 function sandbox() { const w=start();for(const [id,a] of w.actors)if(a.team==='enemy')w.actors.delete(id);w.spawnEnemy('melee',{x:1,y:1},99999).attackCd=9999; return w; }
 describe('fixed-step world and inputs',()=>{
   it('reproduces spawns with safe positions',()=>{
@@ -65,14 +65,14 @@ describe('fixed-step world and inputs',()=>{
       expect(w.wave).toBe(wave);
       for(const e of w.actors.values())if(e.team==='enemy')w.combat.damage({sourceId:'hero',targetId:e.id,amount:999,cause:'basic'});
       run(w,1/30,30);expect(w.phase).toBe('reward');expect(new Set(w.choices).size).toBe(3);
-      w.choices.forEach(id=>expect(w.combat.perks.has(id)).toBe(false));
+      w.choices.forEach(c=>{if(c.kind==='perk')expect(w.combat.perks.has(c.perkId)).toBe(false);});
       const t=w.time;run(w,2);expect(w.time).toBe(t);
-      w.command({type:'ChoosePerk',perkId:w.choices[0]!});
+      w.command({type:'ChooseReward',choiceId:w.choices[0]!.id});if(w.pendingSkill)w.command({type:'ConfirmSkill',slot:'Q'});w.command({type:'LeaveShop'});
     }
     expect(w.phase).toBe('victory');
   });
   it('death, restart and snapshots cannot leak prior state',()=>{
-    const port=new LocalTransport();port.send({type:'Start'});const snapshot=port.snapshot();snapshot.hero.hp=0;
+    const port=new LocalTransport();port.send({type:'Start'});port.send({type:'LeaveShop'});const snapshot=port.snapshot();snapshot.hero.hp=0;
     expect(port.world.hero.hp).toBe(HERO.hp);
     port.world.combat.damage({sourceId:'enemy',targetId:'hero',amount:999,cause:'enemy'});run(port.world,1/30,30);
     expect(port.world.phase).toBe('defeat');port.send({type:'Restart'});expect(port.world.phase).toBe('ready');expect(port.world.hero.hp).toBe(HERO.hp);
@@ -90,8 +90,8 @@ describe('fixed-step world and inputs',()=>{
   });
   it('all three lab presets retain three available choices per wave',()=>{
     for(const lab of ['burn','arc','reserve'] as const) {
-      const w=new GameWorld();w.command({type:'Start',lab});
-      for(let i=0;i<3;i++) {for(const e of w.actors.values())if(e.team==='enemy')w.combat.damage({sourceId:'hero',targetId:e.id,amount:999,cause:'basic'});run(w,1/30,30);expect(w.choices).toHaveLength(3);w.command({type:'ChoosePerk',perkId:w.choices[0]!});}
+      const w=new GameWorld();w.command({type:'Start',lab});w.command({type:'LeaveShop'});
+      for(let i=0;i<3;i++) {for(const e of w.actors.values())if(e.team==='enemy')w.combat.damage({sourceId:'hero',targetId:e.id,amount:999,cause:'basic'});run(w,1/30,30);expect(w.choices).toHaveLength(3);w.command({type:'ChooseReward',choiceId:w.choices[0]!.id});if(w.pendingSkill)w.command({type:'ConfirmSkill',slot:'Q'});w.command({type:'LeaveShop'});}
     }
   });
 });
