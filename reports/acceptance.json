@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-15",
+  "timezone": "Asia/Shanghai",
+  "overall": "playable-demo-installed-and-web-validated",
+  "blocker": null,
+  "unitTests": {
+    "passed": 35,
+    "failed": 0
+  },
+  "coreTypecheck": "passed",
+  "cocosOfficialTypes": "3.8.7; passed; not a runtime test",
+  "coreBuild": "passed",
+  "normalRulesSimulation": {
+    "seeds": 10,
+    "victory": 7,
+    "defeat": 3,
+    "defaultSeed1234": "victory"
+  },
+  "headlessStress": "passed; see benchmark.json",
+  "cocosProjectImport": "passed; official Empty(2D), editor-created Main.scene and Canvas/GameBootstrap",
+  "browserSmoke": "passed on preview and release; see browser-smoke.json",
+  "screenshots": "reports/01-start.png through 10-wasd-reward.png",
+  "webDesktopBuild": "passed; official Creator build, custom supported template, 3.4 MB",
+  "renderFps": "not benchmarked; 50-enemy stress measures simulation only",
+  "cocosVersion": "3.8.8",
+  "dashboardVersion": "2.2.2",
+  "browserPlaythrough": "Previous baseline passed: QWER, 3 rewards, 27 kills, victory, restart, resize. Dual-controls update separately verifies normal first-wave combat in both modes.",
+  "limitations": [
+    "No long-duration browser memory soak test",
+    "Safari and Firefox not tested",
+    "Defeat logic tested in simulation; failure menu not separately browser-tested"
+  ],
+  "dualControls": "passed: 30 real-browser checks; WASD movement, pointer attacks, skills, persistence, pause switching, restart, resize, blur; see browser-controls.json"
+}

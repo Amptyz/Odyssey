@@ -1,0 +1,20 @@
+* text=auto
+*.ts text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
+*.meta text eol=lf
+*.scene text eol=lf
+*.prefab text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.ejs text eol=lf
+*.css text eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.wav binary
+*.mp3 binary
+*.fbx binary
+*.blend binary
+*.psd binary

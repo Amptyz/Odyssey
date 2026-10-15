@@ -1,0 +1,132 @@
+{
+  "scope": "Headless input-command bot, normal HP/damage/cooldowns; no browser interaction",
+  "outcomes": [
+    {
+      "seed": 0,
+      "phase": "victory",
+      "wave": 3,
+      "time": 30.53333333333401,
+      "hp": 21,
+      "kills": 27,
+      "perks": [
+        "swift",
+        "reserve",
+        "corpse"
+      ]
+    },
+    {
+      "seed": 1,
+      "phase": "victory",
+      "wave": 3,
+      "time": 29.233333333333945,
+      "hp": 65,
+      "kills": 27,
+      "perks": [
+        "double",
+        "burn",
+        "leech"
+      ]
+    },
+    {
+      "seed": 2,
+      "phase": "victory",
+      "wave": 3,
+      "time": 32.03333333333408,
+      "hp": 59,
+      "kills": 27,
+      "perks": [
+        "corpse",
+        "burn",
+        "leech"
+      ]
+    },
+    {
+      "seed": 42,
+      "phase": "victory",
+      "wave": 3,
+      "time": 34.83333333333392,
+      "hp": 18,
+      "kills": 27,
+      "perks": [
+        "rhythm",
+        "burn",
+        "leech"
+      ]
+    },
+    {
+      "seed": 1234,
+      "phase": "victory",
+      "wave": 3,
+      "time": 34.766666666667255,
+      "hp": 111,
+      "kills": 27,
+      "perks": [
+        "leech",
+        "arc",
+        "burn"
+      ]
+    },
+    {
+      "seed": 2026,
+      "phase": "victory",
+      "wave": 3,
+      "time": 31.60000000000073,
+      "hp": 63,
+      "kills": 27,
+      "perks": [
+        "arc",
+        "burn",
+        "corpse"
+      ]
+    },
+    {
+      "seed": 31415,
+      "phase": "defeat",
+      "wave": 3,
+      "time": 34.266666666667284,
+      "hp": 0,
+      "kills": 23,
+      "perks": [
+        "leech",
+        "reserve"
+      ]
+    },
+    {
+      "seed": 65535,
+      "phase": "victory",
+      "wave": 3,
+      "time": 32.233333333334066,
+      "hp": 86,
+      "kills": 27,
+      "perks": [
+        "leech",
+        "burn",
+        "arc"
+      ]
+    },
+    {
+      "seed": 99999,
+      "phase": "defeat",
+      "wave": 3,
+      "time": 31.500000000000725,
+      "hp": 0,
+      "kills": 25,
+      "perks": [
+        "burn",
+        "double"
+      ]
+    },
+    {
+      "seed": 4294967295,
+      "phase": "defeat",
+      "wave": 3,
+      "time": 25.80000000000044,
+      "hp": 0,
+      "kills": 20,
+      "perks": [
+        "arc",
+        "leech"
+      ]
+    }
+  ]
+}

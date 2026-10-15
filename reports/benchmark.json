@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-10-15T09:18:45.557Z",
+  "scope": "Headless TypeScript simulation + detached snapshot; not renderer FPS",
+  "environment": {
+    "node": "v26.0.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4",
+    "gc": true
+  },
+  "seed": 1234,
+  "enemies": 50,
+  "ticks": 3600,
+  "simulatedSeconds": 120,
+  "meanTickMs": 0.08484076805555547,
+  "p95TickMs": 0.22987499999999272,
+  "maxTickMs": 7.996249999999975,
+  "heapStartBytes": 7217680,
+  "heapAfterEach20Seconds": [
+    7717272,
+    7788064,
+    7749440,
+    7767312,
+    7799800,
+    7823896
+  ],
+  "retainedHeapDeltaBytes": 606216,
+  "metrics": {
+    "processed": 686,
+    "dropped": 0,
+    "maxDepth": 1,
+    "kills": 0
+  },
+  "historyLength": 256,
+  "cues": 1,
+  "projectiles": 17
+}

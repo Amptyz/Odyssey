@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "url": "http://127.0.0.1:8080/?debug=1&seed=1234",
+  "errors": [],
+  "external": [],
+  "rewards": [
+    {
+      "wave": 1,
+      "choices": [
+        "leech",
+        "burn",
+        "double"
+      ]
+    },
+    {
+      "wave": 2,
+      "choices": [
+        "arc",
+        "swift",
+        "rhythm"
+      ]
+    },
+    {
+      "wave": 3,
+      "choices": [
+        "rhythm",
+        "burn",
+        "double"
+      ]
+    }
+  ],
+  "end": {
+    "phase": "victory",
+    "time": 27.80000000000054,
+    "hp": 201
+  },
+  "skills": [
+    "Q",
+    "W",
+    "E",
+    "R"
+  ],
+  "resize": {
+    "x": 0,
+    "y": 50,
+    "width": 960,
+    "height": 540
+  },
+  "timestamp": "2026-10-15T10:04:01.114Z"
+}

@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.core.json",
+  "compilerOptions": { "target": "ES2022", "lib": ["ES2022", "DOM"], "types": ["node"], "noEmit": true },
+  "include": ["scripts/**/*.ts"]
+}

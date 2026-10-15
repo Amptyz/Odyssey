@@ -1,0 +1,25 @@
+# Dependencies and generated output
+node_modules/
+.pnpm-store/
+dist-core/
+.DS_Store
+
+# Local editor state, caches and builds
+EmberDemo/library/
+EmberDemo/temp/
+EmberDemo/local/
+EmberDemo/build/
+EmberDemo/profiles/
+EmberDemo/.ember-source-install.json
+
+# Machine-specific reports and generated media
+reports/*.png
+reports/*.webm
+reports/*.zip
+reports/*.log
+reports/installation.json
+
+# Local credentials
+.env
+.env.*
+!.env.example
