@@ -17,7 +17,7 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-依赖安装在仓库根目录。`pnpm check` 检查纯逻辑、Cocos 官方类型、工具脚本和 68 项单元测试，并编译核心代码；它不代替 Cocos 发布构建。
+依赖安装在仓库根目录。`pnpm check` 检查纯逻辑、Cocos 官方类型、工具脚本和全部单元测试，并编译核心代码；它不代替 Cocos 发布构建。测试数量随内容增加，以本次命令输出为准。
 
 ## 3. 导入已配置的 Cocos 工程
 
@@ -35,6 +35,8 @@ pnpm check
 - 根目录是唯一 Git 仓库，EmberDemo 是普通子目录，不是 submodule。
 
 日常开发流程：`git pull` → 必要时 `pnpm install --frozen-lockfile` → 修改 → `pnpm check` → 编辑器预览 / 构建 → `git add`、`git commit`、`git push`。
+
+开始扩展前先读 [整体架构](ARCHITECTURE.md) 与 [开发架构指南](DEVELOPMENT_GUIDE.md)，技能 / 装备 / 敌人注册示例见 [内容扩展指南](CONTENT_ARCHITECTURE.md)。AI 协作者从根目录 AGENTS.md 开始。
 
 ## 5. 构建与独立试玩
 
@@ -54,6 +56,9 @@ pnpm check
 pnpm test:controls
 pnpm test:content
 pnpm test:art
+pnpm test:hitboxes
+pnpm test:hexes
+pnpm test:developer
 node --import tsx scripts/browser-playthrough.ts
 ```
 
