@@ -7,7 +7,7 @@
 1. [README.md](README.md)：环境、启动、当前玩法和命令。
 2. [整体架构](docs/ARCHITECTURE.md)：运行流程、状态归属、模块依赖与限制。
 3. [开发架构指南](docs/DEVELOPMENT_GUIDE.md)：改动落点、实施顺序、验证和交付。
-4. 按需阅读：[内容扩展](docs/CONTENT_ARCHITECTURE.md)、[美术管线](docs/ART_PIPELINE.md)、[海克斯](docs/HEX_AUGMENTS.md)、[开发者模式](docs/DEVELOPER_MODE.md)。
+4. 按需阅读：[内容扩展](docs/CONTENT_ARCHITECTURE.md)、[美术风格设计](docs/ART_DIRECTION.md)、[美术管线](docs/ART_PIPELINE.md)、[海克斯](docs/HEX_AUGMENTS.md)、[开发者模式](docs/DEVELOPER_MODE.md)。
 
 `CODEX_GAME_MVP_SPEC.md` 是 v0.1 历史需求，部分内容已被后续设计替代：目前已有装备与正式 PNG，普攻不锁定敌人，QWER 可替换。具体变更见 [实现记录](docs/IMPLEMENTATION_LOG.md)。用户本次明确提出的新要求可以调整现有设计；同步更新相关文档，不要因旧文档而恢复旧行为。
 
@@ -48,6 +48,7 @@
 
 ## Cocos 资源与美术
 
+- 制作美术先读 [风格设计指南](docs/ART_DIRECTION.md)：参考图只提供氛围，实际游戏使用低细节、大色块；基础人物不带职业标志，装备表达流派。按实际战斗尺寸和多效果叠加场景验收。
 - 新资源通过 Creator 导入生成 `.meta`，与资源一起提交；不要手写 UUID 或伪造 `.scene / .prefab / .meta`。移动已有资源保留其 UUID。
 - `content/art-manifest.ts` 是 `scripts/inspect-art.py` 的生成结果；调整切片时同时维护生成来源，避免下次生成覆盖手工改动。
 - 武器握点、肩部挂点与脚底锚点是表现数据；换装不改变碰撞半径。验证左右镜像、待机、攻击、移动以及衣甲遮挡；最近的手臂修复约定见美术管线。

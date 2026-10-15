@@ -54,6 +54,8 @@ rg -n 'CastSlot|executeSkill|firstImpact|OnAttackHit' EmberDemo/assets/scripts/e
 
 外观 ID 要有真实注册项，素材要有合法 `.meta`。新特效若已有颜色 / 形状不够表达，扩展 cue 数据及 ArenaView 绘制；说明预警何时出现，确保预警和实际判定一致。新敌人行为也要检查 `ArenaView.drawGround` 的预警分支。
 
+新增美术先按 [风格设计指南](ART_DIRECTION.md) 确定细节、轮廓、混搭与战斗可读性，再按 [美术管线](ART_PIPELINE.md) 制作和接入；概念预览不等于运行时图集，现有素材能力与未来设计目标要区分。
+
 新增嵌套状态要更新 `GameWorld.snapshot` 的复制逻辑；新增事件要明确谁发出、谁消费，不把反馈 cue 当成玩法事件。新增资源由 ArtLibrary 管理生命周期，不能每帧创建纹理。
 
 ### 4. 补充内容校验与边界验证

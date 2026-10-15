@@ -40,6 +40,7 @@ pnpm play
 | [整体架构](docs/ARCHITECTURE.md) | 模块职责、输入到画面的数据流、状态归属、碰撞 / 事件链、阶段和已知限制 |
 | [开发架构指南](docs/DEVELOPMENT_GUIDE.md) | 需求该改哪一层、如何实施和验证、兼容性检查、交付标准与 AI 任务模板 |
 | [内容扩展指南](docs/CONTENT_ARCHITECTURE.md) | 新技能、装备、敌人、地图、状态、海克斯的注册步骤与可复制示例 |
+| [美术风格设计指南](docs/ART_DIRECTION.md) | 简化遗迹风格、细节与配色、中性人物与装备辨识、怪物 / 地图 / 特效设计、AI 制作模板与验收 |
 | [美术管线](docs/ART_PIPELINE.md) | 图集、动画、换装挂点、资源导入与 .meta |
 | [开发者模式](docs/DEVELOPER_MODE.md) | 快速构筑 / 跳关 / 刷怪、配置导出和 Bug 复现 |
 | [海克斯机制](docs/HEX_AUGMENTS.md) | 已实现效果、数值、触发和连锁边界 |
