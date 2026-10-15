@@ -1,8 +1,9 @@
 import { distance } from '../utils/math';
 import { applyStatus } from './StatusSystem';
 import type { Actor,CastResult,CombatCue,CombatEvent,Effect,Hit } from './types';
+import type { CollisionWorld } from './CollisionWorld';
 export interface EffectContext {
-  source:Actor;target:Actor;event:CombatEvent;ruleId:string;actors:Map<string,Actor>;
+  source:Actor;target:Actor;event:CombatEvent;ruleId:string;actors:Map<string,Actor>;collision:CollisionWorld;
   primed:Set<string>;healCooldown:Map<string,number>;castResult?:CastResult;maxDepth:number;
   cue:(cue:CombatCue)=>void;damage:(hit:Hit)=>void;drop:()=>void;
 }
@@ -25,7 +26,7 @@ const handlers:Handlers = {
 function chain(ctx:EffectContext,effect:Extract<Effect,{type:'explode'|'arc'}>):void {
   const {event,source,target}=ctx;
   if(event.depth>=ctx.maxDepth){ctx.drop();return;}
-  const nearby=Array.from(ctx.actors.values()).filter(a=>a.alive&&a.team!==source.team&&a.id!==target.id&&distance(a,target)<=effect.radius)
+  const nearby=ctx.collision.targets(ctx.actors.values(),source.team,{kind:'circle',center:target,radius:effect.radius},target.id)
     .sort((a,b)=>distance(a,target)-distance(b,target)||a.id.localeCompare(b.id));
   const victims=effect.type==='arc'?nearby.slice(0,1):nearby;
   if(effect.type==='explode')ctx.cue({kind:'explosion',at:{...target},radius:effect.radius});

@@ -24,9 +24,9 @@
     "hero:cast",
     "enemy:cast",
     "hero:attack",
-    "enemy:hurt",
     "enemy:death",
     "enemy:idle",
+    "enemy:hurt",
     "hero:hurt"
   ],
   "errors": [],
@@ -34,8 +34,8 @@
   "end": {
     "phase": "victory",
     "kills": 27,
-    "hp": 233.60000000000008,
-    "time": 29.233333333333945
+    "hp": 256.79999999999995,
+    "time": 30.966666666667365
   },
-  "timestamp": "2026-10-15T14:41:01.783Z"
+  "timestamp": "2026-10-15T17:04:05.098Z"
 }

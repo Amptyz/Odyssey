@@ -41,7 +41,7 @@ export class Hud {
   }
   setControlMode(mode:ControlMode):void {
     this.mode=mode;this.signature='';
-    setText(this.hint,mode==='wasd'?'WASD 移动 · 左键普攻 · 右键 / Q 第一技能 · 空格 第二技能 · E / R 技能 · ESC 设置':'右键移动 / 锁敌   ·   Q W E R 施法   ·   ESC 暂停与操作设置');
+    setText(this.hint,mode==='wasd'?'WASD 移动 · 左键普攻 · 右键 / Q 第一技能 · 空格 第二技能 · E / R 技能 · ESC 设置':'右键移动 · 左键朝指针普攻 · Q W E R 施法   ·   ESC 暂停与操作设置');
     for(const skill of this.skills){const space=mode==='wasd'&&skill.id==='W';skill.key.fontSize=space?14:24;setText(skill.key,space?'空格':skill.id);}
   }
   private modeButtons(y:number):void {
@@ -50,6 +50,7 @@ export class Hud {
     }
   }
   toggleDebug():void {this.debug=!this.debug;this.debugLabel.node.active=this.debug;}
+  get showColliders():boolean{return this.debug;}
   update(s:WorldSnapshot,fps:number):void {
     this.state=s;setText(this.hp,`生命 ${Math.ceil(s.hero.hp)} / ${s.hero.maxHp}    护盾 ${Math.ceil(s.hero.shield)}`);
     this.meter.clear();box(this.meter,-600,290,260,6,'#48615C',3);box(this.meter,-600,290,260*s.hero.hp/s.hero.maxHp,6,'#A8D3AD',3);
@@ -83,7 +84,7 @@ export class Hud {
       text('Game title',this.overlay,'余 烬 试 炼',56,0,172,800,100,'#EFE2C1');
       text('Subtitle',this.overlay,`探索${mapDefinition(s.mapId).name}，穿过 ${s.totalWaves} 场试炼。`,19,0,109,650,40,'#B5CFC4');
       this.modeButtons(45);
-      text('Instructions',this.overlay,this.mode==='wasd'?'WASD 移动，左键按住朝指针普攻，右键 / Q 施放主技能。\n空格 / E / R 使用对应槽位的技能\n技能也在增益中选择；波间购买装备，自由搭配流派。':'右键地面移动，右键敌人追击并普攻。\nQ / W / E / R 使用对应槽位的技能\n技能也在增益中选择；波间购买装备，自由搭配流派。',15,0,-35,900,90,'#D3DDD0');
+      text('Instructions',this.overlay,this.mode==='wasd'?'WASD 移动，左键按住朝指针普攻，右键 / Q 施放主技能。\n空格 / E / R 使用对应槽位的技能\n准星瞄准地面位置；F3 查看碰撞体积。':'右键移动，左键按住朝指针挥击或发射。\nQ / W / E / R 使用对应槽位的技能\n准星瞄准地面位置；F3 查看碰撞体积。',15,0,-35,900,90,'#D3DDD0');
       this.button(`地图：${mapDefinition(s.mapId).name}`, -330,-106,285,()=>{const ids=Object.keys(MAPS) as MapId[];this.send({type:'SelectMap',mapId:ids[(ids.indexOf(s.mapId)+1)%ids.length]!});},'#3E5559');
       text('No class',this.overlay,'无职业限制 · 技能自由组合',15,330,-106,285,46,'#B8D4C7');
       this.button('启程整备  ↵',0,-106,256,()=>this.send({type:'Start'}));
@@ -97,7 +98,7 @@ export class Hud {
     }else if(s.paused){
       text('Pause title',this.overlay,'火种暂歇',42,0,160,700,80,'#EFE2C1');
       this.modeButtons(98);
-      const help=this.mode==='wasd'?'WASD：沿屏幕方向移动，松开即停\n左键按住：朝指针普攻    右键 / Q：朝指针施放主技能\n空格 / E / R：使用当前槽位技能':'右键地面：移动    /    右键敌人：自动追击与普攻\nQ / W / E / R：使用当前槽位技能';
+      const help=this.mode==='wasd'?'WASD：沿屏幕方向移动，松开即停\n左键按住：朝指针普攻    右键 / Q：朝指针施放主技能\n空格 / E / R：使用当前槽位技能':'右键：移动    /    左键按住：朝指针普攻\nQ / W / E / R：使用当前槽位技能';
       text('Help',this.overlay,help+'\n红色圆环 / 射线：敌人攻击预警    F3：调试信息\n增益可选主动技能；选择后用 1–4 确认替换槽位。',17,0,-28,1000,200,'#CDDCD0');
       this.button('继续试炼  ESC',-145,-164,250,()=>this.send({type:'TogglePause'}));this.button('重新开始',145,-164,250,()=>this.send({type:'Restart'}),'#675B58');
     }else if(s.phase==='reward'&&s.pendingSkill){

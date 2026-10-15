@@ -18,7 +18,7 @@ export interface Hit {
   depth?: number; skillId?: SkillId; tags?: string[]; rootId?: number;
 }
 export interface CastResult { damageMultiplier: number; shots: number }
-export interface CombatCue { kind: 'damage' | 'heal' | 'explosion' | 'arc' | 'shield' | 'cast'; at: Vec2; actorId?:string; to?: Vec2; amount?: number; radius?: number; cause?: Cause; appearance?:string }
+export interface CombatCue { kind: 'damage' | 'heal' | 'explosion' | 'arc' | 'shield' | 'cast' | 'swing'; at: Vec2; actorId?:string; to?: Vec2; amount?: number; radius?: number; facing?:Vec2; arc?:number; cause?: Cause; appearance?:string }
 export type Effect =
   | { type:'status'; status:StatusApplication }
   | { type: 'explode'; damage: number; radius: number }

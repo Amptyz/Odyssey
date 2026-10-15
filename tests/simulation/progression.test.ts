@@ -67,9 +67,9 @@ describe('deterministic equipment economy',()=>{
     port.send({type:'Restart'});const next=port.snapshot();expect(next.gold).toBe(160);expect(next.inventory).toEqual([]);expect(next.equipment).toEqual({});expect(next.loadout).toEqual(DEFAULT_LOADOUT);
   });
   it('weapon changes actual basic damage and range',()=>{
-    const {w,e}=fixture('bow');e.x=15;w.command({type:'Attack',point:e});expect(e.hp).toBe(974);
+    const {w,e}=fixture('bow');e.x=15;w.command({type:'Attack',point:e});expect(e.hp).toBe(1000);for(let i=0;i<10;i++)w.advance(1/30);expect(e.hp).toBe(974);
     const plain=fixture();plain.e.x=15;plain.w.command({type:'Attack',point:plain.e});expect(plain.e.hp).toBe(1000);
-    const sword=fixture('sword');sword.w.command({type:'Attack',point:sword.e});expect(sword.e.hp).toBe(964);
+    const sword=fixture('sword');sword.w.command({type:'Attack',point:sword.e});for(let i=0;i<5;i++)sword.w.advance(1/30);expect(sword.e.hp).toBe(964);
   });
   it('staff scales skill hits and shields, reduces cooldowns; armor mitigates before shield absorption',()=>{
     const {w,e}=fixture('staff');w.command({type:'CastSlot',slot:'Q',point:e});for(let i=0;i<8;i++)w.advance(1/30);expect(e.hp).toBeCloseTo(1000-38*1.45);

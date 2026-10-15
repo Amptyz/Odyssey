@@ -48,8 +48,8 @@ try {
     const enemies=s.units.filter(u=>u.team==='enemy'&&u.alive).sort((a,b)=>Math.hypot(a.x-s.hero.x,a.y-s.hero.y)-Math.hypot(b.x-s.hero.x,b.y-s.hero.y));
     const e=enemies[0];
     if(e){
-      const hit=await point(e.x,e.y,true);await page.mouse.click(hit.x,hit.y,{button:'right'});
-      const p=await point(e.x,e.y);await page.mouse.move(p.x,p.y);await page.keyboard.press('q');
+      const hit=await point(e.x,e.y);await page.mouse.click(hit.x,hit.y,{button:'right'});
+      const p=await point(e.x,e.y);await page.mouse.move(p.x,p.y);await page.mouse.click(p.x,p.y);await page.keyboard.press('q');
       if(Math.hypot(e.x-s.hero.x,e.y-s.hero.y)<5)await page.keyboard.press('w');
       if(enemies.filter(e=>Math.hypot(e.x-s.hero.x,e.y-s.hero.y)<3.8).length>=2){await page.keyboard.press('r');castR ||= (await state()).cooldowns.R>0;}
     }

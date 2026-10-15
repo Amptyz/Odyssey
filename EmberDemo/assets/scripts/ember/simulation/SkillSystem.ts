@@ -2,7 +2,7 @@ import { skill,type SkillBehavior,type SkillId } from '../content/skills';
 import type { Actor,CombatCue } from '../combat-core/types';
 import type { CombatEngine } from '../combat-core/CombatEngine';
 import { applyStatus } from '../combat-core/StatusSystem';
-import { direction,distance,type Vec2 } from '../utils/math';
+import { direction,type Vec2 } from '../utils/math';
 export type ProjectileBehavior=Extract<SkillBehavior,{kind:'projectile'}>;
 export interface SkillContext {
   source:Actor;power?:number;point:Vec2;skillId:SkillId;combat:CombatEngine;actors:Map<string,Actor>;
@@ -12,8 +12,10 @@ export interface SkillContext {
 type Context=SkillContext&{multiplier:number;shots:number};
 type Handlers={[K in SkillBehavior['kind']]:(ctx:Context,behavior:Extract<SkillBehavior,{kind:K}>)=>void};
 const handlers:Handlers={
-  cone:(ctx,b)=>{const aim=direction(ctx.source,ctx.point),facing=aim.x||aim.y?aim:{x:1,y:0};ctx.cue({kind:'explosion',at:{...ctx.source},radius:b.radius,appearance:skill(ctx.skillId).appearance});
-    for(const t of ctx.actors.values()){const d=direction(ctx.source,t);if(t.alive&&t.team!==ctx.source.team&&distance(ctx.source,t)<=b.radius+t.radius&&d.x*facing.x+d.y*facing.y>=Math.cos(b.arc/2))ctx.combat.damage({sourceId:ctx.source.id,targetId:t.id,amount:b.damage*ctx.multiplier,cause:'skill',skillId:ctx.skillId});}},
+  cone:(ctx,b)=>{const aim=direction(ctx.source,ctx.point),facing=aim.x||aim.y?aim:{x:1,y:0};
+    ctx.cue({kind:'swing',at:{...ctx.source},radius:b.radius,arc:b.arc,facing,appearance:skill(ctx.skillId).appearance});
+    for(const t of ctx.combat.collision.targets(ctx.actors.values(),ctx.source.team,{kind:'sector',center:ctx.source,radius:b.radius,arc:b.arc,facing}))
+      ctx.combat.damage({sourceId:ctx.source.id,targetId:t.id,amount:b.damage*ctx.multiplier,cause:ctx.source.team==='hero'?'skill':'enemy',skillId:ctx.skillId});},
   projectile:(ctx,b)=>{
     const aim=direction(ctx.source,ctx.point),angle=aim.x||aim.y?Math.atan2(aim.y,aim.x):0;
     for(let i=0;i<ctx.shots;i++)ctx.shoot(ctx.source,{x:Math.cos(angle+i*0.13),y:Math.sin(angle+i*0.13)},ctx.skillId,b,b.damage*ctx.multiplier);
@@ -22,7 +24,7 @@ const handlers:Handlers={
   dash:(ctx,b)=>{const d=direction(ctx.source,ctx.point);ctx.dash(d.x||d.y?d:{x:1,y:0},b.distance,b.duration);},
   area:(ctx,b)=>{
     ctx.cue({kind:'explosion',at:{...ctx.source},radius:b.radius,appearance:skill(ctx.skillId).appearance});
-    for(const target of ctx.actors.values())if(target.alive&&target.team!==ctx.source.team&&distance(target,ctx.source)<=b.radius+target.radius)
+    for(const target of ctx.combat.collision.targets(ctx.actors.values(),ctx.source.team,{kind:'circle',center:ctx.source,radius:b.radius}))
       {for(const status of b.onHit??[])applyStatus(target,status,ctx.source.id,ctx.skillId);ctx.combat.damage({sourceId:ctx.source.id,targetId:target.id,amount:b.damage*ctx.multiplier,cause:ctx.source.team==='hero'?'skill':'enemy',skillId:ctx.skillId});}
   },
 };

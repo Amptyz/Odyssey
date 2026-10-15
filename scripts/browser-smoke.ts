@@ -42,8 +42,8 @@ try{
   while(Date.now()<deadline){
     const s=await state();if(s.phase==='reward')break;if(s.phase==='defeat')throw new Error('冒烟角色死亡');
     const enemies=s.units.filter(u=>u.team==='enemy'&&u.alive).sort((a,b)=>Math.hypot(a.x-s.hero.x,a.y-s.hero.y)-Math.hypot(b.x-s.hero.x,b.y-s.hero.y));
-    const enemy=enemies[0];if(enemy){const hit=await point(enemy.x,enemy.y,true);await page.mouse.click(hit.x,hit.y,{button:'right'});
-      const aim=await point(enemy.x,enemy.y);await page.mouse.move(aim.x,aim.y);await page.keyboard.press('q');await page.keyboard.press('w');
+    const enemy=enemies[0];if(enemy){const hit=await point(enemy.x,enemy.y);await page.mouse.click(hit.x,hit.y,{button:'right'});
+      const aim=await point(enemy.x,enemy.y);await page.mouse.move(aim.x,aim.y);await page.mouse.click(aim.x,aim.y);await page.keyboard.press('q');await page.keyboard.press('w');
       if(enemies.filter(u=>Math.hypot(u.x-s.hero.x,u.y-s.hero.y)<3.8).length>=2)await page.keyboard.press('r');
     }
     await page.waitForTimeout(180);

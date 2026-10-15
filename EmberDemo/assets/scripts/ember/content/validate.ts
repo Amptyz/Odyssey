@@ -6,6 +6,7 @@ import { STATUSES } from './statuses';
 import { EFFECT_APPEARANCES,UNIT_APPEARANCES,EQUIPMENT_APPEARANCES,EQUIPMENT_SPRITES,UNIT_SPRITES,ENVIRONMENT_APPEARANCES } from './appearances';
 import { ATLAS_FRAMES } from './art-manifest';
 import { EQUIPMENT,SHOP_CATALOG,EQUIPMENT_SLOTS,equipment } from './equipment';
+import { BASIC_ATTACKS } from './attacks';
 import { ECONOMY } from './progression';
 import { HERO } from './config';
 import type { PerkDefinition } from '../combat-core/types';
@@ -29,8 +30,14 @@ export function validateContent():void {
   for(const id of Object.keys(SKILLS) as (keyof typeof SKILLS)[]){
     const s=skill(id);positive(s.cooldown,`skills.${id}.cooldown`);requireContent(EFFECT_APPEARANCES[s.appearance],`skills.${id}.appearance`);
     const b=s.behavior;
+    if(b.kind==='cone')requireContent(b.arc<=Math.PI*2,`skills.${id}.arc`);
     for(const [key,value] of Object.entries(b))if(typeof value==='number')positive(value,`skills.${id}.${key}`);
     if(b.kind==='projectile'||b.kind==='area')for(const status of b.onHit??[]){requireContent(STATUSES[status.id],`skills.${id}.status`);positive(status.duration,`skills.${id}.status duration`);positive(status.power,`skills.${id}.status power`);}
+  }
+  for(const [id,attack] of Object.entries(BASIC_ATTACKS)){
+    requireContent(EFFECT_APPEARANCES[attack.appearance],`attacks.${id}.appearance`);
+    for(const [key,value] of Object.entries(attack))if(typeof value==='number')positive(value,`attacks.${id}.${key}`);
+    if(attack.kind==='melee')requireContent(attack.arc<=Math.PI*2,`attacks.${id}.arc`);
   }
   for(const id of Object.keys(ENEMIES) as (keyof typeof ENEMIES)[]){
     const e=enemy(id);requireContent(UNIT_APPEARANCES[e.appearance]&&UNIT_SPRITES[e.appearance],`enemies.${id}.appearance`);
@@ -57,6 +64,7 @@ export function validateContent():void {
   requireContent(SHOP_CATALOG.length===Object.keys(EQUIPMENT).length&&new Set(SHOP_CATALOG).size===SHOP_CATALOG.length,'shop catalog');
   for(const id of SHOP_CATALOG){const e=equipment(id);requireContent(EQUIPMENT_SLOTS.includes(e.slot),`equipment.${id}.slot`);positive(e.price,`equipment.${id}.price`);requireContent(Number.isInteger(e.price),`equipment.${id}.integer price`);
     requireContent(EQUIPMENT_APPEARANCES[e.appearance]?.layer===e.slot,`equipment.${id}.appearance layer`);
+    if(e.slot==='weapon')requireContent(e.attack&&BASIC_ATTACKS[e.attack],`equipment.${id}.attack`);
     const sprite=EQUIPMENT_SPRITES[e.appearance];requireContent(sprite&&ATLAS_FRAMES.equipment[sprite.frame],`equipment.${id}.sprite`);
     positive(sprite.width,`equipment.${id}.sprite width`);positive(sprite.height,`equipment.${id}.sprite height`);
     for(const [key,value] of Object.entries(e.stats))requireContent(Number.isFinite(value)&&value>=0,`equipment.${id}.stats.${key}`);}

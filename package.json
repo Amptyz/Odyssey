@@ -17,6 +17,7 @@
     "typecheck:tools": "tsc -p tsconfig.tools.json",
     "test:controls": "node --import tsx scripts/browser-controls.ts",
     "test:content": "node --import tsx scripts/browser-content.ts",
+    "test:hitboxes": "node --import tsx scripts/browser-hitboxes.ts",
     "test:art": "node --import tsx scripts/browser-art.ts"
   },
   "devDependencies": {

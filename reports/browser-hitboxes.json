@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "checks": [
+    "classic: equip bow through normal shop",
+    "classic: left mouse fires a directional body, not target damage",
+    "classic: basic bullet keeps independent attack identity",
+    "classic: releasing left mouse stops repeated fire",
+    "classic: pointer over enemy sprite does not snap to its center",
+    "classic: right-click enemy only moves and never auto-attacks",
+    "classic: F3 enables collider display",
+    "wasd: equip bow through normal shop",
+    "wasd: left mouse fires a directional body, not target damage",
+    "wasd: basic bullet keeps independent attack identity",
+    "wasd: releasing left mouse stops repeated fire",
+    "wasd: pointer over enemy sprite does not snap to its center",
+    "wasd: F3 enables collider display",
+    "no browser runtime errors"
+  ],
+  "errors": [],
+  "timestamp": "2026-10-15T17:02:57.796Z"
+}

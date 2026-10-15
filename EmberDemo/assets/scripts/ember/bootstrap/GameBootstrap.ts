@@ -31,7 +31,7 @@ export class GameBootstrap extends Component {
     game.canvas?.focus();
     // Explicit debug opt-in for browser automation. Normal games expose no mutable world.
     if(params.get('debug')==='1'&&typeof window!=='undefined'){
-      const api={controls:()=>({mode:this.controls.controlMode}),art:()=>({loaded:this.art.loaded,...this.arena.debug()}),snapshot:()=>this.port.snapshot(),send:(c:GameCommand)=>this.port.send(c),
+      const api={controls:()=>({mode:this.controls.controlMode,pointer:{...this.controls.pointer},colliders:this.hud.showColliders}),art:()=>({loaded:this.art.loaded,...this.arena.debug()}),snapshot:()=>this.port.snapshot(),send:(c:GameCommand)=>this.port.send(c),
         screen:(x:number,y:number)=>worldToScreen({x,y},this.arena.camera)};
       Object.assign(window,{__EMBER__:api});
       this.disposeDebug=()=>{delete (window as unknown as Record<string,unknown>).__EMBER__;};
@@ -44,5 +44,5 @@ export class GameBootstrap extends Component {
     this.draw(this.port.world.advance(dt),dt);
   }
   onDestroy():void {this.controls?.destroy();this.disposeDebug?.();this.art.dispose();}
-  private draw(alpha:number,dt=0):void {const s=this.port.snapshot();this.arena.configureMap(s.mapId);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer,dt);this.hud.update(s,this.fps);}
+  private draw(alpha:number,dt=0):void {const s=this.port.snapshot();this.arena.configureMap(s.mapId);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer,dt,this.hud.showColliders);this.hud.update(s,this.fps);}
 }

@@ -2,6 +2,7 @@ import { PERKS } from '../content/perks';
 import { skill } from '../content/skills';
 import { tickStatuses } from './StatusSystem';
 import { executeEffect } from './EffectHandlers';
+import { CollisionWorld } from './CollisionWorld';
 import type { Actor, CastResult, CombatCue, CombatEvent, Hit, PerkId, Rule } from './types';
 import type { SkillId } from '../content/config';
 export const MAX_CHAIN_DEPTH = 6;
@@ -20,7 +21,7 @@ export class CombatEngine {
   private primed = new Set<string>();
   private healCooldown = new Map<string, number>();
   private castResult?: CastResult;
-  constructor(readonly actors: Map<string,Actor>, private readonly cue: (cue: CombatCue) => void = () => {},private readonly damagePolicy:(hit:Hit,target:Actor)=>number=hit=>hit.amount) {}
+  constructor(readonly actors: Map<string,Actor>, private readonly cue: (cue: CombatCue) => void = () => {},private readonly damagePolicy:(hit:Hit,target:Actor)=>number=hit=>hit.amount,readonly collision=new CollisionWorld()) {}
   addPerk(id: PerkId): void { this.perks.add(id); }
   isPrimed(id: string): boolean { return this.primed.has(id); }
   damage(hit: Hit): void {
@@ -104,7 +105,7 @@ export class CombatEngine {
   private apply(rule:Rule,event:CombatEvent,ruleId:string):void {
     const target=this.actors.get(event.targetId),source=this.actors.get(event.sourceId);
     if(!target||!source)return;
-    executeEffect({source,target,event,ruleId,actors:this.actors,primed:this.primed,healCooldown:this.healCooldown,
+    executeEffect({source,target,event,ruleId,actors:this.actors,collision:this.collision,primed:this.primed,healCooldown:this.healCooldown,
       castResult:this.castResult,maxDepth:MAX_CHAIN_DEPTH,cue:this.cue,damage:hit=>this.damage(hit),drop:()=>{this.metrics.dropped++;}},rule.effect);
   }
 }

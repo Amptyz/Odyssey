@@ -2,7 +2,7 @@ import type { SkillId } from './skills';
 export type EnemyBehaviorId='melee'|'ranged';
 export interface EnemyDefinition {
   name:string;hp:number;speed:number;radius:number;range:number;interval:number;windup:number;
-  behavior:EnemyBehaviorId;appearance:string;damage:number;skillId?:SkillId;
+  behavior:EnemyBehaviorId;appearance:string;damage:number;skillId?:SkillId;attackArc?:number;
 }
 export const ENEMIES = {
   warden:{name:'古树守卫',hp:105,speed:1.15,radius:0.55,damage:16,range:1.4,interval:1.8,windup:0.8,behavior:'melee',appearance:'grovewarden'},

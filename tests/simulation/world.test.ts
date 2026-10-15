@@ -39,10 +39,10 @@ describe('fixed-step world and inputs',()=>{
     w.command({type:'CastSkill',skillId:'nova',point:w.hero});expect(e.hp).toBe(300-SKILLS.fireball.behavior.damage-SKILLS.nova.behavior.damage);
     run(w,4.1);expect(w.hero.shield).toBe(0);
   });
-  it('right-click target auto approaches and attacks, stops after death',()=>{
-    const w=sandbox(); const e=w.spawnEnemy('ranged',{x:15,y:10},40);e.attackCd=999;
-    w.command({type:'SetTarget',targetId:e.id});run(w,4);
-    expect(e.alive).toBe(false);expect(w.targetId).toBeUndefined();expect(w.hero.path).toHaveLength(0);
+  it('movement never locks or attacks an enemy without left-attack input',()=>{
+    const w=sandbox();const e=w.spawnEnemy('ranged',{x:12,y:10},500);e.windup=999;
+    w.command({type:'MoveTo',point:{x:e.x,y:e.y}});run(w,1.5);
+    expect(e.hp).toBe(500);expect(w.hero.action.id).toBe(0);
   });
   it('melee and ranged enemies actually damage the hero',()=>{
     for(const kind of ['melee','ranged'] as const) {
@@ -81,7 +81,7 @@ describe('fixed-step world and inputs',()=>{
     const a=sandbox(),b=sandbox();b.combat.addPerk('swift');
     for(const w of [a,b])w.command({type:'MoveTo',point:{x:13,y:10}});run(a,0.5);run(b,0.5);expect(b.hero.x).toBeGreaterThan(a.hero.x);
     b.combat.addPerk('rhythm');const e=b.spawnEnemy('ranged',{x:b.hero.x+1,y:b.hero.y},500);
-    b.command({type:'SetTarget',targetId:e.id});run(b,1/30,30);expect(b.hero.attackCd).toBeCloseTo(HERO.attackInterval*0.85);
+    b.command({type:'Attack',point:e});expect(b.hero.attackCd).toBeCloseTo(HERO.attackInterval*0.85);
   });
   it('reserve plus double is applied to actual projectiles',()=>{
     const w=start();w.combat.addPerk('reserve');w.combat.addPerk('double');
@@ -117,21 +117,21 @@ describe('direct movement and pointer attacks',()=>{
     const w=sandbox(),front=w.spawnEnemy('melee',{x:11.5,y:10},500),back=w.spawnEnemy('melee',{x:8.5,y:10},500);
     front.windup=999;back.windup=999;
     w.command({type:'Attack',point:front});w.command({type:'Attack',point:front});
-    expect(front.hp).toBe(500-HERO.attackDamage);expect(back.hp).toBe(500);
-    w.command({type:'DirectInput',movement:{x:0,y:0},attack:front});run(w,0.8);
+    expect(front.hp).toBe(500);run(w,0.1);expect(front.hp).toBe(500-HERO.attackDamage);expect(back.hp).toBe(500);
+    w.command({type:'AttackInput',point:front});run(w,0.8);
     expect(front.hp).toBe(500-HERO.attackDamage*2);expect(distance(w.hero,{x:10,y:10})).toBe(0);
-    w.command({type:'DirectInput',movement:{x:0,y:0}});run(w,1);expect(front.hp).toBe(500-HERO.attackDamage*2);
-    w.command({type:'Attack',point:back});expect(back.hp).toBe(500-HERO.attackDamage);
+    w.command({type:'AttackInput'});run(w,1);expect(front.hp).toBe(500-HERO.attackDamage*2);
+    w.command({type:'Attack',point:back});run(w,0.1);expect(back.hp).toBe(500-HERO.attackDamage);
   });
   it('does not hit out of range or through obstacles',()=>{
     const w=sandbox(),far=w.spawnEnemy('melee',{x:15,y:10},500);
-    w.command({type:'Attack',point:far});expect(far.hp).toBe(500);
+    w.command({type:'Attack',point:far});run(w,0.1);expect(far.hp).toBe(500);
     Object.assign(w.hero,{x:4.8,y:6,attackCd:0});const hidden=w.spawnEnemy('melee',{x:7.2,y:6},500);
-    w.command({type:'Attack',point:hidden});expect(hidden.hp).toBe(500);
+    w.command({type:'Attack',point:hidden});run(w,0.1);expect(hidden.hp).toBe(500);
   });
   it('allows movement while attacking and cancels old movement on pause/stop',()=>{
     const w=sandbox();w.command({type:'MoveTo',point:{x:13,y:10}});
-    w.command({type:'DirectInput',movement:{x:0,y:1},attack:{x:15,y:10}});run(w,0.2);
+    w.command({type:'DirectInput',movement:{x:0,y:1}});w.command({type:'AttackInput',point:{x:15,y:10}});run(w,0.2);
     expect(w.destination).toBeUndefined();expect(w.hero.path).toHaveLength(0);expect(w.hero.y).toBeGreaterThan(10);
     w.command({type:'TogglePause'});const p={x:w.hero.x,y:w.hero.y};
     w.command({type:'DirectInput',movement:{x:1,y:0}});w.command({type:'TogglePause'});run(w,0.2);expect(distance(w.hero,p)).toBe(0);

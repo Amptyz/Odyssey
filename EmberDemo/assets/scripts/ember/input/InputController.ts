@@ -1,8 +1,8 @@
 import { EventKeyboard, EventMouse, game, Input, input, KeyCode, Node, UITransform, Vec3, view } from 'cc';
 import type { CommandPort } from '../platform/protocol';
 import type { WorldSnapshot } from '../simulation/GameWorld';
-import { distance,type Vec2 } from '../utils/math';
-import { screenToWorld,worldToScreen,type Projection } from '../render/IsoProjection';
+import type { Vec2 } from '../utils/math';
+import { screenToWorld,type Projection } from '../render/IsoProjection';
 import type { Hud } from '../render/Hud';
 import type { SkillSlot } from '../content/config';
 export type ControlMode='classic'|'wasd';
@@ -25,13 +25,15 @@ export class InputController {
     if(this.state&&(this.state.mapId!==state.mapId||this.state.phase!==state.phase||this.state.paused!==state.paused||this.state.wave!==state.wave||state.tick<this.state.tick))this.clear();
     this.state=state;
     if(this.pointerLocal)this.pointer=this.aimPoint(this.pointerLocal);
-    if(this.mode!=='wasd'||state.phase!=='fighting'||state.paused)return;
+    if(state.phase!=='fighting'||state.paused)return;
+    this.port.send({type:'AttackInput',point:this.attacking?this.pointer:undefined});
+    if(this.mode!=='wasd')return;
     const x=Number(this.held.has(KeyCode.KEY_D))-Number(this.held.has(KeyCode.KEY_A));
     const y=Number(this.held.has(KeyCode.KEY_W))-Number(this.held.has(KeyCode.KEY_S));
     // WASD follows screen directions, not the tilted world-grid axes.
     const v=screenToWorld({x:this.camera.origin.x+x,y:this.camera.origin.y+y},this.camera);
     const length=Math.hypot(v.x,v.y);
-    this.port.send({type:'DirectInput',movement:length?{x:v.x/length,y:v.y/length}:{x:0,y:0},attack:this.attacking?this.pointer:undefined});
+    this.port.send({type:'DirectInput',movement:length?{x:v.x/length,y:v.y/length}:{x:0,y:0}});
   }
   private setMode(mode:ControlMode):void {
     this.clear();this.mode=mode;this.hud.setControlMode(mode);
@@ -56,14 +58,8 @@ export class InputController {
     }
     const v=this.root.getComponent(UITransform)!.convertToNodeSpaceAR(new Vec3(p.x,p.y,0));return{x:v.x,y:v.y};
   }
-  private hit(p:Vec2) {
-    return this.state?.units.filter(u=>u.alive&&u.team==='enemy').sort((a,b)=>(b.x+b.y)-(a.x+a.y)).find(u=>{
-      const s=worldToScreen(u,this.camera);return distance({x:p.x,y:(p.y-22)*0.65},{x:s.x,y:s.y*0.65})<25;
-    });
-  }
   private aimPoint(p:Vec2):Vec2 {
-    const hit=this.mode==='wasd'?this.hit(p):undefined;
-    return hit?{x:hit.x,y:hit.y}:screenToWorld(p,this.camera);
+    return screenToWorld(p,this.camera);
   }
   private onMove(e:EventMouse):void {this.pointerLocal=this.local(e);this.pointer=this.aimPoint(this.pointerLocal);}
   private onDown(e:EventMouse):void {
@@ -72,14 +68,11 @@ export class InputController {
     const button=e.getButton();
     if(button===EventMouse.BUTTON_LEFT&&this.hud.click(p))return;
     if(!this.state||this.state.phase!=='fighting'||this.state.paused)return;
-    if(this.mode==='wasd'){
-      if(button===EventMouse.BUTTON_LEFT){this.attacking=true;this.port.send({type:'Attack',point:this.pointer});}
-      if(button===EventMouse.BUTTON_RIGHT)this.port.send({type:'CastSlot',slot:'Q',point:this.pointer});
-    }else if(button===EventMouse.BUTTON_RIGHT){
-      const hit=this.hit(p);this.port.send(hit?{type:'SetTarget',targetId:hit.id}:{type:'MoveTo',point:this.pointer});
-    }
+    if(button===EventMouse.BUTTON_LEFT){this.attacking=true;this.port.send({type:'Attack',point:this.pointer});}
+    if(button===EventMouse.BUTTON_RIGHT)this.port.send(this.mode==='wasd'?{type:'CastSlot',slot:'Q',point:this.pointer}:{type:'MoveTo',point:this.pointer});
   }
-  private onUp(e:EventMouse):void {if(e.getButton()===EventMouse.BUTTON_LEFT)this.attacking=false;}
+  private releaseAttack():void {this.attacking=false;this.port.send({type:'AttackInput'});}
+  private onUp(e:EventMouse):void {if(e.getButton()===EventMouse.BUTTON_LEFT)this.releaseAttack();}
   private onKey(e:EventKeyboard):void {
     if(this.held.has(e.keyCode))return;this.held.add(e.keyCode);
     const skill=this.mode==='wasd'?(e.keyCode===KeyCode.SPACE?'W':e.keyCode===KeyCode.KEY_W?undefined:KEY_SKILLS[e.keyCode]):KEY_SKILLS[e.keyCode];
@@ -98,7 +91,7 @@ export class InputController {
     }
   }
   private onKeyUp(e:EventKeyboard):void {this.held.delete(e.keyCode);}
-  private onWindowUp=(e:MouseEvent):void=>{if(e.button===0)this.attacking=false;};
+  private onWindowUp=(e:MouseEvent):void=>{if(e.button===0)this.releaseAttack();};
   private onBrowserKey=(e:KeyboardEvent):void=>{if(e.code==='Space'&&e.target===game.canvas)e.preventDefault();};
   private onContext=(e:Event):void=>{if(e.target instanceof HTMLCanvasElement)e.preventDefault();};
   private onBlur=():void=>{

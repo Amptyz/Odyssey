@@ -9,9 +9,7 @@ export interface EnemyContext {
 }
 /** A new behavior owns its whole update, and can reuse pursuit or implement another strategy. */
 export const ENEMY_BEHAVIORS:Record<EnemyBehaviorId,(ctx:EnemyContext,dt:number)=>void>={
-  melee:(ctx,dt)=>pursue(ctx,dt,()=>{
-    if(distance(ctx.unit,ctx.hero)<=ctx.definition.range+ctx.hero.radius+0.2)ctx.damage(ctx.definition.damage);
-  }),
+  melee:(ctx,dt)=>pursue(ctx,dt,()=>ctx.damage(ctx.definition.damage)),
   ranged:(ctx,dt)=>pursue(ctx,dt,()=>{if(ctx.definition.skillId)ctx.cast(ctx.definition.skillId,ctx.unit.aim);}),
 };
 function pursue(ctx:EnemyContext,dt:number,attack:()=>void):void {

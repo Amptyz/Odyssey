@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "unitTests": 88,
+  "newCollisionTests": 20,
+  "browserChecks": {
+    "controls": 31,
+    "hitboxes": 14,
+    "art": 14,
+    "content": 26
+  },
+  "cocos": "Creator 3.8.8 Web Desktop UI and isolated CLI build successful; source bytes verified",
+  "headlessPlaythrough": {
+    "seeds": 10,
+    "wins": 10
+  },
+  "coverage": [
+    "directional left click in both control modes",
+    "no pointer snapping or target-following attacks",
+    "melee windup, hit window, multiple bodies, once per target",
+    "projectile flight, nearest impact, moving-body sweep, grazing and maximum range",
+    "terrain occlusion for basics, skills and proc effects",
+    "pause, release, fixed-step determinism and F3 collision display"
+  ]
+}

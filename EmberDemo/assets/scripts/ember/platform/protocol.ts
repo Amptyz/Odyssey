@@ -3,8 +3,9 @@ import type { MapId } from '../content/maps';
 import type { EquipmentId,EquipmentSlot } from '../content/equipment';
 import type { Vec2 } from '../utils/math';
 export type GameCommand =
-  | { type:'MoveTo'; point:Vec2 } | { type:'SetTarget'; targetId:string }
-  | { type:'DirectInput'; movement:Vec2; attack?:Vec2 } | { type:'Stop' }
+  | { type:'MoveTo'; point:Vec2 }
+  | { type:'DirectInput'; movement:Vec2 } | { type:'Stop' }
+  | { type:'AttackInput'; point?:Vec2 }
   | { type:'Attack'; point:Vec2 }
   | { type:'CastSlot'; slot:SkillSlot; point:Vec2 }
   | { type:'SelectMap'; mapId:MapId }

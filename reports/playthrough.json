@@ -3,48 +3,49 @@
   "outcomes": [
     {
       "seed": 0,
-      "phase": "defeat",
+      "phase": "victory",
       "wave": 3,
-      "time": 26.433333333333806,
-      "hp": 0,
-      "kills": 22,
+      "time": 28.366666666667236,
+      "hp": 111,
+      "kills": 27,
       "perks": [
         "swift",
-        "leech"
+        "leech",
+        "burn"
       ]
     },
     {
       "seed": 1,
       "phase": "victory",
       "wave": 3,
-      "time": 28.766666666667255,
-      "hp": 41,
+      "time": 27.06666666666717,
+      "hp": 95,
       "kills": 27,
       "perks": [
         "double",
-        "burn",
-        "leech"
+        "corpse",
+        "arc"
       ]
     },
     {
       "seed": 2,
       "phase": "victory",
       "wave": 3,
-      "time": 32.96666666666736,
-      "hp": 1,
+      "time": 29.53333333333396,
+      "hp": 100,
       "kills": 27,
       "perks": [
         "corpse",
-        "arc",
-        "burn"
+        "double",
+        "swift"
       ]
     },
     {
       "seed": 42,
       "phase": "victory",
       "wave": 3,
-      "time": 36.166666666667176,
-      "hp": 101,
+      "time": 33.833333333333975,
+      "hp": 147,
       "kills": 27,
       "perks": [
         "rhythm",
@@ -56,76 +57,78 @@
       "seed": 1234,
       "phase": "victory",
       "wave": 3,
-      "time": 34.966666666667244,
-      "hp": 61,
+      "time": 30.633333333334015,
+      "hp": 153,
       "kills": 27,
       "perks": [
         "leech",
-        "reserve",
-        "rhythm"
+        "rhythm",
+        "burn"
       ]
     },
     {
       "seed": 2026,
       "phase": "victory",
       "wave": 3,
-      "time": 31.53333333333406,
-      "hp": 116,
+      "time": 24.900000000000396,
+      "hp": 137,
       "kills": 27,
       "perks": [
         "arc",
         "burn",
-        "swift"
+        "leech"
       ]
     },
     {
       "seed": 31415,
-      "phase": "defeat",
+      "phase": "victory",
       "wave": 3,
-      "time": 32.10000000000074,
-      "hp": 0,
-      "kills": 25,
+      "time": 30.900000000000695,
+      "hp": 142,
+      "kills": 27,
       "perks": [
         "leech",
-        "rhythm"
+        "burn",
+        "reserve"
       ]
     },
     {
       "seed": 65535,
       "phase": "victory",
       "wave": 3,
-      "time": 30.700000000000685,
-      "hp": 155,
+      "time": 32.83333333333403,
+      "hp": 106,
       "kills": 27,
       "perks": [
         "leech",
         "burn",
-        "arc"
+        "corpse"
       ]
     },
     {
       "seed": 99999,
-      "phase": "defeat",
+      "phase": "victory",
       "wave": 3,
-      "time": 32.933333333334026,
-      "hp": 0,
-      "kills": 24,
+      "time": 36.03333333333385,
+      "hp": 45,
+      "kills": 27,
       "perks": [
         "swift",
-        "burn"
+        "burn",
+        "rhythm"
       ]
     },
     {
       "seed": 4294967295,
       "phase": "victory",
       "wave": 3,
-      "time": 31.73333333333407,
-      "hp": 127,
+      "time": 30.233333333333995,
+      "hp": 82,
       "kills": 27,
       "perks": [
         "arc",
-        "leech",
-        "double"
+        "burn",
+        "rhythm"
       ]
     }
   ]

@@ -37,7 +37,7 @@ try{
     }
     if(!wardenSeen&&a.units.some(u=>u.atlas==='grovewarden')){wardenSeen=true;await page.screenshot({path:'reports/22-grovewarden.png'});}
     const enemies=s.units.filter(u=>u.team==='enemy'&&u.alive).sort((a,b)=>Math.hypot(a.x-s.hero.x,a.y-s.hero.y)-Math.hypot(b.x-s.hero.x,b.y-s.hero.y));
-    const target=enemies[0];if(target){const hit=await point(target.x,target.y,true);await page.mouse.click(hit.x,hit.y,{button:'right'});const aim=await point(target.x,target.y);await page.mouse.move(aim.x,aim.y);await page.keyboard.press('q');}
+    const target=enemies[0];if(target){const hit=await point(target.x,target.y);await page.mouse.click(hit.x,hit.y,{button:'right'});const aim=await point(target.x,target.y);await page.mouse.move(aim.x,aim.y);await page.mouse.click(aim.x,aim.y);await page.keyboard.press('q');}
     if(enemies.some(e=>Math.hypot(e.x-s.hero.x,e.y-s.hero.y)<5))await page.keyboard.press('w');
     if(enemies.filter(e=>Math.hypot(e.x-s.hero.x,e.y-s.hero.y)<3.8).length>=2)await page.keyboard.press('r');
     await page.waitForTimeout(110);

@@ -26,6 +26,7 @@ export const ENVIRONMENT_APPEARANCES:Record<string,EnvironmentAppearance>={
   frostRuins:{atlas:'environment',frames:{pillar:0,rubble:1,shrub:2,foliage:3,crystal:4,arch:5,waterfall:6,paving:7,crest:8},waterOuter:'#8FBECF',waterInner:'#BCD8DF',seam:'#CBD6D2'},
 };
 export const EFFECT_APPEARANCES:Record<string,{color:string;core:string}> = {
+  physical:{color:'#99744A',core:'#FFE5A3'},
   fire:{color:'#E4A16C',core:'#FFF0B6'},ice:{color:'#83CEEE',core:'#E5FFFF'},
   mist:{color:'#B59CC6',core:'#F3C6E1'},shield:{color:'#BFECF2',core:'#E8FDFF'},
 };
