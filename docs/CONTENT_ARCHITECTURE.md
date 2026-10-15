@@ -1,4 +1,4 @@
-# 内容扩展架构 v0.5
+# 内容扩展架构 v0.6
 
 游戏源码根目录为 `EmberDemo/assets/scripts/ember/`。下面所有源码路径均相对此目录。
 
@@ -25,6 +25,7 @@ flowchart LR
 - 技能投射物保存真实 `skillId`，命中、状态来源、增益条件和渲染颜色都沿用它。新增投射物不会被识别为旧的 Q。
 - `CombatEngine` 保留事件预算 128、链深度 6、规则去重和单次击杀保障；效果实现放在 `EffectHandlers.ts`。
 - 首批 12 个海克斯已接入统一奖励池，新增出手 / 攻击特效 / 治疗 / 受伤 / 冲刺结束事件、条件限频与叠层状态。通过 `CombatHooks` 连接弹体和技能冷却，详细配置约定与数值见 [HEX_AUGMENTS.md](HEX_AUGMENTS.md)。
+- 开发者模式通过版本化 `DeveloperConfig` 与 LocalTransport 单独的命令边界提供组合 / 关卡测试；面板枚举同一内容注册表。应用配置创建全新测试世界，普通世界拒绝测试动作，退出会清空测试状态；操作与扩展见 [DEVELOPER_MODE.md](DEVELOPER_MODE.md)。
 - `content/validate.ts` 在启动时检查内容引用、正数参数、地图出生点、怪物配置、外观引用和奖励池容量。类型检查及测试同样覆盖这些定义。
 
 ## 添加技能
@@ -135,6 +136,7 @@ pnpm test:content
 pnpm test:art
 pnpm test:hitboxes
 pnpm test:hexes
+pnpm test:developer
 ```
 
 `test:content` 使用种子 16、真实键鼠和正常数值通关霜镜回廊，覆盖开局商店、跨页购买、余额不足、技能奖励 / 取消 / E 槽替换、波间收入、购弓、换装、卸下、外观预览、缩放、双向减速和重开清空本局。奖励池扩充后更新种子，继续从正常抽取获得冰弹。

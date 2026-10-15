@@ -1,6 +1,6 @@
 {
   "name": "project-ember-core",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "private": true,
   "description": "Project Ember demo, Cocos Creator 3.8.8",
   "scripts": {
@@ -19,6 +19,7 @@
     "test:content": "node --import tsx scripts/browser-content.ts",
     "test:hitboxes": "node --import tsx scripts/browser-hitboxes.ts",
     "test:hexes": "node --import tsx scripts/browser-hexes.ts",
+    "test:developer": "node --import tsx scripts/browser-developer.ts",
     "test:art": "node --import tsx scripts/browser-art.ts"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ import type { WorldSnapshot } from '../simulation/GameWorld';
 import type { Vec2 } from '../utils/math';
 import { ArtLibrary } from './ArtLibrary';
 import { drawShop } from './ShopPanel';
+import { DeveloperPanel } from './DeveloperPanel';
 import { equipment,EQUIPMENT_SLOTS } from '../content/equipment';
 import { box,color,graphics,setText,text,uiNode } from './Primitives';
 interface HitRegion {x:number;y:number;width:number;height:number;action:()=>void}
@@ -19,10 +20,12 @@ export class Hud {
   onControlMode?:(mode:ControlMode)=>void;
   private readonly overlay:Node;private signature='';private regions:HitRegion[]=[];
   private shopPage=0;private debug=false;private state?:WorldSnapshot;private inspectPerks=false;private perkPage=0;
+  private readonly developerPanel:DeveloperPanel;private readonly developerBadge:Label;
   constructor(root:Node,private readonly send:(c:GameCommand)=>void,private readonly art:ArtLibrary) {
     const hud=uiNode('HUD',root),bg=graphics('HUD panels',hud);
     box(bg,-616,256,292,82,'#20373DEE',12);box(bg,354,206,262,132,'#20373DEE',12);
     box(bg,-235,296,470,40,'#20373DEE',10);
+    box(bg,-616,207,292,37,'#20373DEE',8);this.developerBadge=text('Developer mode entry',hud,'开发者模式 · F2',14,-470,225,275,35,'#D6C293');
     text('Title',hud,'余 烬 试 炼',17,-470,315,260,30,'#ECDBB7');
     this.hp=text('Health values',hud,'',13,-470,272,250,25,'#C9DED2');this.meter=graphics('HP meter',hud);
     this.wave=text('Wave',hud,'',14,0,316,450,38,'#E9DBBD');
@@ -37,7 +40,7 @@ export class Hud {
     }
     text('Debug toggle',hud,'F3 · DEBUG',11,552,-340,150,26,'#36585B');
     this.debugLabel=text('Debug details',hud,'',11,-470,-287,285,100,'#294C4D');this.debugLabel.node.active=false;
-    this.overlay=uiNode('Modal overlay',root);this.setControlMode('classic');
+    this.overlay=uiNode('Modal overlay',root);this.developerPanel=new DeveloperPanel(send,()=>{this.signature='';});this.setControlMode('classic');
   }
   setControlMode(mode:ControlMode):void {
     this.mode=mode;this.signature='';
@@ -53,8 +56,9 @@ export class Hud {
   get showColliders():boolean{return this.debug;}
   update(s:WorldSnapshot,fps:number):void {
     this.state=s;setText(this.hp,`生命 ${Math.ceil(s.hero.hp)} / ${s.hero.maxHp}    护盾 ${Math.ceil(s.hero.shield)}`);
+    setText(this.developerBadge,s.developer?.enabled?'DEV · 测试模式 · F2':'开发者模式 · F2');
     this.meter.clear();box(this.meter,-600,290,260,6,'#48615C',3);box(this.meter,-600,290,260*s.hero.hp/s.hero.maxHp,6,'#A8D3AD',3);
-    setText(this.wave,s.phase==='ready'?`PROJECT EMBER  /  ${mapDefinition(s.mapId).name}`:`${mapDefinition(s.mapId).name} · ${s.wave} / ${s.totalWaves} 波    ·    ${s.units.filter(u=>u.alive&&u.team==='enemy').length} 个敌人${s.lab?'    ·    联动实验':''}`);
+    setText(this.wave,s.phase==='ready'?`PROJECT EMBER  /  ${mapDefinition(s.mapId).name}`:`${s.developer?.enabled?'DEV · ':''}${mapDefinition(s.mapId).name} · ${s.wave} / ${s.totalWaves} 波    ·    ${s.units.filter(u=>u.alive&&u.team==='enemy').length} 个敌人${s.lab?'    ·    联动实验':''}`);
     setText(this.boonList,`金币 ${s.gold}  ·  ${EQUIPMENT_SLOTS.map(slot=>s.equipment[slot]?equipment(s.equipment[slot]!).name:'').filter(Boolean).join(' / ')||'未装备'}\n${s.perks.map(id=>perk(id).name).join(' · ')||'每波选择增益或替换技能'}`);
     for(const {id,g,cd,name} of this.skills){const definition=skill(s.loadout[id]);setText(name,definition.name);const remaining=s.cooldowns[id],ratio=Math.min(1,remaining/(definition.cooldown*s.stats.cooldownMultiplier)),primed=s.primed&&definition.behavior.kind==='projectile';
       g.clear();box(g,-49,-37,98,74,'#243E43',10);box(g,-47,-35,94,70,remaining>0?'#30454B':'#3B5859',8);
@@ -62,10 +66,12 @@ export class Hud {
       if(primed){g.strokeColor=color('#E8C98C');g.lineWidth=2;g.roundRect(-48,-36,96,72,9);g.stroke();}
       setText(cd,remaining>0?remaining.toFixed(1):primed?'强化':'就绪');}
     if(this.debug)setText(this.debugLabel,`FPS ${Math.round(fps)}  ·  Tick ${s.tick}\n事件 ${s.metrics.processed} / 拦截 ${s.metrics.dropped} / 深度 ${s.metrics.maxDepth}\nSeed ${s.seed}  ·  实体 ${s.units.length} / 弹体 ${s.projectiles.length}`);
-    const signature=`${s.phase}:${s.paused}:${s.choices.map(c=>c.id).join(',')}:${s.pendingSkill}:${s.lab}:${s.mapId}:${Object.values(s.loadout).join(',')}:${s.gold}:${JSON.stringify(s.equipment)}:${s.inventory.join(',')}:${this.shopPage}`;
+    const signature=`${s.phase}:${s.paused}:${s.choices.map(c=>c.id).join(',')}:${s.pendingSkill}:${s.lab}:${s.mapId}:${Object.values(s.loadout).join(',')}:${s.gold}:${JSON.stringify(s.equipment)}:${s.inventory.join(',')}:${this.shopPage}:${s.developer?.open}:${s.developer?.enabled}:${s.developer?.revision}`;
     if(signature!==this.signature){this.signature=signature;this.buildModal(s);}
   }
   click(point:Vec2):boolean {
+    if(this.state?.developer?.open&&this.developerPanel.click(point))return true;
+    if(!this.overlay.active&&Math.abs(point.x+470)<146&&Math.abs(point.y-225)<19){this.send({type:'DevOpen'});return true;}
     if(Math.abs(point.x-552)<70&&Math.abs(point.y+340)<20){this.toggleDebug();return true;}
     const r=this.regions.find(r=>Math.abs(point.x-r.x)<=r.width/2&&Math.abs(point.y-r.y)<=r.height/2);
     if(r){r.action();return true;}return this.overlay.active;
@@ -77,10 +83,13 @@ export class Hud {
   }
   private buildModal(s:WorldSnapshot):void {
     for(const child of [...this.overlay.children])child.destroy();this.overlay.removeAllChildren();this.regions=[];
-    this.overlay.active=s.phase!=='fighting'||s.paused;if(!this.overlay.active)return;
+    this.overlay.active=!!s.developer?.open||s.phase!=='fighting'||s.paused;if(!this.overlay.active)return;
     const veil=graphics('Veil',this.overlay);box(veil,-640,-360,1280,720,'#10242CEB',0);
+    if(s.developer?.open){this.developerPanel.draw(this.overlay,s,this.button.bind(this));return;}
+    if(s.phase!=='ready')this.button('开发者面板 · F2',470,312,270,()=>this.send({type:'DevOpen'}),'#586552');
     if(s.phase==='ready'){
-      text('Eyebrow',this.overlay,'PROJECT EMBER   /   v0.5',13,0,222,600,30,'#9ABDB4');
+      text('Eyebrow',this.overlay,'PROJECT EMBER   /   v0.6',13,0,222,600,30,'#9ABDB4');
+      this.button('开发者模式 · F2',445,222,280,()=>this.send({type:'DevOpen'}),'#586552');
       text('Game title',this.overlay,'余 烬 试 炼',56,0,172,800,100,'#EFE2C1');
       text('Subtitle',this.overlay,`探索${mapDefinition(s.mapId).name}，穿过 ${s.totalWaves} 场试炼。`,19,0,109,650,40,'#B5CFC4');
       this.modeButtons(45);
@@ -115,7 +124,7 @@ export class Hud {
       this.modeButtons(98);
       const help=this.mode==='wasd'?'WASD：沿屏幕方向移动，松开即停\n左键按住：朝指针普攻    右键 / Q：朝指针施放主技能\n空格 / E / R：使用当前槽位技能':'右键：移动    /    左键按住：朝指针普攻\nQ / W / E / R：使用当前槽位技能';
       text('Help',this.overlay,help+'\n红色圆环 / 射线：敌人攻击预警    F3：调试信息\n增益可选主动技能；选择后用 1–4 确认替换槽位。',17,0,-28,1000,200,'#CDDCD0');
-      this.button('继续试炼  ESC',-145,-164,250,()=>this.send({type:'TogglePause'}));this.button('重新开始',145,-164,250,()=>this.send({type:'Restart'}),'#675B58');
+      this.button('继续试炼  ESC',-145,-164,250,()=>this.send({type:'TogglePause'}));this.button(s.developer?.enabled?'重测当前配置':'重新开始',145,-164,250,()=>this.send({type:'Restart'}),'#675B58');
       this.button(`查看本局增益 · ${s.perks.length}`,0,-230,330,()=>{this.inspectPerks=true;this.perkPage=0;this.signature='';},'#3E5559');
     }else if(s.phase==='reward'&&s.pendingSkill){
       text('Skill acquired',this.overlay,`选择技能：${skill(s.pendingSkill).name}`,32,0,225,1000,60,'#EFE2C1');

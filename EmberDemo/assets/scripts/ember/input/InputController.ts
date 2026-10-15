@@ -22,7 +22,7 @@ export class InputController {
     if(typeof window!=='undefined'){window.addEventListener('contextmenu',this.onContext);window.addEventListener('blur',this.onBlur);document.addEventListener('visibilitychange',this.onVisibility);window.addEventListener('mouseup',this.onWindowUp);window.addEventListener('keydown',this.onBrowserKey);}
   }
   update(state:WorldSnapshot):void {
-    if(this.state&&(this.state.mapId!==state.mapId||this.state.phase!==state.phase||this.state.paused!==state.paused||this.state.wave!==state.wave||state.tick<this.state.tick))this.clear();
+    if(this.state&&(this.state.mapId!==state.mapId||this.state.phase!==state.phase||this.state.paused!==state.paused||this.state.wave!==state.wave||this.state.developer?.open!==state.developer?.open||state.tick<this.state.tick))this.clear();
     this.state=state;
     if(this.pointerLocal)this.pointer=this.aimPoint(this.pointerLocal);
     if(state.phase!=='fighting'||state.paused)return;
@@ -75,6 +75,8 @@ export class InputController {
   private onUp(e:EventMouse):void {if(e.getButton()===EventMouse.BUTTON_LEFT)this.releaseAttack();}
   private onKey(e:EventKeyboard):void {
     if(this.held.has(e.keyCode))return;this.held.add(e.keyCode);
+    if(e.keyCode===KeyCode.F2){this.port.send({type:this.state?.developer?.open?'DevClose':'DevOpen'});return;}
+    if(this.state?.developer?.open){if(e.keyCode===KeyCode.ESCAPE)this.port.send({type:'DevClose'});return;}
     const skill=this.mode==='wasd'?(e.keyCode===KeyCode.SPACE?'W':e.keyCode===KeyCode.KEY_W?undefined:KEY_SKILLS[e.keyCode]):KEY_SKILLS[e.keyCode];
     if(skill&&this.state?.phase==='reward'&&this.state.pendingSkill){this.port.send({type:'ConfirmSkill',slot:skill});return;}
     if(skill)this.port.send({type:'CastSlot',slot:skill,point:this.pointer});

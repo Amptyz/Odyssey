@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "version": "0.6.0",
+  "unitTests": 129,
+  "newDeveloperTests": 14,
+  "browserChecks": {
+    "developer": 30,
+    "controls": 31,
+    "hitboxes": 14,
+    "hexes": 21,
+    "content": 26,
+    "art": 14
+  },
+  "browserChecksTotal": 136,
+  "smoke": "passed",
+  "cocos": {
+    "version": "3.8.8",
+    "target": "Web Desktop",
+    "officialCliExitCode": 36,
+    "sourceFilesCompared": 43,
+    "sourceSha256": "74f9541cbcdf0b999a04062542ba7c0d35f3674a2431b1ab5b338947da7d059c",
+    "runtimeSourcesMatchBuild": true
+  },
+  "coverage": [
+    "F2 and visible menu entry; ordinary mode isolation",
+    "draft configuration, skill slot swapping, equipment and augment catalogs",
+    "map, wave and deterministic seed selection",
+    "optional invincibility, zero skill cooldown, enemy AI freeze and fixed-step time scaling",
+    "single step, health setup, recovery, cooldown reset, clear and collision-aware spawn",
+    "three local presets and atomic validated JSON import/export",
+    "retest applied configuration and restore ordinary play",
+    "real browser text input, keyboard/mouse and resized viewport"
+  ]
+}

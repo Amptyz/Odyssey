@@ -19,6 +19,7 @@ import { basicAttack,type EquipmentId,type EquipmentLoadout,type HeroStats } fro
 import type { StatusApplication } from '../content/statuses';
 import type { ActionSignal } from '../content/animation';
 import { Random } from '../utils/Random';
+import { parseDeveloperConfig,type DeveloperConfig,type DeveloperOptions,type DeveloperSnapshot } from './DeveloperConfig';
 export type Phase = 'ready'|'shop'|'fighting'|'reward'|'victory'|'defeat';
 export interface Unit extends Actor {
   kind:'hero'|EnemyKind; previous:Vec2; velocity:Vec2; attackCd:number;
@@ -35,6 +36,7 @@ export interface WorldSnapshot {
   cooldowns:Record<SkillSlot,number>; perks:PerkId[]; choices:RewardChoice[];pendingSkill?:SkillId;gold:number;inventory:EquipmentId[];equipment:EquipmentLoadout;stats:HeroStats;
   destination?:Vec2; kills:number; primed:boolean;
   metrics:{processed:number;dropped:number;maxDepth:number;kills:number};
+  developer?:DeveloperSnapshot;
 }
 export class GameWorld {
   readonly actors = new Map<string,Unit>();
@@ -56,13 +58,15 @@ export class GameWorld {
   private dashSpeed=0;
   private dashStart?:Vec2;
   private direct?:{movement:Vec2};private attackPoint?:Vec2;
-  constructor(readonly seed=1234,readonly mapId:MapId='ember') {
+  private readonly developerOptions?:DeveloperOptions;
+  constructor(readonly seed=1234,readonly mapId:MapId='ember',developerOptions?:DeveloperOptions) {
+    this.developerOptions=developerOptions?{...developerOptions}:undefined;
     this.map=mapDefinition(mapId);this.nav=new Pathfinder(this.map);this.loadout={...this.map.loadout};
     this.collision=new CollisionWorld(this.map);
     this.random=new Random(seed);
     this.hero=this.makeUnit('hero','hero',this.map.heroSpawn,HERO.hp);
     const combatRandom=new Random(seed^0x51ed270b);
-    this.combat=new CombatEngine(this.actors,cue=>this.addCue(cue),(hit,target)=>{const stats=this.stats;return hit.amount*(hit.sourceId==='hero'&&hit.cause!=='basic'&&!hit.unscaled?stats.skillPower:1)*(target.team==='hero'&&!hit.trueDamage?100/(100+stats.armor):1);},this.collision,{
+    this.combat=new CombatEngine(this.actors,cue=>this.addCue(cue),(hit,target)=>{if(target.team==='hero'&&this.developerOptions?.invincible)return 0;const stats=this.stats;return hit.amount*(hit.sourceId==='hero'&&hit.cause!=='basic'&&!hit.unscaled?stats.skillPower:1)*(target.team==='hero'&&!hit.trueDamage?100/(100+stats.armor):1);},this.collision,{
       random:()=>combatRandom.next(),attackDamage:()=>this.stats.attackDamage,
       reduceCooldown:(id,seconds)=>{if(id==='hero')for(const key of new Set(Object.values(this.loadout)))this.cooldowns[key]=Math.max(0,this.cooldowns[key]-seconds);},
       projectile:(source,aim,effect,damage)=>this.shootAugment(source,aim,effect,damage),
@@ -70,7 +74,42 @@ export class GameWorld {
   }
   get stats():HeroStats {const stats=this.equipment.stats;return{...stats,maxHp:Math.max(1,Math.round(stats.maxHp*this.combat.modifier('maxHpMultiplier')))};}
   private refreshStats():void {this.hero.maxHp=this.stats.maxHp;this.hero.hp=Math.min(this.hero.hp,this.hero.maxHp);}
+  /** A fresh, explicitly enabled test world starts directly at the selected encounter. */
+  startDeveloper(config:DeveloperConfig):void {
+    if(!this.developerOptions||this.phase!=='ready')return;
+    const c=parseDeveloperConfig(config);if(c.mapId!==this.mapId||c.seed!==this.seed)return;
+    Object.assign(this.loadout,c.loadout);for(const p of c.perks)this.combat.addPerk(p);
+    for(const id of Object.values(c.equipment))this.equipment.inventory.add(id);
+    Object.assign(this.equipment.equipped,c.equipment);this.refreshStats();this.hero.hp=this.hero.maxHp;
+    this.wave=c.wave-1;this.spawnWave();
+  }
   command(command:GameCommand):void {
+    if(command.type==='DevAction'){
+      if(!this.developerOptions)return;
+      if(command.action==='recover'){
+        Object.assign(this.hero,{alive:true,hp:this.hero.maxHp,statuses:[],shield:0,shieldTime:0,diedAt:-1,hurtAt:-1});
+        if(this.phase==='defeat')this.phase='fighting';this.stopControls();this.accumulator=0;
+      }
+      if(command.action==='health25'&&this.hero.alive)this.hero.hp=Math.max(1,this.hero.maxHp*.25);
+      if(command.action==='cooldowns'){for(const id of Object.keys(SKILLS) as SkillId[])this.cooldowns[id]=0;this.hero.attackCd=0;}
+      if(command.action==='clearEnemies'){
+        for(const [id,a] of this.actors)if(a.team==='enemy')this.actors.delete(id);
+        for(let i=this.projectiles.length-1;i>=0;i--)if(this.projectiles[i]!.enemy)this.projectiles.splice(i,1);
+      }
+      if(command.action==='step'&&this.phase==='fighting'){this.stopControls();this.accumulator=0;this.step();}
+      return;
+    }
+    if(command.type==='DevSpawn'){
+      if(!this.developerOptions||!Object.prototype.hasOwnProperty.call(ENEMIES,command.enemyId)||![1,5].includes(command.count)||this.phase!=='fighting')return;
+      let count=command.count;const radius=ENEMIES[command.enemyId].radius;
+      for(let ring=3;ring<=8&&count>0;ring++)for(let i=0;i<24&&count>0;i++){
+        if(this.actors.size>=128)return;
+        const angle=Math.atan2(this.hero.facing.y,this.hero.facing.x)+i*Math.PI/12,p={x:this.hero.x+Math.cos(angle)*ring,y:this.hero.y+Math.sin(angle)*ring};
+        if(!this.nav.walkable(p,radius)||[...this.actors.values()].some(a=>a.alive&&distance(a,p)<a.radius+radius+.15))continue;
+        this.spawnEnemy(command.enemyId,p,ENEMIES[command.enemyId].hp*this.map.waves[this.wave-1]!.hpScale);count--;
+      }
+      return;
+    }
     if(command.type==='CastSlot'&&SKILL_SLOTS.includes(command.slot)){this.command({type:'CastSkill',skillId:this.loadout[command.slot],point:command.point});return;}
     if(command.type==='Stop'){this.stopControls();return;}
     if (command.type==='Start' && this.phase==='ready') {
@@ -120,7 +159,7 @@ export class GameWorld {
   /** Fixed 30 Hz; cap wall-clock catch-up after background tabs at 250 ms. */
   advance(realDt:number):number {
     if (this.phase!=='fighting' || this.paused || !Number.isFinite(realDt) || realDt<0) { this.accumulator=0; return 1; }
-    this.accumulator+=Math.min(realDt,0.25);
+    this.accumulator+=Math.min(realDt,0.25)*(this.developerOptions?.speed??1);
     while (this.accumulator+1e-10>=FIXED_DT && this.phase==='fighting' && !this.paused) {
       this.accumulator-=FIXED_DT; this.step();
     }
@@ -137,7 +176,7 @@ export class GameWorld {
       perks:Array.from(this.combat.perks),choices:this.choices.map(c=>({...c})),pendingSkill:this.pendingSkill,...this.equipment.snapshot(),stats:this.stats,destination:this.destination?{...this.destination}:undefined,
       kills:this.combat.metrics.kills,primed:this.combat.isPrimed('hero'),metrics:{...this.combat.metrics}};
   }
-  /** Development fixture used only by headless tests/benchmark; never bound to normal controls. */
+  /** Used by wave spawning, headless fixtures and explicitly enabled developer tools. */
   spawnEnemy(kind:EnemyKind,at:Vec2,hp=ENEMIES[kind].hp as number):Unit {
     return this.makeUnit(`enemy-${++this.serial}`,kind,this.nav.nearest(at),hp);
   }
@@ -181,7 +220,7 @@ export class GameWorld {
   private cast(id:SkillId,point:Vec2):void {
     if(!Object.values(this.loadout).includes(id)||this.cooldowns[id]>1e-8)return;
     if(skill(id).behavior.kind==='dash'&&this.dashTime>0)return;
-    this.cooldowns[id]=skill(id).cooldown*this.equipment.stats.cooldownMultiplier;this.castFrom(this.hero,id,point);
+    this.cooldowns[id]=this.developerOptions?.noCooldown?0:skill(id).cooldown*this.equipment.stats.cooldownMultiplier;this.castFrom(this.hero,id,point);
   }
   private animateAction(source:Unit,point:Vec2,kind:'attack'|'cast'):void {
     const aim=direction(source,point);if(aim.x||aim.y)source.facing=aim;source.action={id:source.action.id+1,kind,time:this.time};
@@ -199,12 +238,13 @@ export class GameWorld {
     for (const key of Object.keys(SKILLS) as SkillId[]) this.cooldowns[key]=Math.max(0,this.cooldowns[key]-dt);
     this.combat.tick(dt);
     if (this.hero.alive) this.updateHero(dt);
-    for (const enemy of this.actors.values()) if (enemy.alive && enemy.kind!=='hero' && this.hero.alive) this.updateEnemy(enemy,dt);
+    if(!this.developerOptions?.freezeEnemies)for (const enemy of this.actors.values()) if (enemy.alive && enemy.kind!=='hero' && this.hero.alive) this.updateEnemy(enemy,dt);
     this.updateSwings(dt);this.updateProjectiles(dt);
     for (let i=this.cues.length-1;i>=0;i--) { this.cues[i]!.ttl-=dt; if(this.cues[i]!.ttl<=0) this.cues.splice(i,1); }
     // Death is resolved before wave rewards; simultaneous lethal hits cannot revive the hero.
     if (!this.hero.alive) { this.phase='defeat'; this.stopControls(); return; }
     if (!Array.from(this.actors.values()).some(a=>a.team==='enemy'&&a.alive)) {
+      if(this.developerOptions)return; // Keep a cleared sandbox available for spawning and inspection.
       this.phase='reward'; this.hero.path=[]; this.projectiles.length=0;this.swings.length=0;
       this.stopControls();this.combat.zones.length=0;
       this.equipment.gold+=waveGold(this.wave);

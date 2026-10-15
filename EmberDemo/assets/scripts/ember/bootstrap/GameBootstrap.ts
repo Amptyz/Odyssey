@@ -41,7 +41,7 @@ export class GameBootstrap extends Component {
   update(dt:number):void {
     if(!this.port)return;this.frameTime+=dt;this.frames++;
     if(this.frameTime>=0.5){this.fps=this.frames/this.frameTime;this.frames=0;this.frameTime=0;}
-    this.draw(this.port.world.advance(dt),dt);
+    this.draw(this.port.advance(dt),dt);
   }
   onDestroy():void {this.controls?.destroy();this.disposeDebug?.();this.art.dispose();}
   private draw(alpha:number,dt=0):void {const s=this.port.snapshot();this.arena.configureMap(s.mapId);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer,dt,this.hud.showColliders);this.hud.update(s,this.fps);}
