@@ -16,8 +16,8 @@
       "wave": 2,
       "choices": [
         "arc",
-        "swift",
-        "rhythm"
+        "corpse",
+        "double"
       ]
     },
     {
@@ -31,8 +31,8 @@
   ],
   "end": {
     "phase": "victory",
-    "time": 27.80000000000054,
-    "hp": 201
+    "time": 36.06666666666718,
+    "hp": 144
   },
   "skills": [
     "Q",
@@ -46,5 +46,5 @@
     "width": 960,
     "height": 540
   },
-  "timestamp": "2026-10-15T10:04:01.114Z"
+  "timestamp": "2026-10-15T12:18:47.186Z"
 }

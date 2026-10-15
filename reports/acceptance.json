@@ -1,10 +1,10 @@
 {
   "date": "2026-10-15",
   "timezone": "Asia/Shanghai",
-  "overall": "playable-demo-installed-and-web-validated",
+  "overall": "v0.2-content-architecture-and-two-playable-maps",
   "blocker": null,
   "unitTests": {
-    "passed": 35,
+    "passed": 48,
     "failed": 0
   },
   "coreTypecheck": "passed",
@@ -18,17 +18,29 @@
   },
   "headlessStress": "passed; see benchmark.json",
   "cocosProjectImport": "passed; official Empty(2D), editor-created Main.scene and Canvas/GameBootstrap",
-  "browserSmoke": "passed on preview and release; see browser-smoke.json",
-  "screenshots": "reports/01-start.png through 10-wasd-reward.png",
-  "webDesktopBuild": "passed; official Creator build, custom supported template, 3.4 MB",
+  "browserSmoke": "Historical v0.1 smoke passed; v0.2 revalidated by full playthrough and dual-control regression",
+  "screenshots": "reports/01-start.png through 13-frost-victory.png",
+  "webDesktopBuild": "v0.2 passed with official Creator 3.8.8 at 2026-10-15 20:16:20 Asia/Shanghai",
   "renderFps": "not benchmarked; 50-enemy stress measures simulation only",
   "cocosVersion": "3.8.8",
   "dashboardVersion": "2.2.2",
-  "browserPlaythrough": "Previous baseline passed: QWER, 3 rewards, 27 kills, victory, restart, resize. Dual-controls update separately verifies normal first-wave combat in both modes.",
+  "browserPlaythrough": "v0.2 passed: QWER, 3 rewards, 27 kills, victory, restart, resize, local-only HTTP resources",
   "limitations": [
     "No long-duration browser memory soak test",
     "Safari and Firefox not tested",
     "Defeat logic tested in simulation; failure menu not separately browser-tested"
   ],
-  "dualControls": "passed: 30 real-browser checks; WASD movement, pointer attacks, skills, persistence, pause switching, restart, resize, blur; see browser-controls.json"
+  "dualControls": "passed: 30 real-browser checks; WASD movement, pointer attacks, skills, persistence, pause switching, restart, resize, blur; see browser-controls.json",
+  "cleanCheckout": "passed: frozen-lockfile dependency installation, type checks, 48 tests and core build without editor caches",
+  "architecture": {
+    "skills": "semantic IDs, loadout slots, typed behavior handlers and preserved projectile identity",
+    "effects": "typed effect handlers, status instances, strongest-refresh burn/slow",
+    "enemies": "data definitions separated from behavior and appearance",
+    "maps": [
+      "ember: 20x20, 3 waves, 27 enemies",
+      "frost: 24x16, 2 waves, 13 enemies"
+    ],
+    "assets": "stable appearance IDs and presentation renderer; sprite/animation loading remains future work"
+  },
+  "browserContent": "passed: 15 real-browser checks; rectangular frost map, ice loadout, hero/enemy slow, 2 waves, 13 kills, 2 rewards, restart, map switching; see browser-content.json"
 }

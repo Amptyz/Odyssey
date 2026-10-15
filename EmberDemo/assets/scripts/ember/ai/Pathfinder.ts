@@ -1,14 +1,16 @@
-import { ARENA_SIZE, OBSTACLES } from '../content/config';
+import { mapDefinition,type MapDefinition } from '../content/maps';
 import { clamp, distance, type Vec2 } from '../utils/math';
 import { MinHeap } from './MinHeap';
 export interface Obstacle extends Vec2 { radius: number }
 /** A half-cell grid with radius-expanded obstacles and no diagonal corner cutting. */
 export class Pathfinder {
   readonly step = 0.5;
-  private readonly n = ARENA_SIZE * 2;
-  private readonly blocked = new Uint8Array(this.n * this.n);
+  private readonly n:number;
+  private readonly rows:number;
+  private readonly blocked:Uint8Array;
   private readonly edges: {id:number;cost:number}[][] = [];
-  constructor(readonly obstacles: readonly Obstacle[] = OBSTACLES, readonly radius = 0.36) {
+  constructor(readonly map:MapDefinition=mapDefinition('ember'),readonly radius=0.36) {
+    this.n=map.width*2;this.rows=map.height*2;this.blocked=new Uint8Array(this.n*this.rows);
     for (let i = 0; i < this.blocked.length; i++) this.blocked[i] = this.walkable(this.point(i)) ? 0 : 1;
     for(let i=0;i<this.blocked.length;i++) {
       const neighbors:{id:number;cost:number}[]=[];this.edges.push(neighbors);
@@ -16,15 +18,15 @@ export class Pathfinder {
       const x=i%this.n,y=Math.floor(i/this.n);
       for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++) {
         const nx=x+dx,ny=y+dy,id=ny*this.n+nx;
-        if((dx===0&&dy===0)||nx<0||ny<0||nx>=this.n||ny>=this.n||this.blocked[id])continue;
+        if((dx===0&&dy===0)||nx<0||ny<0||nx>=this.n||ny>=this.rows||this.blocked[id])continue;
         if(dx&&dy&&(this.blocked[y*this.n+nx]||this.blocked[ny*this.n+x]))continue;
         if(this.clear(this.point(i),this.point(id)))neighbors.push({id,cost:Math.hypot(dx,dy)*this.step});
       }
     }
   }
   walkable(p: Vec2, radius = this.radius): boolean {
-    return p.x >= radius && p.y >= radius && p.x <= ARENA_SIZE-radius && p.y <= ARENA_SIZE-radius &&
-      this.obstacles.every(o => distance(p, o) >= radius + o.radius);
+    return p.x >= radius && p.y >= radius && p.x <= this.map.width-radius && p.y <= this.map.height-radius &&
+      this.map.obstacles.every(o => distance(p, o) >= radius + o.radius);
   }
   clear(a: Vec2, b: Vec2, radius = this.radius): boolean {
     const steps = Math.max(1, Math.ceil(distance(a, b) / 0.12));
@@ -46,9 +48,9 @@ export class Pathfinder {
     return last;
   }
   nearest(p: Vec2): Vec2 {
-    const bounded = { x: clamp(p.x, this.radius, ARENA_SIZE-this.radius), y: clamp(p.y, this.radius, ARENA_SIZE-this.radius) };
+    const bounded = { x: clamp(p.x, this.radius, this.map.width-this.radius), y: clamp(p.y, this.radius, this.map.height-this.radius) };
     if (this.walkable(bounded)) return bounded;
-    let best = { x: 10, y: 10 }, bestD = Infinity;
+    let best = { ...this.map.heroSpawn }, bestD = Infinity;
     for (let i=0; i<this.blocked.length; i++) if (!this.blocked[i]) {
       const cell = this.point(i), d = distance(bounded, cell);
       if (d < bestD) { bestD = d; best = cell; }
@@ -81,7 +83,7 @@ export class Pathfinder {
     }
     return [];
   }
-  private index(p: Vec2): number { return clamp(Math.floor(p.y/this.step),0,this.n-1)*this.n+clamp(Math.floor(p.x/this.step),0,this.n-1); }
+  private index(p: Vec2): number { return clamp(Math.floor(p.y/this.step),0,this.rows-1)*this.n+clamp(Math.floor(p.x/this.step),0,this.n-1); }
   private connectedIndex(p:Vec2):number {
     const initial=this.index(p);if(!this.blocked[initial]&&this.clear(p,this.point(initial)))return initial;
     let best=initial,bestD=Infinity;

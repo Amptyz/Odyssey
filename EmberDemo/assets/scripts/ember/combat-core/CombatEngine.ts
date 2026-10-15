@@ -1,5 +1,7 @@
 import { PERKS } from '../content/perks';
-import { distance } from '../utils/math';
+import { skill } from '../content/skills';
+import { tickStatuses } from './StatusSystem';
+import { executeEffect } from './EffectHandlers';
 import type { Actor, CastResult, CombatCue, CombatEvent, Hit, PerkId, Rule } from './types';
 import type { SkillId } from '../content/config';
 export const MAX_CHAIN_DEPTH = 6;
@@ -57,18 +59,11 @@ export class CombatEngine {
     for (const actor of this.actors.values()) {
       if (!actor.alive) continue;
       if (actor.shieldTime>0) { actor.shieldTime = Math.max(0,actor.shieldTime-dt); if (actor.shieldTime===0) actor.shield=0; }
-      const burn = actor.burn;
-      if (!burn) continue;
-      const elapsed = Math.min(dt,burn.remaining);
-      burn.remaining = Math.max(0,burn.remaining-dt); burn.tickIn -= elapsed;
-      while (burn.tickIn<=1e-8 && actor.alive) {
-        burn.tickIn += 1;
-        const rootId = ++this.rootSerial;
-        this.scheduled.set(rootId,1);
-        this.queue.push({type:'OnStatusTick',sourceId:burn.sourceId,targetId:actor.id,cause:'burn',depth:0,tags:['dot','burn'],amount:burn.damage,rootId});
-        this.damage({sourceId:burn.sourceId,targetId:actor.id,amount:burn.damage,cause:'burn',rootId});
-      }
-      if (actor.alive && burn.remaining<=0) actor.burn=undefined;
+      tickStatuses(actor,dt,(status,hit)=>{
+        const rootId=++this.rootSerial;this.scheduled.set(rootId,1);
+        this.queue.push({type:'OnStatusTick',sourceId:status.sourceId,targetId:actor.id,cause:hit.cause,depth:0,skillId:status.skillId,tags:['dot',status.id],amount:status.power,rootId});
+        this.damage({...hit,rootId});
+      });
     }
   }
   private drain(): void {
@@ -88,7 +83,7 @@ export class CombatEngine {
           definition.rules.forEach((rule,index) => {
             const key = `${event.rootId}:${definition.id}:${index}:${event.targetId}`;
             if (this.dedup.has(key) || !this.matches(rule,event)) return;
-            this.dedup.add(key); this.apply(rule,event);
+            this.dedup.add(key); this.apply(rule,event,`${definition.id}:${index}`);
           });
         }
       }
@@ -100,35 +95,14 @@ export class CombatEngine {
   private matches(rule: Rule, event: CombatEvent): boolean {
     return rule.event===event.type && (!rule.skillId || rule.skillId===event.skillId) &&
       (!rule.causes || rule.causes.includes(event.cause)) &&
-      (!rule.targetBurning || !!this.actors.get(event.targetId)?.burn) &&
+      (!rule.targetStatus || !!this.actors.get(event.targetId)?.statuses.some(s=>s.id===rule.targetStatus)) &&
+      (!rule.skillTags || !!event.skillId && rule.skillTags.every(tag=>skill(event.skillId!).tags.includes(tag))) &&
       (!rule.sourcePrimed || this.primed.has(event.sourceId));
   }
-  private apply(rule: Rule, event: CombatEvent): void {
-    const effect=rule.effect, target=this.actors.get(event.targetId), source=this.actors.get(event.sourceId);
-    if (!target || !source) return;
-    switch (effect.type) {
-      case 'burn': target.burn={remaining:effect.duration,tickIn:target.burn?.tickIn ?? 1,sourceId:event.sourceId,damage:effect.damage}; break;
-      case 'prime': this.primed.add(source.id); break;
-      case 'empower': if (this.castResult) { this.castResult.damageMultiplier*=effect.multiplier; this.primed.delete(source.id); } break;
-      case 'extraShot': if (this.castResult) this.castResult.shots++; break;
-      case 'heal': {
-        if (!source.alive || (this.healCooldown.get(source.id) ?? 0)>0) break;
-        const amount=Math.min(effect.amount,source.maxHp-source.hp);
-        source.hp+=amount; this.healCooldown.set(source.id,effect.cooldown);
-        if (amount>0) this.cue({kind:'heal',at:{...source},amount}); break;
-      }
-      case 'explode': case 'arc': {
-        if (event.depth>=MAX_CHAIN_DEPTH) { this.metrics.dropped++; break; }
-        const nearby=Array.from(this.actors.values()).filter(a => a.alive && a.team!==source.team && a.id!==target.id && distance(a,target)<=effect.radius)
-          .sort((a,b) => distance(a,target)-distance(b,target) || a.id.localeCompare(b.id));
-        const victims=effect.type==='arc' ? nearby.slice(0,1) : nearby;
-        if (effect.type==='explode') this.cue({kind:'explosion',at:{...target},radius:effect.radius});
-        for (const victim of victims) {
-          if (effect.type==='arc') this.cue({kind:'arc',at:{...target},to:{...victim}});
-          this.damage({sourceId:source.id,targetId:victim.id,amount:effect.damage,cause:effect.type==='arc'?'arc':'explosion',depth:event.depth+1,rootId:event.rootId,tags:[effect.type]});
-        }
-        break;
-      }
-    }
+  private apply(rule:Rule,event:CombatEvent,ruleId:string):void {
+    const target=this.actors.get(event.targetId),source=this.actors.get(event.sourceId);
+    if(!target||!source)return;
+    executeEffect({source,target,event,ruleId,actors:this.actors,primed:this.primed,healCooldown:this.healCooldown,
+      castResult:this.castResult,maxDepth:MAX_CHAIN_DEPTH,cue:this.cue,damage:hit=>this.damage(hit),drop:()=>{this.metrics.dropped++;}},rule.effect);
   }
 }

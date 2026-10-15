@@ -23,20 +23,20 @@ describe('fixed-step world and inputs',()=>{
   });
   it('sweeps E against pillars and borders, with correct cooldown',()=>{
     const w=sandbox();w.hero.x=4;w.hero.y=6;
-    w.command({type:'CastSkill',skillId:'E',point:{x:10,y:6}});run(w,0.3);
-    expect(w.hero.x).toBeLessThan(5);expect(w.cooldowns.E).toBeCloseTo(SKILLS.E.cooldown-0.3,6);
-    w.command({type:'CastSkill',skillId:'E',point:{x:10,y:6}});expect(w.cooldowns.E).toBeLessThan(SKILLS.E.cooldown);
+    w.command({type:'CastSkill',skillId:'dash',point:{x:10,y:6}});run(w,0.3);
+    expect(w.hero.x).toBeLessThan(5);expect(w.cooldowns.dash).toBeCloseTo(SKILLS.dash.cooldown-0.3,6);
+    w.command({type:'CastSkill',skillId:'dash',point:{x:10,y:6}});expect(w.cooldowns.dash).toBeLessThan(SKILLS.dash.cooldown);
   });
   it('gates Q cooldown and blocks projectiles with solid obstacles',()=>{
     const w=sandbox();w.hero.x=4;w.hero.y=6;const e=w.spawnEnemy('ranged',{x:8,y:6},200);e.attackCd=999;
-    w.command({type:'CastSkill',skillId:'Q',point:e});w.command({type:'CastSkill',skillId:'Q',point:e});
+    w.command({type:'CastSkill',skillId:'fireball',point:e});w.command({type:'CastSkill',skillId:'fireball',point:e});
     expect(w.projectiles).toHaveLength(1);run(w,0.5);expect(e.hp).toBe(200);expect(w.projectiles).toHaveLength(0);
   });
   it('Q hits, W shields, R does area damage',()=>{
     const w=sandbox(); const e=w.spawnEnemy('melee',{x:11.3,y:10},300);e.attackCd=999;
-    w.command({type:'CastSkill',skillId:'Q',point:e});run(w,0.2);expect(e.hp).toBe(300-SKILLS.Q.damage);
-    w.command({type:'CastSkill',skillId:'W',point:w.hero});expect(w.hero.shield).toBe(SKILLS.W.shield);
-    w.command({type:'CastSkill',skillId:'R',point:w.hero});expect(e.hp).toBe(300-SKILLS.Q.damage-SKILLS.R.damage);
+    w.command({type:'CastSkill',skillId:'fireball',point:e});run(w,0.2);expect(e.hp).toBe(300-SKILLS.fireball.behavior.damage);
+    w.command({type:'CastSkill',skillId:'shield',point:w.hero});expect(w.hero.shield).toBe(SKILLS.shield.behavior.amount);
+    w.command({type:'CastSkill',skillId:'nova',point:w.hero});expect(e.hp).toBe(300-SKILLS.fireball.behavior.damage-SKILLS.nova.behavior.damage);
     run(w,4.1);expect(w.hero.shield).toBe(0);
   });
   it('right-click target auto approaches and attacks, stops after death',()=>{
@@ -56,7 +56,7 @@ describe('fixed-step world and inputs',()=>{
   });
   it('pause freezes time and rejects combat commands',()=>{
     const w=start();w.command({type:'TogglePause'});const before=w.snapshot();run(w,2);
-    w.command({type:'CastSkill',skillId:'Q',point:{x:0,y:0}});expect(w.snapshot()).toEqual(before);
+    w.command({type:'CastSkill',skillId:'fireball',point:{x:0,y:0}});expect(w.snapshot()).toEqual(before);
     w.command({type:'TogglePause'});run(w,1);expect(w.time).toBeCloseTo(1);
   });
   it('three waves each reward three distinct unowned perks then victory',()=>{
@@ -85,8 +85,8 @@ describe('fixed-step world and inputs',()=>{
   });
   it('reserve plus double is applied to actual projectiles',()=>{
     const w=start();w.combat.addPerk('reserve');w.combat.addPerk('double');
-    w.command({type:'CastSkill',skillId:'W',point:w.hero});w.command({type:'CastSkill',skillId:'Q',point:{x:15,y:10}});
-    expect(w.projectiles).toHaveLength(2);w.projectiles.forEach(p=>expect(p.damage).toBe(SKILLS.Q.damage*1.5));
+    w.command({type:'CastSkill',skillId:'shield',point:w.hero});w.command({type:'CastSkill',skillId:'fireball',point:{x:15,y:10}});
+    expect(w.projectiles).toHaveLength(2);w.projectiles.forEach(p=>expect(p.damage).toBe(SKILLS.fireball.behavior.damage*1.5));
   });
   it('all three lab presets retain three available choices per wave',()=>{
     for(const lab of ['burn','arc','reserve'] as const) {

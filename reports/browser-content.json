@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "checks": [
+    "original map defaults correctly",
+    "select rectangular frost map with two waves",
+    "map chooses ice loadout",
+    "equip alternate primary skill",
+    "restore ice skill",
+    "new enemy spawns from map data",
+    "ice rewards exclude unusable fire perks",
+    "ice rewards exclude unusable fire perks",
+    "complete two frost waves and 13 kills",
+    "one reward for each data-defined wave (1,2)",
+    "ice projectile identity and slow appear in live browser",
+    "frost enemy applies slow to hero",
+    "restart retains frost map and loadout",
+    "switch back restores original map after resize",
+    "no browser errors: "
+  ],
+  "errors": [],
+  "frostKills": 13,
+  "rewards": [
+    1,
+    2
+  ],
+  "timestamp": "2026-10-15T12:22:25.856Z"
+}

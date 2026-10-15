@@ -54,11 +54,11 @@ try{
   await click(145,-164);check((await state()).phase==='ready'&&await mode()==='wasd','restart retains chosen mode');
   await click(0,-106);
   // Normal combat: held mouse attacks plus Q/Space/R; no HP/damage/cooldown cheats.
-  const deadline=Date.now()+45000;let basicHit=false;
+  const deadline=Date.now()+45000;let basicHit=false,mouseHeld=false;
   while(Date.now()<deadline){
     const s=await state();if(s.phase==='reward')break;if(s.phase==='defeat')throw new Error('WASD combat defeated');
     const enemy=s.units.filter(u=>u.alive&&u.team==='enemy').sort((a,b)=>dist(a,s.hero)-dist(b,s.hero))[0];
-    if(enemy){await aim(enemy.x,enemy.y);await page.mouse.down();if(dist(enemy,s.hero)>3)await page.keyboard.press('q');}
+    if(enemy){await aim(enemy.x,enemy.y);if(!mouseHeld){await page.mouse.down();mouseHeld=true;}if(dist(enemy,s.hero)>3)await page.keyboard.press('q');}
     await page.keyboard.press('Space');
     const now=await state();if(now.cues.some(c=>c.kind==='damage'&&c.cause==='basic'))basicHit=true;
     await page.waitForTimeout(180);

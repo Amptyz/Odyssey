@@ -11,3 +11,9 @@ export function screenToWorld(p: Vec2, camera: Projection = DEFAULT_PROJECTION):
   const y = -(p.y - camera.origin.y) / (camera.tileHeight * camera.zoom / 2);
   return { x: (x + y) / 2, y: (y - x) / 2 };
 }
+
+/** Center any rectangular map in the playable viewport; HUD space stays reserved. */
+export function fitMapProjection(map:{width:number;height:number}):Projection {
+  const zoom=Math.min(1,1080/((map.width+map.height)*27),560/((map.width+map.height)*14));
+  return {tileWidth:54,tileHeight:28,zoom,origin:{x:-(map.width-map.height)*27*zoom/2,y:(map.width+map.height)*14*zoom/2-15}};
+}

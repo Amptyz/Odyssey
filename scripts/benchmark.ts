@@ -16,8 +16,8 @@ for(let i=0;i<3600;i++) {
     const t=i/30,point={x:10+Math.cos(t*0.3)*7,y:10+Math.sin(t*0.3)*7};
     world.command({type:'MoveTo',point});
     const enemy=[...world.actors.values()].find(a=>a.team==='enemy'&&a.alive)!;
-    world.command({type:'CastSkill',skillId:'Q',point:enemy});world.command({type:'CastSkill',skillId:'W',point});
-    world.command({type:'CastSkill',skillId:'R',point});
+    world.command({type:'CastSkill',skillId:'fireball',point:enemy});world.command({type:'CastSkill',skillId:'shield',point});
+    world.command({type:'CastSkill',skillId:'nova',point});
   }
   const before=performance.now();world.advance(1/30);world.snapshot();times.push(performance.now()-before);
   if(i%600===599){gc?.();heap.push(process.memoryUsage().heapUsed);}

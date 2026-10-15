@@ -10,9 +10,9 @@ for(const seed of [0,1,2,42,1234,2026,31415,65535,99999,4294967295]) {
     if(world.phase==='reward'){world.command({type:'ChoosePerk',perkId:world.choices.find(id=>id==='burn'||id==='leech')??world.choices[0]!});}
     if(step%6===0){const enemies=[...world.actors.values()].filter(a=>a.team==='enemy'&&a.alive).sort((a,b)=>distance(a,world.hero)-distance(b,world.hero));
       const target=enemies[0];if(target){
-        world.command({type:'SetTarget',targetId:target.id});world.command({type:'CastSkill',skillId:'Q',point:target});
-        if(distance(target,world.hero)<5)world.command({type:'CastSkill',skillId:'W',point:world.hero});
-        if(enemies.filter(e=>distance(e,world.hero)<3.8).length>=2)world.command({type:'CastSkill',skillId:'R',point:world.hero});
+        world.command({type:'SetTarget',targetId:target.id});world.command({type:'CastSkill',skillId:'fireball',point:target});
+        if(distance(target,world.hero)<5)world.command({type:'CastSkill',skillId:'shield',point:world.hero});
+        if(enemies.filter(e=>distance(e,world.hero)<3.8).length>=2)world.command({type:'CastSkill',skillId:'nova',point:world.hero});
       }
     }
     world.advance(1/30);

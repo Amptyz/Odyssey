@@ -4,10 +4,10 @@ import type { WorldSnapshot } from '../simulation/GameWorld';
 import { distance,type Vec2 } from '../utils/math';
 import { screenToWorld,worldToScreen,type Projection } from '../render/IsoProjection';
 import type { Hud } from '../render/Hud';
-import type { SkillId } from '../content/config';
+import type { SkillSlot } from '../content/config';
 export type ControlMode='classic'|'wasd';
 const STORAGE_KEY='ember.controlMode';
-const KEY_SKILLS:Partial<Record<number,SkillId>> = {[KeyCode.KEY_Q]:'Q',[KeyCode.KEY_W]:'W',[KeyCode.KEY_E]:'E',[KeyCode.KEY_R]:'R'};
+const KEY_SKILLS:Partial<Record<number,SkillSlot>> = {[KeyCode.KEY_Q]:'Q',[KeyCode.KEY_W]:'W',[KeyCode.KEY_E]:'E',[KeyCode.KEY_R]:'R'};
 export class InputController {
   pointer:Vec2={x:12,y:10};private state?:WorldSnapshot;
   private readonly held=new Set<number>();
@@ -22,7 +22,7 @@ export class InputController {
     if(typeof window!=='undefined'){window.addEventListener('contextmenu',this.onContext);window.addEventListener('blur',this.onBlur);document.addEventListener('visibilitychange',this.onVisibility);window.addEventListener('mouseup',this.onWindowUp);window.addEventListener('keydown',this.onBrowserKey);}
   }
   update(state:WorldSnapshot):void {
-    if(this.state&&(this.state.phase!==state.phase||this.state.paused!==state.paused||this.state.wave!==state.wave||state.tick<this.state.tick))this.clear();
+    if(this.state&&(this.state.mapId!==state.mapId||this.state.phase!==state.phase||this.state.paused!==state.paused||this.state.wave!==state.wave||state.tick<this.state.tick))this.clear();
     this.state=state;
     if(this.pointerLocal)this.pointer=this.aimPoint(this.pointerLocal);
     if(this.mode!=='wasd'||state.phase!=='fighting'||state.paused)return;
@@ -74,7 +74,7 @@ export class InputController {
     if(!this.state||this.state.phase!=='fighting'||this.state.paused)return;
     if(this.mode==='wasd'){
       if(button===EventMouse.BUTTON_LEFT){this.attacking=true;this.port.send({type:'Attack',point:this.pointer});}
-      if(button===EventMouse.BUTTON_RIGHT)this.port.send({type:'CastSkill',skillId:'Q',point:this.pointer});
+      if(button===EventMouse.BUTTON_RIGHT)this.port.send({type:'CastSlot',slot:'Q',point:this.pointer});
     }else if(button===EventMouse.BUTTON_RIGHT){
       const hit=this.hit(p);this.port.send(hit?{type:'SetTarget',targetId:hit.id}:{type:'MoveTo',point:this.pointer});
     }
@@ -83,7 +83,7 @@ export class InputController {
   private onKey(e:EventKeyboard):void {
     if(this.held.has(e.keyCode))return;this.held.add(e.keyCode);
     const skill=this.mode==='wasd'?(e.keyCode===KeyCode.SPACE?'W':e.keyCode===KeyCode.KEY_W?undefined:KEY_SKILLS[e.keyCode]):KEY_SKILLS[e.keyCode];
-    if(skill)this.port.send({type:'CastSkill',skillId:skill,point:this.pointer});
+    if(skill)this.port.send({type:'CastSlot',slot:skill,point:this.pointer});
     else if(e.keyCode===KeyCode.ESCAPE)this.port.send({type:'TogglePause'});
     else if(e.keyCode===KeyCode.F3)this.hud.toggleDebug();
     else if(e.keyCode===KeyCode.DIGIT_1)this.hud.keyChoice(0);

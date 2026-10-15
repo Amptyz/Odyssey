@@ -1,4 +1,5 @@
 import { _decorator, Canvas, Component, game, ResolutionPolicy, UITransform, view } from 'cc';
+import { validateContent } from '../content/validate';
 import { InputController } from '../input/InputController';
 import { LocalTransport } from '../platform/LocalTransport';
 import { ArenaView } from '../render/ArenaView';
@@ -13,6 +14,7 @@ export class GameBootstrap extends Component {
   private port!:LocalTransport;private arena!:ArenaView;private hud!:Hud;private controls!:InputController;
   private fps=60;private frameTime=0;private frames=0;private disposeDebug?:()=>void;
   start():void {
+    validateContent();
     if(!this.node.getComponent(Canvas))throw new Error('GameBootstrap must be attached to the editor-created Canvas.');
     view.setDesignResolutionSize(1280,720,ResolutionPolicy.SHOW_ALL);view.resizeWithBrowserSize(true);
     this.node.getComponent(UITransform)!.setContentSize(1280,720);
@@ -37,5 +39,5 @@ export class GameBootstrap extends Component {
     this.draw(this.port.world.advance(dt));
   }
   onDestroy():void {this.controls?.destroy();this.disposeDebug?.();}
-  private draw(alpha:number):void {const s=this.port.snapshot();this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer);this.hud.update(s,this.fps);}
+  private draw(alpha:number):void {const s=this.port.snapshot();this.arena.configureMap(s.mapId);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer);this.hud.update(s,this.fps);}
 }
