@@ -5,6 +5,7 @@ import { Pathfinder } from '../ai/Pathfinder';
 import { CombatEngine } from '../combat-core/CombatEngine';
 import { CollisionWorld } from '../combat-core/CollisionWorld';
 import type { Actor, CombatCue, DamageZone, Hit, MissileEffect, PerkId, PerkDefinition, Cause } from '../combat-core/types';
+import {shapeContours,cloneShape} from '../combat-core/ShapeContours';
 import { ENEMIES, FIXED_DT, HERO, SKILLS, type EnemyKind, type SkillId } from '../content/config';
 import { skill,SKILL_SLOTS,type Loadout,type SkillSlot } from '../content/skills';
 import { mapDefinition,type MapId,type MapDefinition } from '../content/maps';
@@ -226,7 +227,7 @@ export class GameWorld {
       hero:units.find(u=>u.id===p.id)??this.unitSnapshot(p.hero),units,projectiles:this.projectiles.map(p=>({...p,previous:{...p.previous},payload:p.payload?{...p.payload}:undefined,targetExpression:p.targetExpression?{...p.targetExpression}:undefined,onHit:p.onHit?.map(s=>({...s}))})),
       zones:this.combat.zones.map(z=>({...z,from:{...z.from},to:{...z.to}})),
       swings:this.swings.map(({hitIds,...s})=>({...s,center:{...s.center},facing:{...s.facing}})),
-      cues:this.cues.map(c=>({...c,at:{...c.at},to:c.to?{...c.to}:undefined,facing:c.facing?{...c.facing}:undefined})),mapId:this.mapId,totalWaves:this.map.waves.length,level:levelSnapshot(this.map,Math.max(1,this.wave),this.levelParticipants(),this.remainingEnemies),enemies:this.enemies.snapshot(),loadout:{...p.loadout},
+      cues:this.cues.map(c=>({...c,at:{...c.at},to:c.to?{...c.to}:undefined,facing:c.facing?{...c.facing}:undefined,shape:c.shape?cloneShape(c.shape):undefined,contours:c.contours?.map(path=>path.map(p=>({...p})))})),mapId:this.mapId,totalWaves:this.map.waves.length,level:levelSnapshot(this.map,Math.max(1,this.wave),this.levelParticipants(),this.remainingEnemies),enemies:this.enemies.snapshot(),loadout:{...p.loadout},
       cooldowns:Object.fromEntries(SKILL_SLOTS.map(slot=>[slot,p.cooldowns[p.loadout[slot]]])) as Record<SkillSlot,number>,
       perks:Array.from(this.combat.perksFor(p.id)),choices:p.choices.map(c=>({...c})),pendingSkill:p.pendingSkill,...p.equipment.snapshot(),stats:this.statsFor(p.id),destination:p.destination?{...p.destination}:undefined,
       kills:this.combat.metrics.kills,primed:this.combat.isPrimed(p.id),metrics:{...this.combat.metrics},party:Array.from(this.players.values(),member=>({id:member.id,ready:member.ready,equipment:{...member.equipment.equipped},purchaseOrder:[...member.equipment.purchaseOrder],appearance:{...member.equipment.appearance}}))};
@@ -432,6 +433,9 @@ export class GameWorld {
     }
   }
   private addCue(cue:CombatCue):void {
+    // Numeric cue fields come directly from the hit query; freeze the geometry at release.
+    const shape=cue.shape??(cue.kind==='explosion'&&cue.radius!==undefined?{kind:'circle' as const,center:{...cue.at},radius:cue.radius}:cue.kind==='swing'&&cue.radius!==undefined&&cue.facing?{kind:'sector' as const,center:{...cue.at},radius:cue.radius,facing:{...cue.facing},arc:cue.arc??Math.PI/2}:cue.kind==='quake'&&cue.to&&cue.radius!==undefined?{kind:'capsule' as const,center:{...cue.at},end:{...cue.to},radius:cue.radius}:undefined);
+    if(shape)cue={...cue,shape:cloneShape(shape),contours:shapeContours(shape,this.collision)};
     if(cue.kind==='damage'&&cue.actorId){const unit=this.actors.get(cue.actorId);if(unit){unit.hurtAt=this.time;if(unit.hp<=0&&unit.diedAt<0)unit.diedAt=this.time;}}
     const duration=cue.kind==='damage'||cue.kind==='heal'?0.8:0.45;
     this.cues.push({...cue,at:{x:cue.at.x,y:cue.at.y},to:cue.to?{x:cue.to.x,y:cue.to.y}:undefined,id:++this.serial,ttl:duration,duration});

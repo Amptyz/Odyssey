@@ -126,7 +126,7 @@ describe('direct movement and pointer attacks',()=>{
     w.command({type:'Attack',point:back});run(w,0.1);expect(back.hp).toBe(500-HERO.attackDamage/1.05);
   });
   it('does not hit out of range or through obstacles',()=>{
-    const w=sandbox(),far=w.spawnEnemy('melee',{x:15,y:10},500);
+    const w=sandbox(),far=w.spawnEnemy('melee',{x:10+HERO.attackRange+1,y:10},500);
     w.command({type:'Attack',point:far});run(w,0.1);expect(far.hp).toBe(500);
     Object.assign(w.hero,{x:4.8,y:6,attackCd:0});const hidden=w.spawnEnemy('melee',{x:7.2,y:6},500);
     w.command({type:'Attack',point:hidden});run(w,0.1);expect(hidden.hp).toBe(500);

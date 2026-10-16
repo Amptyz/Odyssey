@@ -10,8 +10,12 @@ Asset type: [runtime sprite / modular equipment / environment prop / animation f
 Request: [specific asset and intended gameplay role]
 Inputs: image 1 is [identity or edit target]; image 2 is [style or layout reference].
 Match the existing Project Ember three-quarter gameplay view and proportions.
-Bright living ruins, simplified non-pixel cartoon shapes, broad color blocks,
-soft cel shading, clean warm-dark outlines, restrained surface detail.
+Bright living ruins in deliberate pixel art, broad readable pixel clusters,
+a shared limited palette, two or three hard-edged shades per material,
+clean stepped warm-dark outlines, restrained surface detail.
+Logical canvas: [width x height source texels]; palette: [palette reference].
+Grid origin: [origin]; display: [integer design-pixel scale after sample check].
+No antialiasing, soft gradients, blur, photo textures or faux pixel filter.
 Keep the subject readable at [actual in-game display size].
 Use true transparent alpha outside the asset. No ground shadow, scenery,
 labels, watermark, grid lines, checkerboard backdrop, or background halo.
@@ -21,7 +25,7 @@ Avoid dense engravings, tiny leaves, veins, scratches and photoreal textures.
 Output layout: [actual requested columns, rows, ordered contents and target size].
 ```
 
-实际编辑现有图时将 Use case 改为合适的 edit 类型，如 `precise-object-edit`，明确“只改什么、哪些位置 / 颜色 / 部件不动”。目标尺寸是生成请求，不保证返回值；接入前测量。镜头参数以实际参考为准，不擅自指定一个与原画不同的角度。
+实际编辑现有图时将 Use case 改为合适的 edit 类型，如 `precise-object-edit`，明确“只改什么、哪些位置 / 颜色 / 部件不动”。逻辑画布与目标尺寸是生成请求，不保证返回值；接入前测量真实网格、像素簇、色板和显示倍率。高分辨率输出即使放大后可见方格也不等于像素成品；修正制作或在当前工具授权范围内处理并记录网格映射，不能仅缩小旧图后宣称重制。镜头参数以实际参考为准，不擅自指定一个与原画不同的角度。
 
 ## 怪物身份图与动作
 
@@ -43,7 +47,9 @@ Use the supplied [identity image] for this exact subject.
 Create ONLY [action] facing [reference-relative screen direction].
 [Selected action block, with the exact ordered poses for this frame group.]
 Keep camera position, zoom, facing, body scale, limb count, palette,
-mask/face, weapon and foliage shapes consistent throughout.
+mask/face, weapon and foliage shapes, palette ramps and pixel grid consistent throughout.
+Use a common logical canvas, integer source offsets and unchanged body scale.
+No subpixel antialiasing or randomly changing single-pixel noise.
 Allow the intended pose changes; do not resize each pose to the same bounding box.
 The full weapon and silhouette remain within each frame.
 No camera motion, cuts, extra actions, added limbs, new equipment,
@@ -102,13 +108,16 @@ No hero, monster, UI, labels or combat effects.
 ## 特效与技能贴图
 
 ```text
-Create an isolated [specific effect] matching Ember's clean cartoon style.
+Create an isolated [specific effect] matching Ember's bright pixel-ruins style.
 Show [preparation / readable core / short burst / fast decay as appropriate].
-Use [element color plus distinct shape], broad readable forms and restrained glow.
+Use [element palette plus distinct pixel shape], a short bright core, stepped trails
+and grouped fragments. Keep decoration weaker than hostile warnings.
+Logical pixel size, frames, lifetime and density: [PIXEL_VFX specification].
+Use hard-edged pixel clusters and discrete fading steps, without soft bloom.
 Keep the actual direction and core boundary clear at gameplay scale.
 No body, weapon, enemy, map, ground shadow, UI, text or baked background.
 Avoid full-screen flashes, high-frequency flicker, dense tiny particles,
 long bright trails and persistent halos that obscure enemy warnings.
 ```
 
-优先复用现有 Graphics 能表达的形状；用户要求新位图特效时生成真实素材并说明接入需要。受击、刀光和弹体与角色动画分开，不用图片内的大小代替逻辑判定范围。
+形态、色板、节奏与装饰预算遵循 [像素特效规范](../../../../docs/PIXEL_VFX.md)。现有 Graphics 可作结构参考，尚不是统一像素粒子系统；用户要求新位图特效时生成真实素材并说明接入需要。受击、刀光和弹体与角色动画分开，不用图片内的大小代替逻辑判定范围。

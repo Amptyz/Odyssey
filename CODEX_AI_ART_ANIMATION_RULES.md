@@ -1,5 +1,7 @@
 # Project Ember — AI 美术与动画生成准则（Codex 审阅草案）
 
+> **后续方向已更新为像素遗迹风（2026-10-16）：** 本文中“非像素 / 卡通”、高分辨率画布等旧意见均保留为历史，不得用于新制作。当前权威标准是 [ART_DIRECTION](docs/ART_DIRECTION.md) 与 [PIXEL_VFX](docs/PIXEL_VFX.md)，现有素材尚未像素化。
+
 > **2026-10-16 审核说明：**下方保留原草案正文，不作为当前执行规则。差异与采用方案见 [审阅结果](docs/ART_ANIMATION_REVIEW.md)，后续素材制作使用 [ember-art skill](.agents/skills/ember-art/SKILL.md)；人物风格、坐标、播放窗口和工具路线已按现有工程修订。
 
 > 状态：供 Codex **审阅并适配**的草案，不是无条件覆盖现有工程的命令。\

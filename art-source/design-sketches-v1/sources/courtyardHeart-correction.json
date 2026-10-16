@@ -1,0 +1,8 @@
+{
+  "key": "courtyardHeart-correction",
+  "input": "sources/16-courtyardHeart-before-correction.png",
+  "output": "monsters/16-courtyardHeart.png",
+  "prompt": "Edit only the BASIC ATTACK recovery caption on this exact existing design board. It currently reads RECOVERY / 收招 t = 1.15 - 2.85. Replace it with RECOVERY / 收招 t = 1.15 - 4.00 (duration 2.85s). Anticipation stays 0.00-1.00 and strike stays 1.00-1.15. All character drawings, typography style, three views, colors, phase studies, layout and every other label must remain identical. No redesigns. Only the attack end timestamp is wrong.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-2ab7c847-39cc-4283-b86f-e3591ebb4221.png"
+}

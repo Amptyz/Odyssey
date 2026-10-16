@@ -1,0 +1,405 @@
+{
+  "date": "2026-10-16",
+  "scope": "Static design-board coverage and PDF packaging only",
+  "counts": {
+    "monsters": 17,
+    "equipmentIcons": 18,
+    "basicAttacks": 17,
+    "specialSkills": 12,
+    "bossSkillBoards": 2,
+    "finalBoards": 22,
+    "pdfPages": 22,
+    "targetedImageCorrections": 13
+  },
+  "pdf": "output/pdf/ember-design-sketchbook.pdf",
+  "pdfBytes": 59668385,
+  "pdfSha256": "0a85613d269ee08a2a899c6b9742f953f53dff36f09549475b9a02e235392b58",
+  "checks": {
+    "allExpectedFilesPresent": true,
+    "allPngFilesDecode": true,
+    "pdfPageCountAndDimensions": true,
+    "fullResolutionEmbedded": true,
+    "visualReview": {
+      "pngBoards": "All 22 final boards visually inspected during generation and correction.",
+      "pdfRepresentativePages": [
+        1,
+        2,
+        3,
+        4,
+        14,
+        19,
+        20,
+        21,
+        22
+      ],
+      "pdfResult": "No packaging crop, stretch or footer overlap found in reviewed renders."
+    },
+    "runtimeIntegration": false,
+    "allPdfPagesRenderedAndDecoded": 22,
+    "popplerExitCode": 0,
+    "finalPngHashesMatchPdfPackage": true,
+    "catalogAndTechnicalNotesLinksChecked": 29,
+    "generationRecordsComplete": true,
+    "allCorrectionInputsPreserved": true,
+    "gitDiffWhitespaceCheck": "Passed"
+  },
+  "pages": [
+    {
+      "page": 1,
+      "key": "equipment-weapon",
+      "path": "equipment/weapon-icons.png",
+      "pixels": [
+        1448,
+        1086
+      ],
+      "pagePoints": [
+        840,
+        658.0
+      ],
+      "sha256": "6145f7f61157de0bc84f223d71291434ed79b0617e2eb78ae2a65652edb55df8",
+      "pngBytes": 1682243,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 2,
+      "key": "equipment-body",
+      "path": "equipment/body-icons.png",
+      "pixels": [
+        1448,
+        1086
+      ],
+      "pagePoints": [
+        840,
+        658.0
+      ],
+      "sha256": "d2e5a8701e41e4c47bf3e6921084cc3a802f148aa5ae1a056ce7d305aeeec19e",
+      "pngBytes": 2116676,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 3,
+      "key": "equipment-head",
+      "path": "equipment/head-icons.png",
+      "pixels": [
+        1448,
+        1086
+      ],
+      "pagePoints": [
+        840,
+        658.0
+      ],
+      "sha256": "438f196d8456ed5de8316249ef1c42ba9baa19164f8a1578d27fca470f4142bb",
+      "pngBytes": 1852148,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 4,
+      "key": "melee",
+      "path": "monsters/01-melee.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "f9c30f4cb3af6190c9e7d2a477d462a6cb162bb7e50e641db8233be9eb48473d",
+      "pngBytes": 1745452,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 5,
+      "key": "ranged",
+      "path": "monsters/02-ranged.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "5344338d429ea1f8402d78c11aa6c6f28f4abf5b11f9aa40a27f5331fa6798a7",
+      "pngBytes": 1849215,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 6,
+      "key": "stoneback",
+      "path": "monsters/03-stoneback.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "86136f8a7812574830b99dd2aff6f1d6406b7cf95441f3d7a2e1bf6da54989e0",
+      "pngBytes": 1933722,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 7,
+      "key": "reedLancer",
+      "path": "monsters/04-reedLancer.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "ff879af016f3bf7b062df7c74ba229d43aa3d49c7ab94ec2f9f3217c462804c2",
+      "pngBytes": 1850792,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 8,
+      "key": "sunbud",
+      "path": "monsters/05-sunbud.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "053c17d4d56b2bf8924cebef8da50101c10c9875008884de4f68501c53c92ce6",
+      "pngBytes": 1795194,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 9,
+      "key": "frostling",
+      "path": "monsters/06-frostling.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "d5435b5fa8ae956be460f7aa502803d241f55c510ae90320efb3cc7f182d4700",
+      "pngBytes": 1941266,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 10,
+      "key": "shardCrab",
+      "path": "monsters/07-shardCrab.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "2e9d5597d78644f1356e445afc5d54f0af57b0a8d118eb2bd3fd5876ce5aafb7",
+      "pngBytes": 2094714,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 11,
+      "key": "rimeMoth",
+      "path": "monsters/08-rimeMoth.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "7cadae0d764a7752cfe9e9b4775d2612c2494c295d64fe73b5a49d49df70dbf2",
+      "pngBytes": 1927356,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 12,
+      "key": "chimeSentry",
+      "path": "monsters/09-chimeSentry.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "fd53e3c335b8f5177912cbf4b8ac9165dca0db0f31d51a62dfd8a693cd56218d",
+      "pngBytes": 1948208,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 13,
+      "key": "snowHare",
+      "path": "monsters/10-snowHare.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "2aae2eda3b369eba409edff5a29df86d93bc24d663f7b855ff8f587b73d16188",
+      "pngBytes": 1925831,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 14,
+      "key": "warden",
+      "path": "monsters/11-warden.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "b97486c882eec19a8b32bfdc68280b1e9faac7201acccab2d4e6b47c98c36e1a",
+      "pngBytes": 2190538,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 15,
+      "key": "emberRam",
+      "path": "monsters/12-emberRam.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "32f6a42ee239d4f2a631e73a977b0780a883cbaae5f40df14154924c78e67b56",
+      "pngBytes": 1962181,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 16,
+      "key": "bellKeeper",
+      "path": "monsters/13-bellKeeper.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "247af2a2ad70a1bcf44038e6bd6c7a4169f9ae904ceb7a951d397c16853914fb",
+      "pngBytes": 1979882,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 17,
+      "key": "mirrorKnight",
+      "path": "monsters/14-mirrorKnight.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "1faebf2f1b3906dc73d47e41dd7747f47384c1c981f6d12c6ddcb3b8a887c2fc",
+      "pngBytes": 2125042,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 18,
+      "key": "rimeWeaver",
+      "path": "monsters/15-rimeWeaver.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "2651d3da149ec4c72c1e3bd8e43e99055a7fe9cd01ba8b8d21c8cb2aa837304a",
+      "pngBytes": 2106508,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 19,
+      "key": "courtyardHeart",
+      "path": "monsters/16-courtyardHeart.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "7e2c2d45163c8340e162e8e234fc5ef27edaa9ceaccdd7986b98236f56bb122f",
+      "pngBytes": 2113766,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 20,
+      "key": "courtyardHeart-skills",
+      "path": "monsters/16-courtyardHeart-skills.png",
+      "pixels": [
+        1024,
+        1536
+      ],
+      "pagePoints": [
+        840,
+        1270.0
+      ],
+      "sha256": "4d9ee63ee62e4aae1897955b0ea1777319b9ebe49622d4ef7efe90e29ef51dba",
+      "pngBytes": 2124363,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 21,
+      "key": "mirrorRegent",
+      "path": "monsters/17-mirrorRegent.png",
+      "pixels": [
+        1254,
+        1254
+      ],
+      "pagePoints": [
+        840,
+        862.0
+      ],
+      "sha256": "c2a499a0108c0d482333aa4239a629deea9e44a449f7791dd6854bf29cc4329e",
+      "pngBytes": 2087595,
+      "pdfEmbeddedAtOriginalResolution": true
+    },
+    {
+      "page": 22,
+      "key": "mirrorRegent-skills",
+      "path": "monsters/17-mirrorRegent-skills.png",
+      "pixels": [
+        1122,
+        1402
+      ],
+      "pagePoints": [
+        840,
+        1065.6364
+      ],
+      "sha256": "7522fe6e90c0193cbf05cfc0b1d81b780dc403bcdec29640f97d43ed3a043aab",
+      "pngBytes": 2276773,
+      "pdfEmbeddedAtOriginalResolution": true
+    }
+  ],
+  "limitations": [
+    "Static design sketches, not transparent production sprites, native pixel-grid masters, or playable animation frames.",
+    "Some generated lettering and pose/detail alignment require production cleanup; exact geometry and timing are in combat-notes.md and manifest.json.",
+    "No Cocos runtime assets or gameplay code changed by this sketch task; no build, animation playback or performance validation."
+  ]
+}

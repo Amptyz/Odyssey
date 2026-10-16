@@ -45,7 +45,7 @@ describe('combat rules',()=>{
   });
   it('corpse explosion triggers arc, which never re-arcs',()=>{
     const {core,a,b,actors}=fixture(['corpse','arc']);
-    const c=actor('c',4); actors.set('c',c); a.hp=1;a.statuses=[{id:'burn',remaining:3,tickIn:1,power:9,sourceId:'hero'}];
+    a.x=2;b.x=4;const c=actor('c',8); actors.set('c',c); a.hp=1;a.statuses=[{id:'burn',remaining:3,tickIn:1,power:9,sourceId:'hero'}];
     core.damage({sourceId:'hero',targetId:'a',amount:1,cause:'basic'});
     expect(b.hp).toBe(70); expect(c.hp).toBe(84);
     expect(core.history.filter(e=>e.type==='OnHit'&&e.cause==='arc')).toHaveLength(1);
@@ -71,7 +71,7 @@ describe('combat rules',()=>{
   });
   it('enforces chain depth for a long burning chain',()=>{
     const {core,actors}=fixture(['corpse']); actors.delete('a');actors.delete('b');
-    for(let i=0;i<20;i++) { const a=actor(`chain${i}`,i*2,10); a.statuses=[{id:'burn',remaining:3,tickIn:1,power:9,sourceId:'hero'}]; actors.set(a.id,a); }
+    for(let i=0;i<20;i++) { const a=actor(`chain${i}`,i*4,10); a.statuses=[{id:'burn',remaining:3,tickIn:1,power:9,sourceId:'hero'}]; actors.set(a.id,a); }
     core.damage({sourceId:'hero',targetId:'chain0',amount:10,cause:'basic'});
     expect(core.metrics.maxDepth).toBe(MAX_CHAIN_DEPTH);expect(core.metrics.dropped).toBeGreaterThan(0);
     expect(actors.get('chain8')!.alive).toBe(true);

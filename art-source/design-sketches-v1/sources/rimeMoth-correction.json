@@ -1,0 +1,8 @@
+{
+  "key": "rimeMoth",
+  "input": "sources/08-rimeMoth-before-correction.png",
+  "output": "monsters/08-rimeMoth.png",
+  "prompt": "Use case: precise-object-edit. Correct this ORIGINAL Project Ember concept board while preserving its layout, identity, pixel-art style, background, lettering and all passed drawings. Change only bottom-left telegraph plus scatter annotations. Draw THREE separate narrow rectangular projectile lanes originating together at moth, with angles -25 degrees, 0 degrees, +25 degrees, length 10 and each full width 0.48. EMPTY spaces between lanes: do not fill a sector, and no 100-degree or +/-50 degree label. Strike/VFX depict three diverging projectiles following the same three directions. Keep moth anatomy, three views and all pose rows otherwise unchanged. This is a targeted technical correction; all unaffected views must remain visually identical. Return the full complete board, no crop.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-eec0b543-2c2e-43cc-88d9-4ba810c647ba.png"
+}

@@ -1,0 +1,8 @@
+{
+  "key": "bellKeeper",
+  "input": "sources/13-bellKeeper-before-correction.png",
+  "output": "monsters/13-bellKeeper.png",
+  "prompt": "Use case: precise-object-edit. Correct this ORIGINAL Project Ember concept board while preserving its layout, identity, pixel-art style, background, lettering and all passed drawings. Fix ONLY bottom special skill bellEcho row. This spell strikes a SAMPLED REMOTE TARGET POINT twice, at t=1.05 and t=2.00, BOTH at the SAME sampled center, radius2.3. Anticipation t0-1.05; release illustration show two numbered echo strikes toward a separate remote target marker, not a ring under the caster. Recovery after second strike t2.00-2.30. Right top-down diagram: the bell stands OUTSIDE the target-centered circle, show target center cross and labels 1 at1.05,2 at2.00. Keep all model views, basic attack and other rows unchanged. This is a targeted technical correction; all unaffected views must remain visually identical. Return the full complete board, no crop.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-f8f3c32a-2685-4800-b5c4-2eda2da3a81e.png"
+}

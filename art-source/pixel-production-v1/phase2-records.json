@@ -1,0 +1,74 @@
+[
+  {
+    "id": "mirrorRegent-phase2",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/mirrorRegent-phase2.png",
+    "grid": [
+      4,
+      6
+    ],
+    "height": 128,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "regentLanes:windup",
+      "regentLanes:strike",
+      "regentLanes:recovery",
+      "regentHalo:windup",
+      "regentHalo:strike",
+      "regentHalo:recovery",
+      "regentMarks:windup",
+      "regentMarks:strike",
+      "regentMarks:recovery",
+      "regentOath:windup",
+      "regentOath:strike",
+      "regentOath:recovery",
+      "phase2",
+      "idle21",
+      "idle22",
+      "idle23"
+    ],
+    "reference": "D:\\projs\\game\\Odyssey\\EmberDemo\\assets\\resources\\art\\pixel-v1\\mirrorRegent.png",
+    "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a145a0-3b5b-7951-b568-f8e5aecd2c70\\exec-90f088b9-15a0-4fac-b9e5-94899d13cb49.png",
+    "prompt": "Use case: precise-object-edit. This is an animation sprite atlas for the EXACT mirror arch boss. Change ONLY the PHASE II identity detail in EVERY animation pose, preserving the entire original image dimensions, cell arrangement, same body size, exact same poses, all limbs, held tools, colors except the specified change, and genuine transparent background. Replace the central pale ivory OPAQUE mirror DISC inside the arch with an OPAQUE pale ivory diamond-shaped mirror panel and small warm ivory center mark in EVERY pose, including skill casts and death. Deep indigo framing one shade darker. The central mirror is a physical SOLID OPAQUE body part, NEVER cut it out as transparency. Preserve the open gaps between the arch frame and the central mirror. No new limbs or glow. All actual outside background including gaps between sprites stays alpha0. No glow halos, backdrop, text, labels, VFX, ground shadows or new objects. This must remain the exact same runtime atlas layout and body anchors, not a redesigned concept board."
+  },
+  {
+    "id": "courtyardHeart-phase2",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/courtyardHeart-phase2.png",
+    "grid": [
+      4,
+      5
+    ],
+    "height": 110,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "hearthFurrows:windup",
+      "hearthFurrows:strike",
+      "hearthFurrows:recovery",
+      "hearthSeeds:windup",
+      "hearthSeeds:strike",
+      "hearthSeeds:recovery",
+      "hearthVent:windup",
+      "hearthVent:strike",
+      "hearthVent:recovery",
+      "phase2",
+      "idle18",
+      "idle19"
+    ],
+    "reference": "D:\\projs\\game\\Odyssey\\EmberDemo\\assets\\resources\\art\\pixel-v1\\courtyardHeart.png",
+    "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a145a0-3b5b-7951-b568-f8e5aecd2c70\\exec-93358f6d-0dd0-44f1-a974-d0796ef6fea4.png",
+    "prompt": "Use case: precise-object-edit. This is an animation sprite atlas for the EXACT kiln boss. Change ONLY the PHASE II identity detail in EVERY animation pose, preserving the entire original image dimensions, cell arrangement, same body size, exact same poses, all limbs, held tools, colors except the specified change, and genuine transparent background. In EVERY standing/attacking pose the hinged green kiln lid stays OPEN by about30degrees minimum, belly coral inner surface one shade brighter. In vent poses the lid stays fully open. Death can preserve a tilted open lid. No new limbs or fire painted on body. All actual outside background including gaps between sprites stays alpha0. No glow halos, backdrop, text, labels, VFX, ground shadows or new objects. This must remain the exact same runtime atlas layout and body anchors, not a redesigned concept board."
+  }
+]

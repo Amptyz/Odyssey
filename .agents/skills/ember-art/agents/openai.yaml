@@ -1,4 +1,4 @@
 interface:
-  display_name: "Ember 美术资源制作"
-  short_description: "生成与接入余烬试炼的贴图、装备、怪物动画及地图素材，保持风格与动作一致"
-  default_prompt: "使用 $ember-art，按项目风格与当前 Cocos 管线制作本次需要的美术资源，并完成相应验收。"
+  display_name: "Ember 像素美术制作"
+  short_description: "制作与接入余烬试炼像素角色、装备、怪物动画、地图及粒子特效，保持风格与动作一致"
+  default_prompt: "使用 $ember-art，按像素遗迹风格与当前 Cocos 管线制作本次需要的美术资源，并完成相应验收。"

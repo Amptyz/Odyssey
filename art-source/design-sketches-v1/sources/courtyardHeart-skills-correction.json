@@ -1,0 +1,8 @@
+{
+  "key": "courtyardHeart-skills-correction",
+  "input": "sources/16-courtyardHeart-skills-before-correction.png",
+  "output": "monsters/16-courtyardHeart-skills.png",
+  "prompt": "Targeted correction of this existing boss skills design board. Preserve boss anatomy, palette, pixel art, all 3 skill rows and poses. Correct hearthVent: it is a FULL FILLED CIRCLE of radius6.4 centered on the boss, NOT A RING. Remove the inner safe hole from both release VFX and top-down diagram, replace with solid translucent circle fill including center. Label 圆形 / r6.4, NO INNER SAFE AREA. Title wording should say 大范围圆形魔法. Preserve creature visibly on top of effect. hearthSeeds P2 includes THREE strikes at1.10,1.60,2.10; correct P2 subtitle from2次 to3次. Seeds strike REMOTE TARGET POSITIONS sampled at0,.50,1.00, not fixed permanent orbit points; short label sequential sampled targets. At bottom remove duplicated second PHASE TRANSITION row: retain just ONE clear transition study P1 lidclosed -> P2 lidopen30°, bellyone shadebrighter, transition2seconds, HP<=60%. Use the reclaimed space for breathing room rather than duplicated content. Keep all named skills visible and unchanged mechanics.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-4ab3821b-9d9e-4a78-becf-ab661d291f42.png"
+}

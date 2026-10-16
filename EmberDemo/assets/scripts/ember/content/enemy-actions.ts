@@ -1,4 +1,5 @@
 import {ENEMIES} from './enemies';
+import {scaleAttackRange} from './attacks';
 import type {ValueExpression} from '../combat-core/attributes/AttributeSet';
 import type {DamageType} from '../combat-core/types';
 export type EnemyActionShape=
@@ -15,8 +16,17 @@ const sector=(radius:number,arc:number):EnemyActionShape=>({kind:'sector',radius
 const rect=(length:number,width:number):EnemyActionShape=>({kind:'rectangle',length,width});
 const circle=(radius:number):EnemyActionShape=>({kind:'circle',radius});
 const bullet=(radius:number,speed:number,range:number,spread?:readonly number[]):EnemyActionShape=>({kind:'projectile',radius,speed,range,spread:spread?.map(deg)});
-const step=(at:number,shape:EnemyActionShape,expression:ValueExpression,damageType:DamageType='physical',extra:Partial<EnemyActionStep>={}):EnemyActionStep=>({at,shape,expression,damageType,...extra});
-function action(id:string,windup:number,recovery:number,range:number,steps:EnemyActionStep[],extra:Partial<EnemyActionDefinition>={}):EnemyActionDefinition{return {id,kind:'attack',windup,recovery,cooldown:windup+recovery,firstDelay:0,range,steps,colour:'#B48B68',...extra};}
+function scaledShape(shape:EnemyActionShape):EnemyActionShape {
+ switch(shape.kind){
+  case 'sector':case 'circle':return {...shape,radius:scaleAttackRange(shape.radius)};
+  case 'rectangle':return {...shape,length:scaleAttackRange(shape.length),width:scaleAttackRange(shape.width)};
+  case 'ring':return {...shape,radius:scaleAttackRange(shape.radius),innerRadius:scaleAttackRange(shape.innerRadius)};
+  case 'projectile':return {...shape,radius:scaleAttackRange(shape.radius),range:scaleAttackRange(shape.range)};
+  case 'dash':return {...shape,radius:scaleAttackRange(shape.radius),length:scaleAttackRange(shape.length)};
+ }
+}
+const step=(at:number,shape:EnemyActionShape,expression:ValueExpression,damageType:DamageType='physical',extra:Partial<EnemyActionStep>={}):EnemyActionStep=>({at,shape:scaledShape(shape),expression,damageType,...extra});
+function action(id:string,windup:number,recovery:number,range:number,steps:EnemyActionStep[],extra:Partial<EnemyActionDefinition>={}):EnemyActionDefinition{return {id,kind:'attack',windup,recovery,cooldown:windup+recovery,firstDelay:0,range:scaleAttackRange(range),steps,colour:'#B48B68',...extra,...(extra.edgeMargin===undefined?{}:{edgeMargin:scaleAttackRange(extra.edgeMargin)})};}
 const spell=(id:string,windup:number,recovery:number,range:number,cd:number,first:number,steps:EnemyActionStep[],extra:Partial<EnemyActionDefinition>={})=>action(id,windup,recovery,range,steps,{kind:'spell',cooldown:cd,firstDelay:first,colour:'#A8B8CA',...extra});
 export const ENEMY_ACTIONS:Record<string,EnemyActionDefinition>={
  mossJab:action('mossJab',.45,1.15,.95,[step(.45,sector(.95,90),{attackDamage:1},'physical',{active:.1})]),

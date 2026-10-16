@@ -26,5 +26,5 @@ export class AnimatedUnit {
     sprite.color=color(pose.state==='hurt'?'#FFD2C1':visual.tint);
   }
   get height():number{return this.visual?.height??63;}
-  debug(){return{kind:this.kind,atlas:this.visual?.atlas??'hero-parts',frame:this.frame,opacity:this.opacity.opacity,pose:this.currentPose?{...this.currentPose}:undefined};}
+  debug(){return{kind:this.kind,atlas:this.visual?.atlas??(this.art.hasPixel('hero')?'pixel-v1/hero':'hero-parts'),frame:this.frame,opacity:this.opacity.opacity,pose:this.currentPose?{...this.currentPose}:undefined};}
 }

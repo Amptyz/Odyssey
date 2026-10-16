@@ -1,0 +1,8 @@
+{
+  "key": "mirrorRegent-skills-correction",
+  "input": "sources/17-mirrorRegent-skills-before-correction.png",
+  "output": "monsters/17-mirrorRegent-skills.png",
+  "prompt": "Targeted correction of this exact boss skill board, keep original anatomy, colors, main layout, all four named skills and phase row. regentHalo PHASE II launches exactly ONE projectile at t2.30, direction aimed at target sampled at t1.50, travels STRAIGHT, does NOT home. Replace top-right diagram six radial orbs with exactly ONE orb and ONE straight directional arrow outside caster-centered empty-hole ring. Chinese label 单枚直线弹 (not 追踪球). Projectile radius.44 speed6 range16; ring outer7.2 inner3.0 stays EMPTY CENTER. Label P2 1.5s环形 + 2.3s单枚直线弹. Same nonhoming wording in bottom phase variant. regentMarks two circles at REMOTE same sampled target position; t1.20 and2.40, not at boss feet. Remove icebursts from under boss strikeA/B feet, show a small separate remote ground sigil beyond arms and pointing gesture. Header firststrike1.20 second2.40. regentOath is P2 ONLY: all THREE boss poses and small diagram must show the DIAMOND central aperture with dark indigo frame consistently; the strike pose currently wrongly reverts to oval disc, fix that. regentLanes P2 secondstrike2.15, recovery ends2.60; regentHalo P2 recovery ends2.80, add small P2 timings while preserving P1 recovery1.80 and2.00. No added powers, limbs, attacks or cosmetic transformations beyond shown phase change.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-6c582fa9-c70f-4e5a-a3ee-abc39d7eb630.png"
+}

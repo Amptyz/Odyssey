@@ -1,0 +1,5 @@
+{
+  "prompt": "Use case: precise-object-edit. Change ONLY the STRIKE pose, the FIRST sprite in the SECOND ROW of this4columns by2rows animation atlas. Preserve ALL other7sprites, exact canvas dimensions, cell layout, body size and genuine alpha unchanged. That rabbit faces RIGHT but kicks backward LEFT currently. Correct its hind-leg action: keep both front feet planted/braced below shoulders, tuck near hind leg UNDER belly and extend that hind foot FORWARD toward RIGHT/its NOSE, so its physical shortkick attacks the space in front. Keep torso facing RIGHT and ears back, no turning. The hind foot must end under/just in front of muzzle area to the RIGHT, never extended to the LEFT behind its tail. Same ivory/sage/blue pixel blocks, same2ears,4legs,totalanatomy and small tail. NO attackVFX,projectile,swordarc or impact. Outside all actual bodies stays alpha0. All other frames completely unchanged.",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a145a0-3b5b-7951-b568-f8e5aecd2c70\\exec-482da581-bb26-4439-96b6-9cc6ff3f56fb.png",
+  "path": "D:\\projs\\game\\Odyssey\\EmberDemo\\assets\\resources\\art\\pixel-v1\\snowHare.png"
+}

@@ -1,0 +1,121 @@
+[
+  {
+    "id": "weapons",
+    "reference": "art-source/design-sketches-v1/equipment/weapon-icons.png",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 44,
+    "poses": [
+      "sword",
+      "staff",
+      "bow",
+      "bulwark",
+      "reaver",
+      "runeblade"
+    ],
+    "prompt": "Use case: stylized-concept. FINAL production runtime game sprite atlas for Project Ember. Authentic LOW resolution pixel art, visible chunky square pixel clusters, one-texel warm charcoal outlines, only2or3flat hard shade steps per material. No smooth illustration or gradients. Bright living ruins: ivory,sage,copper,indigo. TRUE transparent alpha background between and within assets; opaque bodies, no checkerboard. EXACT equal cell grid 3 columns x 2 rows, 6 objects. Generous20%transparent margin around EVERY cell, no overlap or crossing cellboundaries. Body scale consistent. No labels, numbers, watermark, lines, chart or scenery. Six separate weapon assets, top row: copper short straight sword, single cyan star crystal staff, ivory/sage recurved longbow with string; bottom row: ivory rectangular tower shield with one brass cross, dark iron short dagger with restrained ember-red groove, ivory straight runeblade with one cyan groove. NO VFX sparks. Match exact identities of reference but reduce each to readable 32x48 logical pixels, thick hard steps, 2 shades per material. Every weapon upright VERTICAL with physical GRIP exposed at 20% height from bottom, bow grip halfway up. Shield centered. No diagonal icon angle because the same transparent art attaches to a paper doll palm.",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/weapons.png"
+  },
+  {
+    "id": "bodies",
+    "reference": "art-source/design-sketches-v1/equipment/body-icons.png",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 27,
+    "poses": [
+      "plate",
+      "robe",
+      "leather",
+      "duelistVest",
+      "wardMantle",
+      "sanguineWrap"
+    ],
+    "prompt": "Use case: stylized-concept. FINAL production runtime game sprite atlas for Project Ember. Authentic LOW resolution pixel art, visible chunky square pixel clusters, one-texel warm charcoal outlines, only2or3flat hard shade steps per material. No smooth illustration or gradients. Bright living ruins: ivory,sage,copper,indigo. TRUE transparent alpha background between and within assets; opaque bodies, no checkerboard. EXACT equal cell grid 3 columns x 2 rows, 6 objects. Generous20%transparent margin around EVERY cell, no overlap or crossing cellboundaries. Body scale consistent. No labels, numbers, watermark, lines, chart or scenery. Six torso-only modular clothing assets. Top row copper/ivory compact chestplate, indigo/ivory short star robe, sage/brown ranger leather tunic; bottom row bronze diagonal strap duelist vest, slate/ivory stone shoulder mantle, deep ember red crossed cloth wrap. Reference identity simplified dramatically to 30x28 logical pixels, only torso and shoulder caps, short waist, no long skirts. Fit one identical humanoid torso in three-quarter view facing screen RIGHT. Transparent arm holes and neck hole, no person, hands, legs, mannequin or skin. Shoulder caps cover joins. One simple motif only; no dangling jewelry.",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/bodies.png"
+  },
+  {
+    "id": "heads",
+    "reference": "art-source/design-sketches-v1/equipment/head-icons.png",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 30,
+    "poses": [
+      "helm",
+      "circlet",
+      "hood",
+      "keenVisor",
+      "sageMask",
+      "aegisCrown"
+    ],
+    "prompt": "Use case: stylized-concept. FINAL production runtime game sprite atlas for Project Ember. Authentic LOW resolution pixel art, visible chunky square pixel clusters, one-texel warm charcoal outlines, only2or3flat hard shade steps per material. No smooth illustration or gradients. Bright living ruins: ivory,sage,copper,indigo. TRUE transparent alpha background between and within assets; opaque bodies, no checkerboard. EXACT equal cell grid 3 columns x 2 rows, 6 objects. Generous20%transparent margin around EVERY cell, no overlap or crossing cellboundaries. Body scale consistent. No labels, numbers, watermark, lines, chart or scenery. Six modular headgear assets. Top row ivory/copper open-face helm, slim ivory/gold band with one purple crystal, open-face sage/ivory hood; bottom row angular ivory bronze keen visor covering forehead only, half-face ivory cracked stone mask leaving right eye and mouth visible, low moss/ivory crenellated crown. Each fits identical 30x30 logical-pixel human head in 3/4 view facing screen RIGHT. All open face apertures MUST be TRANSPARENT, not black fill, no face skin eyes hair mannequin or head. Keep mouth region and one eye unobstructed. No floating crystals, no sparkles or decorative loose fragments. Circlet and crown occupy upper third of same common head-sized frame.",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/heads.png"
+  },
+  {
+    "id": "hero",
+    "reference": "EmberDemo/assets/resources/art/living-ruins/hero-parts.png",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 60,
+    "poses": [
+      "head",
+      "torso",
+      "rightArm",
+      "leftArm",
+      "leftLeg",
+      "rightLeg"
+    ],
+    "prompt": "Use case: stylized-concept. FINAL production runtime game sprite atlas for Project Ember. Authentic LOW resolution pixel art, visible chunky square pixel clusters, one-texel warm charcoal outlines, only2or3flat hard shade steps per material. No smooth illustration or gradients. Bright living ruins: ivory,sage,copper,indigo. TRUE transparent alpha background between and within assets; opaque bodies, no checkerboard. EXACT equal cell grid 3 columns x 2 rows, 6 objects. Generous20%transparent margin around EVERY cell, no overlap or crossing cellboundaries. Body scale consistent. No labels, numbers, watermark, lines, chart or scenery. Exactly six modular body PARTS, not six people. Preserve the reference's joint positions, visual proportions and orientation. Top row: one neutral short brown-haired human head in 3/4 view facing screen right; one ivory grey plain short tunic torso; one screen-right arm with ivory short sleeve and palm at lower end. Bottom row: one screen-left matching arm; one taupe trouser leg ending charcoal boot; other matching trouser leg and boot. No class identity, armor, cape, weapon or hat. NO COMPLETE CHARACTERS. Coarse clean pixel clusters, head about30 logical pixels, arms8x19, torso26x25, legs9x16; same thickness and joint overlaps. No background glow around body parts.",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/hero.png"
+  },
+  {
+    "id": "environment",
+    "reference": "EmberDemo/assets/resources/art/living-ruins/environment.png",
+    "grid": [
+      3,
+      3
+    ],
+    "height": 72,
+    "poses": [
+      "pillar",
+      "rubble",
+      "shrub",
+      "foliage",
+      "crystal",
+      "arch",
+      "waterfall",
+      "paving",
+      "crest"
+    ],
+    "prompt": "Use case: stylized-concept. FINAL production runtime game sprite atlas for Project Ember. Authentic LOW resolution pixel art, visible chunky square pixel clusters, one-texel warm charcoal outlines, only2or3flat hard shade steps per material. No smooth illustration or gradients. Bright living ruins: ivory,sage,copper,indigo. TRUE transparent alpha background between and within assets; opaque bodies, no checkerboard. EXACT equal cell grid 3 columns x 3 rows, 9 objects. Generous20%transparent margin around EVERY cell, no overlap or crossing cellboundaries. Body scale consistent. No labels, numbers, watermark, lines, chart or scenery. Exactly9 independent environment props same isometric projection as reference; 3x3 grid. Row1 ivory stone short column with one sage vine, low3block broken wall, muted coral shrub in3 broad leafclusters. Row2 sage foliage clump5large leaves, pale cyan crystalcluster3stones, low ivory ruined arch with2leafclumps. Row3 small stone waterfall calm pale teal, plain ivory isometric paving slab, ivory isometric slab with muted gold threeleaf crest. Broad calm shapes, lowcontrast seams, no dense cracks; keep original identity and quiet bright palette. Source props32-64logicalpixels, single chunky pixelgrid. No groundshadow. Waterfall alpha preserved.",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/environment.png"
+  },
+  {
+    "id": "skills",
+    "grid": [
+      3,
+      3
+    ],
+    "height": 64,
+    "poses": [
+      "firebolt",
+      "frostbolt",
+      "shield",
+      "dash",
+      "nova",
+      "cleave",
+      "piercingArrow",
+      "bulwark",
+      "frostRing"
+    ],
+    "prompt": "Use case: stylized-concept. FINAL production runtime game sprite atlas for Project Ember. Authentic LOW resolution pixel art, visible chunky square pixel clusters, one-texel warm charcoal outlines, only2or3flat hard shade steps per material. No smooth illustration or gradients. Bright living ruins: ivory,sage,copper,indigo. TRUE transparent alpha background between and within assets; opaque bodies, no checkerboard. EXACT equal cell grid 3 columns x 3 rows, 9 objects. Generous20%transparent margin around EVERY cell, no overlap or crossing cellboundaries. Body scale consistent. No labels, numbers, watermark, lines, chart or scenery. Nine isolated bold flat hard-shaded PIXEL skill symbols 3x3. Row1: diagonal orange fire comet, diagonal cyan ice dart, amber outline shield with simple center diamond. Row2: ivory running silhouette on ember streak, orange radial bloom, ivory broad sword with copper slash. Row3: ivory arrow piercing2cyan chevrons, bluegrey tall tower shield, cyan EMPTY ring with4small ice diamonds and clearly empty central hole. Each32x32 logicalpixels, icon fills70%cell, max4colors each, blackwarm outline. Transparent outside each symbol. No frame, no background tiles, no text. Modern restrained mythic action iconography.",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/skills.png"
+  }
+]

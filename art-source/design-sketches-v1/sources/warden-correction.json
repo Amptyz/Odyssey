@@ -1,0 +1,8 @@
+{
+  "key": "warden",
+  "input": "sources/11-warden-before-correction.png",
+  "output": "monsters/11-warden.png",
+  "prompt": "Use case: precise-object-edit. Correct this ORIGINAL Project Ember concept board while preserving its layout, identity, pixel-art style, background, lettering and all passed drawings. Make two precise fixes, preserve character three views and anatomy. Basic attack RECOVERY caption must end t=3.00, not3.15 (start1.00). Special skill rootPlates has three REMOTE TARGET-CENTERED circles, radius1.7, sampled at0,.35,.70 and struck at.95,1.30,1.65. In bottom RELEASE and TELEGRAPH panels show three independent ground impact circles with sampled target crosses away from caster, not concentric caster-centered shockwaves. Labels list sample and strike times. The guardian body only raises and slams arms; remote ground eruptions are separate VFX. Do not otherwise redesign. This is a targeted technical correction; all unaffected views must remain visually identical. Return the full complete board, no crop.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-ccc5f106-6ce7-400f-b422-f5ea5ec5bc37.png"
+}

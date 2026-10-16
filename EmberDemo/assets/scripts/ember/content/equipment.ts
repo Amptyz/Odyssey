@@ -1,5 +1,5 @@
 import {AttributeSet,PLAYER_TEMPLATE,cooldownMultiplier,movementSpeed,type Attributes,type Modifier,type AttributeSource,type ValueExpression} from '../combat-core/attributes/AttributeSet';
-import { BASIC_ATTACKS,type BasicAttackId,type BasicAttackDefinition } from './attacks';
+import { BASIC_ATTACKS,scaleAttackRange,type BasicAttackId,type BasicAttackDefinition } from './attacks';
 export const EQUIPMENT_SLOTS=['slot1','slot2','slot3','slot4','slot5','slot6'] as const;
 export type EquipmentSlot=typeof EQUIPMENT_SLOTS[number];
 export const SLOT_NAMES:Record<EquipmentSlot,string>={slot1:'装备栏1',slot2:'装备栏2',slot3:'装备栏3',slot4:'装备栏4',slot5:'装备栏5',slot6:'装备栏6'};
@@ -14,18 +14,18 @@ export type EquipmentPassiveDefinition =
   | {kind:'safetyShield';group:string;expression:ValueExpression;healthBelow:number;duration:number;cooldown:number};
 export interface EquipmentDefinition {name:string;category:EquipmentCategory;price:number;description:string;stats:StatBonus;modifiers?:readonly Modifier[];appearance:string;attack?:BasicAttackId;attackRange?:number;passives?:readonly EquipmentPassiveDefinition[]}
 export const EQUIPMENT={
-  sword:{name:'赤铜长剑',category:'weapon',price:100,description:'扇形挥斩；攻击力 +12，护甲 +8',stats:{attackDamage:12,armor:8},appearance:'copperSword',attack:'sword',attackRange:2.5},
-  staff:{name:'星辉法杖',category:'weapon',price:100,description:'魔法弹，普攻射程 6.5；法强 +30，急速 +10',stats:{abilityPower:30,haste:10},appearance:'starStaff',attack:'staff',attackRange:6.5},
-  bow:{name:'猎风长弓',category:'weapon',price:100,description:'箭矢，普攻射程 7.5；攻速 +20%，攻击力 +4',stats:{attackSpeed:.2,attackDamage:4},appearance:'windBow',attack:'bow',attackRange:7.5},
-  bulwark:{name:'壁垒重盾',category:'weapon',price:100,description:'近身盾击；护甲 +22，生命上限 +60',stats:{armor:22,maxHp:60},appearance:'towerShield',attack:'shield',attackRange:2.5},
+  sword:{name:'赤铜长剑',category:'weapon',price:100,description:'扇形挥斩；攻击力 +12，护甲 +8',stats:{attackDamage:12,armor:8},appearance:'copperSword',attack:'sword',attackRange:scaleAttackRange(2.5)},
+  staff:{name:'星辉法杖',category:'weapon',price:100,description:`魔法弹，普攻射程 ${scaleAttackRange(6.5)}；法强 +30，急速 +10`,stats:{abilityPower:30,haste:10},appearance:'starStaff',attack:'staff',attackRange:scaleAttackRange(6.5)},
+  bow:{name:'猎风长弓',category:'weapon',price:100,description:`箭矢，普攻射程 ${scaleAttackRange(7.5)}；攻速 +20%，攻击力 +4`,stats:{attackSpeed:.2,attackDamage:4},appearance:'windBow',attack:'bow',attackRange:scaleAttackRange(7.5)},
+  bulwark:{name:'壁垒重盾',category:'weapon',price:100,description:'近身盾击；护甲 +22，生命上限 +60',stats:{armor:22,maxHp:60},appearance:'towerShield',attack:'shield',attackRange:scaleAttackRange(2.5)},
   plate:{name:'赤铜胸甲',category:'body',price:100,description:'生命上限 +75，护甲 +18',stats:{maxHp:75,armor:18},appearance:'copperPlate'},
   robe:{name:'星纹法袍',category:'body',price:100,description:'法术强度 +24，生命上限 +30',stats:{abilityPower:24,maxHp:30},appearance:'starRobe'},
   leather:{name:'游侠皮衣',category:'body',price:100,description:'攻击力 +3，攻速 +18%，移速 +8%',stats:{attackDamage:3,attackSpeed:.18,speed:.08},appearance:'rangerLeather'},
   helm:{name:'壁垒战盔',category:'head',price:100,description:'生命上限 +55，护甲 +12，魔抗 +8',stats:{maxHp:55,armor:12},modifiers:[{stat:'magicResist',operation:'flat',value:8}],appearance:'ironHelm'},
   circlet:{name:'奥能头环',category:'head',price:100,description:'法术强度 +20，技能急速 +12',stats:{abilityPower:20,haste:12},appearance:'arcaneCirclet'},
   hood:{name:'猎风兜帽',category:'head',price:100,description:'攻击力 +9，移动速度 +8%',stats:{attackDamage:9,speed:.08},appearance:'rangerHood'},
-  reaver:{name:'饮烬短刃',category:'weapon',price:100,description:'近身挥斩；攻击力 +8，全能吸血 +6%',stats:{},modifiers:[{stat:'attackDamage',operation:'flat',value:8},{stat:'omnivamp',operation:'flat',value:.06}],appearance:'reaver',attack:'sword',attackRange:2.5},
-  runeblade:{name:'符刻刃',category:'weapon',price:100,description:'攻击力 +6，法强 +18，急速 +8；符击',stats:{},modifiers:[{stat:'attackDamage',operation:'flat',value:6},{stat:'abilityPower',operation:'flat',value:18},{stat:'abilityHaste',operation:'flat',value:8}],appearance:'runeblade',attack:'sword',attackRange:2.5,passives:[{kind:'spellblade',group:'equipment.spellblade',expression:{flat:8,attackDamage:.20,abilityPower:.12},armDuration:5,cooldown:3}]},
+  reaver:{name:'饮烬短刃',category:'weapon',price:100,description:'近身挥斩；攻击力 +8，全能吸血 +6%',stats:{},modifiers:[{stat:'attackDamage',operation:'flat',value:8},{stat:'omnivamp',operation:'flat',value:.06}],appearance:'reaver',attack:'sword',attackRange:scaleAttackRange(2.5)},
+  runeblade:{name:'符刻刃',category:'weapon',price:100,description:'攻击力 +6，法强 +18，急速 +8；符击',stats:{},modifiers:[{stat:'attackDamage',operation:'flat',value:6},{stat:'abilityPower',operation:'flat',value:18},{stat:'abilityHaste',operation:'flat',value:8}],appearance:'runeblade',attack:'sword',attackRange:scaleAttackRange(2.5),passives:[{kind:'spellblade',group:'equipment.spellblade',expression:{flat:8,attackDamage:.20,abilityPower:.12},armDuration:5,cooldown:3}]},
   duelistVest:{name:'逐风轻甲',category:'body',price:100,description:'攻击力 +3，攻速 +16%，暴击率 +18%',stats:{},modifiers:[{stat:'attackDamage',operation:'flat',value:3},{stat:'attackSpeed',operation:'percent',value:.16},{stat:'critChance',operation:'flat',value:.18}],appearance:'duelistVest'},
   wardMantle:{name:'回响石披',category:'body',price:100,description:'生命上限 +55，魔抗 +20；低血时获得石息护盾',stats:{},modifiers:[{stat:'maxHealth',operation:'flat',value:55},{stat:'magicResist',operation:'flat',value:20}],appearance:'wardMantle',passives:[{kind:'safetyShield',group:'equipment.safetyShield',expression:{flat:18,sourceMaxHealth:.05},healthBelow:.5,duration:3,cooldown:18}]},
   sanguineWrap:{name:'烬纹裹衣',category:'body',price:100,description:'生命上限 +45，攻击力 +6，全能吸血 +6%',stats:{},modifiers:[{stat:'maxHealth',operation:'flat',value:45},{stat:'attackDamage',operation:'flat',value:6},{stat:'omnivamp',operation:'flat',value:.06}],appearance:'sanguineWrap'},
@@ -53,12 +53,12 @@ export function basicAttack(loadout:EquipmentLoadout,purchaseOrder:readonly Equi
   const id=appearanceLoadout(loadout,purchaseOrder).weapon;return BASIC_ATTACKS[(id?equipment(id).attack:undefined)??'unarmed'];
 }
 export function basicAttackRange(loadout:EquipmentLoadout,purchaseOrder:readonly EquipmentId[]=[]):number {
-  const id=appearanceLoadout(loadout,purchaseOrder).weapon;return (id?equipment(id).attackRange:undefined)??PLAYER_TEMPLATE.stats.attackRange??2.5;
+  const id=appearanceLoadout(loadout,purchaseOrder).weapon;return (id?equipment(id).attackRange:undefined)??PLAYER_TEMPLATE.stats.attackRange??scaleAttackRange(2.5);
 }
 /** Every occupied universal slot contributes stats; only one selected profile contributes range. */
 export function equipmentSources(loadout:EquipmentLoadout,purchaseOrder:readonly EquipmentId[]=[]):AttributeSource[]{
   const sources:AttributeSource[]=EQUIPMENT_SLOTS.flatMap(slot=>{const id=loadout[slot];if(!id)return[];const item=equipment(id);return[{sourceId:'equipment:'+slot,modifiers:[...(item.modifiers??[]),...Object.entries(item.stats).map(([key,value])=>({stat:({maxHp:'maxHealth',speed:'moveSpeed',haste:'abilityHaste'} as Record<string,string>)[key]??key,operation:key==='speed'||key==='attackSpeed'?'percent':'flat',value} as Modifier))]}];});
-  sources.push({sourceId:'equipment:attack-profile',modifiers:[{stat:'attackRange',operation:'flat',value:basicAttackRange(loadout,purchaseOrder)-(PLAYER_TEMPLATE.stats.attackRange??2.5)}]});return sources;
+  sources.push({sourceId:'equipment:attack-profile',modifiers:[{stat:'attackRange',operation:'flat',value:basicAttackRange(loadout,purchaseOrder)-(PLAYER_TEMPLATE.stats.attackRange??scaleAttackRange(2.5))}]});return sources;
 }
 export function syncEquipment(attributes:AttributeSet,loadout:EquipmentLoadout,purchaseOrder:readonly EquipmentId[]=[]):void {for(const slot of EQUIPMENT_SLOTS)attributes.remove('equipment:'+slot);attributes.remove('equipment:attack-profile');for(const source of equipmentSources(loadout,purchaseOrder))attributes.upsert(source);}
 export function statsView(attributes:AttributeSet):HeroStats {const a=attributes.value;return{...a,moveSpeed:movementSpeed(a)/.01,maxHp:a.maxHealth,attackInterval:1/a.attackSpeed,speed:movementSpeed(a),cooldownMultiplier:cooldownMultiplier(a)};}

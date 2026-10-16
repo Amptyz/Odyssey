@@ -1,0 +1,34 @@
+{
+  "id": "perks",
+  "path": "EmberDemo/assets/resources/art/pixel-v1/perks.png",
+  "kind": "icon",
+  "grid": [
+    5,
+    4
+  ],
+  "height": 64,
+  "poses": [
+    "burn",
+    "corpse",
+    "arc",
+    "double",
+    "swift",
+    "rhythm",
+    "reserve",
+    "leech",
+    "magicMissile",
+    "jeweledGauntlet",
+    "infernalConduit",
+    "etherealWeapon",
+    "lightEmUp",
+    "heavyHitter",
+    "mysticPunch",
+    "typhoon",
+    "earthwake",
+    "dawnbringer",
+    "circleOfDeath",
+    "glassCannon"
+  ],
+  "prompt": "Use case: stylized-concept. Production runtime UI icon atlas for Project Ember, exactly5 columns by4rows,20 separate symbols, all genuine transparent background no frame or background tiles. Restrained modern mythic action pixel icon style, bold legible silhouette, chunky32x32 logicalpixel clusters pericon, hard2-3shade steps, minimaldetail, warm ivory/copper/indigo/cyan/sage palette. Everycell identical square, centericon, at least15%transparent margin, nevercrosscell. NO words,numbers,labels,gridlines,checkerboard,glow,shadows or scenery. Row1 left to right: 1 orange smallflame droplet,2 burningstone exploding into4chunks,3 cyan angular lightningbolt,4 twin ivory magiccomets diverging,5 sage boot with3 horizontal speedlines. Row2:6 ivory crossed swords with one small circular metronome tick,7 indigo shield holding one pale crystal,8 sage heart with small ivory plus,9 three cyan small magicdarts,10 purple gemstone on one simple gauntlet. Row3:11 ember ring conduit with3 small squareflames,12 translucent paleviolet sword silhouette,13 amber starflare beside an arrow,14 moss heavy stone fist,15 blue fist with short crescentofmagic. Row4:16 sage windspiral andarrow,17 split ochre earth slab withamber seam,18 sunrise ivory heart and2rays,19 violet hollow ring around tiny ivory heart,20 cracked clear cyan cannon withred core. Flat thick graphic forms, consistent outlineweight. No humans. Pixels outsideeach actualsymbol alpha0.",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a145a0-3b5b-7951-b568-f8e5aecd2c70\\exec-9ac6ce97-c230-4b84-8758-56eb53baf383.png"
+}

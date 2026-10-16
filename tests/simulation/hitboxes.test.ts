@@ -12,6 +12,24 @@ function freeze(e:GameWorld['hero']){e.attributes=new AttributeSet({...e.attribu
 function spawn(w:GameWorld,x:number,y:number){const e=freeze(w.spawnEnemy('melee',{x,y},1000));Object.assign(e,{x,y,previous:{x,y}});return e;}
 function run(w:GameWorld,seconds:number){for(let i=0;i<Math.round(seconds*30);i++)w.advance(1/30);}
 describe('directional basic attacks and skill hitboxes',()=>{
+  it('reaches twice the former sword distance and still excludes bodies beyond the new edge',()=>{
+    const w=fixture('sword'),inside=spawn(w,14.8,10),outside=spawn(w,15.6,10);
+    w.command({type:'Attack',point:{x:20,y:10}});run(w,.3);
+    expect(inside.hp).toBeCloseTo(1000-32/1.05);expect(outside.hp).toBe(1000);
+    expect(w.hero.radius).toBe(.32);
+  });
+  it('doubles nova radius with matching feedback and excludes bodies beyond the expanded circle',()=>{
+    const w=fixture(),inside=spawn(w,17.8,10),outside=spawn(w,18,10);
+    w.command({type:'CastSlot',slot:'R',point:inside});
+    expect(inside.hp).toBe(928);expect(outside.hp).toBe(1000);
+    expect(w.snapshot().cues.find(c=>c.kind==='explosion')?.radius).toBe(7.6);
+  });
+  it('extends bow flight to fifteen tiles, including its final partial step, then expires',()=>{
+    const hit=fixture('bow'),miss=fixture('bow');
+    const inside=spawn(hit,25.4,10),outside=spawn(miss,25.6,10);
+    for(const w of [hit,miss]){w.command({type:'Attack',point:{x:26,y:10}});run(w,.9);expect(w.projectiles).toHaveLength(0);}
+    expect(inside.hp).toBeCloseTo(1000-24/1.05);expect(outside.hp).toBe(1000);
+  });
   it('melee has a windup, hits all intersecting bodies once, and can miss behind the swing',()=>{
     const w=fixture('sword'),a=spawn(w,11.4,10),b=spawn(w,11.2,10.6),back=spawn(w,8.5,10);
     w.command({type:'Attack',point:{x:15,y:10}});expect(a.hp).toBe(1000);expect(w.snapshot().swings).toHaveLength(1);
@@ -66,10 +84,12 @@ describe('directional basic attacks and skill hitboxes',()=>{
     }
   });
   it('explosion/chain search uses target body radii and terrain visibility too',()=>{
-    const w=fixture();w.combat.addPerk('corpse');w.combat.addPerk('arc');
-    const victim=spawn(w,4.8,6),hidden=spawn(w,7.2,6),edge=spawn(w,4.8,8.8);
-    applyStatus(victim,{id:'burn',duration:3,power:1},'hero');w.combat.damage({sourceId:'hero',targetId:victim.id,amount:5000,cause:'basic'});
-    expect(hidden.hp).toBe(1000);expect(edge.hp).toBe(970);
+    for(const perk of ['corpse','arc'] as const){
+      const w=fixture();w.combat.addPerk(perk);
+      const victim=spawn(w,4.8,6),hidden=spawn(w,7.2,6),edge=spawn(w,4.8,8.8);
+      applyStatus(victim,{id:'burn',duration:3,power:1},'hero');w.combat.damage({sourceId:'hero',targetId:victim.id,amount:5000,cause:'skill'});
+      expect(hidden.hp).toBe(1000);expect(edge.hp).toBe(perk==='corpse'?970:984);
+    }
   });
   it('enemy melee attacks keep their windup direction and can be dodged behind them',()=>{
     const w=fixture(),e=w.spawnEnemy('melee',{x:10.8,y:10});run(w,.5);expect(w.enemies.snapshot().warnings.some(warning=>warning.sourceId===e.id)).toBe(true);w.hero.x=e.x+1.5;

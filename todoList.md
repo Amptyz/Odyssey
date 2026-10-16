@@ -39,6 +39,7 @@ P0：下一阶段优先完成。P1：首轮内容与体验扩展。P2：有实�
 | [ ] | HEX-02 | P1 | 下一批增益机制接入 | HEX-01、STAT-02 | 待开始 | — |
 | [ ] | SKL-01 | P1 | 下一批主动技能设计 | STAT-01 | 待开始 | — |
 | [ ] | SKL-02 | P1 | 下一批主动技能接入 | SKL-01、STAT-02 | 待开始 | — |
+| [x] | ART-D01 | P1 | 当前 17 怪与 18 装备视觉设计草图 | ENE-D01、EQ-01；当前有效攻击配置 | 已完成 | 主会话；[22 张设计板与草图册](art-source/design-sketches-v1/README.md)、[静态验收](art-source/design-sketches-v1/validation.json)；17 怪三视图 / 动作 / 普攻、12 专属技能、18 图标；2026-10-16；未接入游戏 |
 | [ ] | ART-01 | P1 | 下一批装备贴图与换装动作 | EQ-01；集成验收依赖 EQ-02 | 待开始 | — |
 | [x] | ENE-D01 | P1 | 10 小怪 / 5 精英 / 2 Boss 的数值、技能及美术设定 | STAT-01；与 EQ-01 对齐参考构筑 | 已完成 | monster_design（gpt-6.1-sol）；[战斗设计](docs/design/MONSTER_DESIGN.md)、[美术设定](docs/design/MONSTER_ART_BRIEFS.md)；17 ID 对齐、体型 / 时间 / 经济核对；2026-10-16 |
 | [x] | ENE-01 | P1 | 全17种怪物行为、动作与接入 | STAT-02、ENE-D01 | 已完成 | monster_design（gpt-6.1-sol）；43专项测试、程序动画与两Boss实测；[最终验收](reports/campaign-validation.json)；2026-10-16 |
@@ -132,20 +133,22 @@ Caddy 的代理和证书配置在部署时按官方文档核对：[反向代理]
 
 ## SKL-02 · 下一批主动技能接入
 
-- **目标 / 依赖：** 按 SKL-01 接入类型、处理器、奖励和显示；图形特效先保持现有简洁风格，新增位图按美术 skill 制作。
+- **目标 / 依赖：** 按 SKL-01 接入类型、处理器、奖励和显示；图形特效按像素遗迹方向规划；新增位图按美术 skill 与 [PIXEL_VFX](docs/PIXEL_VFX.md) 制作，现有 Graphics 迁移需另行实现和验收。
 - **入口 / 交付：** `content/skills.ts` → `simulation/SkillSystem.ts` → 命令 / 快照 / 表现；交付技能、必要通用行为与测试。新持续状态有明确所有者、重置和恢复规则。
 - **验收：** 指针方向、挥空 / 射空、障碍、范围边界、冷却、替换槽位、多人来源正确；`pnpm check`、Creator 构建及实际施放 / 正常奖励 / 联机检查。
 
 ## ART-01 · 下一批装备贴图与换装动作
 
-- **目标 / 依赖：** 在EQ-02已接入的八件独立Graphics外观基础上，按EQ-01与美术反馈制作PNG精修及所需独立动作；先核对[现有表现实现](docs/design/EQUIPMENT_VISUAL_IMPLEMENTATION.md)，避免重复开发已完成的换装与挂点。
+设计前置已有 [ART-D01 草图册](art-source/design-sketches-v1/README.md)。这批是设计板，不能直接当作透明图标、穿戴部件或动画图集，也不表示 ART-01 已完成。
+
+- **目标 / 依赖：** 在EQ-02已接入的八件独立Graphics外观基础上，按 EQ-01 与 [像素遗迹规范](docs/ART_DIRECTION.md) 制作像素 PNG 及所需独立动作，先验证显示倍率、最近邻与纸娃娃像素一致性；先核对[现有表现实现](docs/design/EQUIPMENT_VISUAL_IMPLEMENTATION.md)，避免重复开发已完成的换装与挂点。
 - **入口 / 交付：** 使用 [$ember-art](.agents/skills/ember-art/SKILL.md)；`content/appearances.ts`、`animation.ts`、`render/HeroRig.ts`、`art-source/`。交付可用 PNG、锚点 / 动作数据、生成来源和 Creator 导入的 `.meta`，不只交概念图。
-- **验收：** 简化遗迹风、大色块、低细节；基础人物不带职业特征。左右镜像、握点、肩部、待机 / 移动 / 攻击 / 施法及混搭遮挡正确；Creator 构建后按真实战斗尺寸、多玩家同屏检查。外观不改变碰撞半径。
+- **验收：** 像素遗迹风、统一网格 / 色板、硬边像素簇、最近邻与整数显示验证；基础人物不带职业特征。左右镜像、握点、肩部、待机 / 移动 / 攻击 / 施法及混搭遮挡正确；Creator 构建后按真实战斗尺寸、多玩家同屏检查。外观不改变碰撞半径。
 
 ## ENE-D01 · 17 种怪物的属性、技能与美术设定
 
 - **目标 / 范围：** 按用户本次要求设计 10 种小怪、5 种精英与 2 种 Boss；两个 Boss 分别对应现有余烬庭院和霜镜回廊。以体型、伤害类型、攻击距离 / 频率、移速、技能范围和战斗节奏区分职责。
-- **交付：** `docs/design/MONSTER_DESIGN.md` 与 `docs/design/MONSTER_ART_BRIEFS.md`；包含完整属性、攻击 / 技能时序、预警与反制、Boss 阶段循环、阵容 / 波次建议、数值推导及所需新机制。使用 ember-art 的低细节遗迹风格，为每怪提供轮廓、配色、显示尺度、动作规格和制作 Prompt。
+- **交付：** `docs/design/MONSTER_DESIGN.md` 与 `docs/design/MONSTER_ART_BRIEFS.md`；包含完整属性、攻击 / 技能时序、预警与反制、Boss 阶段循环、阵容 / 波次建议、数值推导及所需新机制。后续制作使用 ember-art 的像素遗迹风格，为每怪提供轮廓、配色、显示尺度、动作规格和制作 Prompt。
 - **验收：** 数量与 ID 一致，两个 Boss 唯一绑定两关；共用属性单位、表达式和装备参考构筑；碰撞半径与显示尺寸分开，大体型适配现有地图；设计未实现的 AI / 动画 / 特效清楚标识。本项不以文字设定冒充已生成 PNG 或已可玩的敌人。
 
 ## ENE-01 · 全17种怪物开发实现

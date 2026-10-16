@@ -1,0 +1,8 @@
+{
+  "key": "emberRam",
+  "input": "sources/12-emberRam-before-correction.png",
+  "output": "monsters/12-emberRam.png",
+  "prompt": "Use case: precise-object-edit. Correct this ORIGINAL Project Ember concept board while preserving its layout, identity, pixel-art style, background, lettering and all passed drawings. Fix ONLY bottom SPECIAL SKILL ramLane technical annotations and top-view diagram, keeping all body poses and other rows unchanged. Telegraphed shape is a CAPSULE: center travel segment length 8, radius 0.96, FULL width 1.92; rounded semicircular endcaps. Label center length 8 and full width 1.92. Ram speed7 -> dash lasts 8/7=1.1429 seconds: anticipation t0-1.10; charge t1.10-2.24; recovery t2.24-2.68. Remove the old 0.5714 duration,1.67 endpoint and 0.96 width arrow. All three views remain unchanged. This is a targeted technical correction; all unaffected views must remain visually identical. Return the full complete board, no crop.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-d9987886-0afe-4a7f-be97-5b4313808e50.png"
+}

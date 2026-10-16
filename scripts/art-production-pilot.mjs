@@ -1,0 +1,10 @@
+import {chromium} from '@playwright/test';
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:1280,height:720}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto('http://127.0.0.1:8081/?debug=1');await page.waitForFunction(()=>window.__EMBER__?.art().loaded);
+await page.keyboard.press('Enter');await page.waitForTimeout(200);await page.keyboard.press('Enter');await page.waitForTimeout(200);
+await page.keyboard.press('F2');await page.waitForTimeout(150);
+await page.evaluate(()=>{const a=window.__EMBER__,s=a.snapshot();a.send({type:'DevConfigure',config:{...s.developer.draft,options:{invincible:true,noCooldown:true,freezeEnemies:false,speed:1}}});});
+await page.mouse.click(1080,682);await page.waitForTimeout(100);await page.keyboard.press('F2');await page.waitForTimeout(100);
+await page.evaluate(()=>window.__EMBER__.send({type:'DevSpawn',enemyId:'melee',count:1}));await page.keyboard.press('F2');await page.waitForTimeout(800);
+console.log(JSON.stringify({art:await page.evaluate(()=>window.__EMBER__.art()),errors}));await page.screenshot({path:'reports/pixel-pilot.png'});await browser.close();

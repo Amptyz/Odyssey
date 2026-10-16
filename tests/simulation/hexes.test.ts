@@ -60,9 +60,9 @@ describe('hex simulation, hitboxes and progression',()=>{
     expect(w.combat.history.filter(e=>e.type==='OnAttack')).toHaveLength(1);
   });
   it('earthwake follows actual dash endpoints, waits, hits capsule edge once and can be dodged',()=>{
-    const w=fixture(['earthwake']),edge=spawn(w,11.5,11.05),outside=spawn(w,11.5,11.3),dodge=spawn(w,12,10);
+    const w=fixture(['earthwake']),edge=spawn(w,11.5,11.95),outside=spawn(w,11.5,12.1),dodge=spawn(w,12,10);
     w.command({type:'CastSlot',slot:'E',point:{x:18,y:10}});run(w,.2);
-    expect(w.snapshot().zones[0]?.to.x).toBeCloseTo(13.5);expect(edge.hp).toBe(1000);dodge.y=12;
+    expect(w.snapshot().zones[0]?.to.x).toBeCloseTo(13.5);expect(edge.hp).toBe(1000);dodge.y=12.2;
     run(w,.5);expect(edge.hp).toBe(1000);run(w,.2);expect(edge.hp).toBe(955);expect(outside.hp).toBe(1000);expect(dodge.hp).toBe(1000);expect(w.snapshot().zones).toHaveLength(0);
   });
   it('earthwake stops at pillars and cannot damage through them',()=>{

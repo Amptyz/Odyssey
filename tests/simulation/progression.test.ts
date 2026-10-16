@@ -48,7 +48,7 @@ describe('deterministic equipment economy',()=>{
   });
   it('retains replaced items and recomputes a mixed six-slot build without healing',()=>{
     const w=shop();w.equipment.gold=800;for(const equipmentId of ['bow','plate','robe','helm','circlet','hood'] as const)w.command({type:'BuyEquipment',equipmentId});
-    expect(w.equipment.gold).toBe(200);expect(w.equipment.stats.attackRange).toBe(7.5);expect(w.hero.maxHp).toBe(400);
+    expect(w.equipment.gold).toBe(200);expect(w.equipment.stats.attackRange).toBe(15);expect(w.hero.maxHp).toBe(400);
     w.hero.hp=100;const stats=w.equipment.stats;
     for(let i=0;i<4;i++){w.command({type:'UnequipEquipment',slot:'slot2'});w.command({type:'EquipEquipment',equipmentId:'plate',slot:'slot2'});}
     expect(w.equipment.stats).toEqual(stats);expect(w.hero.hp).toBe(100);expect(w.equipment.inventory.size).toBe(6);

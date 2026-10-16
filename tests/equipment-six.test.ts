@@ -21,16 +21,16 @@ describe('six universal equipment slots',()=>{
   });
   it('uses purchase history for appearance and attack rather than slot position or re-equipping',()=>{
     const s=funded();s.buy('bow');s.buy('sword');s.buy('plate');s.buy('robe');s.buy('helm');s.buy('circlet');
-    expect(s.appearance).toEqual({weapon:'sword',body:'robe',head:'circlet'});expect(s.attack.kind).toBe('melee');expect(s.stats.attackRange).toBe(2.5);
-    expect(s.unequip('slot2')).toBe(true);expect(s.attack.kind).toBe('projectile');expect(s.stats.attackRange).toBe(7.5);
+    expect(s.appearance).toEqual({weapon:'sword',body:'robe',head:'circlet'});expect(s.attack.kind).toBe('melee');expect(s.stats.attackRange).toBe(5);
+    expect(s.unequip('slot2')).toBe(true);expect(s.attack.kind).toBe('projectile');expect(s.stats.attackRange).toBe(15);
     expect(s.equip('sword','slot2')).toBe(true);expect(s.appearance.weapon).toBe('sword');
     expect(s.equip('bow','slot6')).toBe(false);expect(s.equipped.slot1).toBe('bow');
     const order=[...s.purchaseOrder];s.unequip('slot1');s.equip('bow','slot1');expect(s.purchaseOrder).toEqual(order);expect(s.attack.kind).toBe('melee');
   });
   it('does not add weapon ranges and preserves independent non-equipment range modifiers',()=>{
-    const s=funded();s.buy('bow');s.buy('staff');expect(s.stats.attackRange).toBe(6.5);s.buy('sword');expect(s.stats.attackRange).toBe(2.5);
-    s.attributes.upsert({sourceId:'permanent:reach',modifiers:[{stat:'attackRange',operation:'flat',value:1}]});expect(s.stats.attackRange).toBe(3.5);
-    s.unequip('slot3');expect(s.stats.attackRange).toBe(7.5);s.unequip('slot2');expect(s.stats.attackRange).toBe(8.5);s.unequip('slot1');expect(s.stats.attackRange).toBe(3.5);
+    const s=funded();s.buy('bow');s.buy('staff');expect(s.stats.attackRange).toBe(13);s.buy('sword');expect(s.stats.attackRange).toBe(5);
+    s.attributes.upsert({sourceId:'permanent:reach',modifiers:[{stat:'attackRange',operation:'flat',value:1}]});expect(s.stats.attackRange).toBe(6);
+    s.unequip('slot3');expect(s.stats.attackRange).toBe(14);s.unequip('slot2');expect(s.stats.attackRange).toBe(16);s.unequip('slot1');expect(s.stats.attackRange).toBe(6);
   });
   it('re-equips retained inventory into a chosen full slot without new purchase or persistent stat drift',()=>{
     const s=funded();for(const id of six)s.buy(id);s.buy('helm','slot2');const gold=s.gold,order=[...s.purchaseOrder];
@@ -40,13 +40,13 @@ describe('six universal equipment slots',()=>{
   it('restores identities from ordered ownership, detaches snapshots and isolates players',()=>{
     const a=funded(),b=funded();a.buy('staff');a.buy('bow');b.buy('sword');
     const saved=a.snapshot(),copy=funded();copy.inventory.clear();copy.purchaseOrder.push(...saved.purchaseOrder);for(const id of saved.inventory)copy.inventory.add(id);Object.assign(copy.equipped,saved.equipment);
-    expect(copy.appearance).toEqual(a.appearance);expect(copy.stats).toEqual(a.stats);expect(b.appearance.weapon).toBe('sword');expect(b.stats.attackRange).toBe(2.5);
+    expect(copy.appearance).toEqual(a.appearance);expect(copy.stats).toEqual(a.stats);expect(b.appearance.weapon).toBe('sword');expect(b.stats.attackRange).toBe(5);
     saved.purchaseOrder.reverse();saved.appearance.weapon='sword';saved.equipment.slot1='helm';expect(a.appearance.weapon).toBe('bow');expect(a.equipped.slot1).toBe('staff');
     expect(a.stats.attackDamage).toBe(24);expect(b.stats.attackDamage).toBe(32);
   });
   it('supports empty loadouts and stable configuration fallback without relying on object insertion order',()=>{
     expect(EQUIPMENT_SLOTS).toHaveLength(6);expect(appearanceLoadout({})).toEqual({});expect(basicAttack({}).kind).toBe('melee');
-    expect(deriveStats({}).attackRange).toBe(2.5);
+    expect(deriveStats({}).attackRange).toBe(5);
     const a=appearanceLoadout({slot6:'sword',slot1:'bow'}),b=appearanceLoadout({slot1:'bow',slot6:'sword'});expect(a).toEqual(b);expect(a.weapon).toBe('sword');
     expect(appearanceLoadout({slot6:'sword',slot1:'bow'},['sword','bow']).weapon).toBe('bow');
   });

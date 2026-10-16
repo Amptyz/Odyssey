@@ -27,9 +27,9 @@ export class EnvironmentView {
     for(const [index,prop] of this.props.entries()){
       const p=worldToScreen(prop,camera),inView=screenVisible({x:p.x,y:p.y+prop.height/2},prop.width);
       if(!inView){if(prop.node)prop.node.active=false;continue;}
-      if(!prop.node)prop.node=this.art.sprite(prop.ground?this.ground:this.objects,visual.atlas,prop.frame,prop.width,prop.height,`Ruins prop ${prop.frame}`);
-      const node=prop.node;node.active=true;node.setPosition(p.x,p.y+(prop.ground?0:prop.height/2)+(prop.waterfall?Math.sin(time*2+index)*.8:0));
-      if(prop.foliage)node.angle=Math.sin(time*.8+index)*.8;
+      if(!prop.node)prop.node=this.art.hasPixel('environment')?this.art.pixelSprite(prop.ground?this.ground:this.objects,'environment',prop.frame,prop.width,prop.height):this.art.sprite(prop.ground?this.ground:this.objects,visual.atlas,prop.frame,prop.width,prop.height,`Ruins prop ${prop.frame}`);
+      const node=prop.node;node.active=true;node.setPosition(Math.round(p.x),Math.round(p.y+(prop.ground?0:prop.height/2)));
+      if(prop.foliage)node.angle=0;
       if(prop.waterfall)node.getComponent(Sprite)!.color=color('#F2FDFF');
       if(!prop.ground)visible.push({node,y:p.y});this.visibleProps++;
     }

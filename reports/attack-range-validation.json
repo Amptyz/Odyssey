@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-10-16T13:15:40.347157+00:00",
+  "change": {
+    "attackRangeMultiplier": 2,
+    "scope": [
+      "player and enemy basic attacks",
+      "projectile ranges and radii",
+      "circle/sector/ring/rectangle attack dimensions",
+      "augment targeting and explosion/trail ranges"
+    ],
+    "unchanged": [
+      "damage",
+      "timing and cooldowns",
+      "angles",
+      "actor collision radii",
+      "player dash distance",
+      "AI guard/leash ranges"
+    ]
+  },
+  "validation": {
+    "cocosTypecheck": "passed",
+    "toolsTypecheck": "passed",
+    "coreCompile": "passed",
+    "unitTests": {
+      "command": "pnpm exec vitest run --exclude 'tests/platform/**'",
+      "total": 261,
+      "passed": 261,
+      "failed": 0
+    },
+    "browserHitboxes": {
+      "checks": 14,
+      "status": "passed"
+    },
+    "browserRange": {
+      "status": "passed",
+      "checks": [
+        "normal shop purchase uses bow range 15",
+        "nova attack and feedback radius 7.6",
+        "F3 collider view captured",
+        "no runtime errors"
+      ],
+      "bowRange": 15,
+      "novaRadius": 7.6,
+      "heroRadius": 0.32,
+      "errors": [],
+      "timestamp": "2026-10-16T13:13:41.637Z"
+    }
+  },
+  "limitations": [
+    "pnpm check was attempted; relay/transport checks fail on this Windows host with EPERM in existing relay directory fsync; relay code unchanged.",
+    "Default existing web-desktop/index.html and directory could not be replaced due to access denied. Creator built a fresh web-desktop-range output; the local 8080 server now serves that output.",
+    "No full campaign balance or multiplayer end-to-end playthrough was performed."
+  ],
+  "localBuildOutput": "EmberDemo/build/web-desktop-range",
+  "previewUrl": "http://127.0.0.1:8080/",
+  "screenshot": "reports/attack-range-combat.png"
+}

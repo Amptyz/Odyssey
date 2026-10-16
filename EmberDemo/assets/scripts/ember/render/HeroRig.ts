@@ -30,7 +30,7 @@ export class HeroRig {
     n.name=`${side} shoulder`;n.getComponent(UITransform)!.setAnchorPoint(...a.anchor);return n;
   }
   private part(frame:number,w:number,h:number,x:number,y:number,top=false):Node{
-    const n=this.art.sprite(this.node,'hero-parts',frame,w,h,`Base part ${frame}`);n.setPosition(x,y);if(top)n.getComponent(UITransform)!.setAnchorPoint(.5,1);return n;
+    const n=this.art.hasPixel('hero')?this.art.pixelSprite(this.node,'hero',frame,w,h):this.art.sprite(this.node,'hero-parts',frame,w,h,`Base part ${frame}`);n.setPosition(Math.round(x),Math.round(y));if(top)n.getComponent(UITransform)!.setAnchorPoint(.5,1);return n;
   }
   equip(loadout:EquipmentAppearanceLoadout):void{
     const key=JSON.stringify(loadout);if(key===this.signature)return;this.signature=key;
@@ -42,13 +42,15 @@ export class HeroRig {
       if(!frame&&!procedural)throw new Error(`Missing equipment art: ${appearance}`);
       if(procedural&&procedural.layer!==slot)throw new Error(`Equipment layer mismatch: ${appearance}`);
       const parent=slot==='weapon'?this.weaponRoot:this.gearRoot;
-      const node=procedural?createEquipmentVisual(parent,appearance)!:this.art.sprite(parent,'equipment',frame!.frame,frame!.width,frame!.height,`${slot} equipment`);
+      const ids:Record<string,string[]>={weapon:['sword','staff','bow','bulwark','reaver','runeblade'],body:['plate','robe','leather','duelistVest','wardMantle','sanguineWrap'],head:['helm','circlet','hood','keenVisor','sageMask','aegisCrown']},atlas=slot==='weapon'?'weapons':slot==='body'?'bodies':'heads',index=ids[slot]!.indexOf(id),pixel=this.art.hasPixel(atlas);
+      const sizes=slot==='weapon'?(id==='bow'?[21,42]:id==='bulwark'?[24,32]:id==='staff'?[18,48]:[14,id==='reaver'?31:42]):slot==='body'?[29,27]:id==='circlet'?[29,11]:id==='aegisCrown'?[32,18]:[35,35];
+      const node=pixel?this.art.pixelSprite(parent,atlas,index,sizes[0],sizes[1]):procedural?createEquipmentVisual(parent,appearance)!:this.art.sprite(parent,'equipment',frame!.frame,frame!.width,frame!.height,`${slot} equipment`);
       if(slot==='weapon'){
         const arm=HERO_ARM_ATTACHMENTS.right;this.weapon=node;this.weaponId=EQUIPMENT_APPEARANCES[appearance]!.shape;
         // Graphics coordinates already use the real palm origin; PNGs retain their atlas anchor.
-        if(frame)node.getComponent(UITransform)!.setAnchorPoint(frame.anchorX??.5,frame.anchorY??.2);
+        if(pixel)node.getComponent(UITransform)!.setAnchorPoint(.5,id==='bow'||id==='bulwark'?.5:.2);else if(frame)node.getComponent(UITransform)!.setAnchorPoint(frame.anchorX??.5,frame.anchorY??.2);
         node.setPosition((arm.grip[0]-arm.anchor[0])*arm.width,(arm.grip[1]-arm.anchor[1])*arm.height);
-      }else{node.setPosition(0,procedural?.y??frame?.y??27);if(slot==='body')this.bodyGear=node;else this.headGear=node;}
+      }else{node.setPosition(0,slot==='body'?27:id==='aegisCrown'?52:procedural?.y??frame?.y??47);if(slot==='body')this.bodyGear=node;else this.headGear=node;}
 
     }
     // Garments cover shoulder seams below the head; headgear covers the hair.
@@ -57,7 +59,7 @@ export class HeroRig {
   pose(pose:MotionPose):void{
     const walk=pose.state==='walk',phase=pose.age*10,swing=walk?Math.sin(phase)*19:Math.sin(pose.age*2)*2;
     const attack=pose.state==='attack'||pose.state==='cast',strike=attack?Math.sin(Math.min(1,pose.age/.42)*Math.PI):0;
-    this.node.setScale(pose.facing,1,1);this.node.setPosition(0,walk?Math.abs(Math.sin(phase))*1.6:Math.sin(pose.age*2)*.35);
+    this.node.setScale(pose.facing,1,1);this.node.setPosition(0,Math.round(walk?Math.abs(Math.sin(phase))*1.6:Math.sin(pose.age*2)*.35));
     this.node.angle=pose.state==='hurt'?-7:pose.state==='death'?-Math.min(1,pose.age/.45)*78:0;
     if(pose.state==='death')this.node.setPosition(0,5);
     this.leftLeg.angle=swing;this.rightLeg.angle=-swing;this.leftArm.angle=-swing*.8+(pose.state==='cast'?strike*35:0);
@@ -67,5 +69,8 @@ export class HeroRig {
     // through the strike instead of pointing back into the character's face.
     if(this.weapon)this.weapon.angle=(this.weaponId==='sword'||this.weaponId==='staff')?-strike*120:0;
     this.head.angle=pose.state==='hurt'?8:0;
+    // Quantize presentation only: world simulation, aim and collision stay continuous.
+    for(const part of [this.leftLeg,this.rightLeg,this.leftArm,this.rightArm,this.weaponRoot,this.head])part.angle=Math.round(part.angle/15)*15;
+    if(this.weapon)this.weapon.angle=Math.round(this.weapon.angle/15)*15;
   }
 }

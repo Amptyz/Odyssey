@@ -1,3 +1,4 @@
+import {scaleAttackRange} from './attacks';
 import type {ValueExpression} from '../combat-core/attributes/AttributeSet';
 import type {DamageType} from '../combat-core/types';
 import {statusDefinition,type StatusApplication} from './statuses';
@@ -14,17 +15,17 @@ export interface SkillDefinition {
   expression?:ValueExpression;damageType?:DamageType;manaCost?:number;name:string; cooldown:number; tags:readonly string[]; appearance:string; behavior:SkillBehavior;
 }
 export const SKILLS = {
-  fireball: {expression:{flat:38,abilityPower:.38},damageType:'magic',name:'烬火弹',cooldown:1.6,tags:['hero','projectile','fire'],appearance:'fire',behavior:{kind:'projectile',radius:0.18,damage:38,speed:11,range:13}},
+  fireball: {expression:{flat:38,abilityPower:.38},damageType:'magic',name:'烬火弹',cooldown:1.6,tags:['hero','projectile','fire'],appearance:'fire',behavior:{kind:'projectile',radius:scaleAttackRange(0.18),damage:38,speed:11,range:scaleAttackRange(13)}},
   shield: {expression:{flat:65,abilityPower:.65},damageType:'magic',name:'琥珀护盾',cooldown:9,tags:['hero','shield'],appearance:'shield',behavior:{kind:'shield',amount:65,duration:4}},
   dash: {name:'流火步',cooldown:4,tags:['hero','movement'],appearance:'fire',behavior:{kind:'dash',distance:3.5,duration:0.18}},
-  nova: {expression:{flat:72,abilityPower:.72},damageType:'magic',name:'余烬绽放',cooldown:13,tags:['hero','area','fire'],appearance:'fire',behavior:{kind:'area',damage:72,radius:3.8}},
-  icebolt: {expression:{flat:30,abilityPower:.30},damageType:'magic',name:'霜凝弹',cooldown:1.6,tags:['hero','projectile','ice'],appearance:'ice',behavior:{kind:'projectile',radius:0.18,damage:30,speed:10,range:13,onHit:[{id:'slow',duration:2.5,power:0.55}]}},
-  cleave:{expression:{flat:45,attackDamage:1},damageType:'physical',name:'裂空斩',cooldown:3,tags:['hero','melee'],appearance:'fire',behavior:{kind:'cone',damage:65,radius:3.4,arc:1.8}},
-  volley:{expression:{flat:25,attackDamage:1},damageType:'physical',name:'穿云箭',cooldown:1.8,tags:['hero','projectile','physical'],appearance:'mist',behavior:{kind:'projectile',radius:0.18,damage:45,speed:16,range:18}},
+  nova: {expression:{flat:72,abilityPower:.72},damageType:'magic',name:'余烬绽放',cooldown:13,tags:['hero','area','fire'],appearance:'fire',behavior:{kind:'area',damage:72,radius:scaleAttackRange(3.8)}},
+  icebolt: {expression:{flat:30,abilityPower:.30},damageType:'magic',name:'霜凝弹',cooldown:1.6,tags:['hero','projectile','ice'],appearance:'ice',behavior:{kind:'projectile',radius:scaleAttackRange(0.18),damage:30,speed:10,range:scaleAttackRange(13),onHit:[{id:'slow',duration:2.5,power:0.55}]}},
+  cleave:{expression:{flat:45,attackDamage:1},damageType:'physical',name:'裂空斩',cooldown:3,tags:['hero','melee'],appearance:'fire',behavior:{kind:'cone',damage:65,radius:scaleAttackRange(3.4),arc:1.8}},
+  volley:{expression:{flat:25,attackDamage:1},damageType:'physical',name:'穿云箭',cooldown:1.8,tags:['hero','projectile','physical'],appearance:'mist',behavior:{kind:'projectile',radius:scaleAttackRange(0.18),damage:45,speed:16,range:scaleAttackRange(18)}},
   ironGuard:{expression:{flat:120,abilityPower:1.2},damageType:'magic',name:'钢铁壁垒',cooldown:12,tags:['hero','shield'],appearance:'shield',behavior:{kind:'shield',amount:120,duration:6}},
-  frostNova:{expression:{flat:42,abilityPower:.42},damageType:'magic',name:'寒霜环',cooldown:10,tags:['hero','area','ice'],appearance:'ice',behavior:{kind:'area',damage:42,radius:4.5,onHit:[{id:'slow',duration:3,power:0.45}]}},
-  mistBolt: {expression:{attackDamage:1},damageType:'magic',name:'雾灯弹',cooldown:2.4,tags:['enemy','projectile'],appearance:'mist',behavior:{kind:'projectile',radius:0.18,damage:13,speed:5.3,range:21.2}},
-  frostBolt: {expression:{attackDamage:1},damageType:'magic',name:'寒霜弹',cooldown:2.8,tags:['enemy','projectile','ice'],appearance:'ice',behavior:{kind:'projectile',radius:0.18,damage:10,speed:4.5,range:18,onHit:[{id:'slow',duration:1.4,power:0.7}]}},
+  frostNova:{expression:{flat:42,abilityPower:.42},damageType:'magic',name:'寒霜环',cooldown:10,tags:['hero','area','ice'],appearance:'ice',behavior:{kind:'area',damage:42,radius:scaleAttackRange(4.5),onHit:[{id:'slow',duration:3,power:0.45}]}},
+  mistBolt: {expression:{attackDamage:1},damageType:'magic',name:'雾灯弹',cooldown:2.4,tags:['enemy','projectile'],appearance:'mist',behavior:{kind:'projectile',radius:scaleAttackRange(0.18),damage:13,speed:5.3,range:scaleAttackRange(21.2)}},
+  frostBolt: {expression:{attackDamage:1},damageType:'magic',name:'寒霜弹',cooldown:2.8,tags:['enemy','projectile','ice'],appearance:'ice',behavior:{kind:'projectile',radius:scaleAttackRange(0.18),damage:10,speed:4.5,range:scaleAttackRange(18),onHit:[{id:'slow',duration:1.4,power:0.7}]}},
 } as const satisfies Record<string,SkillDefinition>;
 export type SkillId = keyof typeof SKILLS;
 export type Loadout = Record<SkillSlot,SkillId>;

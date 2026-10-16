@@ -1,0 +1,8 @@
+{
+  "key": "rimeWeaver-correction",
+  "input": "sources/15-rimeWeaver-before-correction.png",
+  "output": "monsters/15-rimeWeaver.png",
+  "prompt": "Targeted correction of the bottom SPECIAL SKILL (wovenRing) row only on this existing board. This spell is cast at a REMOTE TARGET POSITION, not centered on caster. Keep all three views, gameplay poses, basic attack row, design, colors and timings identical. In the bottom CAST and RELEASE poses keep the same four-armed creature making hand gestures but remove the ground ring or burst centered on its own body; draw a thin frost thread pointing off to a separate remote ring beyond its hands, no self-centered damaging halo. In the TELEGRAPH panel show a small neutral target location dot inside the EMPTY SAFE HOLE, and a separate small caster silhouette OUTSIDE the ring pointing towards that remote location. Ring outer radius4.0 inner radius1.8, ring center sampled at target at t0, hits t1.20. Keep ring hole unfilled, outer annulus is damaging. Add short legible label REMOTE TARGET / 远端目标. VFX belongs around remote ring, not caster feet. Recovery1.20-1.55. This is an illustration correction only.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-2ed9e4ae-df34-4424-a6cd-f92d4a1933fe.png"
+}

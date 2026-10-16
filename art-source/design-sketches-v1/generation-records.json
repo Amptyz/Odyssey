@@ -1,0 +1,264 @@
+{
+  "date": "2026-10-16",
+  "scope": "Static design sketches only",
+  "baseCalls": [
+    {
+      "key": "melee",
+      "output": "monsters/01-melee.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#melee",
+      "promptPrefix": "",
+      "references": [],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-038fa4f6-9b0e-4a0d-b63d-3eb6a1a9e9ea.png"
+    },
+    {
+      "key": "ranged",
+      "output": "monsters/02-ranged.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#ranged",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-cf83b8bd-a77f-4d2b-a493-4d6e3f20593b.png"
+    },
+    {
+      "key": "stoneback",
+      "output": "monsters/03-stoneback.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#stoneback",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-5ccda134-b05b-4738-aa50-45c79501eae0.png"
+    },
+    {
+      "key": "reedLancer",
+      "output": "monsters/04-reedLancer.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#reedLancer",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-93f808d6-f597-411b-949b-fa9df2d8b230.png"
+    },
+    {
+      "key": "sunbud",
+      "output": "monsters/05-sunbud.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#sunbud",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-5dc842e6-9444-4221-a63d-c013d5b6021a.png"
+    },
+    {
+      "key": "frostling",
+      "output": "monsters/06-frostling.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#frostling",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-eae009b3-d9d4-46d1-ac75-4cfab6f4c95c.png"
+    },
+    {
+      "key": "shardCrab",
+      "output": "monsters/07-shardCrab.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#shardCrab",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-d6d85c43-a6c1-49e7-a4ed-c23cacab950f.png"
+    },
+    {
+      "key": "rimeMoth",
+      "output": "monsters/08-rimeMoth.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#rimeMoth",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-e573f83a-ec05-481f-9c9b-7305cd6bdd4f.png"
+    },
+    {
+      "key": "chimeSentry",
+      "output": "monsters/09-chimeSentry.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#chimeSentry",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-e27a84b0-f940-45e0-a841-b49f3c2a4a40.png"
+    },
+    {
+      "key": "snowHare",
+      "output": "monsters/10-snowHare.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#snowHare",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-780f0ed4-0e9e-4df9-a19b-20dce6ebcbf9.png"
+    },
+    {
+      "key": "warden",
+      "output": "monsters/11-warden.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#warden",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-558d4605-f230-42d0-b66d-4f45212c2cb6.png"
+    },
+    {
+      "key": "emberRam",
+      "output": "monsters/12-emberRam.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#emberRam",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-1066a3ea-0224-4c6f-85f9-9b7ae20dfdd7.png"
+    },
+    {
+      "key": "bellKeeper",
+      "output": "monsters/13-bellKeeper.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#bellKeeper",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-05a18c79-37de-4f84-a348-2b9eb06b1699.png"
+    },
+    {
+      "key": "mirrorKnight",
+      "output": "monsters/14-mirrorKnight.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#mirrorKnight",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-ed49fd1d-0aed-4b16-a4f6-a9eeac03398c.png"
+    },
+    {
+      "key": "rimeWeaver",
+      "output": "monsters/15-rimeWeaver.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#rimeWeaver",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-84476fa5-9f0d-4011-9010-5d1104b5fd23.png"
+    },
+    {
+      "key": "courtyardHeart",
+      "output": "monsters/16-courtyardHeart.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#courtyardHeart",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-6642de6e-7321-423f-9288-526e8b6fc399.png"
+    },
+    {
+      "key": "mirrorRegent",
+      "output": "monsters/17-mirrorRegent.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#mirrorRegent",
+      "promptPrefix": "Reference image supplies BOARD LAYOUT, pixel-art treatment and line weight ONLY. Do NOT copy its teardrop creature, leaf hat, knife or face. Draw the NEW SPECIFIED species and anatomical structure in this request.",
+      "references": [
+        "monsters/01-melee.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-6b3b33c2-3e96-4603-a377-dac2e328a8c6.png"
+    },
+    {
+      "key": "equipment-weapon",
+      "output": "equipment/weapon-icons.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#equipment-weapon",
+      "promptPrefix": "",
+      "references": [],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-b4ab9ff2-d535-4a0b-9568-59c93e27c460.png"
+    },
+    {
+      "key": "equipment-body",
+      "output": "equipment/body-icons.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#equipment-body",
+      "promptPrefix": "Reference image supplies icon board presentation, pixel density and material language ONLY. Draw the SIX specified new items, not the reference weapons.",
+      "references": [
+        "equipment/weapon-icons.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-aad8e4a2-2d23-4389-9f6a-c2ca5926f20c.png"
+    },
+    {
+      "key": "equipment-head",
+      "output": "equipment/head-icons.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#equipment-head",
+      "promptPrefix": "Reference image supplies icon board presentation, pixel density and material language ONLY. Draw the SIX specified new items, not the reference weapons.",
+      "references": [
+        "equipment/weapon-icons.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-fb2d1ef6-9646-4bf2-804f-843f9b3a7203.png"
+    },
+    {
+      "key": "courtyardHeart-skills",
+      "output": "monsters/16-courtyardHeart-skills.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#courtyardHeart-skills",
+      "promptPrefix": "Use attached model sheet as EXACT CHARACTER ANATOMY, PALETTE AND PROPORTION REFERENCE. Continue the identical boss design, not a redesigned species. Board layout can change to fit complete skills. Do not copy basic attack timing captions. Each skill must have its own visible pose studies and correct independent telegraph diagram.",
+      "references": [
+        "sources/16-courtyardHeart-before-correction.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-77a0fb29-4c99-44f3-be62-888af23626a8.png"
+    },
+    {
+      "key": "mirrorRegent-skills",
+      "output": "monsters/17-mirrorRegent-skills.png",
+      "tool": "built-in image_gen",
+      "basePrompt": "prompts.json#mirrorRegent-skills",
+      "promptPrefix": "Use attached model sheet as EXACT CHARACTER ANATOMY, PALETTE AND PROPORTION REFERENCE. Continue the identical boss design, not a redesigned species. Board layout can change to fit complete skills. Do not copy basic attack timing captions. Each skill must have its own visible pose studies and correct independent telegraph diagram.",
+      "references": [
+        "monsters/17-mirrorRegent.png"
+      ],
+      "generatedSource": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-ab38fbee-b898-45e4-adf1-34499880b096.png"
+    }
+  ],
+  "correctionRecords": [
+    "sources/ranged-correction.json",
+    "sources/frostling-correction.json",
+    "sources/chimeSentry-correction.json",
+    "sources/rimeMoth-correction.json",
+    "sources/emberRam-correction.json",
+    "sources/bellKeeper-correction.json",
+    "sources/warden-correction.json",
+    "sources/snowHare-correction.json",
+    "sources/courtyardHeart-correction.json",
+    "sources/rimeWeaver-correction.json",
+    "sources/courtyardHeart-skills-correction.json",
+    "sources/mirrorRegent-skills-correction.json",
+    "sources/mirrorRegent-phase-correction.json"
+  ],
+  "notes": [
+    "The exact base tool prompt is promptPrefix + newline + the matching prompt in prompts.json (omit separator when prefix empty).",
+    "Input references are preserved style or anatomy references; only edits replace target boards, with prior drafts retained in sources/.",
+    "Original source PNGs are retained in the generator directory; final project copies are in equipment/ and monsters/."
+  ]
+}

@@ -4,7 +4,7 @@
 
 制作入口为 [ember-art skill](../.agents/skills/ember-art/SKILL.md)。外来视频 / 动画工作流的取舍见 [审阅结果](ART_ANIMATION_REVIEW.md)，不能直接将第三方 manifest 或坐标规则当成已有接口。
 
-目标是保留明亮古代遗迹、自然与魔法的氛围，降低参考图的细节密度。大面积浅石板承担地面，低对比接缝替代密集棋盘；植物主要位于边缘，技能预警与角色轮廓优先。颜色集中在象牙白、鼠尾草绿、浅青水色及少量珊瑚色、金色。
+后续制作方向为像素遗迹风，保留明亮古代遗迹、自然与魔法的氛围。源像素网格、色板和显示倍率以 ART_DIRECTION 为准，粒子以 [像素特效规范](PIXEL_VFX.md) 为准。下列现有资源与历史验收并未因此像素化；最近邻、镜头对齐、整数显示、程序怪物 / 地面 / 特效和纸娃娃连续旋转需要后续适配。大面积浅石板承担地面，低对比接缝替代密集棋盘；植物主要位于边缘，技能预警与角色轮廓优先。颜色集中在象牙白、鼠尾草绿、浅青水色及少量珊瑚色、金色。
 
 人物基础只使用普通短发、浅灰短衣、褐灰裤与软靴，没有职业标志。剑、杖、弓、盾、衣甲和头饰承担流派辨识；基础身体不随技能组合换成固定职业。
 
@@ -53,7 +53,7 @@ MonsterVisual.update(unit,pose,time)读取EnemySystem的EnemyPose，windup显示
 
 1. 将透明 PNG 放入 resources 下的对应目录，通过 Creator 导入并提交编辑器生成的 `.meta`；不要手写或重建 UUID。大幅修改建议先保留版本文件。
 2. 更新 `scripts/inspect-art.py` 的图集布局，安装可选 Pillow 后运行 `python3 scripts/inspect-art.py`。它只读取 PNG，输出像素区域、脚底基准和检查报告，不修改图片与 `.meta`。若美术存在非均匀动作格，需检查每帧锚点，不能只依赖自动裁边。
-3. 当前新怪优先扩MonsterVisual/monster-palettes与EnemyPose相位；若明确采用PNG，才在UNIT_SPRITES配置atlas/pixelScale/height/tint/clips并实现该怪的视图选择与动作映射。不能注册图片却仍默认走程序视图后声称已加载。
+3. 新增怪物继续保留 MonsterVisual / EnemyPose 的行为相位契约，后续像素表现可选择重做程序绘制或 PNG；选型与显示网格须先做代表试样，不能以旧平滑 Graphics 冒充像素成品。若采用 PNG，需在UNIT_SPRITES配置atlas/pixelScale/height/tint/clips并实现该怪的视图选择与动作映射。不能注册图片却仍默认走程序视图后声称已加载。
 4. PNG装备在 `EQUIPMENT_SPRITES` 配置帧和挂点；原生Graphics装备在 `PROCEDURAL_EQUIPMENT` 配置分层多边形与y位置，经EquipmentVisuals创建，两者都在装备定义引用稳定appearance ID。武器 `anchorX / anchorY` 应标在实际握把位置，不能将弓、法杖都默认设为图片底部居中。武器跟随掌心，衣甲盖住肩部接头，头饰盖在头部；确认空脸区域透明、活动时不漂移。
 5. 新地图素材在 `ENVIRONMENT_APPEARANCES` 指定图集与素材角色，再通过地图 environment 引用。当前采用疏朗边缘模板，独立关卡装饰布局尚无可视编辑器。
 6. 运行 `pnpm check`，在 Creator 构建 Web Desktop，再运行 `pnpm test:art`。检查缩小到实际游玩尺寸后的轮廓、地板对比、血条位置、预警可读性和装备动作。
@@ -74,4 +74,4 @@ MonsterVisual.update(unit,pose,time)读取EnemySystem的EnemyPose，windup显示
 
 ## v0.8 八件装备程序外观
 
-八件新装备按[外观实施规格](design/EQUIPMENT_VISUAL_IMPLEMENTATION.md)使用大色块、多边形轮廓，挂在现有HeroRig掌心/身体/头部；沿用同一套移动、攻击、施法与镜像姿态。它们不是新生成PNG，原equipment.png仍仅含原有10件。完整PNG升级仍可作为独立ART-01任务，不影响本轮八件装备可正常显示与战斗。
+八件新装备按[外观实施规格](design/EQUIPMENT_VISUAL_IMPLEMENTATION.md)使用大色块、多边形轮廓，挂在现有HeroRig掌心/身体/头部；沿用同一套移动、攻击、施法与镜像姿态。它们不是新生成PNG，原equipment.png仍仅含原有10件。像素 PNG 升级及显示适配仍可作为独立 ART-01 任务，不影响本轮八件装备可正常显示与战斗。

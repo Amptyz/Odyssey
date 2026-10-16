@@ -1,3 +1,4 @@
+import {scaleAttackRange} from './attacks';
 import type {UnitTemplate} from '../combat-core/attributes/AttributeSet';
 import type {SkillId} from './skills';
 export type EnemyBehaviorId='melee'|'ranged'|'monster';
@@ -8,7 +9,7 @@ export interface EnemyDefinition {
   boss?:{threshold:number;loop:number;phase1:readonly {at:number;action:string}[];phase2:readonly {at:number;action:string}[]};
 }
 function define(name:string,map:EnemyDefinition['map'],category:EnemyDefinition['category'],hp:number,ad:number,ap:number,armor:number,mr:number,period:number,ms:number,range:number,radius:number,windup:number,actionSet:string,extra:Partial<EnemyDefinition>={}):EnemyDefinition {
- return {name,map,category,template:{stats:{maxHealth:hp,attackDamage:ad,abilityPower:ap,armor,magicResist:mr,moveSpeed:ms,attackRange:range},baseAttackSpeed:1/period,attackSpeedRatio:1/period,resourceKind:'none',classification:'monster'},radius,windup,recovery:period-windup,behavior:'monster',appearance:actionSet,actionSet,...extra};
+ return {name,map,category,template:{stats:{maxHealth:hp,attackDamage:ad,abilityPower:ap,armor,magicResist:mr,moveSpeed:ms,attackRange:scaleAttackRange(range)},baseAttackSpeed:1/period,attackSpeedRatio:1/period,resourceKind:'none',classification:'monster'},radius,windup,recovery:period-windup,behavior:'monster',appearance:actionSet,actionSet,...extra};
 }
 /** One shared attribute model. Behaviour is selected by action sets, never GameWorld ID branches. */
 export const ENEMIES={

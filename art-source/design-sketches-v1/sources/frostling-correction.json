@@ -1,0 +1,8 @@
+{
+  "key": "frostling",
+  "input": "sources/06-frostling-before-correction.png",
+  "output": "monsters/06-frostling.png",
+  "prompt": "Use case: precise-object-edit. Correct this ORIGINAL Project Ember concept board while preserving its layout, identity, pixel-art style, background, lettering and all passed drawings. Change ONLY bottom-left telegraph drawing and caption to a NARROW STRAIGHT RECTANGULAR LANE. Parallel sides, flat end. Length 12, full width 0.48, projectile radius 0.24, speed 7. Remove 90 degree label and curved sector. Keep all three leaf crown views and all body poses unchanged. This is a targeted technical correction; all unaffected views must remain visually identical. Return the full complete board, no crop.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-ca0d7d65-b73b-4b38-98dc-5f02ef920988.png"
+}

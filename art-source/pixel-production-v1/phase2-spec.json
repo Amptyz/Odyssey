@@ -1,0 +1,70 @@
+[
+  {
+    "id": "courtyardHeart-phase2",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/courtyardHeart-phase2.png",
+    "grid": [
+      4,
+      5
+    ],
+    "height": 110,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "hearthFurrows:windup",
+      "hearthFurrows:strike",
+      "hearthFurrows:recovery",
+      "hearthSeeds:windup",
+      "hearthSeeds:strike",
+      "hearthSeeds:recovery",
+      "hearthVent:windup",
+      "hearthVent:strike",
+      "hearthVent:recovery",
+      "phase2",
+      "idle18",
+      "idle19"
+    ],
+    "reference": "D:\\projs\\game\\Odyssey\\EmberDemo\\assets\\resources\\art\\pixel-v1\\courtyardHeart.png"
+  },
+  {
+    "id": "mirrorRegent-phase2",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/mirrorRegent-phase2.png",
+    "grid": [
+      4,
+      6
+    ],
+    "height": 128,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "regentLanes:windup",
+      "regentLanes:strike",
+      "regentLanes:recovery",
+      "regentHalo:windup",
+      "regentHalo:strike",
+      "regentHalo:recovery",
+      "regentMarks:windup",
+      "regentMarks:strike",
+      "regentMarks:recovery",
+      "regentOath:windup",
+      "regentOath:strike",
+      "regentOath:recovery",
+      "phase2",
+      "idle21",
+      "idle22",
+      "idle23"
+    ],
+    "reference": "D:\\projs\\game\\Odyssey\\EmberDemo\\assets\\resources\\art\\pixel-v1\\mirrorRegent.png"
+  }
+]

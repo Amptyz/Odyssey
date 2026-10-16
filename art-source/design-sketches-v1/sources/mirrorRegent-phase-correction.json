@@ -1,0 +1,8 @@
+{
+  "key": "mirrorRegent-phase-correction",
+  "input": "sources/17-mirrorRegent-skills-before-phase-correction.png",
+  "output": "monsters/17-mirrorRegent-skills.png",
+  "prompt": "Precise final localized illustration edit. Change ONLY THE BOTTOM-LEFT PHASE TRANSITION strip on this existing board, leave ALL skill rows and the bottom-right variants unchanged. That strip has three full-body figures left-to-right: (1) PHASE I MUST HAVE A ROUND OVAL WHITE MIRROR DISC inside its arch frame, exactly like the round discs seen on the first skill row; (2) intermediate figure should show oval disc starting to turn, still round/elliptical, and a normal pale frame; (3) PHASE II keeps the existing DIAMOND aperture and DARK INDIGO frame. Currently all3 show diamond which is wrong. Restore ROUND DISC for leftmost figure and ROUND/ELLIPSE for middle figure only. Keep 2.0s arrow and phase labels. Do not change any other drawings or text, no redesign, no layout changes. The correct first-phase appearance already visible in upper rows is reference for that oval disc.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-3da8f45b-0c2f-46e0-89e6-789589230791.png"
+}

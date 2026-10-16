@@ -1,10 +1,14 @@
 # EQ-01：六个通用装备栏设计 v2
 
+> 2026-10-16 美术方向更新：后续按 [像素遗迹风](../ART_DIRECTION.md) 与 [像素特效规范](../PIXEL_VFX.md) 制作。本文既有数值、身份、挂点和历史程序外观记录继续有效；现有 PNG / Graphics 尚未像素化，旧验收不代表像素迁移通过。
+
 日期：2026-10-16。本稿是已确认的六栏与18件装备设计基线。v0.7先接入现有10件与六栏；v0.8（EQ-02）接入另外8件及符击/石息，18件均进入固定货架。数值算表仍是理论预算，不代表实战表现；当前实现与边界见[装备实施指南](EQUIPMENT_IMPLEMENTATION.md)，美术路线见[外观实施](EQUIPMENT_VISUAL_IMPLEMENTATION.md)。
 
 外观按武器/身体/头部各部位显示最新购买且当前装备的物品；重新穿戴不重排购序。前置：[统一属性系统](../ATTRIBUTE_SYSTEM.md)、[属性实施记录](../ATTRIBUTE_IMPLEMENTATION.md)、[架构](../ARCHITECTURE.md)、[开发指南](../DEVELOPMENT_GUIDE.md)、[内容扩展](../CONTENT_ARCHITECTURE.md)。
 
 ## 1. 六栏、交易与状态模型
+
+图标设计已补齐当前全部 18 件：[武器 / 衣甲 / 头饰草图](../../art-source/design-sketches-v1/README.md)，每类六项。它们是带底色和说明的设计板；透明小尺寸图标、纸娃娃穿戴资源与动作接入继续由 ART-01 制作，不改变本文件的六栏及外观规则。
 
 ### 1.1 无类型占位限制
 

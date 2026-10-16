@@ -4,13 +4,17 @@
 
 ## 全体画面约束
 
-明亮自然遗迹、非像素卡通，象牙石、鼠尾草、浅青水色，局部珊瑚/金色/冰青区分身份。每种主体3–5大色块、两级柔和分面、暖深描边；一个主轮廓加1–2个识别点，禁止密集雕刻、叶脉、碎石、写实裂痕、金属镜面反射。霜镜也保持明亮，不做恐怖暗黑冰窟。
+后续视觉交付：现已依据本设定完成 [17 怪物设计草图](../../art-source/design-sketches-v1/README.md)，含正 / 侧 / 背、基础动作、普攻、5 种精英技能与 2 个 Boss 完整技能及阶段页。开头“没有生成”描述的是首次 Brief 交付阶段；本轮 PNG 为设计板，运行时仍使用原程序轮廓 / 动画。当前范围倍率与准确时序见草图册的配置核对表，不能按图中文字反推战斗配置。
+
+后续统一为明亮像素遗迹风，象牙石、鼠尾草、浅青水色，局部珊瑚/金色/冰青区分身份。每种主体 3–5 主色块、2–3 级硬边色阶、清楚像素簇与阶梯暖深描边；一个主轮廓加1–2个识别点，禁止密集雕刻、叶脉、碎石、写实裂痕、金属镜面反射。霜镜也保持明亮，不做恐怖暗黑冰窟。
+
+源像素网格、逻辑画布、共享色板和显示倍率统一遵循 [ART_DIRECTION](../ART_DIRECTION.md#源像素网格与显示目标)，以下尺寸保持屏幕构图参照，不等于源像素分辨率。原 PNG 与现有程序怪物仍未像素化。
 
 全体一个三分之四原始朝向，屏幕右下为标准出手方向，运行时左右镜像；没有四/八向、Spine或衣料物理。单位的武器/器具属于该怪物固定身份，不是玩家换装槽；镜像后手与器具整体翻转，不能换手重画。所有技能球、枪线、落地圈、冲锋扬尘和爆炸独立渲染，不烘进本体图集；炉心、面部金色标记可以作为固定材质留下，禁止常驻大光环。
 
 尺寸表为1280×720、地图zoom=1时目标“正常站姿最大宽×高”，单位屏幕像素；不是强制把每帧bbox缩成这个矩形。极值动作允许宽度+20%，但躯干尺度保持不变，实际需要用返回PNG测量pixelScale。受击radius是地面世界格，**贴图不决定碰撞**；主要身体投影覆盖受击圈，突出手臂/叶片/枪尖可在圈外，不是额外弱点机制。默认投影54×28，世界圆r在屏幕投影约宽`76.37r`、高`39.60r`；例如B01 r=.9约68.7×35.6地面椭圆，身体底座宽约68，左右臂扩至112。Boss体积差异是真实radius差异，接入先完成按体型导航，不把大怪挤成玩家碰撞体。
 
-脚底策略A：原始每格建议256×256（Boss512×512），四周≥12%透明留白覆盖全动作。固定同一身体比例与足底中心；下垂武器/碎片不得低于脚底基线。`ArtFrame.rect`左上像素、pivot为裁区像素，建议原格脚底点(128,224)，Boss(256,448)；**这些是制作画布参考，不是当前播放器任意Y-pivot功能**。当前inspect-art裁边、AnimatedUnit只读pivotX，anchorY=0；输出须确保所有帧最低非透明像素落在同一足底线且不夹带地面投影，死亡不可掉零件到更低处。若要保留整体腾空或任意Y锚点，另实施策略B（统一画布/偏移/共同pivot与渲染消费），本批默认不采用。
+脚底策略 A：先按权威风格指南选定逻辑画布与倍率，再留四周≥12%透明空间覆盖全动作；原 256/512 高分辨率画布建议已由像素基准替代。固定身体比例与足底中心，下垂武器/碎片不得低于足底基线。`ArtFrame.rect` 为实际图集左上像素、pivot 为裁区像素；制作足底点取所选逻辑画布宽约 1/2、高约 7/8，映射到导出图像后记录；**这些是制作画布参考，不是当前播放器任意Y-pivot功能**。当前inspect-art裁边、AnimatedUnit只读pivotX，anchorY=0；输出须确保所有帧最低非透明像素落在同一足底线且不夹带地面投影，死亡不可掉零件到更低处。若要保留整体腾空或任意Y锚点，另实施策略B（统一画布/偏移/共同pivot与渲染消费），本批默认不采用。
 
 ## 图集与状态时长
 
@@ -45,7 +49,7 @@ S仅表示帧分配，**不代表能正确表现整段战斗时间**：当前win
 - **轮廓/色材**：横向低扁六足甲虫，完整一块圆梯形背壳，两颗钝角；无拟人双手。暖象牙`#CDC8AD`壳、灰绿`#879A80`腹，角端浅褐。只分壳/腹/六足三个大组，不画甲片网格。
 - **尺寸/锚点**：52×35，壳底投影宽32，r=.42；前后六足接触基线中点。
 - **威胁/动作**：S。壳微呼吸；三对足交替；壳转向抬侧→侧向横摆→平放过冲→稳住，`.8/.15/1.55`；六足始终同数量。受击缩足；死亡壳倾侧压低，禁止翻转露写实内脏。160°双齿扇形提示其宽扫。
-- **复用/优先级**：P1，新身份不复用精灵躯干；石材分面笔触可共享。
+- **复用/优先级**：P1，新身份不复用精灵躯干；石材像素簇与色阶可共享。
 - **Prompt参数**：`a low wide six-legged ruin beetle, one broad trapezoid ivory stone shell, two blunt horn tips, muted sage underside, clear six-leg silhouette with minimal segmentation; 52x35 gameplay pixels; no humanoid arms, weapon or detailed carapace engraving`。
 
 ### N04 `reedLancer` 芦枪侍从
@@ -176,8 +180,9 @@ S仅表示帧分配，**不代表能正确表现整段战斗时间**：当前win
 Use case: stylized-concept
 Asset type: runtime sprite identity reference
 Request: ONE Project Ember monster. OBJECT
-Bright living ruins, simplified non-pixel cartoon, three to five broad colour
-blocks, soft two-level cel shading and clean warm-dark outline.
+Bright living ruins in deliberate pixel art, three to five broad colour blocks,
+shared limited palette, two or three hard-edged shades and stepped warm-dark outline.
+No antialiasing, blur, soft gradients, noisy dithering or faux pixel filter.
 Single three-quarter view facing screen-down-right; the game mirrors left/right.
 Full neutral ready stance, exact limb count, fixed weapon and clear silhouette.
 True transparent alpha outside subject and genuine transparent interior openings.
@@ -185,8 +190,10 @@ Keep at least12% clear padding on every side, including weapon and crown extreme
 No ground shadow, scenery, labels, watermark, grid lines, checkerboard,
 background halo, attack arcs, projectiles, rings, explosions or damage numbers.
 Avoid dense engraving, tiny leaves, veins, scratches, fur strands and realism.
-Target source canvas256x256 for normal/elite,512x512 for boss; do not assume the
-returned image size. Readability is judged at the specified gameplay pixel size.
+Logical source canvas: [selected texel dimensions from ART_DIRECTION sample].
+Shared palette and grid origin: [batch values]. Integer display scale: [sample value].
+Measure the returned image and logical grid; a high-resolution output is not
+automatically a pixel asset. Judge readability at the specified gameplay size.
 ```
 
 动作请求用同一身份图，不把17个对象一次挤一张图，不将概念场景当运行时图集：
@@ -204,9 +211,11 @@ for death as planned; expanded elite/boss pose groups follow their explicit map.
 Preserve all extreme poses inside the transparent canvas. No baked combat VFX.
 ```
 
-E/B不是任意JSON可以导入：制作前逐个把帧号→姿势→模拟相位列表固定在art-source批次记录，先实现播放器映射，再批量生成。基础S可选4×4合成目标1024²，E为4×6目标1024×1536，B为5×8目标2560×4096（512格）；这些只是初始请求，图集过大应拆单clip多图集并接ArtLibrary，不能默认当前AtlasId支持任意新图。优先为Boss用256格目标1280×2048检验足够像素后再提高，不能用超大源尺寸堆细节。
+E/B 不是任意 JSON 可以导入：制作前把帧号→姿势→模拟相位固定在 art-source 记录，先实现播放器映射，再批量生成。S 的 4×4、E 的 4×6、B 的 5×8 只描述候选帧布局；图集尺寸由选定逻辑格尺寸乘行列得到，不再沿用旧 1024/4096 等请求。导出若采用整数倍运输画布，须记录真实逻辑 texel 与导出像素映射，禁止借高分辨率增加细节。过大图集可分 clip，但须实际接入 ArtLibrary，不假设 AtlasId 已支持任意新图。
 
 ## VFX字典与威胁可读性
+
+以下保留各技能的语义形状和危险时序；像素簇、色阶、爆发层次与装饰叠加预算统一以 [PIXEL_VFX](../PIXEL_VFX.md) 为准。表中秒数为制作目标，不是已实现粒子配置，也不覆盖模拟预警有效期。
 
 | 家族/技能 | 独立预警 | 出手与衰减 | 本体禁画 |
 |---|---|---|---|

@@ -20,7 +20,7 @@
     "test:hitboxes": "node --import tsx scripts/browser-hitboxes.ts",
     "test:hexes": "node --import tsx scripts/browser-hexes.ts",
     "test:developer": "node --import tsx scripts/browser-developer.ts",
-    "test:art": "node --import tsx scripts/browser-art.ts",
+    "test:art": "node scripts/browser-pixel-production.mjs",
     "test:attributes": "node --import tsx scripts/browser-attributes.ts",
     "relay": "node --import tsx scripts/relay-server.ts",
     "test:multiplayer": "node --import tsx scripts/browser-multiplayer.ts",

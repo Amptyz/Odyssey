@@ -1,5 +1,7 @@
 # 新增八件装备：程序外观接入
 
+> 2026-10-16 美术方向更新：后续按 [像素遗迹风](../ART_DIRECTION.md) 与 [像素特效规范](../PIXEL_VFX.md) 制作。本文既有数值、身份、挂点和历史程序外观记录继续有效；现有 PNG / Graphics 尚未像素化，旧验收不代表像素迁移通过。
+
 本次使用 Cocos Graphics 绘制低细节部件，没有生成 PNG、没有新增或复用图集帧冒充新素材。制作工具为 TypeScript 与现有 HeroRig；未使用图片生成/编辑工具。图形定义在 `content/appearances.ts` 的 `PROCEDURAL_EQUIPMENT`，一次装备时由 `render/EquipmentVisuals.ts` 绘制，随后只随骨骼变换，不逐帧重绘。appearance ID 与八件装备 ID 相同。
 
 | appearance | 主要识别点 | 部位与原点 |

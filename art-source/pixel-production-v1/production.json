@@ -1,0 +1,587 @@
+[
+  {
+    "id": "melee",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/melee.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 48,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "ranged",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/ranged.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 46,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "stoneback",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/stoneback.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 35,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "reedLancer",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/reedLancer.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 56,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "sunbud",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/sunbud.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 50,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "frostling",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/frostling.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 52,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "shardCrab",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/shardCrab.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 39,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "rimeMoth",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/rimeMoth.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 41,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "chimeSentry",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/chimeSentry.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 62,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "snowHare",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/snowHare.png",
+    "grid": [
+      4,
+      2
+    ],
+    "height": 43,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death"
+    ]
+  },
+  {
+    "id": "warden",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/warden.png",
+    "grid": [
+      4,
+      3
+    ],
+    "height": 83,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "rootPlates:windup",
+      "rootPlates:strike",
+      "rootPlates:recovery",
+      "idle11"
+    ]
+  },
+  {
+    "id": "emberRam",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/emberRam.png",
+    "grid": [
+      4,
+      3
+    ],
+    "height": 58,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "ramLane:windup",
+      "ramLane:strike",
+      "ramLane:recovery",
+      "idle11"
+    ]
+  },
+  {
+    "id": "bellKeeper",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/bellKeeper.png",
+    "grid": [
+      4,
+      3
+    ],
+    "height": 74,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "bellEcho:windup",
+      "bellEcho:strike",
+      "bellEcho:recovery",
+      "idle11"
+    ]
+  },
+  {
+    "id": "mirrorKnight",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/mirrorKnight.png",
+    "grid": [
+      4,
+      3
+    ],
+    "height": 84,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "splitEdge:windup",
+      "splitEdge:strike",
+      "splitEdge:recovery",
+      "idle11"
+    ]
+  },
+  {
+    "id": "rimeWeaver",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/rimeWeaver.png",
+    "grid": [
+      4,
+      3
+    ],
+    "height": 70,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "wovenRing:windup",
+      "wovenRing:strike",
+      "wovenRing:recovery",
+      "idle11"
+    ]
+  },
+  {
+    "id": "courtyardHeart",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/courtyardHeart.png",
+    "grid": [
+      4,
+      5
+    ],
+    "height": 110,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "hearthFurrows:windup",
+      "hearthFurrows:strike",
+      "hearthFurrows:recovery",
+      "hearthSeeds:windup",
+      "hearthSeeds:strike",
+      "hearthSeeds:recovery",
+      "hearthVent:windup",
+      "hearthVent:strike",
+      "hearthVent:recovery",
+      "phase2",
+      "idle18",
+      "idle19"
+    ]
+  },
+  {
+    "id": "mirrorRegent",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/mirrorRegent.png",
+    "grid": [
+      4,
+      6
+    ],
+    "height": 128,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "regentLanes:windup",
+      "regentLanes:strike",
+      "regentLanes:recovery",
+      "regentHalo:windup",
+      "regentHalo:strike",
+      "regentHalo:recovery",
+      "regentMarks:windup",
+      "regentMarks:strike",
+      "regentMarks:recovery",
+      "regentOath:windup",
+      "regentOath:strike",
+      "regentOath:recovery",
+      "phase2",
+      "idle21",
+      "idle22",
+      "idle23"
+    ]
+  },
+  {
+    "id": "weapons",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/weapons.png",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 44,
+    "poses": [
+      "sword",
+      "staff",
+      "bow",
+      "bulwark",
+      "reaver",
+      "runeblade"
+    ],
+    "kind": "icon"
+  },
+  {
+    "id": "bodies",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/bodies.png",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 27,
+    "poses": [
+      "plate",
+      "robe",
+      "leather",
+      "duelistVest",
+      "wardMantle",
+      "sanguineWrap"
+    ],
+    "kind": "icon"
+  },
+  {
+    "id": "heads",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/heads.png",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 30,
+    "poses": [
+      "helm",
+      "circlet",
+      "hood",
+      "keenVisor",
+      "sageMask",
+      "aegisCrown"
+    ],
+    "kind": "icon"
+  },
+  {
+    "id": "hero",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/hero.png",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 60,
+    "poses": [
+      "head",
+      "torso",
+      "rightArm",
+      "leftArm",
+      "leftLeg",
+      "rightLeg"
+    ],
+    "kind": "icon"
+  },
+  {
+    "id": "environment",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/environment.png",
+    "grid": [
+      3,
+      3
+    ],
+    "height": 72,
+    "poses": [
+      "pillar",
+      "rubble",
+      "shrub",
+      "foliage",
+      "crystal",
+      "arch",
+      "waterfall",
+      "paving",
+      "crest"
+    ],
+    "kind": "icon"
+  },
+  {
+    "id": "skills",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/skills.png",
+    "grid": [
+      3,
+      3
+    ],
+    "height": 64,
+    "poses": [
+      "firebolt",
+      "frostbolt",
+      "shield",
+      "dash",
+      "nova",
+      "cleave",
+      "piercingArrow",
+      "bulwark",
+      "frostRing"
+    ],
+    "kind": "icon"
+  },
+  {
+    "id": "courtyardHeart-phase2",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/courtyardHeart-phase2.png",
+    "grid": [
+      4,
+      5
+    ],
+    "height": 110,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "hearthFurrows:windup",
+      "hearthFurrows:strike",
+      "hearthFurrows:recovery",
+      "hearthSeeds:windup",
+      "hearthSeeds:strike",
+      "hearthSeeds:recovery",
+      "hearthVent:windup",
+      "hearthVent:strike",
+      "hearthVent:recovery",
+      "phase2",
+      "idle18",
+      "idle19"
+    ],
+    "baseScaleFrom": "courtyardHeart"
+  },
+  {
+    "id": "mirrorRegent-phase2",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/mirrorRegent-phase2.png",
+    "grid": [
+      4,
+      6
+    ],
+    "height": 128,
+    "poses": [
+      "idle",
+      "walkA",
+      "walkB",
+      "windup",
+      "strike",
+      "recovery",
+      "hurt",
+      "death",
+      "regentLanes:windup",
+      "regentLanes:strike",
+      "regentLanes:recovery",
+      "regentHalo:windup",
+      "regentHalo:strike",
+      "regentHalo:recovery",
+      "regentMarks:windup",
+      "regentMarks:strike",
+      "regentMarks:recovery",
+      "regentOath:windup",
+      "regentOath:strike",
+      "regentOath:recovery",
+      "phase2",
+      "idle21",
+      "idle22",
+      "idle23"
+    ],
+    "baseScaleFrom": "mirrorRegent"
+  },
+  {
+    "id": "perks",
+    "path": "EmberDemo/assets/resources/art/pixel-v1/perks.png",
+    "kind": "icon",
+    "grid": [
+      5,
+      4
+    ],
+    "height": 64,
+    "poses": [
+      "burn",
+      "corpse",
+      "arc",
+      "double",
+      "swift",
+      "rhythm",
+      "reserve",
+      "leech",
+      "magicMissile",
+      "jeweledGauntlet",
+      "infernalConduit",
+      "etherealWeapon",
+      "lightEmUp",
+      "heavyHitter",
+      "mysticPunch",
+      "typhoon",
+      "earthwake",
+      "dawnbringer",
+      "circleOfDeath",
+      "glassCannon"
+    ]
+  }
+]

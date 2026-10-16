@@ -1,0 +1,8 @@
+{
+  "key": "snowHare",
+  "input": "sources/10-snowHare-before-correction.png",
+  "output": "monsters/10-snowHare.png",
+  "prompt": "Use case: precise-object-edit. Correct this ORIGINAL Project Ember concept board while preserving its layout, identity, pixel-art style, background, lettering and all passed drawings. Fix ONLY the basic attack STRIKE key pose and related motion arrow: a short FORWARD kick aimed toward screen RIGHT where the existing 70-degree telegraph lies. The hind leg sweeps forward under the belly toward the target, while front feet brace; do not depict a rearward kick shooting left. Label it 短踢 / forward kick rather than backward kick. No actual projectile: separate streak is a brief physical kick impact. Keep four legs, two long ears, all three views, palette, other poses and radius1.6 timing unchanged. This is a targeted technical correction; all unaffected views must remain visually identical. Return the full complete board, no crop.",
+  "tool": "built-in image_gen",
+  "source": "C:\\Users\\Administrator\\.codex\\generated_images\\01a144a1-c5b6-7e02-b256-8d7dff0f2bce\\exec-15fd9e3f-fe20-48ed-b7c2-a2f05d3caa5f.png"
+}

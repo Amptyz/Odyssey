@@ -1,4 +1,7 @@
-import {Graphics,Node,UIOpacity} from 'cc';
+import {Graphics,Node,UIOpacity,Sprite,UITransform} from 'cc';
+import {ArtLibrary} from './ArtLibrary';
+import {PIXEL_ATLASES} from '../content/pixel-art';
+import {shapeContours} from '../combat-core/ShapeContours';
 import {enemy,type EnemyKind} from '../content/enemies';
 import type {EnemyPose,EnemySnapshot,EnemyWarning} from '../simulation/EnemySystem';
 import type {HitShape} from '../combat-core/CollisionWorld';
@@ -11,8 +14,10 @@ interface RenderUnit {alive:boolean;velocity:Vec2;facing:Vec2;hurtAt:number;died
 export class MonsterVisual {
  readonly node:Node;private readonly g:Graphics;private readonly opacity:UIOpacity;
  readonly height:number;private state='idle';
- constructor(parent:Node,readonly kind:EnemyKind){this.node=uiNode(`Monster ${kind}`,parent,140,160);this.g=this.node.addComponent(Graphics);this.opacity=this.node.addComponent(UIOpacity);this.height=colourForMonster(kind).height;}
+ private readonly image?:Sprite;private frame=-1;private atlasKey='';private poseKey='';private phase=1;
+ constructor(parent:Node,readonly kind:EnemyKind,private readonly art?:ArtLibrary){this.node=uiNode(`Monster ${kind}`,parent,140,160);this.g=this.node.addComponent(Graphics);this.opacity=this.node.addComponent(UIOpacity);this.height=PIXEL_ATLASES[kind]?.height??colourForMonster(kind).height;if(art&&PIXEL_ATLASES[kind]){this.image=uiNode('Pixel body',this.node).addComponent(Sprite);this.image.sizeMode=Sprite.SizeMode.CUSTOM;}}
  update(unit:RenderUnit,pose:EnemyPose|undefined,time:number):void {
+  if(this.image&&this.art){this.updatePixel(unit,pose,time);return;}
   const facing=unit.facing.x-unit.facing.y<0?-1:1,dead=!unit.alive,death=dead?Math.min(1,Math.max(0,time-unit.diedAt)/.75):0;
   this.node.setScale(facing,1-death*.65,1);this.opacity.opacity=dead?Math.round(255*Math.max(0,1-Math.max(0,time-unit.diedAt-.35)/.55)):255;
   this.state=dead?'death':pose?.state??'idle';this.g.clear();
@@ -71,7 +76,16 @@ export class MonsterVisual {
   }
   if(pose?.state==='broken'){g.strokeColor=color(p.gold);g.lineWidth=3;g.moveTo(-12,this.height-3);g.lineTo(-4,this.height+3);g.lineTo(3,this.height-3);g.lineTo(12,this.height+3);g.stroke();}
  }
- debug(){return {kind:this.kind,atlas:'procedural-monster-v1',frame:0,pose:{state:this.state}};}
+ private updatePixel(unit:RenderUnit,pose:EnemyPose|undefined,time:number):void {
+  this.phase=pose?.phase??1;this.atlasKey=this.phase===2&&PIXEL_ATLASES[this.kind+'-phase2']?this.kind+'-phase2':this.kind;
+  const a=PIXEL_ATLASES[this.atlasKey]!,dead=!unit.alive,moving=Math.hypot(unit.velocity.x,unit.velocity.y)>.15,hurt=unit.hurtAt>=0&&time-unit.hurtAt<.18&&!pose?.actionId;
+  this.state=dead?'death':hurt?'hurt':pose?.actionId&&pose.age>=pose.windup&&pose.strike>.05?'attack':moving&&!pose?.actionId?'walk':pose?.state??'idle';let key=dead?'death':hurt?'hurt':this.state==='walk'?(Math.floor(time*7)%2?'walkA':'walkB'):'idle';
+  if(!dead&&!hurt&&pose?.actionId&&['windup','attack','recover'].includes(pose.state)){const step=pose.state==='windup'?'windup':pose.strike>.05?'strike':'recovery';key=`${pose.actionId}:${step}`;if(!a.poses.includes(key))key=step;}
+  if(!dead&&!hurt&&pose?.phase===2&&key==='idle'&&a.poses.includes('phase2'))key='phase2';
+  const index=Math.max(0,a.poses.indexOf(key));this.poseKey=key;this.frame=index;const f=a.frames[index]!;this.image!.spriteFrame=this.art!.pixelFrame(this.atlasKey,index);const ui=this.image!.node.getComponent(UITransform)!;ui.setContentSize(f.rect[2]*a.scale,f.rect[3]*a.scale);ui.setAnchorPoint(...f.anchor);
+  this.node.setScale(pose?.actionId?pose.facing:unit.facing.x-unit.facing.y<0?-1:1,1,1);this.image!.color=color(hurt?'#FFD8C8':'#FFFFFF');this.opacity.opacity=dead?Math.round(255*Math.max(0,1-Math.max(0,time-unit.diedAt-.35)/.55)):255;
+ }
+ debug(){return {kind:this.kind,atlas:this.image?'pixel-v1/'+this.atlasKey:'procedural-monster-v1',frame:this.frame,poseKey:this.poseKey,phase:this.phase,pose:{state:this.state}};}
 }
 function outline(shape:HitShape):Vec2[][] {
  const ring=(r:number)=>Array.from({length:49},(_,i)=>({x:shape.center.x+Math.cos(i*Math.PI/24)*r,y:shape.center.y+Math.sin(i*Math.PI/24)*r}));
@@ -82,6 +96,7 @@ function outline(shape:HitShape):Vec2[][] {
 }
 /** Call after clearing the ground Graphics. Bodies are a separate depth-sorted layer. */
 export function drawEnemyWarnings(g:Graphics,snapshot:EnemySnapshot,projection:Projection,time:number):void {
+ let fragments=0;
  for(const w of snapshot.warnings){
   const active=time>=w.triggerAt,progress=Math.max(0,Math.min(1,(time-w.createdAt)/Math.max(.01,w.triggerAt-w.createdAt))),tint=color(w.colour);tint.a=active?110:20+Math.round(progress*24);
   for(const pts of w.contours??outline(w.shape)){
@@ -92,6 +107,23 @@ export function drawEnemyWarnings(g:Graphics,snapshot:EnemySnapshot,projection:P
   }
   // Distinct segment pips communicate delayed second hits without relying on colour.
   const c=worldToScreen(w.shape.center,projection);for(let i=0;i<=Math.min(2,w.segment);i++){g.fillColor=color(w.colour);g.circle(c.x-4+i*5,c.y+4,1.8);g.fill();}
+  if(active&&fragments<36){const family=/hearth/.test(w.actionId)?'fire':/mirror|regent|rime|frost|chime/.test(w.actionId)?'ice':/bell|mist/.test(w.actionId)?'mist':'physical';const paths=w.contours??outline(w.shape);for(let i=0;i<6&&fragments<36;i++,fragments++){const path=paths[i%paths.length];if(!path?.length)continue;const at=path[Math.floor(path.length*(i+.5)/6)%path.length]!,p=worldToScreen(at,projection);pixelFragment(g,p.x,p.y,3,family,w.colour,Math.min(1,(time-w.triggerAt)/.2));}}
  }
- for(const b of snapshot.projectiles){const p=worldToScreen(b,projection),old=worldToScreen(b.previous,projection);g.strokeColor=color(b.colour);g.lineWidth=3;g.moveTo(old.x,old.y);g.lineTo(p.x,p.y);g.stroke();g.fillColor=color(b.colour);g.circle(p.x,p.y,Math.max(3,b.radius*22*projection.zoom));g.fill();g.strokeColor=color('#526875');g.lineWidth=1;g.stroke();}
+ for(const b of snapshot.projectiles){const p=worldToScreen(b,projection),old=worldToScreen(b.previous,projection);g.strokeColor=color(b.colour);g.lineWidth=2;g.moveTo(old.x,old.y);g.lineTo(p.x,p.y);g.stroke();drawWorldShape(g,{kind:'circle',center:b,radius:b.radius},projection,b.colour,1,true);}
+}
+/** Small code-native elemental clusters. These are decorations; world cores are drawn separately. */
+export function pixelFragment(g:Graphics,x:number,y:number,size:number,family:string,tint:string,age:number):void {
+ x=Math.round(x);y=Math.round(y);g.fillColor=color(tint);
+ if(family==='fire'){const lift=Math.round(age*13);g.rect(x,y+lift,size,size*2);g.rect(x+size,y+lift+size,size,size);g.fill();g.fillColor=color('#FFE4A1');g.rect(x,y+lift,Math.max(1,size-1),size);g.fill();}
+ else if(family==='ice'){g.moveTo(x,y-size);g.lineTo(x+size,y);g.lineTo(x,y+size*2);g.lineTo(x-size,y);g.close();g.fill();}
+ else if(family==='physical'){g.moveTo(x-size,y);g.lineTo(x+size*2,y+size);g.lineTo(x,y+size*2);g.close();g.fill();}
+ else if(family==='shield'){g.rect(x-size,y-size,size*2,size*2);g.fill();g.strokeColor=color('#D8F6F4');g.lineWidth=1;g.rect(x-size*2,y-size*2,size*4,size*4);g.stroke();}
+ else {g.rect(x-size,y,size*2,size);g.rect(x,y-size,size,size*3);g.fill();}
+}
+/** Physical core is always the projected authoritative world shape; no screen-radius fudge. */
+export function drawWorldShape(g:Graphics,shape:HitShape,projection:Projection,tint:string,width=2,fill=false,contours?:Vec2[][]):void {
+ for(const path of contours??shapeContours(shape)){
+  if(!path.length)continue;const pts=path.map(p=>worldToScreen(p,projection));g.moveTo(pts[0]!.x,pts[0]!.y);for(const p of pts.slice(1))g.lineTo(p.x,p.y);if(shape.kind!=='ring')g.close();
+  if(fill&&shape.kind!=='ring'){g.fillColor=color(tint);g.fill();}g.strokeColor=color(tint);g.lineWidth=width;g.stroke();
+ }
 }

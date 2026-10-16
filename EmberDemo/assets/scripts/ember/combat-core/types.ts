@@ -1,5 +1,6 @@
 import type {AttributeSet,ValueExpression,AttributeSource,Modifier} from './attributes/AttributeSet';
 import type { Vec2 } from '../utils/math';
+import type {HitShape} from './CollisionWorld';
 import type { SkillId } from '../content/skills';
 import type { StatusApplication, StatusId } from '../content/statuses';
 export type PerkId = typeof import('../content/perks').PERKS[number]['id'];
@@ -29,7 +30,7 @@ export interface Hit {
   proc?:boolean; appliesOnHit?:boolean;
 }
 export interface CastResult { damageMultiplier: number; shots: number }
-export interface CombatCue { kind: 'damage' | 'heal' | 'explosion' | 'arc' | 'shield' | 'cast' | 'swing' | 'quake'; at: Vec2; actorId?:string; to?: Vec2; amount?: number; radius?: number; facing?:Vec2; arc?:number; cause?: Cause; appearance?:string; critical?:boolean; trueDamage?:boolean }
+export interface CombatCue { kind: 'damage' | 'heal' | 'explosion' | 'arc' | 'shield' | 'cast' | 'swing' | 'quake'; at: Vec2; actorId?:string; to?: Vec2; amount?: number; radius?: number; facing?:Vec2; arc?:number; cause?: Cause; appearance?:string; critical?:boolean; trueDamage?:boolean;shape?:HitShape;contours?:Vec2[][] }
 export interface MissileEffect {
   type:'missiles'; aim:'forward'|'victim'|'secondary'; count:number; spread:number; damage:number;
   speed:number; range:number; radius:number; appearance:string; attackRatio?:number;
