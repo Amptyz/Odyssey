@@ -1,13 +1,17 @@
 # Project Ember：AI 开发入口
 
-这是 Cocos Creator 3.8.8 / TypeScript 单人 PVE 游戏。开始修改前，先检查 `git status --short`，阅读本文件，再按任务选择下方文档。不覆盖已有工作，不将历史任务书当成当前版本的待办清单。
+这是 Cocos Creator 3.8.8 / TypeScript 单人 / 房主联机 PVE 游戏。开始修改前，先检查 `git status --short`，阅读本文件，再按任务选择下方文档。不覆盖已有工作，不将历史任务书当成当前版本的待办清单。
 
 ## 阅读顺序
 
 1. [README.md](README.md)：环境、启动、当前玩法和命令。
 2. [整体架构](docs/ARCHITECTURE.md)：运行流程、状态归属、模块依赖与限制。
 3. [开发架构指南](docs/DEVELOPMENT_GUIDE.md)：改动落点、实施顺序、验证和交付。
-4. 按需阅读：[内容扩展](docs/CONTENT_ARCHITECTURE.md)、[美术风格设计](docs/ART_DIRECTION.md)、[美术管线](docs/ART_PIPELINE.md)、[海克斯](docs/HEX_AUGMENTS.md)、[开发者模式](docs/DEVELOPER_MODE.md)。
+4. 按需阅读：[内容扩展](docs/CONTENT_ARCHITECTURE.md)、[美术风格设计](docs/ART_DIRECTION.md)、[美术管线](docs/ART_PIPELINE.md)、[海克斯](docs/HEX_AUGMENTS.md)、[开发者模式](docs/DEVELOPER_MODE.md)、[联机与恢复](docs/MULTIPLAYER.md)。
+
+后续独立任务统一维护在 [todoList.md](todoList.md)。接手其中一项时核对依赖与实际代码基线，登记负责人和状态，交付后补充验证证据；清单本身不表示要求一次执行全部任务。
+
+属性相关开发遵循 [统一属性系统](docs/ATTRIBUTE_SYSTEM.md)：全单位共用，技能与触发伤害只使用总攻击力，只保留全能吸血。`combat-core/ActorFactory.ts` 为统一创建入口，`attributes/AttributeSet.ts` 管理每单位来源与解析；伤害、治疗、护盾交给 CombatEngine。不要恢复 HeroStats 内的独立英雄公式；当前验证进度见 STAT-02。
 
 `CODEX_GAME_MVP_SPEC.md` 是 v0.1 历史需求，部分内容已被后续设计替代：目前已有装备与正式 PNG，普攻不锁定敌人，QWER 可替换。具体变更见 [实现记录](docs/IMPLEMENTATION_LOG.md)。用户本次明确提出的新要求可以调整现有设计；同步更新相关文档，不要因旧文档而恢复旧行为。
 
@@ -21,6 +25,7 @@
 
 ## 开发时保持的约定
 
+- 六个通用装备栏slot1–slot6不限类型；weapon/body/head仅是显示部位。外观和普攻按已装备物品的purchaseOrder解析，重装旧件不改变购序；保存/恢复必须携带购序。
 - 无固定职业。玩家通过主动技能奖励与确定性装备购买形成构筑；装备同时决定外观。基础人物保持中性、简洁的遗迹风格。
 - 两种操作都以左键朝鼠标地面方向普攻，允许挥空；不恢复锁定、自动追击或鼠标吸附。QWER 是槽位，技能逻辑使用稳定 `SkillId`。
 - 先判断能否复用已有配置和处理器。新技能 / 装备 / 敌人变种通常不需要在 `GameWorld` 加 ID 分支。
@@ -28,6 +33,7 @@
 - 命中使用 `CollisionWorld` 的世界坐标查询；移动使用 `Pathfinder.sweep`。不能用贴图距离、动画回调或 Cocos 刚体另建一套伤害判定。
 - 战斗时间使用 `FIXED_DT` / `GameWorld.time`，随机使用已有 `Random`。保留暂停、重开、阶段切换与旧输入清理。
 - 伤害 / 治疗进入 `CombatEngine`；连锁效果保留 `rootId / depth / proc` 等来源信息和预算保护。不要用直接扣 HP 绕过事件链。
+- 多人逻辑必须通过 playerId 访问 `GameWorld.players`，事件规则按 sourceId 读取增益；`world.hero / equipment / loadout` 只是初始玩家的兼容入口。恢复点不是任意战斗快照；跨波字段同步保存 / 校验 / 恢复。
 - 配置是共享定义，不作为可变的角色实例存储。新增快照字段要复制其中的可变对象，不把实体、Node 或 Set 暴露给 UI 修改。
 - 开发者开关仅在显式应用的测试世界中生效；新增工具继续经过配置校验、命令和模式检查，不默认给普通局加作弊效果。
 
@@ -37,11 +43,14 @@
 | --- | --- |
 | 新技能 / 新技能行为 | `content/skills.ts` → `simulation/SkillSystem.ts` |
 | 装备 / 属性 / 武器普攻 | `content/equipment.ts`、`content/attacks.ts`、`simulation/EquipmentSystem.ts` |
-| 敌人 / AI | `content/enemies.ts` → `ai/EnemyBehaviors.ts` |
+| 装备独立被动 / 内部冷却 | `content/equipment.ts` 的 passives → `simulation/EquipmentEffectSystem.ts`；通过 CombatEngine 实际事件触发 |
+| 全单位属性 / 公式 / 来源 | `combat-core/attributes/AttributeSet.ts`、`combat-core/ActorFactory.ts`；`content/enemies.ts` 的 template |
+| 敌人 / AI | `content/enemies.ts`、`content/enemy-actions.ts` → `simulation/EnemySystem.ts` |
 | 增益 / 新效果 / 状态 | `content/perks.ts`、`content/statuses.ts` → `combat-core/types.ts`、`EffectHandlers.ts`、`StatusSystem.ts` |
-| 地图 / 波次 / 开店阶段 | `content/maps.ts`、`content/progression.ts` |
+| 地图 / 波次 / 开店阶段 | `content/maps.ts`、`content/progression.ts` → `simulation/LevelSystem.ts` |
 | 人物 / 装备贴图、动画 | `content/appearances.ts`、`content/animation.ts` → `render/HeroRig.ts`、`AnimatedUnit.ts` |
 | 命中 / 遮挡 / 弹体 | `combat-core/CollisionWorld.ts`、`simulation/GameWorld.ts` |
+| 联机 / 存档 / 掉线 | `platform/RoomTransport.ts`、`platform/room-protocol.ts`、`simulation/RunCheckpoint.ts`；根 `scripts/relay-server.ts` |
 | 开发者面板 | `simulation/DeveloperConfig.ts`、`platform/LocalTransport.ts`、`render/DeveloperPanel.ts` |
 
 以上路径相对于游戏源码根目录；完整步骤与可复制示例见内容扩展指南。

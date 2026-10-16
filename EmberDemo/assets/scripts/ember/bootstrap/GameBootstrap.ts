@@ -1,7 +1,8 @@
 import { _decorator, Canvas, Component, game, ResolutionPolicy, UITransform, view } from 'cc';
 import { validateContent } from '../content/validate';
 import { InputController } from '../input/InputController';
-import { LocalTransport } from '../platform/LocalTransport';
+import { RoomTransport } from '../platform/RoomTransport';
+import { RoomPanel } from '../platform/RoomPanel';
 import { ArenaView } from '../render/ArenaView';
 import { Hud } from '../render/Hud';
 import { worldToScreen } from '../render/IsoProjection';
@@ -12,7 +13,7 @@ const { ccclass }=_decorator;
 /** Attach to an editor-created Canvas with its default Camera. No serialized assets required. */
 @ccclass('GameBootstrap')
 export class GameBootstrap extends Component {
-  private port!:LocalTransport;private arena!:ArenaView;private hud!:Hud;private controls!:InputController;
+  private port!:RoomTransport;private roomPanel?:RoomPanel;private arena!:ArenaView;private hud!:Hud;private controls!:InputController;
   private readonly art=new ArtLibrary();
   private fps=60;private frameTime=0;private frames=0;private disposeDebug?:()=>void;
   async start():Promise<void> {
@@ -25,7 +26,7 @@ export class GameBootstrap extends Component {
     const root=uiNode('Project Ember',this.node);const loading=text('Loading art',root,'正在载入遗迹…',22);
     try{await this.art.load();}catch(error){loading.string='美术资源载入失败，请刷新重试';console.error(error);return;}
     if(!this.isValid){this.art.dispose();return;}loading.node.destroy();
-    this.port=new LocalTransport(seed);
+    this.port=new RoomTransport(seed);if(typeof document!=='undefined')this.roomPanel=new RoomPanel(this.port);
     this.arena=new ArenaView(root,this.art);this.hud=new Hud(root,c=>this.port.send(c),this.art);
     this.controls=new InputController(root,this.arena.camera,this.port,this.hud);
     game.canvas?.focus();
@@ -43,6 +44,6 @@ export class GameBootstrap extends Component {
     if(this.frameTime>=0.5){this.fps=this.frames/this.frameTime;this.frames=0;this.frameTime=0;}
     this.draw(this.port.advance(dt),dt);
   }
-  onDestroy():void {this.controls?.destroy();this.disposeDebug?.();this.art.dispose();}
-  private draw(alpha:number,dt=0):void {const s=this.port.snapshot();this.arena.configureMap(s.mapId);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer,dt,this.hud.showColliders);this.hud.update(s,this.fps);}
+  onDestroy():void {this.controls?.destroy();this.roomPanel?.destroy();this.port?.destroy();this.disposeDebug?.();this.art.dispose();}
+  private draw(alpha:number,dt=0):void {const s=this.port.snapshot();this.arena.prepareCamera(s,alpha);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer,dt,this.hud.showColliders);this.hud.update(s,this.fps);}
 }

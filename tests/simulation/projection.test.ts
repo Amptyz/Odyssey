@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { worldToScreen, screenToWorld } from '../../EmberDemo/assets/scripts/ember/render/IsoProjection';
 import { Pathfinder } from '../../EmberDemo/assets/scripts/ember/ai/Pathfinder';
+import {GameWorld} from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
+import {HERO} from '../../EmberDemo/assets/scripts/ember/content/config';
+import {distance} from '../../EmberDemo/assets/scripts/ember/utils/math';
 import { Random } from '../../EmberDemo/assets/scripts/ember/utils/Random';
 describe('M0 / geometry', () => {
   it('round trips world and screen with zoom and camera offset', () => {
@@ -16,7 +19,15 @@ describe('M0 / geometry', () => {
     let prev = start;
     for (const p of route) { expect(nav.clear(prev,p)).toBe(true); prev=p; }
     expect(nav.sweep(start,end).x).toBeLessThan(5);
-    expect(nav.sweep({x:19,y:10},{x:100,y:10}).x).toBeLessThan(20);
+    expect(nav.sweep({x:19,y:10},{x:100,y:10}).x).toBeLessThan(nav.map.width);
+  });
+  it('click movement recovers from a position valid for the hero collision radius beside a pillar',()=>{
+    const w=new GameWorld(1234,'frost');w.command({type:'Start'});w.command({type:'LeaveShop'});
+    const pillar=w.map.obstacles.find(o=>o.id==='frost-spine-5')??w.map.obstacles.find(o=>o.x===30&&o.y===40)!;
+    expect(pillar).toBeDefined();const start={x:pillar.x-pillar.radius-HERO.radius-.01,y:pillar.y};Object.assign(w.hero,start,{previous:{...start}});
+    expect(w.nav.radius).toBe(w.hero.radius);expect(w.nav.walkable(w.hero,w.hero.radius)).toBe(true);
+    const destination={x:start.x-2,y:start.y};w.command({type:'MoveTo',point:destination});expect(w.hero.path.length).toBeGreaterThan(0);
+    for(let i=0;i<30;i++)w.advance(1/30);expect(distance(w.hero,destination)).toBeLessThan(.15);
   });
   it('routes 300 seeded position pairs without clipping obstacles or corners',()=>{
     const nav=new Pathfinder(),rng=new Random(2026);

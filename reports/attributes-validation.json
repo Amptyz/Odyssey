@@ -1,0 +1,101 @@
+{
+  "status": "passed",
+  "timestamp": "2026-10-16T08:00:02.582756+00:00",
+  "models": {
+    "attributes": "gpt-6.1-sol",
+    "equipment_design": "gpt-6.1-sol",
+    "monster_design": "gpt-6.1-sol"
+  },
+  "runtimeSourceSha256": "f0515659df9f966bd0c020c11e1e3e5fcc8ef852dd8e0367d4c3f8e46ac2b42d",
+  "runtimeFiles": 49,
+  "creator": "3.8.8",
+  "creatorBuildExitCode": 36,
+  "creatorBuildFinished": "2026-10-16T07:55:00Z",
+  "creatorGeneratedMeta": [
+    "combat-core/ActorFactory.ts.meta",
+    "combat-core/attributes.meta",
+    "combat-core/attributes/AttributeSet.ts.meta"
+  ],
+  "check": {
+    "testFiles": 15,
+    "tests": 170,
+    "typechecks": [
+      "core",
+      "cocos",
+      "tools"
+    ],
+    "coreBuild": "passed"
+  },
+  "browserChecks": {
+    "attributes": 21,
+    "hitboxes": 14,
+    "hexes": 21,
+    "multiplayer": 15,
+    "content": 26,
+    "developer": 30,
+    "controls": 31
+  },
+  "browserTimestamps": {
+    "attributes": "2026-10-16T07:55:30.083Z",
+    "hitboxes": "2026-10-16T07:55:41.269Z",
+    "hexes": "2026-10-16T07:56:10.384Z",
+    "multiplayer": "2026-10-16T07:56:27.700Z",
+    "content": "2026-10-16T07:56:50.908Z",
+    "developer": "2026-10-16T07:57:04.246Z",
+    "controls": "2026-10-16T07:57:27.221Z"
+  },
+  "browserCheckTotal": 158,
+  "screenshots": [
+    "43-attribute-shop.png",
+    "44-attribute-inspector.png",
+    "15-skill-replacement.png",
+    "41-coop-combat.png"
+  ],
+  "benchmark": {
+    "actualTicks": 3600,
+    "enemies": 50,
+    "meanTickMs": 0.7870438811111095,
+    "p95TickMs": 1.669832999999926,
+    "droppedEvents": 0,
+    "scope": "Logic and detached snapshot only; endurance HP configured through attributes"
+  },
+  "designValidation": {
+    "equipment": 18,
+    "newEquipment": 8,
+    "itemsPerSlot": 6,
+    "completeBuildCombinations": 216,
+    "referenceBuilds": 8,
+    "smallEnemies": 10,
+    "elites": 5,
+    "bosses": 2,
+    "matchingArtBriefs": 17,
+    "typedContentGuideExamples": 5
+  },
+  "compatibility": {
+    "attributeRules": 1,
+    "roomProtocol": "ember-coop-2",
+    "checkpoint": 2,
+    "oldCheckpoint": "v1 explicitly rejected"
+  },
+  "designOnly": [
+    "8 new equipment items and 2 passives",
+    "17-enemy roster and boss mechanics",
+    "five-stage proposal for existing two maps",
+    "new monster and equipment artwork"
+  ],
+  "notVerified": [
+    "public WSS and weak-network performance",
+    "four-client browser load",
+    "new boss balance or animation production"
+  ],
+  "notes": [
+    "Existing player, four enemies, ten equipment items and eleven skills use shared attributes.",
+    "No public deployment, commit or push in this task.",
+    "Local 8080 build updated; local relay 8787 restarted with protocol v2."
+  ],
+  "documentValidation": {
+    "files": 15,
+    "localLinks": 116,
+    "anchors": 2
+  }
+}

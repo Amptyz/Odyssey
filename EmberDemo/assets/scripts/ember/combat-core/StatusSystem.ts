@@ -5,9 +5,12 @@ import type { Actor,StatusInstance,Hit } from './types';
 export function applyStatus(target:Actor,application:StatusApplication,sourceId:string,skillId?:SkillId):void {
   const def=statusDefinition(application.id);
   if(!def||!Number.isFinite(application.duration)||application.duration<=0||!Number.isFinite(application.power))return;
-  if(application.id==='slow'&&(application.power<=0||application.power>1))return;
+  if(application.id==='slow'&&(application.power<0||application.power>1))return;
   if(def.handler==='damage'&&application.power<=0)return;
-  const old=target.statuses.find(s=>s.id===application.id);
+  if(target.attributes.template.controlImmune&&application.id==='slow')return;
+  const duration=application.id==='slow'?Math.min(application.duration,Math.max(.3,application.duration*(1-target.attributes.value.tenacity))):application.duration;
+  if(application.id==='slow'){target.statuses.push({id:application.id,power:application.power,remaining:duration,tickIn:def.interval,sourceId,skillId,stacks:1});return;}
+  const old=target.statuses.find(s=>s.id===application.id&&s.sourceId===sourceId);
   if(old){
     const stronger=def.strength==='higher'?application.power>=old.power:application.power<=old.power;
     if(stronger){old.power=application.power;old.sourceId=sourceId;old.skillId=skillId;}
@@ -23,7 +26,7 @@ export function tickStatuses(actor:Actor,dt:number,onTick:(status:StatusInstance
     status.remaining=Math.max(0,status.remaining-dt);
     if(def.interval>0){
       status.tickIn-=elapsed;
-      while(status.tickIn<=1e-8&&actor.alive){status.tickIn+=def.interval;if(def.handler==='damage')onTick(status,{sourceId:status.sourceId,targetId:actor.id,amount:status.power*(status.stacks??1),cause:def.cause??'skill',skillId:status.skillId,proc:true});}
+      while(status.tickIn<=1e-8&&actor.alive){status.tickIn+=def.interval;if(def.handler==='damage')onTick(status,{sourceId:status.sourceId,targetId:actor.id,amount:status.power*(status.stacks??1),cause:def.cause??'skill',damageType:'magic',delivery:'periodic',skillId:status.skillId,proc:true});}
     }
   }
   actor.statuses=actor.statuses.filter(s=>s.remaining>1e-8);

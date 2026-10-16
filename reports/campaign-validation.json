@@ -1,0 +1,136 @@
+{
+  "status": "passed",
+  "timestamp": "2026-10-16T08:54:15.383185+00:00",
+  "scope": "v0.7 six unrestricted equipment slots, purchase-ordered appearance, 17 monsters, two large five-level maps and following camera. Existing local networking/attributes preserved.",
+  "build": {
+    "creator": "3.8.8",
+    "exitCode": 36,
+    "debug": false,
+    "sourceFiles": 55,
+    "sourceSha256": "0469cd8e0f18309251671c441a645e3ca44891059056b71862031089f442a9bf",
+    "sourceMatchesBuild": true,
+    "builtAt": "2026-10-16T08:51:07.773847+00:00"
+  },
+  "checks": {
+    "command": "pnpm check",
+    "typechecks": [
+      "core",
+      "cocos",
+      "tools"
+    ],
+    "vitestFiles": 18,
+    "vitestTests": 232,
+    "coreCompile": "passed",
+    "monsterTests": 43
+  },
+  "browserOnFinalBuild": [
+    {
+      "report": "reports/browser-controls.json",
+      "checks": 28,
+      "timestamp": "2026-10-16T08:51:40.337Z",
+      "status": "passed"
+    },
+    {
+      "report": "reports/browser-multiplayer.json",
+      "checks": 14,
+      "timestamp": "2026-10-16T08:51:53.050Z",
+      "status": "passed"
+    },
+    {
+      "report": "reports/browser-hitboxes.json",
+      "checks": 14,
+      "timestamp": "2026-10-16T08:52:04.206Z",
+      "status": "passed"
+    },
+    {
+      "report": "reports/browser-levels-navigation.json",
+      "checks": 16,
+      "timestamp": "2026-10-16T08:52:12.088Z",
+      "status": "passed"
+    }
+  ],
+  "browserBeforeFinalNavigationOnlyFix": {
+    "buildSourceSha256": "d8eded5c7eb2126475bb007983cca3c38e5afb016e6f67413dece8f62e4989e7",
+    "note": "These production UI and Boss visual suites preceded only the player/monster navigation-radius fix. Unchanged UI was not redundantly rerun; final build reran normal progression, column navigation, controls, collision and multiplayer recovery.",
+    "suites": [
+      {
+        "report": "reports/browser-attributes.json",
+        "checks": 21,
+        "timestamp": "2026-10-16T08:41:20.883Z",
+        "status": "passed"
+      },
+      {
+        "report": "reports/browser-developer.json",
+        "checks": 34,
+        "timestamp": "2026-10-16T08:41:39.663Z",
+        "status": "passed"
+      },
+      {
+        "report": "reports/browser-content.json",
+        "checks": 20,
+        "timestamp": "2026-10-16T08:42:11.507Z",
+        "status": "passed"
+      },
+      {
+        "report": "reports/browser-art.json",
+        "checks": 16,
+        "timestamp": "2026-10-16T08:42:36.183Z",
+        "status": "passed"
+      },
+      {
+        "report": "reports/browser-levels.json",
+        "checks": 18,
+        "timestamp": "2026-10-16T08:41:59.294Z",
+        "status": "passed"
+      }
+    ]
+  },
+  "campaign": {
+    "command": "pnpm test:campaign",
+    "report": "reports/campaign-playthrough.json",
+    "outcomes": [
+      {
+        "mapId": "ember",
+        "phase": "victory",
+        "wave": 5,
+        "gameSeconds": 138.23333333332806,
+        "hp": 287.79661016949154,
+        "maxHp": 345
+      },
+      {
+        "mapId": "frost",
+        "phase": "victory",
+        "wave": 5,
+        "gameSeconds": 164.93333333332654,
+        "hp": 310.1694915254237,
+        "maxHp": 345
+      }
+    ],
+    "scope": "Normal authoritative GameWorld commands only; no developer options, HP/damage/cooldown mutations or forced progress. Bot reads snapshots for movement/dodging and uses normal shop/reward/exit rules."
+  },
+  "benchmark": {
+    "report": "reports/benchmark.json",
+    "scope": "Headless logic/snapshot performance before final navigation-only fix; not rendering FPS or network capacity."
+  },
+  "inspection": [
+    "six-slot shop / replacement / per-part appearance",
+    "F2 configuration and attribute sources",
+    "normal movement / level exit / reward / two weapons",
+    "ember and frost Boss telegraphs and silhouettes",
+    "960px layout and no Stats overlay"
+  ],
+  "compatibility": {
+    "roomProtocol": "ember-coop-3",
+    "checkpointVersion": 3,
+    "developerConfigVersion": 2,
+    "legacyData": "Old v1/v2 checkpoints and old developer presets are not silently migrated."
+  },
+  "boundaries": [
+    "17 monsters use procedural low-detail runtime art and animation, not 17 newly generated sprite sheets.",
+    "10 existing equipment definitions migrated; 8 additional designed items and their new passives remain future EQ-02 work.",
+    "Normal campaign bot can read snapshots and dodge warnings; completion is not a human difficulty/balance study.",
+    "Current player skills have slow but no hard control; Boss break hook is tested but awaits future hard-control content.",
+    "No public deployment, public weak-network or four-client load test, commit or push performed.",
+    "Each map shares static terrain across its five levels; starts, enemy groups, routes and exits vary."
+  ]
+}

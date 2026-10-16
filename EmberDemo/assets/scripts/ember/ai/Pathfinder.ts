@@ -94,3 +94,14 @@ export class Pathfinder {
   }
   private point(i: number): Vec2 { return { x: (i%this.n+0.5)*this.step, y: (Math.floor(i/this.n)+0.5)*this.step }; }
 }
+
+/** Conservative radius groups share immutable grids; a large unit never reuses a smaller grid. */
+export class PathfinderPool {
+ private readonly cache=new Map<number,Pathfinder>();
+ constructor(readonly map:MapDefinition){}
+ forRadius(radius:number):Pathfinder {
+  if(!Number.isFinite(radius)||radius<=0)throw Error('Invalid navigation radius');
+  const key=radius<=.30?.30:radius<=.42?.42:radius<=.62?.62:radius<=.90?.90:Math.ceil(radius*10)/10;
+  let nav=this.cache.get(key);if(!nav){nav=new Pathfinder(this.map,key);this.cache.set(key,nav);}return nav;
+ }
+}

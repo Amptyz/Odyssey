@@ -1,11 +1,13 @@
+import {AttributeSet,validateExpression,validModifier} from '../combat-core/attributes/AttributeSet';
 import { SKILLS,skill,SKILL_SLOTS,HERO_SKILLS } from './skills';
+import {ENEMY_ACTION_SETS,ENEMY_ACTIONS,validateEnemyActions} from './enemy-actions';
 import { ENEMIES,enemy } from './enemies';
 import { MAPS,mapDefinition } from './maps';
 import { LAB_PRESETS,PERKS } from './perks';
 import { STATUSES } from './statuses';
-import { EFFECT_APPEARANCES,UNIT_APPEARANCES,EQUIPMENT_APPEARANCES,EQUIPMENT_SPRITES,UNIT_SPRITES,ENVIRONMENT_APPEARANCES } from './appearances';
+import { EFFECT_APPEARANCES,UNIT_APPEARANCES,EQUIPMENT_APPEARANCES,EQUIPMENT_SPRITES,PROCEDURAL_EQUIPMENT,UNIT_SPRITES,ENVIRONMENT_APPEARANCES } from './appearances';
 import { ATLAS_FRAMES } from './art-manifest';
-import { EQUIPMENT,SHOP_CATALOG,EQUIPMENT_SLOTS,equipment } from './equipment';
+import { EQUIPMENT,SHOP_CATALOG,EQUIPMENT_CATEGORIES,equipment } from './equipment';
 import { BASIC_ATTACKS } from './attacks';
 import { ECONOMY } from './progression';
 import { HERO } from './config';
@@ -29,7 +31,8 @@ export function validateContent():void {
   for(const [id,visual] of Object.entries(ENVIRONMENT_APPEARANCES))requireContent(Object.values(visual.frames).every(i=>Number.isInteger(i)&&ATLAS_FRAMES[visual.atlas][i]),`environment.${id}.frames`);
   for(const id of Object.keys(SKILLS) as (keyof typeof SKILLS)[]){
     const s=skill(id);positive(s.cooldown,`skills.${id}.cooldown`);requireContent(EFFECT_APPEARANCES[s.appearance],`skills.${id}.appearance`);
-    const b=s.behavior;
+    if(s.expression)validateExpression(s.expression);if(s.manaCost!==undefined)requireContent(Number.isFinite(s.manaCost)&&s.manaCost>=0,`skills.${id}.manaCost`);
+    const b=s.behavior;if(b.kind!=='dash')requireContent(s.expression,`skills.${id}.expression required`);
     if(b.kind==='cone')requireContent(b.arc<=Math.PI*2,`skills.${id}.arc`);
     for(const [key,value] of Object.entries(b))if(typeof value==='number')positive(value,`skills.${id}.${key}`);
     if(b.kind==='projectile'||b.kind==='area')for(const status of b.onHit??[]){requireContent(STATUSES[status.id],`skills.${id}.status`);positive(status.duration,`skills.${id}.status duration`);positive(status.power,`skills.${id}.status power`);}
@@ -39,9 +42,12 @@ export function validateContent():void {
     for(const [key,value] of Object.entries(attack))if(typeof value==='number')positive(value,`attacks.${id}.${key}`);
     if(attack.kind==='melee')requireContent(attack.arc<=Math.PI*2,`attacks.${id}.arc`);
   }
+  validateEnemyActions();
   for(const id of Object.keys(ENEMIES) as (keyof typeof ENEMIES)[]){
-    const e=enemy(id);requireContent(UNIT_APPEARANCES[e.appearance]&&UNIT_SPRITES[e.appearance],`enemies.${id}.appearance`);
+    const e=enemy(id);requireContent(ENEMY_ACTION_SETS[e.actionSet]&&e.appearance===e.actionSet,`enemies.${id}.procedural appearance/action set`);
+    if(e.boss){requireContent(e.boss.threshold>0&&e.boss.threshold<1,`enemies.${id}.phase`);for(const step of [...e.boss.phase1,...e.boss.phase2])requireContent(step.at>=0&&step.at<e.boss.loop&&ENEMY_ACTIONS[step.action],`enemies.${id}.boss loop`);}
     for(const [key,value] of Object.entries(e))if(typeof value==='number')positive(value,`enemies.${id}.${key}`);
+    new AttributeSet(e.template);
     if(e.behavior==='ranged')requireContent(e.skillId&&SKILLS[e.skillId]&&skill(e.skillId).behavior.kind==='projectile',`enemies.${id}.projectile skill`);
   }
   for(const id of Object.keys(MAPS) as (keyof typeof MAPS)[]){
@@ -58,15 +64,24 @@ export function validateContent():void {
     requireContent(new Set(Object.values(m.loadout)).size===4,`maps.${id}.duplicate skills`);
     requireContent(HERO_SKILLS.length>=7,`maps.${id}.skill reward pool`);
     requireContent(new Set(m.shopAfterWaves).size===m.shopAfterWaves.length&&m.shopAfterWaves.every(w=>Number.isInteger(w)&&w>0&&w<m.waves.length),`maps.${id}.shop stages`);
-    for(const wave of m.waves){positive(wave.hpScale,`maps.${id}.hpScale`);requireContent(wave.spawns.length>0,`maps.${id}.empty wave`);
+    for(const wave of m.waves){
+      const level=wave.level;requireContent(level&&level.groups.length>0&&level.route.length>=2,`maps.${id}.level`);
+      for(const point of [level.start,level.exit,...level.route,...level.groups.map(g=>g.center)])requireContent(Number.isFinite(point.x)&&Number.isFinite(point.y)&&point.x>0&&point.y>0&&point.x<m.width&&point.y<m.height,`maps.${id}.level bounds`);
+      positive(level.exit.radius,`maps.${id}.exit radius`);requireContent(new Set(level.groups.map(g=>g.id)).size===level.groups.length,`maps.${id}.group IDs`);
+      const aggregate:Record<string,number>={};for(const group of level.groups){positive(group.radius,`maps.${id}.group radius`);for(const spawn of group.spawns){requireContent(ENEMIES[spawn.enemyId]&&Number.isInteger(spawn.count)&&spawn.count>0,`maps.${id}.group spawn`);aggregate[spawn.enemyId]=(aggregate[spawn.enemyId]??0)+spawn.count;}}
+      requireContent(wave.spawns.length===Object.keys(aggregate).length&&wave.spawns.every(spawn=>aggregate[spawn.enemyId]===spawn.count),`maps.${id}.group aggregate`);
+      positive(wave.hpScale,`maps.${id}.hpScale`);requireContent(wave.spawns.length>0,`maps.${id}.empty wave`);
       for(const spawn of wave.spawns)requireContent(ENEMIES[spawn.enemyId]&&Number.isInteger(spawn.count)&&spawn.count>0,`maps.${id}.spawn`);}
   }
   requireContent(SHOP_CATALOG.length===Object.keys(EQUIPMENT).length&&new Set(SHOP_CATALOG).size===SHOP_CATALOG.length,'shop catalog');
-  for(const id of SHOP_CATALOG){const e=equipment(id);requireContent(EQUIPMENT_SLOTS.includes(e.slot),`equipment.${id}.slot`);positive(e.price,`equipment.${id}.price`);requireContent(Number.isInteger(e.price),`equipment.${id}.integer price`);
-    requireContent(EQUIPMENT_APPEARANCES[e.appearance]?.layer===e.slot,`equipment.${id}.appearance layer`);
-    if(e.slot==='weapon')requireContent(e.attack&&BASIC_ATTACKS[e.attack],`equipment.${id}.attack`);
-    const sprite=EQUIPMENT_SPRITES[e.appearance];requireContent(sprite&&ATLAS_FRAMES.equipment[sprite.frame],`equipment.${id}.sprite`);
-    positive(sprite.width,`equipment.${id}.sprite width`);positive(sprite.height,`equipment.${id}.sprite height`);
+  for(const id of SHOP_CATALOG){const e=equipment(id);requireContent(EQUIPMENT_CATEGORIES.includes(e.category),`equipment.${id}.category`);positive(e.price,`equipment.${id}.price`);requireContent(Number.isInteger(e.price),`equipment.${id}.integer price`);
+    requireContent(EQUIPMENT_APPEARANCES[e.appearance]?.layer===e.category,`equipment.${id}.appearance layer`);
+    if(e.category==='weapon')requireContent(e.attack&&BASIC_ATTACKS[e.attack],`equipment.${id}.attack`);
+    requireContent((e.modifiers??[]).every(validModifier),`equipment.${id}.modifiers`);
+    const sprite=EQUIPMENT_SPRITES[e.appearance],procedural=PROCEDURAL_EQUIPMENT[e.appearance];
+    requireContent(procedural?.layer===e.category||sprite&&ATLAS_FRAMES.equipment[sprite.frame],`equipment.${id}.sprite or procedural`);
+    if(sprite){positive(sprite.width,`equipment.${id}.sprite width`);positive(sprite.height,`equipment.${id}.sprite height`);}
+    const groups=new Set<string>();for(const passive of e.passives??[]){requireContent(!groups.has(passive.group)&&passive.group.startsWith('equipment.'),`equipment.${id}.passive group`);groups.add(passive.group);validateExpression(passive.expression);positive(passive.cooldown,`equipment.${id}.passive cooldown`);if(passive.kind==='spellblade')positive(passive.armDuration,`equipment.${id}.arm duration`);else{positive(passive.duration,`equipment.${id}.shield duration`);requireContent(passive.healthBelow>0&&passive.healthBelow<1,`equipment.${id}.shield threshold`);}}
     for(const [key,value] of Object.entries(e.stats))requireContent(Number.isFinite(value)&&value>=0,`equipment.${id}.stats.${key}`);}
   for(const [key,value] of Object.entries(ECONOMY))requireContent(Number.isInteger(value)&&value>=0,`economy.${key}`);
   const ids=new Set<string>();
@@ -79,7 +94,7 @@ export function validateContent():void {
       if(rule.every!==undefined)requireContent(Number.isInteger(rule.every)&&rule.every>0,`perks.${p.id}.every`);
       if(rule.healthBelow!==undefined)requireContent(rule.healthBelow>0&&rule.healthBelow<=1,`perks.${p.id}.healthBelow`);
       if(rule.targetStatus)requireContent(STATUSES[rule.targetStatus],`perks.${p.id}.targetStatus`);
-      const e=rule.effect;
+      const e=rule.effect;if('expression' in e&&e.expression)validateExpression(e.expression);if(e.type==='attribute')requireContent(e.modifiers.every(validModifier)&&e.duration>0,`perks.${p.id}.attribute`);
       if(e.type==='status'){requireContent(STATUSES[e.status.id],`perks.${p.id}.status`);positive(e.status.power,`perks.${p.id}.status.power`);positive(e.status.duration,`perks.${p.id}.status.duration`);}
       for(const [key,value] of Object.entries(e))if(typeof value==='number')requireContent(Number.isFinite(value)&&value>=0,`perks.${p.id}.effect.${key}`);
       if(e.type==='missiles'){

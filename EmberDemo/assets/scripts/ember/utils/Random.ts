@@ -2,6 +2,8 @@
 export class Random {
   private state: number;
   constructor(readonly seed: number) { this.state = seed >>> 0; }
+  save():number {return this.state;}
+  restore(state:number):void {this.state=state>>>0;}
   next(): number {
     let t = this.state = (this.state + 0x6D2B79F5) >>> 0;
     t = Math.imul(t ^ t >>> 15, t | 1);

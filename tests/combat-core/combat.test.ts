@@ -1,8 +1,9 @@
+import {AttributeSet,PLAYER_TEMPLATE} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { describe, it, expect } from 'vitest';
 import { CombatEngine, EVENT_BUDGET, MAX_CHAIN_DEPTH } from '../../EmberDemo/assets/scripts/ember/combat-core/CombatEngine';
 import type { Actor, CombatCue, PerkId } from '../../EmberDemo/assets/scripts/ember/combat-core/types';
 import { Random } from '../../EmberDemo/assets/scripts/ember/utils/Random';
-function actor(id:string,x=0,hp=100):Actor { return {id,x,y:0,hp,maxHp:hp,shield:0,shieldTime:0,radius:0.3,alive:true,team:id==='hero'?'hero':'enemy',statuses:[]}; }
+function actor(id:string,x=0,hp=100):Actor { return {id,x,y:0,hp,maxHp:hp,shield:0,shieldTime:0,radius:0.3,alive:true,team:id==='hero'?'hero':'enemy',statuses:[],attributes:new AttributeSet({...PLAYER_TEMPLATE,stats:{...PLAYER_TEMPLATE.stats,maxHealth:hp}}),mana:0,shields:[],combatEffects:[],attributeEffects:[]}; }
 function fixture(perks:PerkId[]=[]) {
   const hero=actor('hero',0,240), a=actor('a',1), b=actor('b',2), actors=new Map([hero,a,b].map(x=>[x.id,x]));
   const cues:CombatCue[]=[]; const core=new CombatEngine(actors,c=>cues.push(c));
@@ -25,7 +26,7 @@ describe('combat rules',()=>{
     for(let i=0;i<91;i++)core.tick(1/30);
     expect(a.hp).toBe(72); expect(a.statuses.find(s=>s.id==='burn')).toBeUndefined();
     expect(core.history.filter(e=>e.type==='OnStatusTick')).toHaveLength(3);
-    expect(core.history.every(e=>e.sourceId==='hero')).toBe(true);
+    expect(core.history.filter(e=>e.type!=='OnDamaged').every(e=>e.sourceId==='hero')).toBe(true);
   });
   it('burn refresh keeps tick cadence',()=>{
     const {core,a}=fixture(['burn']);

@@ -23,3 +23,6 @@ reports/installation.json
 .env
 .env.*
 !.env.example
+
+# Room identities and durable local checkpoints
+.ember-relay/

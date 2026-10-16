@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "checks": [
+    "Room code joins a separate player slot",
+    "Independent equipment purchases synchronize",
+    "Each player resolves their own equipment attribute source",
+    "Shop waits for teammate readiness",
+    "Guest movement is visible on host",
+    "Guest skill cooldown does not change host cooldown",
+    "Guest spellblade charge and host safety-shield state remain independently synchronized",
+    "Guest camera follows their own character on the large map",
+    "Disconnect pauses the room and stops simulation",
+    "Reconnect restores the same character and equipment",
+    "Teammate opens a new room from the saved level and becomes host",
+    "Recovery preserves committed currency and chosen augments",
+    "Recovery rebuilds identical attributes and sources without applying equipment twice",
+    "Wave recovery keeps the new passive but clears live charge and cooldown",
+    "Recovery restarts the wave without carrying stale skill inputs",
+    "No browser JavaScript errors"
+  ],
+  "errors": [],
+  "timestamp": "2026-10-16T09:20:00.456Z"
+}

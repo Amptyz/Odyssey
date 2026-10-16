@@ -24,15 +24,12 @@
     "mode switch clears held movement",
     "right-click movement still works after switch",
     "restart retains chosen mode",
-    "WASD mouse attack clears first wave",
-    "mouse basic attacks deal damage",
-    "reward opens shop",
-    "WASD reward choice advances wave",
+    "WASD approaches an enemy and directional mouse melee deals damage",
     "resized pause-menu selector works",
     "focus loss pauses even with repeated notifications",
     "focus return does not latch movement",
     "no browser errors: "
   ],
   "errors": [],
-  "timestamp": "2026-10-15T17:55:05.103Z"
+  "timestamp": "2026-10-16T08:51:40.337Z"
 }

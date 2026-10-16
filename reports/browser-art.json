@@ -1,41 +1,45 @@
 {
   "status": "passed",
+  "scope": "normal neutral/bow shop and pause; explicit six-slot developer animation QA; no claim of natural five-stage completion",
   "checks": [
-    "five local art atlases loaded",
-    "normal catalog equips bow and armor",
+    "local art library loads without external assets",
+    "ordinary catalog purchase equips the current100-gold bow",
     "pause freezes animation frames and poses",
-    "normal three-wave run including elite completed with 27 kills",
-    "grovewarden atlas is used by the final-wave elite",
+    "explicit six-slot test world renders latest owned piece per body part",
+    "validated open-panel spawn creates the guardian test unit",
+    "explicit guardian uses the current procedural-monster-v1 renderer",
+    "moving enemy velocity drives grounded locomotion in the procedural renderer",
+    "real enemy damage supplies a recent hurt timestamp for the procedural hurt flash",
     "observed rendered hero:idle",
     "observed rendered hero:walk",
     "observed rendered hero:cast",
     "observed rendered hero:attack",
-    "observed rendered enemy:walk",
+    "observed rendered enemy:windup",
     "observed rendered enemy:attack",
-    "observed rendered enemy:hurt",
     "observed rendered enemy:death",
     "no browser errors or external HTTP resources"
   ],
   "states": [
     "hero:idle",
-    "hero:walk",
-    "enemy:walk",
-    "enemy:attack",
-    "hero:cast",
-    "enemy:cast",
-    "hero:attack",
-    "enemy:death",
     "enemy:idle",
-    "enemy:hurt",
-    "hero:hurt"
+    "hero:walk",
+    "hero:cast",
+    "hero:attack",
+    "enemy:windup",
+    "enemy:attack",
+    "enemy:recover",
+    "enemy:death"
   ],
   "errors": [],
   "external": [],
-  "end": {
-    "phase": "victory",
-    "kills": 27,
-    "hp": 207.99999999999994,
-    "time": 26.20000000000046
-  },
-  "timestamp": "2026-10-15T17:55:12.841Z"
+  "timestamp": "2026-10-16T08:42:36.183Z",
+  "build": "Creator3.8.8 production debug=false, published 2026-10-16 16:40:24 Asia/Shanghai",
+  "visualReview": {
+    "statsOverlayAbsent": true,
+    "screenshots": [
+      "reports/22-six-slot-art.png",
+      "reports/22-guardian-procedural-art.png",
+      "reports/23-art-test-arena.png"
+    ]
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-15T17:29:24.013Z",
+  "timestamp": "2026-10-16T08:37:59.271Z",
   "scope": "Headless TypeScript simulation + detached snapshot; not renderer FPS",
   "environment": {
     "node": "v26.0.0",
@@ -17,26 +17,26 @@
   "ticks": 3600,
   "simulatedSeconds": 120,
   "actualTicks": 3600,
-  "meanTickMs": 0.17197065527777725,
-  "p95TickMs": 0.43020799999999326,
-  "maxTickMs": 13.388541999999916,
-  "heapStartBytes": 8658600,
+  "meanTickMs": 1.3390782199999962,
+  "p95TickMs": 3.2090840000000753,
+  "maxTickMs": 81.75679200000013,
+  "heapStartBytes": 19906536,
   "heapAfterEach20Seconds": [
-    9532064,
-    9589432,
-    9554760,
-    9585328,
-    9633728,
-    9653424
+    21604088,
+    21530496,
+    21691112,
+    21799208,
+    21690008,
+    21645800
   ],
-  "retainedHeapDeltaBytes": 994824,
+  "retainedHeapDeltaBytes": 1739264,
   "metrics": {
-    "processed": 3464,
+    "processed": 12732,
     "dropped": 0,
     "maxDepth": 2,
     "kills": 0
   },
   "historyLength": 256,
-  "cues": 5,
-  "projectiles": 6
+  "cues": 4,
+  "projectiles": 0
 }

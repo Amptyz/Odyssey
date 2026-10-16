@@ -1,3 +1,4 @@
+import {cooldownMultiplier} from '../combat-core/attributes/AttributeSet';
 import type { EnemyBehaviorId,EnemyDefinition } from '../content/enemies';
 import type { SkillId } from '../content/skills';
 import type { Unit } from '../simulation/GameWorld';
@@ -9,16 +10,17 @@ export interface EnemyContext {
 }
 /** A new behavior owns its whole update, and can reuse pursuit or implement another strategy. */
 export const ENEMY_BEHAVIORS:Record<EnemyBehaviorId,(ctx:EnemyContext,dt:number)=>void>={
-  melee:(ctx,dt)=>pursue(ctx,dt,()=>ctx.damage(ctx.definition.damage)),
+  monster:()=>{throw Error('Monster action sets require EnemySystem.step');},
+  melee:(ctx,dt)=>pursue(ctx,dt,()=>ctx.damage(ctx.unit.attributes.value.attackDamage)),
   ranged:(ctx,dt)=>pursue(ctx,dt,()=>{if(ctx.definition.skillId)ctx.cast(ctx.definition.skillId,ctx.unit.aim);}),
 };
 function pursue(ctx:EnemyContext,dt:number,attack:()=>void):void {
   const {unit:e,hero,definition:cfg,nav}=ctx;
-  if(e.windup>0){e.windup-=dt;if(e.windup<=0){attack();e.attackCd=cfg.interval;}return;}
-  if(distance(e,hero)<=cfg.range+hero.radius&&nav.clear(e,hero,0.1)){
-    e.path=[];e.velocity={x:0,y:0};if(e.attackCd<=0){e.windup=cfg.windup;e.aim={x:hero.x,y:hero.y};e.facing=direction(e,hero);}
+  if(e.windup>0){e.windup-=dt;if(e.windup<=0){attack();e.attackCd=Math.max(0,1/e.attributes.value.attackSpeed-e.attackWindup)*(cfg.behavior==='ranged'?cooldownMultiplier(e.attributes.value):1);}return;}
+  if(distance(e,hero)<=e.attributes.value.attackRange+hero.radius&&nav.clear(e,hero,0.1)){
+    e.path=[];e.velocity={x:0,y:0};if(e.attackCd<=0&&e.attributes.template.canAttack!==false){e.attackWindup=cfg.windup*Math.min(1,e.attributes.template.baseAttackSpeed/e.attributes.value.attackSpeed);e.windup=e.attackWindup;e.aim={x:hero.x,y:hero.y};e.facing=direction(e,hero);}
   }else{
     if(e.repath<=0){e.path=nav.find(e,hero);e.repath=0.55;}
-    ctx.move(cfg.speed,dt);
+    ctx.move(e.attributes.value.moveSpeed,dt);
   }
 }

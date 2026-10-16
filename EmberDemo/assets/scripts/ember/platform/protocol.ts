@@ -19,6 +19,6 @@ export type GameCommand =
   | { type:'SelectMap'; mapId:MapId }
   | { type:'CastSkill'; skillId:SkillId; point:Vec2 }
   | { type:'ChooseReward'; choiceId:string } | { type:'ConfirmSkill'; slot:SkillSlot } | {type:'CancelSkill'}
-  | { type:'BuyEquipment'; equipmentId:EquipmentId } | {type:'EquipEquipment';equipmentId:EquipmentId} | {type:'UnequipEquipment';slot:EquipmentSlot} | {type:'LeaveShop'} | { type:'TogglePause' }
+  | { type:'BuyEquipment'; equipmentId:EquipmentId;replaceSlot?:EquipmentSlot } | {type:'EquipEquipment';equipmentId:EquipmentId;slot?:EquipmentSlot} | {type:'UnequipEquipment';slot:EquipmentSlot} | {type:'LeaveShop'} | { type:'TogglePause' }
   | { type:'Start'; lab?:LabId } | { type:'Restart' };
 export interface CommandPort { send(command:GameCommand):void }

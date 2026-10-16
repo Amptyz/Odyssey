@@ -4,14 +4,16 @@ import { mapDefinition,type MapId } from '../content/maps';
 import { STATUSES } from '../content/statuses';
 import { EFFECT_APPEARANCES } from '../content/appearances';
 import { ArtLibrary } from './ArtLibrary';
+import {MonsterVisual,drawEnemyWarnings} from './MonsterVisual';
 import { AnimatedUnit } from './AnimatedUnit';
+import {LevelGuidanceView} from './LevelGuidanceView';
 import { EnvironmentView } from './EnvironmentView';
 import { motionPose } from '../content/animation';
-import type { Unit, WorldSnapshot } from '../simulation/GameWorld';
+import type { UnitSnapshot as Unit, WorldSnapshot } from '../simulation/GameWorld';
 import { lerp, type Vec2 } from '../utils/math';
-import { DEFAULT_PROJECTION, fitMapProjection, worldToScreen, type Projection } from './IsoProjection';
+import { DEFAULT_PROJECTION, fitMapProjection, followProjection,screenVisible,worldToScreen, type Projection } from './IsoProjection';
 import { box,color,disk,graphics,setText,text,uiNode } from './Primitives';
-interface UnitView {node:Node;body:AnimatedUnit;bars:Graphics;ring:Graphics;kind:Unit['kind']}
+interface UnitView {node:Node;body:AnimatedUnit|MonsterVisual;bars:Graphics;ring:Graphics;kind:Unit['kind']}
 /** Nodes are retained/recycled. Only dynamic vector paths are redrawn. */
 export class ArenaView {
   readonly camera:Projection={...DEFAULT_PROJECTION,origin:{x:0,y:265}};
@@ -21,7 +23,7 @@ export class ArenaView {
   private readonly targeting:Graphics;private readonly colliders:Graphics;
   private readonly units=new Map<string,UnitView>();
   private readonly spare:UnitView[]=[];
-  private readonly environment:EnvironmentView;private visualTime=0;private lastTick=0;
+  private readonly guidance:LevelGuidanceView;private readonly environment:EnvironmentView;private visualTime=0;private lastTick=0;
   private readonly obstacles:{node:Node;y:number}[]=[];
   private readonly numbers:Label[]=[];
   constructor(private readonly root:Node,private readonly art:ArtLibrary) {
@@ -29,6 +31,7 @@ export class ArenaView {
     this.floor=graphics('Arena tiles',root);const ground=uiNode('Ground textures',root);this.targeting=graphics('Ground indicators',root);
     this.objects=uiNode('Depth sorted actors and props',root);this.environment=new EnvironmentView(this.floor,ground,this.objects,art);
     this.projectiles=graphics('Projectile batch',root);this.effects=graphics('Effect batch',root);
+    this.guidance=new LevelGuidanceView(root);
     this.colliders=graphics('Collision debug',root);
     for(let i=0;i<40;i++) {const label=text(`Floating number ${i}`,root,'',17,0,0,140,36);label.node.active=false;this.numbers.push(label);}
   }
@@ -37,53 +40,52 @@ export class ArenaView {
     this.obstacles.length=0;this.obstacles.push(...this.environment.configure(map,this.camera));
   }
 
+  prepareCamera(state:WorldSnapshot,alpha:number):void {this.configureMap(state.mapId);followProjection(this.camera,{x:lerp(state.hero.previous.x,state.hero.x,alpha),y:lerp(state.hero.previous.y,state.hero.y,alpha)});}
+
   update(state:WorldSnapshot,alpha:number,pointer:Vec2,dt=0,debug=false):void {
-    this.configureMap(state.mapId);
+    this.prepareCamera(state,alpha);
     if(state.tick<this.lastTick)this.visualTime=state.time;this.lastTick=state.tick;
     if(!state.paused)this.visualTime=state.phase==='fighting'?state.time:Math.max(this.visualTime,state.time)+Math.min(dt,.05);
-    this.environment.update(this.visualTime);
+    this.obstacles.length=0;this.obstacles.push(...this.environment.update(this.visualTime,this.camera));
     const visible=(u:Unit)=>u.alive||this.visualTime-u.diedAt<.9;
     const alive=new Set(state.units.filter(visible).map(u=>u.id));
     for(const [id,view] of this.units)if(!alive.has(id)){view.node.active=false;this.spare.push(view);this.units.delete(id);}
     const order=[...this.obstacles];
     for(const u of state.units)if(visible(u)) {
+      const projected=worldToScreen({x:lerp(u.previous.x,u.x,alpha),y:lerp(u.previous.y,u.y,alpha)},this.camera);
+      if(!screenVisible(projected,150)){const cached=this.units.get(u.id);if(cached)cached.node.active=false;continue;}
       let v=this.units.get(u.id);
-      if(!v){v=this.spare.pop() ?? this.makeView(u.kind);v.node.active=true;if(v.kind!==u.kind){v.kind=u.kind;v.body.node.destroy();v.body=new AnimatedUnit(v.node,u.kind,this.art);v.body.node.setSiblingIndex(1);}this.units.set(u.id,v);}
-      v.body.update(motionPose(u,this.visualTime),state.equipment);
+      if(!v){v=this.spare.pop() ?? this.makeView(u.kind);v.node.active=true;if(v.kind!==u.kind){v.kind=u.kind;v.body.node.destroy();v.body=u.kind==='hero'?new AnimatedUnit(v.node,u.kind,this.art):new MonsterVisual(v.node,u.kind);v.body.node.setSiblingIndex(1);}this.units.set(u.id,v);}
+      v.node.active=true;if(v.body instanceof MonsterVisual)v.body.update(u,state.enemies?.units.find(pose=>pose.id===u.id),this.visualTime);else v.body.update(motionPose(u,this.visualTime),state.party?.find(p=>p.id===u.id)?.appearance??state.appearance);
       const p=worldToScreen({x:lerp(u.previous.x,u.x,alpha),y:lerp(u.previous.y,u.y,alpha)},this.camera);
       v.node.setPosition(p.x,p.y);order.push({node:v.node,y:p.y});
       const bar=v.bars;bar.node.active=u.alive;bar.node.setPosition(0,v.body.height-47+4);bar.clear();box(bar,-19,47,38,5,'#354D49',2);box(bar,-18,48,36*u.hp/u.maxHp,3,u.kind==='hero'?'#95D4B5':'#DA957E',1);
       if(u.shield>0)box(bar,-18,54,36*Math.min(1,u.shield/65),3,'#A3CFE3',1);
-      const ring=v.ring;ring.clear();if(!u.alive)continue;ring.fillColor=color('#405A4730');ring.ellipse(0,-1,u.kind==='warden'?30:18,u.kind==='warden'?13:8);ring.fill();
-      if(u.kind==='hero'){ring.strokeColor=color('#F2DDAB');ring.lineWidth=2;ring.ellipse(0,0,19,10);ring.stroke();}
+      const ring=v.ring;ring.clear();if(!u.alive)continue;ring.fillColor=color('#405A4730');ring.ellipse(0,-1,Math.max(18,u.radius*38),Math.max(8,u.radius*18));ring.fill();
+      if(u.kind==='hero'){ring.strokeColor=color(u.id===state.hero.id?'#F2DDAB':'#8DCBE8');ring.lineWidth=2;ring.ellipse(0,0,19,10);ring.stroke();}
       if(u.shield>0){ring.strokeColor=color('#BDE5EF');ring.lineWidth=2;ring.ellipse(0,20,24,31);ring.stroke();}
       for(const [i,status] of u.statuses.entries())disk(ring,-14+i*12,24,4,STATUSES[status.id].color);
       if(u.windup>0){ring.strokeColor=color('#D87562');ring.lineWidth=3;ring.ellipse(0,0,28,14);ring.stroke();}
     }
     order.sort((a,b)=>b.y-a.y);order.forEach((v,i)=>v.node.setSiblingIndex(i));
     this.drawGround(state,pointer);this.drawProjectiles(state,alpha);this.drawEffects(state);
-    this.drawColliders(state,debug);
+    this.drawColliders(state,debug);this.guidance.update(state,this.camera);
   }
   private makeView(kind:Unit['kind']):UnitView {
-    const node=uiNode('Unit',this.objects);const ring=graphics('Indicators',node),body=new AnimatedUnit(node,kind,this.art),bars=graphics('Health',node);
+    const node=uiNode('Unit',this.objects);const ring=graphics('Indicators',node),body=kind==='hero'?new AnimatedUnit(node,kind,this.art):new MonsterVisual(node,kind),bars=graphics('Health',node);
     return {node,body,bars,ring,kind};
   }
-  debug(){return{time:this.visualTime,units:Array.from(this.units,([id,v])=>({id,...v.body.debug()}))};}
+  debug(){return{time:this.visualTime,camera:{...this.camera,origin:{...this.camera.origin}},environment:this.environment.debug(),units:Array.from(this.units,([id,v])=>({id,...v.body.debug()}))};}
 
   private drawGround(state:WorldSnapshot,pointer:Vec2):void {
     const g=this.targeting;g.clear();
-    if(state.phase!=='fighting'||state.paused)return;
+    if(state.phase!=='fighting')return;const enemies=state.enemies;if(enemies)drawEnemyWarnings(g,enemies,this.camera,this.visualTime);if(state.paused)return;
     const aim=worldToScreen(pointer,this.camera);g.strokeColor=color('#FBF5D4');g.lineWidth=1.5;
     g.ellipse(aim.x,aim.y,9,5);g.stroke();g.moveTo(aim.x-13,aim.y);g.lineTo(aim.x+13,aim.y);g.stroke();
     if(state.destination){const p=worldToScreen(state.destination,this.camera);g.strokeColor=color('#548C8A');g.lineWidth=3;g.ellipse(p.x,p.y,14,7);g.stroke();}
     for(const zone of state.zones)this.capsule(g,zone.from,zone.to,zone.radius,'#BE9E5EAA',1.5);
     for(const swing of state.swings)this.sector(g,swing.center,swing.facing,swing.radius,swing.arc,swing.age<swing.windup?'#BCA37966':'#99744ACC',swing.age<swing.windup?1:3);
-    for(const e of state.units)if(e.alive&&e.windup>0&&e.kind!=='hero'&&enemy(e.kind).behavior==='melee'){
-      const cfg=enemy(e.kind);this.sector(g,e,{x:e.aim.x-e.x,y:e.aim.y-e.y},cfg.range,cfg.attackArc??Math.PI/2,'#D8756288',2);
-    }
-    for(const e of state.units)if(e.alive&&e.windup>0&&e.kind!=='hero'&&enemy(e.kind).behavior==='ranged'){
-      const a=worldToScreen(e,this.camera),b=worldToScreen(e.aim,this.camera);g.strokeColor=color('#D27D6988');g.lineWidth=5;g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.stroke();
-    }
+
   }
   private drawProjectiles(state:WorldSnapshot,alpha:number):void {
     const g=this.projectiles;g.clear();

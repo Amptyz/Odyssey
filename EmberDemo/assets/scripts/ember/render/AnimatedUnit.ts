@@ -1,6 +1,6 @@
 import { Node, Sprite, UITransform, UIOpacity } from 'cc';
 import { animationFrame,type MotionPose } from '../content/animation';
-import type { EquipmentLoadout } from '../content/equipment';
+import type { EquipmentAppearanceLoadout } from '../content/equipment';
 import type { Unit } from '../simulation/GameWorld';
 import { enemy } from '../content/enemies';
 import { UNIT_SPRITES,type UnitSprite } from '../content/appearances';
@@ -15,7 +15,7 @@ export class AnimatedUnit {
     if(kind==='hero')this.hero=new HeroRig(this.node,art);
     else{this.visual=UNIT_SPRITES[enemy(kind).appearance]!;this.sprite=this.node.addComponent(Sprite);this.sprite.sizeMode=Sprite.SizeMode.CUSTOM;}
   }
-  update(pose:MotionPose,equipment:EquipmentLoadout):void{
+  update(pose:MotionPose,equipment:EquipmentAppearanceLoadout):void{
     this.currentPose={...pose};
     this.opacity.opacity=pose.state==='death'?Math.round(255*Math.max(0,1-Math.max(0,pose.age-.35)/.55)):255;
     if(this.hero){this.hero.equip(equipment);this.hero.pose(pose);return;}

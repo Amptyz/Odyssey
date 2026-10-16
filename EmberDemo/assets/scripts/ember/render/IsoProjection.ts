@@ -12,8 +12,19 @@ export function screenToWorld(p: Vec2, camera: Projection = DEFAULT_PROJECTION):
   return { x: (x + y) / 2, y: (y - x) / 2 };
 }
 
-/** Center any rectangular map in the playable viewport; HUD space stays reserved. */
-export function fitMapProjection(map:{width:number;height:number}):Projection {
-  const zoom=Math.min(1,1080/((map.width+map.height)*27),560/((map.width+map.height)*14));
-  return {tileWidth:54,tileHeight:28,zoom,origin:{x:-(map.width-map.height)*27*zoom/2,y:(map.width+map.height)*14*zoom/2-15}};
+/** Initial camera preserves combat scale; large maps are explored rather than fit into one screen. */
+export function fitMapProjection(map:{width:number;height:number;heroSpawn?:Vec2}):Projection {
+  const camera:Projection={tileWidth:54,tileHeight:28,zoom:1,origin:{x:0,y:0}};followProjection(camera,map.heroSpawn??{x:map.width/2,y:map.height/2});return camera;
+}
+
+/** Mutate the shared projection before both input inverse projection and rendering. */
+export function followProjection(camera:Projection,position:Vec2,anchor:Vec2={x:0,y:0}):void {
+  camera.zoom=1;
+  camera.origin.x=anchor.x-(position.x-position.y)*camera.tileWidth/2;
+  camera.origin.y=anchor.y+(position.x+position.y)*camera.tileHeight/2;
+}
+export function screenVisible(point:Vec2,padding=100):boolean {return Math.abs(point.x)<=640+padding&&Math.abs(point.y)<=360+padding;}
+export function visibleWorldBounds(camera:Projection,padding=100):{minX:number;maxX:number;minY:number;maxY:number} {
+  const points=[screenToWorld({x:-640-padding,y:-360-padding},camera),screenToWorld({x:640+padding,y:-360-padding},camera),screenToWorld({x:640+padding,y:360+padding},camera),screenToWorld({x:-640-padding,y:360+padding},camera)];
+  return{minX:Math.min(...points.map(p=>p.x)),maxX:Math.max(...points.map(p=>p.x)),minY:Math.min(...points.map(p=>p.y)),maxY:Math.max(...points.map(p=>p.y))};
 }

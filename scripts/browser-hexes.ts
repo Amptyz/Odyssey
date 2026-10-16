@@ -16,10 +16,14 @@ try{
     if(index===0)await page.screenshot({path:'reports/26-hex-menu.png'});
     await click(145,45);await click((index-1)*280,-276);let s=await state();
     check(s.phase==='shop'&&s.lab===lab&&s.perks.join(',')===LAB_PRESETS[lab].join(','),`${lab}: visible menu opens normal shop with advertised preset`);
-    if(lab==='hexMage'){check(s.hero.maxHp===168,'glass cannon reduces base maximum HP');await click(280,113);await click(-90,-185);check((await state()).hero.maxHp===210,'glass cannon also scales purchased armor HP');}
-    if(lab==='hexAttack'){await click(-90,-36);await click(-90,-185);}
-    if(lab==='hexSurvive'){await click(280,-36);await click(-90,-185);}
+    if(lab==='hexMage'){check(s.hero.maxHp===168,'glass cannon reduces base maximum HP');await click(-90,-185);check((await state()).hero.maxHp===221&&(await state()).gold===60,'glass cannon scales the normally purchased75HP armor without bypassing100-gold economy');}
+    if(lab==='hexAttack'){await click(-90,-36);}
+    if(lab==='hexSurvive'){await click(280,-36);}
     await page.keyboard.press('Enter');await page.waitForTimeout(100);s=await state();check(s.phase==='fighting',`${lab}: normal wave starts`);
+    if(lab==='hexAttack'){
+      // The larger map starts outside typhoon's range. Approach the first group before firing.
+      await page.keyboard.down('d');await page.keyboard.down('s');await page.waitForTimeout(850);await page.keyboard.up('d');await page.keyboard.up('s');
+    }
     if(lab==='hexSurvive'){
       await aim(s.hero.x,s.hero.y+3.5);await page.keyboard.press('e');await page.waitForFunction(()=>(window as any).__EMBER__.snapshot().zones.length>0);
       await page.keyboard.press('Escape');await page.waitForTimeout(60);const frozen=await state();check(frozen.zones[0]!.to.y>frozen.zones[0]!.from.y,'earthwake follows actual cursor-directed dash');
@@ -38,7 +42,8 @@ try{
         basic ||= s.projectiles.some(p=>p.cause==='basic');light ||= s.projectiles.some(p=>p.cause==='augment'&&p.appearance==='shield');
         stack ||= s.units.some(u=>u.statuses.some(t=>t.id==='infernal'));crit ||= s.cues.some(c=>c.critical);
         const target=s.units.filter(u=>u.team==='enemy'&&u.alive).sort((a,b)=>Math.hypot(a.x-s.hero.x,a.y-s.hero.y)-Math.hypot(b.x-s.hero.x,b.y-s.hero.y))[0];
-        if(target){await aim(target.x,target.y);if(lab==='hexAttack')await page.mouse.down();if(s.cooldowns.Q<.01)await page.keyboard.press('q');}
+        // Keep the attack preset's first group alive long enough to observe its basic-attack chain.
+        if(target){await aim(target.x,target.y);if(lab==='hexAttack')await page.mouse.down();if(lab==='hexMage'&&s.cooldowns.Q<.01)await page.keyboard.press('q');}
         if(s.cooldowns.W<.01)await page.keyboard.press('Space');
         if(lab==='hexMage'&&augment&&stack&&crit||lab==='hexAttack'&&augment&&onHit&&basic&&light)break;
         await page.waitForTimeout(50);

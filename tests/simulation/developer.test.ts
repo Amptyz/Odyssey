@@ -21,19 +21,19 @@ describe('developer command boundary and replay',()=>{
     p.send({type:'DevClose'});expect(p.snapshot().paused).toBe(true);
   });
   it('draft edits are detached and atomic; applying loads the requested map/wave/build without shop or rewards',()=>{
-    const p=new LocalTransport();p.send({type:'DevOpen'});const c=p.snapshot().developer!.draft;c.mapId='frost';c.wave=2;c.seed=42;c.loadout={Q:'icebolt',W:'cleave',E:'dash',R:'frostNova'};c.perks=['glassCannon','heavyHitter'];c.equipment={weapon:'staff',body:'plate',head:'helm'};
+    const p=new LocalTransport();p.send({type:'DevOpen'});const c=p.snapshot().developer!.draft;c.mapId='frost';c.wave=2;c.seed=42;c.loadout={Q:'icebolt',W:'cleave',E:'dash',R:'frostNova'};c.perks=['glassCannon','heavyHitter'];c.equipment={slot1:'staff',slot2:'plate',slot3:'helm'};c.purchaseOrder=['staff','plate','helm'];
     expect(p.snapshot().developer!.draft.mapId).toBe('ember');p.send({type:'DevConfigure',config:c});expect(p.world.mapId).toBe('ember');p.send({type:'DevApply'});
-    const s=p.snapshot();expect(s.mapId).toBe('frost');expect(s.wave).toBe(2);expect(s.seed).toBe(42);expect(s.phase).toBe('fighting');expect(s.units.filter(u=>u.team==='enemy')).toHaveLength(8);expect(s.hero.hp).toBe(238);expect(s.hero.maxHp).toBe(238);expect(s.loadout).toEqual(c.loadout);expect(s.equipment).toEqual(c.equipment);expect(new Set(s.perks)).toEqual(new Set(c.perks));expect(s.developer?.enabled).toBe(true);expect(s.developer?.open).toBe(false);
+    const s=p.snapshot();expect(s.mapId).toBe('frost');expect(s.wave).toBe(2);expect(s.seed).toBe(42);expect(s.phase).toBe('fighting');expect(s.units.filter(u=>u.team==='enemy')).toHaveLength(5);expect(s.hero.hp).toBe(259);expect(s.hero.maxHp).toBe(259);expect(s.loadout).toEqual(c.loadout);expect(s.equipment).toEqual(c.equipment);expect(new Set(s.perks)).toEqual(new Set(c.perks));expect(s.developer?.enabled).toBe(true);expect(s.developer?.open).toBe(false);
   });
   it('restart replays the applied seed and spawn layout, not an unapplied draft',()=>{
     const p=setup(c=>{c.wave=3;c.seed=87;c.perks=['jeweledGauntlet','typhoon'];}),before=p.world.snapshot();run(p,1);p.send({type:'DevOpen'});const draft=p.snapshot().developer!.draft;draft.seed=123;p.send({type:'DevConfigure',config:draft});p.send({type:'DevRestart'});
     expect(p.world.snapshot()).toEqual(before);run(p,1);p.send({type:'Restart'});expect(p.world.snapshot()).toEqual(before);
   });
   it('can explicitly replace a stale draft with the current normal-game build',()=>{
-    const p=new LocalTransport();p.send({type:'DevOpen'});p.send({type:'DevClose'});p.send({type:'Start'});p.send({type:'BuyEquipment',equipmentId:'bow'});p.send({type:'LeaveShop'});p.send({type:'DevOpen'});expect(p.snapshot().developer!.draft.equipment.weapon).toBeUndefined();p.send({type:'DevCapture'});expect(p.snapshot().developer!.draft.equipment.weapon).toBe('bow');expect(p.snapshot().developer!.draft.wave).toBe(1);expect(p.snapshot().developer!.enabled).toBe(false);
+    const p=new LocalTransport();p.send({type:'DevOpen'});p.send({type:'DevClose'});p.send({type:'Start'});p.send({type:'BuyEquipment',equipmentId:'bow'});p.send({type:'LeaveShop'});p.send({type:'DevOpen'});expect(p.snapshot().developer!.draft.equipment.slot1).toBeUndefined();p.send({type:'DevCapture'});expect(p.snapshot().developer!.draft.equipment.slot1).toBe('bow');expect(p.snapshot().developer!.draft.wave).toBe(1);expect(p.snapshot().developer!.enabled).toBe(false);
   });
   it('exit removes every debug modifier and returns to a fresh ordinary game',()=>{
-    const p=setup(c=>{c.options={invincible:true,noCooldown:true,freezeEnemies:true,speed:2};c.perks=PERKS.map(p=>p.id);c.equipment={weapon:'bow'};c.loadout.Q='icebolt';});
+    const p=setup(c=>{c.options={invincible:true,noCooldown:true,freezeEnemies:true,speed:2};c.perks=PERKS.map(p=>p.id);c.equipment={slot1:'bow'};c.purchaseOrder=['bow'];c.loadout.Q='icebolt';});
     p.send({type:'DevExit'});const s=p.snapshot();expect(s.developer).toBeUndefined();expect(s.phase).toBe('ready');expect(s.perks).toHaveLength(0);expect(s.loadout).toEqual(DEFAULT_LOADOUT);expect(s.equipment).toEqual({});expect(s.hero.maxHp).toBe(240);p.send({type:'Start'});p.send({type:'LeaveShop'});p.world.combat.damage({sourceId:[...p.world.actors.keys()][1]!,targetId:'hero',amount:20,cause:'enemy'});expect(p.world.hero.hp).toBe(220);
   });
   it('invincibility and zero cooldown are opt-in; enemy AI freeze keeps positions and attacks still',()=>{
@@ -61,7 +61,7 @@ describe('developer command boundary and replay',()=>{
 describe('portable developer presets',()=>{
   const base=()=>captureDeveloperConfig(new GameWorld().snapshot());
   it('round trips config and all new content IDs without changing live references',()=>{
-    const c=base();c.perks=PERKS.map(p=>p.id);c.wave=3;c.equipment={weapon:'staff',head:'hood',body:'plate'};expect(parseDeveloperConfig(JSON.stringify(c))).toEqual(c);const copy=cloneDeveloperConfig(c);copy.perks.length=0;copy.options.invincible=true;expect(c.perks.length).toBe(20);expect(c.options.invincible).toBe(false);
+    const c=base();c.perks=PERKS.map(p=>p.id);c.wave=3;c.equipment={slot1:'staff',slot2:'hood',slot3:'plate'};c.purchaseOrder=['staff','hood','plate'];expect(parseDeveloperConfig(JSON.stringify(c))).toEqual(c);const copy=cloneDeveloperConfig(c);copy.perks.length=0;copy.options.invincible=true;expect(c.perks.length).toBe(20);expect(c.options.invincible).toBe(false);
   });
   it('rejects malformed, unsupported and inconsistent imports atomically',()=>{
     const p=new LocalTransport();p.send({type:'DevOpen'});const before=p.snapshot().developer!.draft;
@@ -71,6 +71,6 @@ describe('portable developer presets',()=>{
   it('three local slots save/load explicitly and handle missing/corrupt/unavailable storage',()=>{
     const map=new Map<string,string>(),store={getItem:(k:string)=>map.get(k)??null,setItem:(k:string,v:string)=>{map.set(k,v);}},c=base();
     expect(()=>loadDeveloperPreset(store,1)).toThrow();for(let slot=1;slot<=3;slot++){c.seed=slot;saveDeveloperPreset(store,slot,c);expect(loadDeveloperPreset(store,slot).seed).toBe(slot);}
-    map.set('ember.developer.v1.2','invalid');expect(()=>loadDeveloperPreset(store,2)).toThrow();expect(()=>saveDeveloperPreset(store,4,c)).toThrow();expect(()=>saveDeveloperPreset({...store,setItem:()=>{throw Error('disabled');}},1,c)).toThrow();expect(new LocalTransport().snapshot().developer).toBeUndefined();
+    map.set('ember.developer.v2.2','invalid');expect(()=>loadDeveloperPreset(store,2)).toThrow();expect(()=>saveDeveloperPreset(store,4,c)).toThrow();expect(()=>saveDeveloperPreset({...store,setItem:()=>{throw Error('disabled');}},1,c)).toThrow();expect(new LocalTransport().snapshot().developer).toBeUndefined();
   });
 });

@@ -4,13 +4,14 @@ import { PERKS,LAB_PRESETS,type LabId } from '../../EmberDemo/assets/scripts/emb
 import type { PerkId } from '../../EmberDemo/assets/scripts/ember/combat-core/types';
 import { rewardChoices } from '../../EmberDemo/assets/scripts/ember/simulation/RewardSystem';
 import { DEFAULT_LOADOUT } from '../../EmberDemo/assets/scripts/ember/content/skills';
+import {AttributeSet} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { Random } from '../../EmberDemo/assets/scripts/ember/utils/Random';
 function fixture(perks:PerkId[]=[],weapon?:'staff'|'bow'){
   const w=new GameWorld(1234);w.command({type:'Start'});if(weapon)w.command({type:'BuyEquipment',equipmentId:weapon});w.command({type:'LeaveShop'});
   for(const [id,a] of w.actors)if(a.team==='enemy')w.actors.delete(id);perks.forEach(p=>w.combat.addPerk(p));
-  const sentinel=w.spawnEnemy('ranged',{x:2,y:2},99999);sentinel.windup=9999;return w;
+  Object.assign(w.hero,{x:10,y:10,previous:{x:10,y:10}});const sentinel=w.spawnEnemy('ranged',{x:2,y:2},99999);sentinel.attributes=new AttributeSet({...sentinel.attributes.template,canMove:false,canAttack:false});sentinel.windup=9999;return w;
 }
-function spawn(w:GameWorld,x:number,y:number){const e=w.spawnEnemy('melee',{x,y},1000);Object.assign(e,{x,y,previous:{x,y},windup:999});return e;}
+function spawn(w:GameWorld,x:number,y:number){const e=w.spawnEnemy('melee',{x,y},1000);Object.assign(e,{x,y,previous:{x,y},windup:999});e.attributes=new AttributeSet({...e.attributes.template,canMove:false,canAttack:false,stats:{...e.attributes.template.stats,armor:0,magicResist:0}});return e;}
 function run(w:GameWorld,s:number){for(let i=0;i<Math.round(s*30);i++)w.advance(1/30);}
 describe('hex simulation, hitboxes and progression',()=>{
   it('magic missiles require collision, can be intercepted, and never recursively spawn missiles',()=>{
@@ -31,7 +32,7 @@ describe('hex simulation, hitboxes and progression',()=>{
   it('missile target-HP damage is capped and flight distance increases it up to double',()=>{
     const losses:number[]=[];
     for(const distance of [2,8]){
-      const w=fixture(['magicMissile']),e=spawn(w,10,10+distance);e.maxHp=100000;
+      const w=fixture(['magicMissile']),e=spawn(w,10,10+distance);e.attributes.upsert({sourceId:'fixture:health',modifiers:[{stat:'maxHealth',operation:'flat',value:99000}]});e.maxHp=100000;
       w.combat.damage({sourceId:'hero',targetId:e.id,amount:1,cause:'skill'});
       // One central missile isolates the distance/health formula; other bullets retain their real spread in the prior test.
       w.projectiles.splice(2,1);w.projectiles.splice(0,1);run(w,1);losses.push(999-e.hp);
@@ -55,7 +56,7 @@ describe('hex simulation, hitboxes and progression',()=>{
   it('typhoon uses a second projectile with independent collision and on-hit damage',()=>{
     const w=fixture(['typhoon','heavyHitter'],'bow'),primary=spawn(w,13,10),second=spawn(w,10,13);
     w.command({type:'Attack',point:primary});expect(second.hp).toBe(1000);expect(w.projectiles).toHaveLength(2);run(w,.3);
-    expect(primary.hp).toBeCloseTo(966.8);expect(second.hp).toBeCloseTo(981.1);
+    expect(primary.hp).toBeCloseTo(968.8);expect(second.hp).toBeCloseTo(982);
     expect(w.combat.history.filter(e=>e.type==='OnAttack')).toHaveLength(1);
   });
   it('earthwake follows actual dash endpoints, waits, hits capsule edge once and can be dodged',()=>{
@@ -75,9 +76,9 @@ describe('hex simulation, hitboxes and progression',()=>{
   });
   it('glass cannon recalculates with equipment and cannot heal via re-equipping',()=>{
     const w=new GameWorld();w.command({type:'Start',lab:'hexMage'});expect(w.hero.maxHp).toBe(168);
-    w.command({type:'BuyEquipment',equipmentId:'plate'});expect(w.hero.maxHp).toBe(210);expect(w.snapshot().stats.maxHp).toBe(210);w.hero.hp=100;
-    for(let i=0;i<4;i++){w.command({type:'UnequipEquipment',slot:'body'});w.command({type:'EquipEquipment',equipmentId:'plate'});}
-    expect(w.hero.maxHp).toBe(210);expect(w.hero.hp).toBe(100);w.command({type:'LeaveShop'});expect(w.hero.hp).toBe(210);
+    w.command({type:'BuyEquipment',equipmentId:'plate'});expect(w.hero.maxHp).toBe(221);expect(w.snapshot().stats.maxHp).toBe(221);w.hero.hp=100;
+    for(let i=0;i<4;i++){w.command({type:'UnequipEquipment',slot:'slot1'});w.command({type:'EquipEquipment',equipmentId:'plate'});}
+    expect(w.hero.maxHp).toBe(221);expect(w.hero.hp).toBe(100);w.command({type:'LeaveShop'});expect(w.hero.hp).toBe(221);
   });
   it('all twelve enter normal rewards without duplicates; movement requirement filters earthwake',()=>{
     const seen=new Set<PerkId>();for(let seed=0;seed<1000;seed++)for(const c of rewardChoices(new Random(seed),DEFAULT_LOADOUT,new Set()))if(c.kind==='perk')seen.add(c.perkId);

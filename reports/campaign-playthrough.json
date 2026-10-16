@@ -1,0 +1,1602 @@
+{
+  "scope": "Normal authoritative GameWorld commands only; no developer options, HP/damage/cooldown mutations or forced progress. Bot reads snapshots for movement/dodging and uses normal shop/reward/exit rules.",
+  "status": "passed",
+  "outcomes": [
+    {
+      "mapId": "ember",
+      "seed": 1234,
+      "phase": "victory",
+      "wave": 5,
+      "time": 138.23333333332806,
+      "hp": 287.79661016949154,
+      "maxHp": 345,
+      "equipment": {
+        "slot1": "staff",
+        "slot2": "bow",
+        "slot3": "robe",
+        "slot4": "plate",
+        "slot5": "circlet",
+        "slot6": "hood"
+      },
+      "purchaseOrder": [
+        "staff",
+        "bow",
+        "robe",
+        "plate",
+        "circlet",
+        "hood"
+      ],
+      "perks": [
+        "reserve",
+        "swift",
+        "burn",
+        "double"
+      ],
+      "loadout": {
+        "Q": "fireball",
+        "W": "shield",
+        "E": "ironGuard",
+        "R": "nova"
+      },
+      "kills": 24,
+      "levels": [
+        {
+          "wave": 1,
+          "time": 17.533333333333363,
+          "hp": 240,
+          "gold": 160
+        },
+        {
+          "wave": 2,
+          "time": 35.36666666666722,
+          "hp": 240,
+          "gold": 180
+        },
+        {
+          "wave": 3,
+          "time": 52.43333333333292,
+          "hp": 270,
+          "gold": 220
+        },
+        {
+          "wave": 4,
+          "time": 76.13333333333158,
+          "hp": 300,
+          "gold": 180
+        },
+        {
+          "wave": 5,
+          "time": 138.23333333332806,
+          "hp": 287.79661016949154,
+          "gold": 260
+        }
+      ],
+      "diagnostics": [
+        {
+          "time": 0,
+          "wave": 1,
+          "hero": {
+            "x": 7,
+            "y": 8,
+            "hp": 240,
+            "path": [],
+            "velocity": {
+              "x": 3.8192689096345322,
+              "y": 1.382860616194088
+            }
+          },
+          "target": {
+            "id": "enemy-3",
+            "kind": "ranged",
+            "x": 16.2,
+            "y": 9.614359353944899,
+            "hp": 65,
+            "path": []
+          },
+          "gap": 9.34056508588583,
+          "navClear": true,
+          "warnings": 0
+        },
+        {
+          "time": 10.166666666666641,
+          "wave": 1,
+          "hero": {
+            "x": 30.79204067937834,
+            "y": 19.585900705367983,
+            "hp": 240,
+            "path": [
+              {
+                "x": 31.273013534978098,
+                "y": 21.995614181432796
+              }
+            ],
+            "velocity": {
+              "x": 3.5341863454281026,
+              "y": -2.267971196439067
+            }
+          },
+          "target": {
+            "id": "enemy-5",
+            "kind": "melee",
+            "x": 34.37597412352093,
+            "y": 18.095853785542946,
+            "hp": 11.552380952380954,
+            "path": [
+              {
+                "x": 29.84509269258194,
+                "y": 19.265817676094567
+              }
+            ]
+          },
+          "gap": 3.8813423908905382,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-5",
+            "kind": "melee",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 1
+        },
+        {
+          "time": 20.200000000000163,
+          "wave": 2,
+          "hero": {
+            "x": 10.07661342465639,
+            "y": 34.83786233983819,
+            "hp": 240,
+            "path": [
+              {
+                "x": 20.6,
+                "y": 34
+              }
+            ],
+            "velocity": {
+              "x": 4.186740837586442,
+              "y": -0.3334678726484375
+            }
+          },
+          "target": {
+            "id": "enemy-155",
+            "kind": "melee",
+            "x": 20.6,
+            "y": 34,
+            "hp": 80,
+            "path": []
+          },
+          "gap": 10.556688795007709,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-155",
+            "kind": "melee",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": false
+          },
+          "warnings": 0
+        },
+        {
+          "time": 30.20000000000066,
+          "wave": 2,
+          "hero": {
+            "x": 33.167509721790765,
+            "y": 37.55019616570537,
+            "hp": 240,
+            "path": [
+              {
+                "x": 34.71770699959225,
+                "y": 39.25318779657876
+              }
+            ],
+            "velocity": {
+              "x": 3.5890081493785044,
+              "y": -2.1815179356802648
+            }
+          },
+          "target": {
+            "id": "enemy-158",
+            "kind": "stoneback",
+            "x": 33.79665303676217,
+            "y": 33.954016822667455,
+            "hp": 133.44827586206895,
+            "path": [
+              {
+                "x": 32.39438188296336,
+                "y": 35.95295302339313
+              }
+            ]
+          },
+          "gap": 3.6507981563030625,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-158",
+            "kind": "stoneback",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 40.36666666666694,
+          "wave": 3,
+          "hero": {
+            "x": 16.735188397498167,
+            "y": 23.58411573966957,
+            "hp": 270,
+            "path": [
+              {
+                "x": 18.16541057532821,
+                "y": 32.48888250407276
+              }
+            ],
+            "velocity": {
+              "x": 0.7462014977511614,
+              "y": 4.645956691011435
+            }
+          },
+          "target": {
+            "id": "enemy-319",
+            "kind": "warden",
+            "x": 18.09246345196926,
+            "y": 32.03470333546896,
+            "hp": 660,
+            "path": [
+              {
+                "x": 16.610821481206305,
+                "y": 22.809789624501004
+              }
+            ]
+          },
+          "gap": 8.558891650661785,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-319",
+            "kind": "warden",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 50.533333333333026,
+          "wave": 3,
+          "hero": {
+            "x": 18.382514944693273,
+            "y": 33.92783375811142,
+            "hp": 270,
+            "path": [],
+            "velocity": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "target": {
+            "id": "enemy-318",
+            "kind": "ranged",
+            "x": 19.211650714164904,
+            "y": 28.131346880113547,
+            "hp": 41,
+            "path": []
+          },
+          "gap": 5.855486850042345,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-318",
+            "kind": "ranged",
+            "state": "recover",
+            "actionId": "mistPearl",
+            "age": 0.9999999999999432,
+            "windup": 0.75,
+            "duration": 3,
+            "strike": 0,
+            "phase": 1,
+            "facing": -1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 60.59999999999912,
+          "wave": 4,
+          "hero": {
+            "x": 46.81681359559721,
+            "y": 21.683186404343736,
+            "hp": 300,
+            "path": [
+              {
+                "x": 46.75,
+                "y": 21.75
+              },
+              {
+                "x": 46.25,
+                "y": 21.75
+              },
+              {
+                "x": 45.75,
+                "y": 21.75
+              },
+              {
+                "x": 45.25,
+                "y": 22.25
+              }
+            ],
+            "velocity": {
+              "x": -3.8818473215139733,
+              "y": 2.6595000478923727
+            }
+          },
+          "target": {
+            "id": "enemy-487",
+            "kind": "reedLancer",
+            "x": 18.6,
+            "y": 34,
+            "hp": 95,
+            "path": []
+          },
+          "gap": 30.787862326553665,
+          "navClear": false,
+          "blocker": 0.6140995491553176,
+          "pose": {
+            "id": "enemy-487",
+            "kind": "reedLancer",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": false
+          },
+          "warnings": 0
+        },
+        {
+          "time": 70.76666666666522,
+          "wave": 4,
+          "hero": {
+            "x": 23.73854743521693,
+            "y": 36.13309038708572,
+            "hp": 300,
+            "path": [],
+            "velocity": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "target": {
+            "id": "enemy-489",
+            "kind": "bellKeeper",
+            "x": 19.200479128719714,
+            "y": 32.43127593477155,
+            "hp": 303.3988571428572,
+            "path": [
+              {
+                "x": 25.021401281721776,
+                "y": 36.063521497395854
+              }
+            ]
+          },
+          "gap": 5.856406252455221,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-489",
+            "kind": "bellKeeper",
+            "state": "recover",
+            "actionId": "bellPearl",
+            "age": 3.033333333333161,
+            "windup": 0.85,
+            "duration": 4,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 80.79999999999798,
+          "wave": 5,
+          "hero": {
+            "x": 27.474748893780625,
+            "y": 28.269431332452484,
+            "hp": 330,
+            "path": [
+              {
+                "x": 45,
+                "y": 32
+              }
+            ],
+            "velocity": {
+              "x": 4.808231977322903,
+              "y": 1.0235196889438603
+            }
+          },
+          "target": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "x": 45,
+            "y": 32,
+            "hp": 7200,
+            "path": []
+          },
+          "gap": 17.917911957572812,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": false
+          },
+          "warnings": 0
+        },
+        {
+          "time": 90.96666666666407,
+          "wave": 5,
+          "hero": {
+            "x": 38.289933411780886,
+            "y": 19.39124533628092,
+            "hp": 330,
+            "path": [
+              {
+                "x": 36.76494100631925,
+                "y": 17.81921125362029
+              }
+            ],
+            "velocity": {
+              "x": 3.6534394313307494,
+              "y": 2.684934090178254
+            }
+          },
+          "target": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "x": 37.69160633585368,
+            "y": 23.39771792622042,
+            "hp": 6026.30769230769,
+            "path": [
+              {
+                "x": 39.16141274553371,
+                "y": 20.450511299977272
+              }
+            ]
+          },
+          "gap": 4.050903344159685,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 101.13333333333016,
+          "wave": 5,
+          "hero": {
+            "x": 53.183756212067834,
+            "y": 19.27543070618154,
+            "hp": 330,
+            "path": [
+              {
+                "x": 52.90945124114285,
+                "y": 21.45103401511582
+              }
+            ],
+            "velocity": {
+              "x": -4.152976861579598,
+              "y": -1.8191438119953145
+            }
+          },
+          "target": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "x": 50.644952034057624,
+            "y": 16.7236664363002,
+            "hp": 4564.523076923071,
+            "path": [
+              {
+                "x": 52.68638657121404,
+                "y": 18.11207155029487
+              }
+            ]
+          },
+          "gap": 3.599587135120521,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 111.29999999999625,
+          "wave": 5,
+          "hero": {
+            "x": 51.411516024847096,
+            "y": 33.81989406393233,
+            "hp": 330,
+            "path": [
+              {
+                "x": 49.90200789351365,
+                "y": 35.39900457235892
+              }
+            ],
+            "velocity": {
+              "x": 2.5322629381167583,
+              "y": 3.835081068239218
+            }
+          },
+          "target": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "x": 50.85777424648702,
+            "y": 29.84454455807743,
+            "hp": 3229.8461538461456,
+            "path": [
+              {
+                "x": 52.537189752980304,
+                "y": 32.09626692964231
+              }
+            ]
+          },
+          "gap": 4.013730640040782,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 2,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 121.46666666666233,
+          "wave": 5,
+          "hero": {
+            "x": 39.46275052816736,
+            "y": 42.04723112211777,
+            "hp": 330,
+            "path": [
+              {
+                "x": 39.18759387689115,
+                "y": 43.66407229414461
+              }
+            ],
+            "velocity": {
+              "x": 4.829805565386018,
+              "y": -0.624011063094749
+            }
+          },
+          "target": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "x": 43.03282329912248,
+            "y": 40.17089705384281,
+            "hp": 1813.5692307692202,
+            "path": [
+              {
+                "x": 39.91658104582725,
+                "y": 40.75217244981056
+              }
+            ]
+          },
+          "gap": 4.033119031926086,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 2,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 131.63333333332844,
+          "wave": 5,
+          "hero": {
+            "x": 33.33673730078157,
+            "y": 25.54759751586314,
+            "hp": 330,
+            "path": [
+              {
+                "x": 31.27845977005629,
+                "y": 24.816489019943276
+              }
+            ],
+            "velocity": {
+              "x": -4.733917192426151,
+              "y": -1.2875163084234613
+            }
+          },
+          "target": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "x": 34.50327235991918,
+            "y": 29.252242808657215,
+            "hp": 453.5076923076814,
+            "path": [
+              {
+                "x": 34.231745335616395,
+                "y": 25.94324275322197
+              }
+            ]
+          },
+          "gap": 3.8839671457954545,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-708",
+            "kind": "courtyardHeart",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 2,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        }
+      ],
+      "observedEnemies": [
+        "melee",
+        "ranged",
+        "stoneback",
+        "reedLancer",
+        "sunbud",
+        "warden",
+        "emberRam",
+        "bellKeeper",
+        "courtyardHeart"
+      ],
+      "remaining": [],
+      "lastDamage": {
+        "amount": 42.203389830508456,
+        "attacker": "enemy-708",
+        "cause": "enemy",
+        "damageType": "physical"
+      }
+    },
+    {
+      "mapId": "frost",
+      "seed": 1234,
+      "phase": "victory",
+      "wave": 5,
+      "time": 164.93333333332654,
+      "hp": 310.1694915254237,
+      "maxHp": 345,
+      "equipment": {
+        "slot1": "staff",
+        "slot2": "bow",
+        "slot3": "robe",
+        "slot4": "plate",
+        "slot5": "circlet",
+        "slot6": "hood"
+      },
+      "purchaseOrder": [
+        "staff",
+        "bow",
+        "robe",
+        "plate",
+        "circlet",
+        "hood"
+      ],
+      "perks": [
+        "reserve",
+        "swift",
+        "burn",
+        "double"
+      ],
+      "loadout": {
+        "Q": "fireball",
+        "W": "shield",
+        "E": "ironGuard",
+        "R": "nova"
+      },
+      "kills": 20,
+      "levels": [
+        {
+          "wave": 1,
+          "time": 16.49999999999998,
+          "hp": 240,
+          "gold": 160
+        },
+        {
+          "wave": 2,
+          "time": 35.06666666666724,
+          "hp": 240,
+          "gold": 180
+        },
+        {
+          "wave": 3,
+          "time": 56.89999999999933,
+          "hp": 270,
+          "gold": 220
+        },
+        {
+          "wave": 4,
+          "time": 76.69999999999821,
+          "hp": 280.1694915254237,
+          "gold": 180
+        },
+        {
+          "wave": 5,
+          "time": 164.93333333332654,
+          "hp": 310.1694915254237,
+          "gold": 260
+        }
+      ],
+      "diagnostics": [
+        {
+          "time": 0,
+          "wave": 1,
+          "hero": {
+            "x": 8,
+            "y": 8,
+            "hp": 240,
+            "path": [],
+            "velocity": {
+              "x": 1.6661188403884724,
+              "y": -3.4726690825666595
+            }
+          },
+          "target": {
+            "id": "enemy-3",
+            "kind": "frostling",
+            "x": 17.2,
+            "y": 9.614359353944899,
+            "hp": 78,
+            "path": []
+          },
+          "gap": 9.34056508588583,
+          "navClear": true,
+          "warnings": 0
+        },
+        {
+          "time": 10.166666666666641,
+          "wave": 1,
+          "hero": {
+            "x": 32.711210310838574,
+            "y": 14.069128591394717,
+            "hp": 240,
+            "path": [
+              {
+                "x": 42.4,
+                "y": 12
+              }
+            ],
+            "velocity": {
+              "x": 0.43108394776583786,
+              "y": 3.822113506173758
+            }
+          },
+          "target": {
+            "id": "enemy-5",
+            "kind": "frostling",
+            "x": 42.31394059578396,
+            "y": 12.018378763450816,
+            "hp": 78,
+            "path": [
+              {
+                "x": 32.711210310838574,
+                "y": 14.069128591394717
+              }
+            ]
+          },
+          "gap": 9.81926696766206,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-5",
+            "kind": "frostling",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 20.166666666666828,
+          "wave": 2,
+          "hero": {
+            "x": 51.90455917513811,
+            "y": 38.25363293150747,
+            "hp": 240,
+            "path": [],
+            "velocity": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "target": {
+            "id": "enemy-152",
+            "kind": "rimeMoth",
+            "x": 48.411994488697964,
+            "y": 34.73683847383879,
+            "hp": 62,
+            "path": [
+              {
+                "x": 52.49420652001528,
+                "y": 38.82702332125831
+              }
+            ]
+          },
+          "gap": 4.956394994999684,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-152",
+            "kind": "rimeMoth",
+            "state": "recover",
+            "actionId": "mothFan",
+            "age": 1.9333333333334295,
+            "windup": 0.95,
+            "duration": 4,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 30.166666666667325,
+          "wave": 2,
+          "hero": {
+            "x": 25.255977040955283,
+            "y": 29.672653036840185,
+            "hp": 240,
+            "path": [
+              {
+                "x": 16.4,
+                "y": 33
+              }
+            ],
+            "velocity": {
+              "x": -4.134484810987436,
+              "y": 0.6874870849241246
+            }
+          },
+          "target": {
+            "id": "enemy-154",
+            "kind": "chimeSentry",
+            "x": 16.74448778978654,
+            "y": 32.870569854021625,
+            "hp": 90,
+            "path": [
+              {
+                "x": 25.647582955781147,
+                "y": 29.525519779219326
+              }
+            ]
+          },
+          "gap": 9.092421088047614,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-154",
+            "kind": "chimeSentry",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 40.23333333333361,
+          "wave": 3,
+          "hero": {
+            "x": 24.53864953715103,
+            "y": 23.717821310455943,
+            "hp": 270,
+            "path": [
+              {
+                "x": 41.4,
+                "y": 12
+              }
+            ],
+            "velocity": {
+              "x": 3.864038156846057,
+              "y": -2.6853192310110408
+            }
+          },
+          "target": {
+            "id": "enemy-302",
+            "kind": "mirrorKnight",
+            "x": 41.4,
+            "y": 12,
+            "hp": 600,
+            "path": []
+          },
+          "gap": 20.533204223763825,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-302",
+            "kind": "mirrorKnight",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": false
+          },
+          "warnings": 0
+        },
+        {
+          "time": 50.3999999999997,
+          "wave": 3,
+          "hero": {
+            "x": 33.72277172596773,
+            "y": 25.61942398463466,
+            "hp": 270,
+            "path": [],
+            "velocity": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "target": {
+            "id": "enemy-301",
+            "kind": "frostling",
+            "x": 34.35360817074166,
+            "y": 19.685676023794514,
+            "hp": 78,
+            "path": [
+              {
+                "x": 33.363638627201915,
+                "y": 26.116520667801463
+              }
+            ]
+          },
+          "gap": 5.967186898600514,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-301",
+            "kind": "frostling",
+            "state": "recover",
+            "actionId": "frostNeedle",
+            "age": 2.799999999999841,
+            "windup": 0.9,
+            "duration": 3.5,
+            "strike": 0,
+            "phase": 1,
+            "facing": -1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 60.56666666666579,
+          "wave": 4,
+          "hero": {
+            "x": 47.94454127560869,
+            "y": 6.940514052548333,
+            "hp": 300,
+            "path": [
+              {
+                "x": 41.873199702009174,
+                "y": 10.2126769117353
+              }
+            ],
+            "velocity": {
+              "x": -4.142244534606703,
+              "y": 2.232322732663218
+            }
+          },
+          "target": {
+            "id": "enemy-489",
+            "kind": "chimeSentry",
+            "x": 41.873199702009174,
+            "y": 10.2126769117353,
+            "hp": 90,
+            "path": [
+              {
+                "x": 48.445687312981086,
+                "y": 6.89270594103992
+              }
+            ]
+          },
+          "gap": 6.896973124520677,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-489",
+            "kind": "chimeSentry",
+            "state": "recover",
+            "actionId": "chimeDart",
+            "age": 2.7666666666665094,
+            "windup": 1.2,
+            "duration": 4.5,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 70.73333333333188,
+          "wave": 4,
+          "hero": {
+            "x": 19.57456247460116,
+            "y": 26.293919074976266,
+            "hp": 300,
+            "path": [],
+            "velocity": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "target": {
+            "id": "enemy-490",
+            "kind": "rimeWeaver",
+            "x": 20.631521333888504,
+            "y": 31.873206512261728,
+            "hp": 138.1384615384615,
+            "path": [
+              {
+                "x": 21.479517604478655,
+                "y": 25.79803617832782
+              }
+            ]
+          },
+          "gap": 5.678521844465986,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-490",
+            "kind": "rimeWeaver",
+            "state": "recover",
+            "actionId": "weaverThread",
+            "age": 3.033333333333161,
+            "windup": 0.9,
+            "duration": 4,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 80.86666666666464,
+          "wave": 5,
+          "hero": {
+            "x": 27.77614853067798,
+            "y": 26.563726584002637,
+            "hp": 310.1694915254237,
+            "path": [
+              {
+                "x": 47,
+                "y": 31
+              }
+            ],
+            "velocity": {
+              "x": 4.790070578364914,
+              "y": 1.1054009026995881
+            }
+          },
+          "target": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "x": 47,
+            "y": 31,
+            "hp": 8000,
+            "path": []
+          },
+          "gap": 19.729089870950443,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": false
+          },
+          "warnings": 0
+        },
+        {
+          "time": 91.03333333333073,
+          "wave": 5,
+          "hero": {
+            "x": 35.86921865139969,
+            "y": 40.72255345897884,
+            "hp": 310.1694915254237,
+            "path": [],
+            "velocity": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "target": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "x": 35.20035124654687,
+            "y": 36.132363328400984,
+            "hp": 6712.736000000008,
+            "path": []
+          },
+          "gap": 4.638666730875248,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "state": "attack",
+            "actionId": "regentHalo",
+            "age": 1.5333333333332462,
+            "windup": 1.5,
+            "duration": 2,
+            "strike": 0.814814814815299,
+            "phase": 1,
+            "facing": -1,
+            "awake": true
+          },
+          "warnings": 1
+        },
+        {
+          "time": 101.19999999999682,
+          "wave": 5,
+          "hero": {
+            "x": 29.245357371950828,
+            "y": 42.767290413638094,
+            "hp": 310.1694915254237,
+            "path": [
+              {
+                "x": 29.25,
+                "y": 42.75
+              },
+              {
+                "x": 29.75,
+                "y": 42.75
+              },
+              {
+                "x": 30.25,
+                "y": 42.75
+              },
+              {
+                "x": 30.75,
+                "y": 42.75
+              }
+            ],
+            "velocity": {
+              "x": -4.4341520288177945,
+              "y": 2.05381282626947
+            }
+          },
+          "target": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "x": 33.11423549801218,
+            "y": 41.88576450198782,
+            "hp": 6020.768000000014,
+            "path": [
+              {
+                "x": 33.25,
+                "y": 41.75
+              },
+              {
+                "x": 33.25,
+                "y": 41.25
+              },
+              {
+                "x": 33.25,
+                "y": 40.75
+              },
+              {
+                "x": 33.25,
+                "y": 40.25
+              }
+            ]
+          },
+          "gap": 3.968035519904884,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 111.36666666666291,
+          "wave": 5,
+          "hero": {
+            "x": 29.627277572339548,
+            "y": 43.111362041731624,
+            "hp": 310.1694915254237,
+            "path": [
+              {
+                "x": 29.200384669381272,
+                "y": 43.650141854365735
+              }
+            ],
+            "velocity": {
+              "x": -4.361995589527819,
+              "y": 2.2016667683893174
+            }
+          },
+          "target": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "x": 33.25,
+            "y": 40.22999999999998,
+            "hp": 5446.544000000019,
+            "path": [
+              {
+                "x": 33.25,
+                "y": 40.25
+              },
+              {
+                "x": 33.25,
+                "y": 40.75
+              },
+              {
+                "x": 33.25,
+                "y": 41.25
+              },
+              {
+                "x": 33.25,
+                "y": 41.75
+              }
+            ]
+          },
+          "gap": 4.628862171571538,
+          "navClear": false,
+          "blocker": 0.33869048460009293,
+          "pose": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 121.533333333329,
+          "wave": 5,
+          "hero": {
+            "x": 27.87034788875103,
+            "y": 41.818617730204906,
+            "hp": 310.1694915254237,
+            "path": [
+              {
+                "x": 26.092509201902722,
+                "y": 40.17354643152743
+              }
+            ],
+            "velocity": {
+              "x": -4.361995589527819,
+              "y": 2.2016667683893174
+            }
+          },
+          "target": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "x": 33.25,
+            "y": 40.59399999999995,
+            "hp": 4560.4640000000245,
+            "path": []
+          },
+          "gap": 5.517276993517529,
+          "navClear": false,
+          "blocker": 0.10570510072497599,
+          "pose": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "state": "windup",
+            "actionId": "regentMarks",
+            "age": 2.0333333333332178,
+            "windup": 2.4,
+            "duration": 2.8,
+            "strike": 0,
+            "phase": 1,
+            "facing": -1,
+            "awake": true
+          },
+          "warnings": 1
+        },
+        {
+          "time": 131.6999999999951,
+          "wave": 5,
+          "hero": {
+            "x": 30.84974037330447,
+            "y": 42.74810719414745,
+            "hp": 310.1694915254237,
+            "path": [
+              {
+                "x": 31.25,
+                "y": 42.75
+              },
+              {
+                "x": 31.75,
+                "y": 42.25
+              },
+              {
+                "x": 32.25,
+                "y": 42.25
+              },
+              {
+                "x": 32.75,
+                "y": 41.75
+              }
+            ],
+            "velocity": {
+              "x": -4.434152028812781,
+              "y": 2.0538128262789472
+            }
+          },
+          "target": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "x": 33.25,
+            "y": 38.98200000000003,
+            "hp": 3974.0960000000273,
+            "path": [
+              {
+                "x": 33.25,
+                "y": 39.25
+              },
+              {
+                "x": 33.25,
+                "y": 39.75
+              },
+              {
+                "x": 33.25,
+                "y": 40.25
+              },
+              {
+                "x": 33.25,
+                "y": 40.75
+              }
+            ]
+          },
+          "gap": 4.465961226136378,
+          "navClear": false,
+          "blocker": 0.26180031491251454,
+          "pose": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 2,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 141.8666666666612,
+          "wave": 5,
+          "hero": {
+            "x": 35.99297971150292,
+            "y": 43.33541158193993,
+            "hp": 310.1694915254237,
+            "path": [
+              {
+                "x": 38.17740139784355,
+                "y": 43.32813472505735
+              }
+            ],
+            "velocity": {
+              "x": 1.0909325637231413,
+              "y": -4.396233274918005
+            }
+          },
+          "target": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "x": 33.68044772251676,
+            "y": 40.489992098198655,
+            "hp": 3010.5440000000262,
+            "path": [
+              {
+                "x": 34.38678810817512,
+                "y": 43.099897051896555
+              }
+            ]
+          },
+          "gap": 3.6666355475474703,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 2,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 152.03333333332728,
+          "wave": 5,
+          "hero": {
+            "x": 50.49801225235184,
+            "y": 35.06199086302294,
+            "hp": 310.1694915254237,
+            "path": [
+              {
+                "x": 49.94273442680082,
+                "y": 32.94914166583001
+              }
+            ],
+            "velocity": {
+              "x": 3.2289844023779763,
+              "y": -3.6832770551842273
+            }
+          },
+          "target": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "x": 48.09005981911447,
+            "y": 38.32610126030699,
+            "hp": 1537.6160000000243,
+            "path": [
+              {
+                "x": 50.53995386716249,
+                "y": 37.47709136755782
+              }
+            ]
+          },
+          "gap": 4.05618683080447,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 2,
+            "facing": 1,
+            "awake": true
+          },
+          "warnings": 0
+        },
+        {
+          "time": 162.19999999999337,
+          "wave": 5,
+          "hero": {
+            "x": 43.582495761307854,
+            "y": 37.205381764879206,
+            "hp": 310.1694915254237,
+            "path": [
+              {
+                "x": 41.970166272693696,
+                "y": 38.68010350327625
+              }
+            ],
+            "velocity": {
+              "x": 1.4379856771768862,
+              "y": -4.652766517229675
+            }
+          },
+          "target": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "x": 47.49765715895426,
+            "y": 37.97704447017481,
+            "hp": 43.760000000023986,
+            "path": []
+          },
+          "gap": 3.990482690147234,
+          "navClear": true,
+          "pose": {
+            "id": "enemy-664",
+            "kind": "mirrorRegent",
+            "state": "windup",
+            "actionId": "regentHalo",
+            "age": 0.06666666666666288,
+            "windup": 1.5,
+            "duration": 2.8,
+            "strike": 0,
+            "phase": 2,
+            "facing": -1,
+            "awake": true
+          },
+          "warnings": 1
+        }
+      ],
+      "observedEnemies": [
+        "snowHare",
+        "frostling",
+        "shardCrab",
+        "rimeMoth",
+        "chimeSentry",
+        "mirrorKnight",
+        "rimeWeaver",
+        "mirrorRegent"
+      ],
+      "remaining": []
+    }
+  ]
+}

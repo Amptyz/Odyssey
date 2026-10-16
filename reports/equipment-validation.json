@@ -1,0 +1,160 @@
+{
+  "status": "passed",
+  "version": "0.8.0",
+  "date": "2026-10-16",
+  "timestamp": "2026-10-16T09:30:13.911086+00:00",
+  "delegation": {
+    "model": "gpt-6.1-sol",
+    "logic": "equipment_design",
+    "visuals": "attributes",
+    "review": "monster_design",
+    "integration": "root"
+  },
+  "scope": "Eight new items in the eighteen-item shop, two actor-scoped equipment passives, distinct procedural appearances, details and local/co-op HUD.",
+  "newItems": [
+    "reaver",
+    "runeblade",
+    "duelistVest",
+    "wardMantle",
+    "sanguineWrap",
+    "keenVisor",
+    "sageMask",
+    "aegisCrown"
+  ],
+  "check": {
+    "command": "pnpm check",
+    "status": "passed",
+    "testFiles": 20,
+    "tests": 263,
+    "runStartedLocal": "2026-10-16 17:21:21 +08:00",
+    "includes": [
+      "core typecheck",
+      "Cocos typecheck",
+      "tools typecheck",
+      "Vitest",
+      "core compilation"
+    ],
+    "newPassiveTests": 27,
+    "newVisualTests": 4
+  },
+  "creatorBuild": {
+    "creator": "3.8.8",
+    "debug": false,
+    "exitCode": 36,
+    "sourceFiles": 57,
+    "sourceSha256": "1b3e868080b605e216fa4409b365f1259e809d7d8e00ab1f516ef57b6a24f3c5",
+    "sourceMatchesBuild": true,
+    "newMeta": [
+      "EmberDemo/assets/scripts/ember/render/EquipmentVisuals.ts.meta",
+      "EmberDemo/assets/scripts/ember/simulation/EquipmentEffectSystem.ts.meta"
+    ],
+    "builtAt": "2026-10-16T09:17:46.632091+00:00",
+    "templatesIncluded": true,
+    "templateSha256": {
+      "EmberDemo/build-templates/web-desktop/index.ejs": "25ac4dc34d09b5fb6c7f007714ae20300af85a77dd11c83cffedb53437a26c57",
+      "EmberDemo/build-templates/web-desktop/style.css": "f6d50855195ee62db250b4b4659f1d91885c459d64122706adbfd4f254be8631"
+    }
+  },
+  "browsers": {
+    "equipment": {
+      "report": "reports/browser-equipment.json",
+      "checks": 51,
+      "timestamp": "2026-10-16T09:18:36.772Z",
+      "errors": 0
+    },
+    "content": {
+      "report": "reports/browser-content.json",
+      "checks": 20,
+      "timestamp": "2026-10-16T09:19:47.641Z",
+      "errors": 0
+    },
+    "multiplayer": {
+      "report": "reports/browser-multiplayer.json",
+      "checks": 16,
+      "timestamp": "2026-10-16T09:20:00.456Z",
+      "errors": 0
+    },
+    "developer": {
+      "report": "reports/browser-developer.json",
+      "checks": 34,
+      "timestamp": "2026-10-16T09:20:15.866Z",
+      "errors": 0
+    },
+    "hexes": {
+      "report": "reports/browser-hexes.json",
+      "checks": 21,
+      "timestamp": "2026-10-16T09:28:41.858Z",
+      "errors": 0
+    }
+  },
+  "totalBrowserChecks": 142,
+  "campaign": {
+    "command": "EMBER_CAMPAIGN_BUILD=staff,runeblade,bow,wardMantle,sanguineWrap,sageMask pnpm test:campaign",
+    "report": "reports/equipment-campaign.json",
+    "scope": "Normal authoritative GameWorld commands only; no developer options, HP/damage/cooldown mutations or forced progress. Bot reads snapshots for movement/dodging and uses normal shop/reward/exit rules.",
+    "outcomes": [
+      {
+        "mapId": "ember",
+        "phase": "victory",
+        "wave": 5,
+        "time": 135.13333333332824,
+        "hp": 340,
+        "maxHp": 340,
+        "equipment": {
+          "slot1": "staff",
+          "slot2": "runeblade",
+          "slot3": "bow",
+          "slot4": "wardMantle",
+          "slot5": "sanguineWrap",
+          "slot6": "sageMask"
+        }
+      },
+      {
+        "mapId": "frost",
+        "phase": "victory",
+        "wave": 5,
+        "time": 169.9666666666596,
+        "hp": 340,
+        "maxHp": 340,
+        "equipment": {
+          "slot1": "staff",
+          "slot2": "runeblade",
+          "slot3": "bow",
+          "slot4": "wardMantle",
+          "slot5": "sanguineWrap",
+          "slot6": "sageMask"
+        }
+      }
+    ]
+  },
+  "visualReview": {
+    "report": "docs/design/EQUIPMENT_VISUAL_IMPLEMENTATION.md",
+    "inspected": "Eight shop and eight detail screenshots; three combinations in left/right attack and walk; 960-wide detail; root additionally reviewed passive consumed and shield-triggered HUD screenshots.",
+    "finding": "No detached hands, shoulder gaps, missing mirrored parts, full face occlusion or detail clipping observed in sampled poses.",
+    "assetRoute": "Cocos Graphics with existing HeroRig anchors; no new PNG atlas."
+  },
+  "protocol": "ember-coop-4",
+  "checkpointVersion": 3,
+  "compatibility": "Old ten-item v3 checkpoints still accepted; eighteen-item inventory/order rebuilt at saved stage or wave start. Passive combat states reset on new encounter.",
+  "reviewFixes": [
+    "Attack released inside the five-second spellblade window keeps its in-flight lock past expiry.",
+    "Enemy projectile with removed source retains source-team evidence for safety-shield triggering."
+  ],
+  "testMaintenance": [
+    "Developer item cycling follows SHOP_CATALOG instead of assuming ten items.",
+    "Hex preset purchases follow current 100-gold economy; attack test walks toward first enemy group before observing secondary missiles. No gameplay balance changed for the tests."
+  ],
+  "limitations": [
+    "No public deployment or internet/weak-network validation; multiplayer check uses local relay.",
+    "Visuals are simplified code-native equipment parts, not eight PNG assets or new independent animation clips.",
+    "Normal-command bot can read snapshots and dodge; not a human difficulty assessment or exhaustive gameplay test of 18,564 loadouts.",
+    "Existing unrelated uncommitted workspace changes preserved; no commit or push performed."
+  ],
+  "documentation": {
+    "files": 14,
+    "localLinkTargets": 137,
+    "fencedBlocks": "passed",
+    "diffWhitespace": "passed",
+    "toolsTypecheckAfterBrowserScriptUpdates": "passed"
+  }
+}

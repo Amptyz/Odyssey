@@ -11,6 +11,7 @@ import { fitMapProjection,worldToScreen,screenToWorld } from '../../EmberDemo/as
 import { distance } from '../../EmberDemo/assets/scripts/ember/utils/math';
 function advance(w:GameWorld,seconds:number){for(let i=0;i<Math.round(seconds*30);i++)w.advance(1/30);}
 function fixture(){const w=new GameWorld();w.loadout.Q='icebolt';w.command({type:'Start'});w.command({type:'LeaveShop'});
+  Object.assign(w.hero,{x:10,y:10,previous:{x:10,y:10}});
   for(const [id,u] of w.actors)if(u.team==='enemy')w.actors.delete(id);
   const e=w.spawnEnemy('melee',{x:11.3,y:10},300);e.windup=999;return{w,e};}
 describe('extensible game content',()=>{
@@ -34,14 +35,14 @@ describe('extensible game content',()=>{
   });
   it('refreshes strongest slow without multiplicative stacking; expires in simulation time',()=>{
     const {w,e}=fixture();applyStatus(e,{id:'slow',duration:1,power:0.4},'hero','icebolt');
-    applyStatus(e,{id:'slow',duration:2,power:0.8},'enemy','frostBolt');expect(e.statuses).toHaveLength(1);expect(movementMultiplier(e)).toBe(0.4);
-    expect(e.statuses[0]?.sourceId).toBe('hero');advance(w,1);expect(movementMultiplier(e)).toBe(0.4);advance(w,1.1);expect(movementMultiplier(e)).toBe(1);
+    applyStatus(e,{id:'slow',duration:2,power:0.8},'enemy','frostBolt');expect(e.statuses).toHaveLength(2);expect(movementMultiplier(e)).toBe(0.4);
+    expect(e.statuses[0]?.sourceId).toBe('hero');advance(w,1);expect(movementMultiplier(e)).toBe(0.8);advance(w,1.1);expect(movementMultiplier(e)).toBe(1);
   });
   it('slow reduces actual hero movement and detached status snapshots do not mutate live state',()=>{
     const {w}=fixture();applyStatus(w.hero,{id:'slow',duration:2,power:0.5},'enemy','frostBolt');
     const s=w.snapshot();s.hero.statuses[0]!.power=0.1;
     w.command({type:'DirectInput',movement:{x:0,y:1}});advance(w,0.5);
-    expect(w.hero.y-10).toBeCloseTo(HERO.speed*0.5*0.5);expect(w.hero.statuses[0]?.power).toBe(0.5);
+    expect(w.hero.y-10).toBeCloseTo(((421.25*.5)*.5+110)*.01*.5);expect(w.hero.statuses[0]?.power).toBe(0.5);
   });
   it('slow reduces enemy movement and pause freezes its duration',()=>{
     const a=fixture(),b=fixture();for(const item of [a,b]){item.e.windup=0;item.e.x=14;item.e.y=10;}
@@ -49,12 +50,12 @@ describe('extensible game content',()=>{
     expect(14-b.e.x).toBeLessThan(14-a.e.x);b.w.command({type:'TogglePause'});const before=b.e.statuses[0]!.remaining;advance(b.w,1);expect(b.e.statuses[0]!.remaining).toBe(before);
   });
   it('new enemy uses shared ranged behavior with its own projectile and status',()=>{
-    const {w}=fixture();const e=w.spawnEnemy('frostling',{x:13,y:10},300);advance(w,1.5);
+    const {w}=fixture();const e=w.spawnEnemy('frostling',{x:14,y:10},300);advance(w,2);
     expect(w.hero.hp).toBeLessThan(HERO.hp);expect(w.hero.statuses.some(s=>s.id==='slow'&&s.sourceId===e.id)).toBe(true);
-    expect(w.combat.history.some(x=>x.skillId==='frostBolt'&&x.targetId==='hero')).toBe(true);
+    expect(w.combat.history.some(x=>x.damageType==='magic'&&x.sourceId===e.id&&x.targetId==='hero')).toBe(true);
   });
   it('map switch and restart preserve map/loadout but reset combat; active map cannot switch',()=>{
-    const port=new LocalTransport();port.send({type:'SelectMap',mapId:'frost'});expect(port.world.hero.x).toBe(12);expect(port.world.loadout.Q).toBe('fireball');
+    const port=new LocalTransport();port.send({type:'SelectMap',mapId:'frost'});expect(port.world.hero.x).toBe(mapDefinition('frost').heroSpawn.x);expect(port.world.loadout.Q).toBe('fireball');
     port.send({type:'Start'});port.send({type:'LeaveShop'});port.send({type:'SelectMap',mapId:'ember'});expect(port.world.mapId).toBe('frost');
     port.send({type:'Restart'});expect(port.world.phase).toBe('ready');expect(port.world.mapId).toBe('frost');expect(port.world.loadout.Q).toBe('fireball');expect(port.world.hero.statuses).toHaveLength(0);
   });
@@ -65,9 +66,9 @@ describe('extensible game content',()=>{
         expect(w.wave).toBe(wave);expect(w.snapshot().totalWaves).toBe(w.map.waves.length);
         for(const e of w.actors.values())if(e.team==='enemy'){
           expect(w.nav.walkable(e,e.radius)).toBe(true);expect(distance(e,w.hero)).toBeGreaterThanOrEqual(w.map.spawnDistance);
-          w.combat.damage({sourceId:'hero',targetId:e.id,amount:9999,cause:'basic'});
+          w.combat.damage({sourceId:'hero',targetId:e.id,amount:100000,cause:'basic',damageType:'true'});
         }
-        advance(w,1/30);expect(w.phase).toBe('reward');expect(w.choices).toHaveLength(3);
+        Object.assign(w.hero,w.map.waves[wave-1]!.level!.exit);advance(w,1/30);expect(w.phase).toBe('reward');expect(w.choices).toHaveLength(3);
         expect(w.choices.some(c=>c.kind==='skill')).toBe(true);
         w.command({type:'ChooseReward',choiceId:w.choices[0]!.id});if(w.pendingSkill)w.command({type:'ConfirmSkill',slot:'Q'});w.command({type:'LeaveShop'});
       }
@@ -77,10 +78,11 @@ describe('extensible game content',()=>{
       const map=mapDefinition(id),nav=new Pathfinder(map),camera=fitMapProjection(map);
       for(const p of [{x:0,y:0},{x:map.width,y:map.height},{x:map.width,y:0},{x:0,y:map.height},map.heroSpawn]){
         const q=worldToScreen(p,camera),back=screenToWorld(q,camera);expect(back.x).toBeCloseTo(p.x);expect(back.y).toBeCloseTo(p.y);
-        expect(Math.abs(q.x)).toBeLessThanOrEqual(540);expect(q.y).toBeGreaterThanOrEqual(-295);expect(q.y).toBeLessThanOrEqual(265);
+        expect(camera.zoom).toBe(1);
       }
       expect(nav.walkable({x:map.width-0.5,y:map.height-0.5})).toBe(true);expect(nav.walkable({x:map.width+1,y:map.height/2})).toBe(false);
       expect(nav.walkable({x:map.width/2,y:map.height+1})).toBe(false);
+      expect(Math.abs(worldToScreen({x:map.width,y:map.height},camera).y)).toBeGreaterThan(360);
       const route=nav.find(map.heroSpawn,{x:map.width-1,y:map.height-1});expect(route.length).toBeGreaterThan(0);
       let prev=map.heroSpawn;for(const p of route){expect(nav.clear(prev,p)).toBe(true);prev=p;}
     });

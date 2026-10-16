@@ -1,8 +1,9 @@
+import {AttributeSet,PLAYER_TEMPLATE} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { describe,it,expect } from 'vitest';
 import { CombatEngine,EVENT_BUDGET,MAX_CHAIN_DEPTH } from '../../EmberDemo/assets/scripts/ember/combat-core/CombatEngine';
 import { CollisionWorld } from '../../EmberDemo/assets/scripts/ember/combat-core/CollisionWorld';
 import type { Actor,CombatCue,CombatHooks,MissileEffect,PerkId } from '../../EmberDemo/assets/scripts/ember/combat-core/types';
-function actor(id:string,x:number,hp=1000):Actor{return{id,team:id==='hero'?'hero':'enemy',x,y:10,hp,maxHp:hp,shield:0,shieldTime:0,radius:.3,alive:true,statuses:[]};}
+function actor(id:string,x:number,hp=1000):Actor{return{id,team:id==='hero'?'hero':'enemy',x,y:10,hp,maxHp:hp,shield:0,shieldTime:0,radius:.3,alive:true,statuses:[],attributes:new AttributeSet({...PLAYER_TEMPLATE,stats:{...PLAYER_TEMPLATE.stats,maxHealth:hp}}),mana:0,shields:[],combatEffects:[],attributeEffects:[]};}
 function fixture(perks:PerkId[],hooks:CombatHooks={}){
   const h=actor('hero',10,240),a=actor('a',12),b=actor('b',13),actors=new Map([h,a,b].map(a=>[a.id,a]));
   const cues:CombatCue[]=[],missiles:{effect:MissileEffect;damage:number}[]=[],reductions:number[]=[];
@@ -14,13 +15,13 @@ describe('hex rules and bounded interactions',()=>{
     const {core,a,h,cues}=fixture(['jeweledGauntlet']);
     for(const cause of ['basic','skill','burn','augment'] as const)core.damage({sourceId:h.id,targetId:a.id,amount:20,cause,proc:cause==='augment'});
     core.damage({sourceId:a.id,targetId:h.id,amount:20,cause:'skill'});
-    expect(a.hp).toBe(900);expect(h.hp).toBe(220);expect(cues.filter(c=>c.critical)).toHaveLength(2);
+    expect(a.hp).toBe(880);expect(h.hp).toBe(220);expect(cues.filter(c=>c.critical)).toHaveLength(2);
     const miss=fixture(['jeweledGauntlet'],{random:()=>.9});miss.core.damage({sourceId:'hero',targetId:'a',amount:20,cause:'skill'});expect(miss.a.hp).toBe(980);
   });
   it('magic missile fires three real-projectile requests, globally limited, with no proc recursion',()=>{
     const {core,missiles}=fixture(['magicMissile']);
     for(const targetId of ['a','b'])core.damage({sourceId:'hero',targetId,amount:1,cause:'skill',skillId:'nova'});
-    expect(missiles).toHaveLength(3);expect(missiles.every(m=>m.effect.trueDamage&&m.effect.targetHpRatio===.005)).toBe(true);
+    expect(missiles).toHaveLength(3);expect(missiles.every(m=>m.effect.damageType==='true'&&m.effect.targetHpRatio===.005)).toBe(true);
     core.tick(.5);core.damage({sourceId:'hero',targetId:'a',amount:1,cause:'skill',proc:true});expect(missiles).toHaveLength(3);
     core.damage({sourceId:'hero',targetId:'a',amount:1,cause:'skill'});expect(missiles).toHaveLength(6);
   });
@@ -82,8 +83,8 @@ describe('hex rules and bounded interactions',()=>{
     expect(h.hp).toBe(122);expect(core.history.filter(e=>e.type==='OnKill')).toHaveLength(1);
   });
   it('glass cannon true component bypasses armor but still consumes shield, without amplifying itself',()=>{
-    const h=actor('hero',10,240),a=actor('a',12),core=new CombatEngine(new Map([[h.id,h],[a.id,a]]),()=>{},hit=>hit.amount*(hit.trueDamage?1:.5));core.addPerk('glassCannon');a.shield=20;
+    const h=actor('hero',10,240),a=actor('a',12),core=new CombatEngine(new Map([[h.id,h],[a.id,a]]),()=>{},hit=>hit.amount*(hit.damageType==='true'?1:.5));core.addPerk('glassCannon');a.shield=20;
     core.damage({sourceId:'hero',targetId:'a',amount:100,cause:'basic'});expect(a.hp).toBe(945);expect(a.shield).toBe(0);
-    core.damage({sourceId:'hero',targetId:'a',amount:100,cause:'augment',trueDamage:true});expect(a.hp).toBe(845);
+    core.damage({sourceId:'hero',targetId:'a',amount:100,cause:'augment',damageType:'true'});expect(a.hp).toBe(845);
   });
 });

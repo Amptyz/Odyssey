@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "checks": [
+    "Normal startup has baseline attributes and no developer source",
+    "Unified movement conversion preserves the normal 4.2 world speed",
+    "Normal keyboard flow opens the deterministic shop",
+    "Normal staff purchase produces AP/haste points and an unaffordable second item is rejected",
+    "Displayed shop stats and the authoritative unit attributes agree",
+    "Unequipping removes its source and clamps HP without healing",
+    "Re-equipping restores a source exactly once and does not heal",
+    "Every spawned enemy exposes the same attribute schema",
+    "F2 field configures an attribute source for every unit",
+    "Editing a draft does not mutate the running world",
+    "Applying the test source changes player AD",
+    "The same source changes enemy AD through the same resolver",
+    "Every affected unit can explain the applied test source",
+    "Equipment and explicit test sources combine using their own units",
+    "Player-only modifiers do not leak to enemies",
+    "Real casting consumes the haste-adjusted skill cooldown",
+    "Two AP-scaled shields coexist as independent instances",
+    "The four-second shield expires without deleting the six-second shield",
+    "Developer inspection freezes independent shield timers",
+    "Exiting test mode removes test attributes, gear, and temporary state",
+    "No browser JavaScript errors"
+  ],
+  "errors": [],
+  "timestamp": "2026-10-16T08:41:20.883Z",
+  "build": "Creator3.8.8 production debug=false, published 2026-10-16 16:40:24 Asia/Shanghai",
+  "visualReview": {
+    "statsOverlayAbsent": true,
+    "screenshots": [
+      "reports/43-attribute-shop.png",
+      "reports/44-attribute-inspector.png"
+    ]
+  }
+}

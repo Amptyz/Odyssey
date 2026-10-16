@@ -5,7 +5,9 @@ export interface Circle extends Vec2 { radius:number }
 export type HitShape =
   | {kind:'circle';center:Vec2;radius:number}
   | {kind:'sector';center:Vec2;radius:number;facing:Vec2;arc:number}
-  | {kind:'capsule';center:Vec2;end:Vec2;radius:number};
+  | {kind:'capsule';center:Vec2;end:Vec2;radius:number}
+  | {kind:'rectangle';center:Vec2;facing:Vec2;length:number;width:number}
+  | {kind:'ring';center:Vec2;radius:number;innerRadius:number};
 interface Terrain {width:number;height:number;obstacles:readonly Circle[]}
 const EPS=1e-9;
 function squared(a:Vec2,b:Vec2):number {return (a.x-b.x)**2+(a.y-b.y)**2;}
@@ -17,6 +19,8 @@ function segmentDistanceSquared(p:Vec2,a:Vec2,b:Vec2):number {
 /** Full body/shape intersection, including sector edges and the rounded outer arc. */
 export function overlaps(shape:HitShape,body:Circle):boolean {
   if(shape.kind==='circle')return squared(shape.center,body)<=(shape.radius+body.radius)**2+EPS;
+  if(shape.kind==='ring'){const d=Math.sqrt(squared(shape.center,body));return d<=shape.radius+body.radius+EPS&&d+body.radius>=shape.innerRadius-EPS;}
+  if(shape.kind==='rectangle'){const dx=body.x-shape.center.x,dy=body.y-shape.center.y,n=Math.hypot(shape.facing.x,shape.facing.y)||1,fx=shape.facing.x/n,fy=shape.facing.y/n;const along=dx*fx+dy*fy,side=-dx*fy+dy*fx;const x=Math.max(0,Math.min(shape.length,along)),y=Math.max(-shape.width/2,Math.min(shape.width/2,side));return (along-x)**2+(side-y)**2<=body.radius**2+EPS;}
   if(shape.kind==='capsule')return segmentDistanceSquared(body,shape.center,shape.end)<=(shape.radius+body.radius)**2+EPS;
   const dx=body.x-shape.center.x,dy=body.y-shape.center.y,d=Math.hypot(dx,dy);
   if(d<=body.radius+EPS)return true;

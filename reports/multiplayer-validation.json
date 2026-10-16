@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "runtimeSourceSha256": "f431733719f709ce58665fdddb6f98bd50c9d94cc92f33fad33c81081ec73924",
+  "creator": "3.8.8",
+  "creatorBuildExitCode": 36,
+  "checkTests": 143,
+  "browserChecks": {
+    "multiplayer": 13,
+    "controls": 31,
+    "content": 26
+  },
+  "verified": [
+    "two isolated browser players",
+    "normal first-wave combat and independent rewards",
+    "second-wave checkpoint recovery under teammate host",
+    "service restart persistence",
+    "silent peer timeout",
+    "single-player controls and frost playthrough"
+  ],
+  "notVerified": [
+    "public WSS deployment",
+    "cross-ISP latency and packet loss",
+    "four-client browser load",
+    "native room UI"
+  ],
+  "notes": [
+    "No seamless host migration; recovery restarts saved wave.",
+    "Client prediction and delta compression are not implemented."
+  ]
+}

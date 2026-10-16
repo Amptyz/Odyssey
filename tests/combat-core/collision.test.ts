@@ -1,8 +1,9 @@
+import {AttributeSet,PLAYER_TEMPLATE} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { describe,it,expect } from 'vitest';
 import { CollisionWorld,overlaps,sweepCircle } from '../../EmberDemo/assets/scripts/ember/combat-core/CollisionWorld';
 import type { Actor } from '../../EmberDemo/assets/scripts/ember/combat-core/types';
 
-const actor=(id:string,x:number,y:number,radius=.3):Actor=>({id,x,y,radius,team:'enemy',hp:100,maxHp:100,shield:0,shieldTime:0,alive:true,statuses:[]});
+const actor=(id:string,x:number,y:number,radius=.3):Actor=>({id,x,y,radius,team:'enemy',hp:100,maxHp:100,shield:0,shieldTime:0,alive:true,statuses:[],attributes:new AttributeSet({...PLAYER_TEMPLATE,stats:{...PLAYER_TEMPLATE.stats,maxHealth:100}}),mana:0,shields:[],combatEffects:[],attributeEffects:[]});
 describe('combat collision geometry',()=>{
   it('includes bodies touching circle and capsule boundaries without expanding past them',()=>{
     expect(overlaps({kind:'circle',center:{x:0,y:0},radius:2},actor('edge',2.3,0))).toBe(true);

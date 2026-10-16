@@ -1,10 +1,12 @@
 # 整体架构
 
-本文描述当前实现，而不是未来规划。代码核对基线：v0.6，包含人物挂点修复（`93126d9`）。具体数值以源码为准；增加内容按 [内容扩展指南](CONTENT_ARCHITECTURE.md)，实施与验证按 [开发架构指南](DEVELOPMENT_GUIDE.md)。
+本文描述当前实现，而不是未来规划。代码核对基线：v0.6 联机预览 + 统一属性 v1，包含房间联机与波次恢复 v2。具体数值以源码为准；增加内容按 [内容扩展指南](CONTENT_ARCHITECTURE.md)，实施与验证按 [开发架构指南](DEVELOPMENT_GUIDE.md)。
+
+统一属性规则见 [属性系统](ATTRIBUTE_SYSTEM.md)：所有单位共用，技能只读总 AD、仅全能吸血。每个 Actor 由 ActorFactory 创建并持有独立 AttributeSet；HeroStats 是面板兼容视图，不另算英雄专用公式。当前接入17种敌人、六个通用装备栏和两图各五关；18件装备均已注册，含独立装备被动模块与商店详情。
 
 ## 工程边界
 
-这是一个单机权威模拟、Cocos 2D 表现的等距视角游戏。一个仓库、一个 Creator 工程、同一份 TypeScript 源码同时用于游戏和无引擎测试。没有 ECS 框架、服务端、远程内容下发或运行时插件加载器。
+这是一个单人 / 房主权威模拟、Cocos 2D 表现的等距视角游戏。一个仓库、一个 Creator 工程、同一份 TypeScript 源码同时用于游戏和无引擎测试。没有 ECS 框架、远程内容下发或运行时插件加载器。联机服务只管理房间、转发和持久保存，不运行战斗；详见 [联机与恢复](MULTIPLAYER.md)。
 
 ```text
 仓库根目录
@@ -23,7 +25,7 @@
 └── reports/                     验证结果；图片 / 日志按 .gitignore 留本机
 ```
 
-`EmberDemo/build / library / temp` 和根目录 `dist-core` 是产物，不是编辑源。`UnitVisuals.ts` 是旧几何角色参考，当前人物入口为 `HeroRig`，怪物入口为 `AnimatedUnit`。
+`EmberDemo/build / library / temp` 和根目录 `dist-core` 是产物，不是编辑源。`UnitVisuals.ts` 是旧几何角色参考，当前人物入口为 `HeroRig`，怪物入口为 `MonsterVisual`，旧怪物PNG播放器仍保留作资源兼容。
 
 ## 模块职责与依赖
 
@@ -31,18 +33,22 @@
 
 | 模块 | 拥有的职责 | 主要连接 |
 | --- | --- | --- |
-| `bootstrap/GameBootstrap.ts` | 初始化校验、资源加载、创建系统、每帧调度、销毁 | 组装 LocalTransport / InputController / ArenaView / Hud |
+| `bootstrap/GameBootstrap.ts` | 初始化校验、资源加载、创建系统、每帧调度、销毁 | 组装 RoomTransport（单人内含 LocalTransport）/ InputController / ArenaView / Hud |
 | `input/InputController.ts` | 键鼠状态、CSS 像素归一化、坐标逆投影、输入释放 | 只通过 CommandPort.send 提交玩法命令 |
 | `platform/protocol.ts` | GameCommand 数据联合、CommandPort 接口 | 输入与逻辑边界 |
+| `platform/RoomTransport.ts` / `RoomPanel.ts` | 单人 / 房间适配、房主模拟调度、断线重连、保存确认、浏览器房间入口 | LocalTransport 或 GameWorld；轻量中转 |
 | `platform/LocalTransport.ts` | 当前世界、重开 / 换图、开发者草稿与应用、冻结调度 | send / advance / snapshot；实际使用的本机适配器 |
 | `simulation/GameWorld.ts` | 实体、弹体、挥击、时间、阶段、技能冷却、各系统协调 | 技能、AI、战斗、装备、奖励、导航 |
 | `simulation/SkillSystem.ts` | 按 behavior.kind 分派技能，声明所需能力 | 通过上下文请求发射、冲刺和反馈 |
 | `simulation/EquipmentSystem.ts` | 金币、库存、装备事务 | 依赖装备定义；阶段权限由 GameWorld 控制 |
+| `combat-core/ActorFactory.ts` / `attributes/AttributeSet.ts` | 创建全单位属性实例，解析模板及来源、缓存与明细 | 装备 / 增益 / 状态提供来源；技能、AI、战斗读取结果 |
 | `simulation/RewardSystem.ts` | 根据已拥有增益 / 当前技能生成候选 | 使用传入的有种子 Random |
 | `combat-core/CombatEngine.ts` | 伤害、治疗、事件队列、规则条件、限频、连锁保护 | 通过 CombatHooks 请求弹体 / 冷却操作 |
 | `combat-core/EffectHandlers.ts` / `StatusSystem.ts` | 效果原语、状态施加与计时 | 不导入 GameWorld 或 Cocos |
 | `combat-core/CollisionWorld.ts` | 形状相交、遮挡、连续弹体命中 | 只使用世界坐标 / 角色体积 / 地形 |
-| `ai/EnemyBehaviors.ts` / `Pathfinder.ts` | 敌人决策、半格网格寻路、移动扫掠 | 行为上下文由 GameWorld 注入 |
+| `simulation/EnemySystem.ts` / `content/enemy-actions.ts` | 敌人守区、锁向、分段动作、Boss循环/阶段、敌弹/预警 | GameWorld一次固定步进；共用CombatEngine/CollisionWorld |
+| `simulation/LevelSystem.ts` | 每关起点、路线、固定敌群、清场后出口条件 | maps.waves[].level；GameWorld阶段推进 |
+| `ai/Pathfinder.ts` | 半格网格、移动扫掠、PathfinderPool体型分组 | 敌人使用不小于自身半径的缓存导航；旧EnemyBehaviors不调度新敌人 |
 | `content/` | 稳定 ID、配置、类型、外观和引用校验 | 被逻辑与表现读取 |
 | `render/` | 地图、角色、装备、HUD、图集、可视反馈 | 读取快照；UI 按钮回送命令 |
 | `utils/` | 向量数学与确定性 Random | 无引擎依赖 |
@@ -58,7 +64,7 @@ flowchart TD
   C --> L[LocalTransport]
   L --> W[GameWorld]
   D[content 注册表] --> W
-  W --> S[SkillSystem / EnemyBehaviors]
+  W --> S[SkillSystem / EnemySystem]
   W --> N[Pathfinder / CollisionWorld]
   S --> E[CombatEngine]
   E --> F[EffectHandlers / StatusSystem]
@@ -67,12 +73,12 @@ flowchart TD
   W --> P[WorldSnapshot]
   L --> P
   P --> R[ArenaView / Hud]
-  R --> A[AnimatedUnit / HeroRig / ArtLibrary]
+  R --> A[MonsterVisual / HeroRig / ArtLibrary]
 ```
 
-1. `GameBootstrap.start` 校验内容并加载图集，然后创建当前世界、输入与视图。
-2. 原生事件转为 `MoveTo / Attack / CastSlot` 等命令；按住移动 / 攻击还会在输入更新时提交持续状态。当前命令同步处理，没有带 tick 的网络输入缓冲。
-3. `GameBootstrap.update(dt)` 调用 `LocalTransport.advance(dt)`。开发者面板打开时在此冻结推进，否则交给 `GameWorld.advance`。
+1. `GameBootstrap.start` 校验内容并加载图集，然后创建 RoomTransport、输入与视图。未加入房间时 RoomTransport 委托 LocalTransport。
+2. 原生事件转为 `MoveTo / Attack / CastSlot` 等命令；按住移动 / 攻击还会在输入更新时提交持续状态。单人命令同步处理。联机命令经白名单和序号检查进入房主队列，按玩家 ID 在模拟推进前处理。
+3. 单人模式下 `GameBootstrap.update(dt)` 经 RoomTransport 调用 `LocalTransport.advance(dt)`；联机时只有房主的 RoomTransport 计时调度推进 GameWorld，渲染帧只读快照。开发者面板打开时在此冻结推进，否则交给 `GameWorld.advance`。
 4. GameWorld 采用 1/30 秒固定步进，最多接收本次真实帧的 0.25 秒；开发者倍率缩放推进量。返回剩余累计时间比例供画面插值。
 5. 取得快照后更新输入状态，再更新 ArenaView 与 Hud。单位和弹体位置从 previous / 当前坐标插值；伤害不由插值或动画决定。
 
@@ -80,15 +86,16 @@ flowchart TD
 
 ### 单次逻辑步的顺序
 
-`GameWorld.step` 依次：记录实体上一位置 / 扣减攻击计时 → 扣减技能冷却 → 战斗状态与延迟效果 tick → 玩家移动与持续普攻 → 敌人 AI → 近战挥击 → 弹体碰撞 → 提示计时 → 死亡与清场检查。
+`GameWorld.step` 依次：记录实体上一位置 / 扣减攻击计时 → 扣减技能冷却 → 战斗状态与延迟效果 tick → 玩家移动与持续普攻 → EnemySystem（敌人AI/分段预警/敌弹）→ 玩家近战挥击 → 玩家/增益弹体碰撞 → 提示计时 → 死亡与关卡出口检查。
 
-该顺序决定同帧边界行为。修改它需要验证同时死亡、最后一个敌人死亡、持续伤害、冲刺与弹体相交；不能只观察一场胜利。玩家死亡先于波次奖励结算。
+该顺序决定同帧边界行为。修改它需要验证同时死亡、最后一个敌人死亡、持续伤害、冲刺与弹体相交；不能只观察一场胜利。参与战斗的玩家全部死亡先于波次奖励结算；个别玩家死亡后，其他人可继续。商店与奖励等待参与玩家各自确认。
 
 ## 状态归属与接口
 
 | 数据 | 权威位置 | 表现侧如何获得 |
 | --- | --- | --- |
-| HP、护盾、状态、位置、朝向 | GameWorld.actors / hero，由战斗和模拟系统修改 | 快照 hero / units |
+| HP、法力、独立护盾、状态、位置、朝向 | GameWorld.actors，由战斗和模拟系统修改 | 快照 hero / units |
+| 属性模板、来源与最终结果 | 每个 Actor.attributes；共享模板只读，来源独立 | attributeValues / attributeExplanation / movementPoints / worldMoveSpeed |
 | 装备、金币、库存 | EquipmentSystem | equipment / gold / inventory / stats |
 | 四槽技能、冷却、奖励预选 | GameWorld.loadout / cooldowns / pendingSkill | 槽位化冷却与 RewardChoice |
 | 已获得增益、规则冷却、计数 | CombatEngine | perks / primed / metrics；内部计数不暴露为可变引用 |
@@ -97,7 +104,7 @@ flowchart TD
 | 鼠标、按键、操作方式 | InputController | 输入命令；操作方式保存在浏览器本地 |
 | Node、SpriteFrame、显示缓存 | render 与 ArtLibrary | 不进入世界状态 |
 
-`WorldSnapshot` 是用于显示和检查的脱离实例的副本，不是完整存档；新加嵌套字段必须复制，不能返回 live Map/Set/Actor。`CommandPort` 当前只声明 `send`，`advance / snapshot` 是 LocalTransport 的具体能力。当前协议不包含网络鉴权、序号、版本协商、回滚或反序列化完整世界；未来联网需要另外实现这些能力。
+`WorldSnapshot` 是用于显示和检查的脱离实例的副本，不是完整存档；新加嵌套字段必须复制，不能返回 live Map/Set/Actor。`CommandPort` 当前只声明 `send`，`advance / snapshot` 是 LocalTransport 的具体能力。房间协议另外实现成员身份、输入序号、版本检查和波次恢复；没有任意帧完整反序列化、回滚或无缝主机迁移。`RunCheckpoint` 只用于稳定阶段及波次起点。
 
 ## 阶段与重置
 
@@ -106,7 +113,7 @@ stateDiagram-v2
   [*] --> ready
   ready --> shop: Start
   shop --> fighting: LeaveShop
-  fighting --> reward: 清场且玩家存活
+  fighting --> reward: 清场且所有存活活跃玩家到出口
   fighting --> defeat: 玩家死亡
   reward --> shop: 非最终波且配置开店
   reward --> fighting: 非最终波且不配置开店
@@ -117,7 +124,7 @@ stateDiagram-v2
 
 技能奖励先设置 pendingSkill，玩家确认替换槽位才推进；取消不会重新抽取。暂停是 fighting 上的布尔状态，不是独立 Phase。普通模式只允许 shop 阶段购买 / 换装，换图只在 ready 接受；LocalTransport 处理 Restart，创建新世界。开发者模式显式绕过正常整备流程，清场后留在战斗现场，不自动领奖。
 
-波次切换清除敌人、弹体、挥击、提示、英雄负面状态 / 护盾、技能冷却、输入、冲刺和本场增益计时 / 计数，保留构筑、金币与累计击杀；第一波补满生命，后续波次补 30。重开创建新世界，回到所选地图的初始配置。开发者应用 / 重测也创建新世界，以其已验证配置重建，不恢复战斗中间状态。
+关卡切换按下一关start重新定位玩家，清除敌人、EnemySystem动作/预警/敌弹、玩家弹体、挥击、提示、英雄负面状态 / 护盾、技能冷却、输入、冲刺和本场增益计时 / 计数，保留构筑、金币与累计击杀；第一波补满生命，后续波次补 30。重开创建新世界，回到所选地图的初始配置。开发者应用 / 重测也创建新世界，以其已验证配置重建，不恢复战斗中间状态。
 
 ## 四条关键内容链路
 
@@ -129,51 +136,61 @@ stateDiagram-v2
 
 ### 伤害、事件与效果
 
-实际命中调用 `CombatEngine.damage`：检查目标 → 判断确定性暴击 → 应用伤害策略与真实附伤 → 预留事件预算 → 扣护盾 / 生命 → 排入命中、攻击特效、受伤、击杀事件 → 执行规则。效果处理器通过上下文调用 damage / heal / hooks，不能反向导入 GameWorld。
+实际命中调用 `CombatEngine.damage`：检查资格 → 读取采样伤害及命中属性 → 暴击 / 分类型附伤 → 抗性削减与穿透 → 计算各类型护盾吸收及生命损失 → 预留预算并提交 → 伤害、吸血治疗与事件链。混合真实附伤按组件结算，不能让真实部分再次过护甲；效果处理器通过上下文请求伤害 / 治疗 / hooks，不反向导入 GameWorld。
 
-`OnAttack` 是出手，`OnAttackHit` 是攻击特效，`OnHit` 是伤害命中，`OnDamaged` 是玩家实际掉血，`OnHeal` 是有效治疗；各自用途不同。派生效果携带 `proc`，`appliesOnHit` 必须有意开启，`unscaled` 防止比例附伤再次乘技能威力。链深度上限 6、根事件预算 128、按根 / 规则 / 目标去重；规则执行使用内容定义顺序，不使用增益获取顺序。
+`OnAttack` 是出手，`OnAttackHit` 是攻击特效，`OnHit` 是伤害命中，`OnDamaged` 是单位实际掉血，`OnHeal` 是有效治疗。派生效果携带 `proc`，`appliesOnHit` 必须有意开启；显式表达式只计算一次，不再使用旧 skillPower / unscaled 放大策略。链深度上限 6、根事件预算 128、按根 / 规则 / 目标去重；规则执行使用内容定义顺序。所有阵营按 sourceId / targetId 读取对应属性与增益；治疗派生伤害关闭吸血资格，避免反馈收益。
 
 详细数值和触发边界见 [海克斯说明](HEX_AUGMENTS.md)。新增事件或原语同时检查类型、处理器、内容校验、来源传递和重置逻辑。
 
 ### 装备与属性
 
-`EQUIPMENT → EquipmentSystem → deriveStats → GameWorld 实际消费`。平坦属性相加，百分比先汇总；攻速 / 急速换算为间隔 / 冷却倍率。GameWorld 再应用增益的最大生命倍率。新属性仅写入装备对象没有效果，必须接通类型、推导、实际消费和可见说明。
+`单位模板 + 装备 / 增益 / 临时来源 → AttributeSet → 技能 / AI / CombatEngine`。属性按来源替换或删除，再按各属性规则解析；攻速、急速、穿透、韧性、移速有各自规则。最大生命与当前生命分开，换装不回血；HeroStats / statsView 仅把统一结果转成面板字段。技能 AD/AP 表达式与伤害类型独立。新属性必须接通定义、解析、消费、可见说明和测试。
 
-装备定义的 appearance 接入 `EQUIPMENT_APPEARANCES / EQUIPMENT_SPRITES → HeroRig`。战斗行为与外观独立；掌心 / 肩部挂点及镜像规则见 [美术管线](ART_PIPELINE.md)。基础人物不因技能选择变成某个职业。
+六个通用槽为slot1..slot6，每个ID仅拥有/装备一次，不限制category，可同时装备多个weapon/body/head。所有已装备条目都贡献属性；`purchaseOrder`决定每个category最后购买且仍穿戴者的显示，以及最后武器的普攻profile/独立射程，切换profile不会叠加多个武器射程。`EquipmentSystem.buy(id,replaceSlot?) / equip(id,slot?) / unequip(slot)`处理事务，满栏须显式选替换槽，库存保留；appearanceLoadout把六槽转换为三个显示层。
+
+装备定义的 appearance 接入 `EQUIPMENT_APPEARANCES + EQUIPMENT_SPRITES或PROCEDURAL_EQUIPMENT → HeroRig`。战斗行为与外观独立；掌心 / 肩部挂点及镜像规则见 [美术管线](ART_PIPELINE.md)。基础人物不因技能选择变成某个职业。
 
 ### 敌人与地图
 
-`MAPS.waves.spawns → ENEMIES → behavior / skillId / appearance`。普通刷怪由 GameWorld 选择安全位置；EnemyBehaviors 接收移动、伤害与施法能力。远程实际弹体伤害来自其技能 behavior，出手间隔来自敌人 interval，不能只改 EnemyDefinition.damage 或技能 cooldown 就认为远程攻击已改。
+`MAPS.waves[].level.groups → enemyPlacements → ENEMIES.template → ActorFactory → EnemySystem`。每个地图是静态大图：ember 56×44、frost 60×44，各五关；关卡配置start/exit/route/groups，同地图不同关有独立起终点与固定敌群，不能用旧全图随机刷怪替代。清掉全部活敌仅激活出口，所有存活且活跃玩家进入出口radius才进入reward；最后一关同样经过出口和奖励后胜利。
 
-地图同一份尺寸 / 障碍供导航、碰撞、投影、刷怪和环境使用；装饰图片不自动成为障碍。新 Boss 的大贴图不意味着已有多阶段 AI，需要明确实现行为和状态。
+17种单位分10小怪、5精英、2Boss，分别以actionSet引用`ENEMY_ACTION_SETS`和`ENEMY_ACTIONS`。动作含前摇/恢复、定向扇形/矩形、延迟圆/环、多段采样、非追踪弹、冲锋、独立类型/表达式；普攻cause=basic、技能cause=enemy。EnemySystem持有每单位锁定点、段索引、CD、组命中计数、Boss阶段/循环、守区与导航调度，不在GameWorld增加17个ID分支。旧EnemyBehaviors仅保留兼容入口，monster分支要求由EnemySystem调度。
+
+`EnemySystem.step(dt,{time,actors,players,collision,combat,freezeAI?})`每步一次；snapshot()输出纯数据units/warnings/projectiles，reset()在关卡边界清理。AI停止开关禁止新动作和追击，已发弹体/已预约预警继续推进；全局暂停则完全不推进。敌人10格或受伤唤醒，Boss12格唤醒且出场2秒；离守点18格或目标22格后返巢，不让整张地图开局汇聚。Boss有血量阈值、两秒无伤动作转换、配置循环和分段预警；interrupt端口支持硬控打断与两次不同root的Boss破势，现有玩家只有减速，不能把受击闪色当硬控入口。
+
+属性中的基础AS表示含前摇的完整周期，实际间隔只算1/AS；技能急速只影响技能CD。EnemySystem自己的pathTimes按模拟时间每.55秒重寻路，不与GameWorld.repath重复扣减。PathfinderPool按.30/.42/.62/.90保守分组，spawn/nearest/find/sweep都按实际体型；Bossradius为.90/.85。地图尺寸/障碍供导航、碰撞、地面、镜头和出口共享，装饰不自动成为障碍。
 
 ## 坐标、碰撞与时间
 
 - 逻辑坐标单位是地图格，时间是秒，角度 / 扇形宽度是弧度；渲染节点 angle 使用 Cocos 的角度单位。不要混用。
 - 角色位置是地面脚底中心，radius 是世界空间受击圆；图集像素和衣服大小不参与判定。
-- `IsoProjection` 提供成对投影，UI 逻辑坐标原点在中央、Y 向上；浏览器像素 Y 向下。输入还处理 CSS 缩放、设备像素比与视口，不能用固定屏幕偏移替代逆投影。
-- `CollisionWorld.targets` 统一做圆 / 扇形 / 胶囊相交、敌我 / 存活过滤、遮挡和稳定排序；`firstImpact` 做弹体连续扫掠，考虑角色相对移动，墙同时接触时优先。
+- `IsoProjection` 提供成对投影；ArenaView按本地玩家位置生成跟随Projection，GameBootstrap让渲染与InputController共用同一镜头对象，地图不再整张缩进窗口。UI 逻辑坐标原点在中央、Y 向上；浏览器像素 Y 向下。输入还处理 CSS 缩放、设备像素比与视口，不能用固定屏幕偏移替代逆投影。
+- `CollisionWorld.targets` 统一做圆 / 扇形 / 胶囊 / 定向矩形 / 空心环相交、敌我 / 存活过滤、遮挡和稳定排序；`firstImpact` 做弹体连续扫掠，考虑角色相对移动，墙同时接触时优先。
 - 移动与冲刺通过 `Pathfinder.sweep`，当前是细分采样的移动扫掠；它不是弹体使用的解析连续相交算法。
-- 刷怪 / 奖励共用世界 Random，暴击另用从世界 seed 派生的随机流。新增一次随机调用或改变目录枚举顺序可能改变同种子的后续结果。
+- 关卡敌群位置由配置确定，奖励使用世界 Random，暴击另用从世界 seed 派生的随机流。新增一次随机调用或改变目录枚举顺序可能改变同种子的后续结果。
 
 ## 表现与资源生命周期
 
-ArtLibrary 统一加载本地图集，创建共享 Texture2D / SpriteFrame；AnimatedUnit 播放怪物序列帧，HeroRig 组合人物和装备。ArenaView 复用单位节点、按脚底屏幕 Y 排序，消费 cue 绘制浮字与特效；Hud 按状态重建面板。
+ArtLibrary 统一加载本地图集，创建共享 Texture2D / SpriteFrame；HeroRig组合人物和装备，MonsterVisual以正式Graphics大色块绘制17种独立怪物轮廓，按EnemyPose前摇/多段strike/恢复/阶段驱动动作；AnimatedUnit保留玩家纸娃娃桥接与旧PNG能力。ArenaView 复用单位节点、按脚底屏幕 Y 排序，消费 cue 绘制浮字与特效；Hud 按状态重建面板。
 
-模拟提供 facing / action / hurtAt / diedAt，`motionPose` 选择状态。死亡优先于受击，受击优先于攻击 / 施法；表现计时不反向触发伤害。死亡后最多保留短暂淡出，暂停冻结动作；非战斗阶段可延续死亡显示。新增资源要走同一加载 / 清理周期，不在逐帧更新中反复加载纹理。
+模拟提供 facing / action / hurtAt / diedAt，玩家`motionPose`选择状态，敌人使用EnemySystem的EnemyPose。死亡优先于受击，受击优先于攻击 / 施法；表现计时不反向触发伤害。死亡后最多保留短暂淡出，暂停冻结动作；非战斗阶段可延续死亡显示。新增资源要走同一加载 / 清理周期，不在逐帧更新中反复加载纹理。
 
 ## 已有边界与扩展时需特别检查的地方
 
 | 当前边界 | 扩展时的处理 |
 | --- | --- |
-| 无账号、多人、存档 / 输入录像、触控和发行 SDK | 作为独立需求设计，不能把现有命令边界描述成已经联网 |
-| 英雄 dash 状态在 GameWorld 单独保存 | 不能直接把英雄 dash 配给敌人；先扩展到实体或实现敌人专用行为 |
-| area 以施法者为中心，弹体首次碰撞即消失 | 指定落点 AOE、穿透、追踪、持续施法需新机制及判定 |
+| 无账号、任意帧存档 / 输入录像、触控和发行 SDK | 作为独立需求设计，不能把现有命令边界描述成已经联网 |
+| 玩家 dash 状态在各 PlayerState 中保存 | 不能直接把英雄 dash 配给敌人；先扩展到实体或实现敌人专用行为 |
+| 玩家area以施法者为中心；敌人动作支持采样落点、分段区域 | 穿透、追踪和任意持续施法仍需各自规则，不用已实现分段冒充 |
 | 静态矩形地图、圆障碍、无角色刚体推挤 | 动态地形、房间串联、多边形、群体避让不是已有配置开关 |
-| 导航网格默认按半径 0.36 预计算，移动用角色实际半径 | 大型敌人可能找到自身无法通过的窄路；增加大体型要验证路线，必要时按半径建立导航 |
-| 普通波次刷怪间距目前固定比较 0.9；开发者刷怪按半径和判断 | 放大敌人体积时检查出生重叠，不要假设已有通用大体型支持 |
-| 玩家渲染硬编码三个装备层；装备图集固定为 equipment | 新槽或单独装备图集需要改渲染与 UI，不是只增加一个 ID |
-| HeroRig 为左右镜像纸娃娃，怪物为双向序列帧 | 八方向、独立上 / 下半身、Spine 需要新的资源和表现接入 |
+| 玩家导航与移动均为实际radius .32；敌人按体型池 | 大体型出生与路径需用同一分组，增加更大半径要扩充并验证通道 |
+| 固定敌群按配置中心/半径生成、按体型投到合法格 | 新群组要验证出生相交、路线和出口，不可静默少刷 |
+| 六个属性栏映射到weapon/body/head三个外观层；装备图集固定为equipment | 新显示层或新图集仍需显式扩展，不把通用槽当六只手 |
+| HeroRig左右镜像纸娃娃，MonsterVisual为程序轮廓/动作 | 八方向、独立上 / 下半身、Spine 需要新的资源和表现接入 |
 | content/validate.ts 覆盖主要引用与数值，不覆盖所有语义 | 标签拼错、握点错位、路径可达、触发递归等仍需专项验证 |
 
 后续可以逐步提取模拟内部职责，但新增一个同类技能或装备，不应顺带引入 ECS、联网层或重写整个 GameWorld。优先保持当前边界与现有玩法可验证。
+
+### 装备被动扩展
+
+EquipmentEffectSystem按actorId与唯一组持有两种被动状态；装备定义提供passives，统一CombatEngine.onEvent通知已成立事件，GameWorld只接攻击实例及生命周期。蓄能和CD不进入perk集合，也不由渲染驱动。新增同类装备通常只添配置；新被动行为要扩联合类型、处理器、校验及专项，参考[装备实施指南](design/EQUIPMENT_IMPLEMENTATION.md)。

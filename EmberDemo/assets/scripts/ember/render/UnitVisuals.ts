@@ -1,7 +1,7 @@
 import type { Graphics } from 'cc';
 import { UNIT_APPEARANCES,type UnitAppearance } from '../content/appearances';
 import { EQUIPMENT_APPEARANCES,type EquipmentAppearance } from '../content/appearances';
-import { equipment,EQUIPMENT_SLOTS,type EquipmentLoadout } from '../content/equipment';
+import { equipment,EQUIPMENT_CATEGORIES,type EquipmentAppearanceLoadout } from '../content/equipment';
 import { color,disk,polygon } from './Primitives';
 
 // Replace or extend these presentation factories when integrating sprites / animation.
@@ -44,8 +44,8 @@ const gearShapes:Record<EquipmentAppearance['shape'],(g:Graphics,a:EquipmentAppe
   hood:(g,a)=>{polygon(g,[{x:-13,y:32},{x:-14,y:43},{x:0,y:51},{x:14,y:43},{x:13,y:32},{x:8,y:39},{x:0,y:43},{x:-8,y:39}],a.color,a.accent);},
 };
 /** Layer order is stable; future sprites can implement the same slot/appearance contract. */
-export function drawHero(g:Graphics,loadout:EquipmentLoadout):void {
+export function drawHero(g:Graphics,loadout:EquipmentAppearanceLoadout):void {
   drawUnit(g,'hero');
   for(const slot of ['body','head','weapon'] as const){const id=loadout[slot];if(!id)continue;const a=EQUIPMENT_APPEARANCES[equipment(id).appearance]!;gearShapes[a.shape](g,a);}
 }
-export function equipmentVisualKey(loadout:EquipmentLoadout):string{return EQUIPMENT_SLOTS.map(s=>loadout[s]??'').join(':');}
+export function equipmentVisualKey(loadout:EquipmentAppearanceLoadout):string{return EQUIPMENT_CATEGORIES.map(s=>loadout[s]??'').join(':');}

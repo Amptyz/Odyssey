@@ -9,7 +9,11 @@
     "configure slow motion and opt-in test flags",
     "select ice skill directly from catalog",
     "choosing an already equipped skill swaps slots without duplicates",
-    "select equipment freely while live build stays unchanged",
+    "all six unrestricted equipment slots accept different items through UI",
+    "four weapons coexist instead of replacing a typed slot",
+    "a populated universal slot can be replaced through its catalog control",
+    "reselecting an owned item preserves its original purchase rank",
+    "six-slot draft never mutates the ordinary live world",
     "combine four augments across catalog pages",
     "save configuration to an explicit local preset",
     "export contains the chosen seed and build",
@@ -33,5 +37,5 @@
     "no browser runtime errors"
   ],
   "errors": [],
-  "timestamp": "2026-10-15T17:53:53.445Z"
+  "timestamp": "2026-10-16T09:20:15.866Z"
 }

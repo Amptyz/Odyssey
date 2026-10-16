@@ -53,19 +53,22 @@ try{
   await page.screenshot({path:'reports/09-wasd-help.png'});
   await click(145,-164);check((await state()).phase==='ready'&&await mode()==='wasd','restart retains chosen mode');
   await click(0,-106);await page.keyboard.press('Enter');await page.waitForTimeout(100);
-  // Normal combat: held mouse attacks plus Q/Space/R; no HP/damage/cooldown cheats.
-  const deadline=Date.now()+45000;let basicHit=false,mouseHeld=false;
+  // Directional melee while moving, with real WASD input. Full exit/reward flow lives in browser-levels/content.
+  const deadline=Date.now()+25000;let basicHit=false;
   while(Date.now()<deadline){
-    const s=await state();if(s.phase==='reward')break;if(s.phase==='defeat')throw new Error('WASD combat defeated');
+    const s=await state();if(s.phase==='defeat')throw Error('WASD input encounter defeated');
     const enemy=s.units.filter(u=>u.alive&&u.team==='enemy').sort((a,b)=>dist(a,s.hero)-dist(b,s.hero))[0];
-    if(enemy){await aim(enemy.x,enemy.y);if(!mouseHeld){await page.mouse.down();mouseHeld=true;}if(dist(enemy,s.hero)>3)await page.keyboard.press('q');}
-    await page.keyboard.press('Space');
-    const now=await state();if(now.cues.some(c=>c.kind==='damage'&&c.cause==='basic'))basicHit=true;
+    if(!enemy)break;
+    const dx=enemy.x-s.hero.x,dy=enemy.y-s.hero.y,sx=dx-dy,sy=-(dx+dy);
+    for(const key of ['w','a','s','d'])await page.keyboard.up(key);
+    if(dist(enemy,s.hero)>1.7){const key=Math.abs(sx)>Math.abs(sy)?sx>0?'d':'a':sy>0?'w':'s';await page.keyboard.down(key);}
+    await aim(enemy.x,enemy.y);await page.mouse.down();await page.keyboard.press('Space');
     await page.waitForTimeout(180);
+    if((await state()).cues.some(c=>c.kind==='damage'&&c.cause==='basic')){basicHit=true;break;}
   }
-  await page.mouse.up();const won=await state();check(won.phase==='reward','WASD mouse attack clears first wave');check(basicHit,'mouse basic attacks deal damage');
-  await page.screenshot({path:'reports/10-wasd-reward.png'});
-  await page.keyboard.press('1');await page.waitForTimeout(100);check((await state()).phase==='shop','reward opens shop');await page.keyboard.press('Enter');await page.waitForTimeout(100);check((await state()).wave===2,'WASD reward choice advances wave');
+  await page.mouse.up();for(const key of ['w','a','s','d'])await page.keyboard.up(key);
+  check(basicHit,'WASD approaches an enemy and directional mouse melee deals damage');
+  await page.screenshot({path:'reports/10-wasd-combat.png'});
   await page.keyboard.press('Escape');await page.waitForTimeout(100);
   await page.setViewportSize({width:960,height:640});await page.waitForTimeout(150);
   await click(-145,98);check(await mode()==='classic','resized pause-menu selector works');await click(145,98);

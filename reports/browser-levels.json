@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "scope": "Normal keyboard/mouse campaign first reward, six-slot shop and camera; separate explicit F2 Boss visual checks",
+  "checks": [
+    "Normal startup exposes five levels without enabling developer mode",
+    "Select WASD through the visible home controls",
+    "Normal Enter opens the six-slot shop",
+    "Normal purchase equips a bow in universal slot 1",
+    "Actual held movement advances through the larger-than-screen map",
+    "Moving local player remains centered at zoom 1",
+    "Camera origin follows movement instead of fitting the whole map",
+    "Canvas pointer inverse projection agrees with the followed camera",
+    "Natural clear activates exit while combat phase waits for arrival",
+    "Normal combat and actual movement into the exit earn a natural reward",
+    "Natural reward was reached without F2 cheats or forced progress",
+    "Normal reward returns to the between-level shop",
+    "A second weapon is purchased into another universal slot without replacing the first",
+    "ember F2 level 5 contains its unique Boss",
+    "ember Boss visual check remains in the explicitly enabled F2 test world",
+    "frost F2 level 5 contains its unique Boss",
+    "frost Boss visual check remains in the explicitly enabled F2 test world",
+    "No browser runtime errors"
+  ],
+  "screenshots": [
+    "reports/50-six-slot-opening-shop.png",
+    "reports/51-followed-map-and-guidance.png",
+    "reports/53-natural-level-combat.png",
+    "reports/52-cleared-level-exit-open.png",
+    "reports/56-two-weapons-universal-slots.png",
+    "reports/54-ember-boss-court.png",
+    "reports/55-frost-boss-court.png",
+    "reports/57-level-home-resized.png"
+  ],
+  "errors": [],
+  "timestamp": "2026-10-16T08:41:59.294Z"
+}

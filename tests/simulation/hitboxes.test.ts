@@ -1,20 +1,22 @@
 import { describe,it,expect } from 'vitest';
 import { GameWorld } from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import type { EquipmentId } from '../../EmberDemo/assets/scripts/ember/content/equipment';
+import {AttributeSet} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { applyStatus } from '../../EmberDemo/assets/scripts/ember/combat-core/StatusSystem';
 function fixture(weapon?:EquipmentId){
   const w=new GameWorld();w.command({type:'Start'});if(weapon)w.command({type:'BuyEquipment',equipmentId:weapon});w.command({type:'LeaveShop'});
   for(const [id,a] of w.actors)if(a.team==='enemy')w.actors.delete(id);
-  const sentinel=w.spawnEnemy('ranged',{x:2,y:2},99999);sentinel.windup=9999;return w;
+  Object.assign(w.hero,{x:10,y:10,previous:{x:10,y:10}});freeze(w.spawnEnemy('ranged',{x:2,y:2},99999));return w;
 }
-function spawn(w:GameWorld,x:number,y:number){const e=w.spawnEnemy('melee',{x,y},1000);Object.assign(e,{x,y,previous:{x,y},windup:999});return e;}
+function freeze(e:GameWorld['hero']){e.attributes=new AttributeSet({...e.attributes.template,canMove:false,canAttack:false});return e;}
+function spawn(w:GameWorld,x:number,y:number){const e=freeze(w.spawnEnemy('melee',{x,y},1000));Object.assign(e,{x,y,previous:{x,y}});return e;}
 function run(w:GameWorld,seconds:number){for(let i=0;i<Math.round(seconds*30);i++)w.advance(1/30);}
 describe('directional basic attacks and skill hitboxes',()=>{
   it('melee has a windup, hits all intersecting bodies once, and can miss behind the swing',()=>{
     const w=fixture('sword'),a=spawn(w,11.4,10),b=spawn(w,11.2,10.6),back=spawn(w,8.5,10);
     w.command({type:'Attack',point:{x:15,y:10}});expect(a.hp).toBe(1000);expect(w.snapshot().swings).toHaveLength(1);
     run(w,.1);expect(a.hp).toBe(1000);run(w,.2);
-    expect(a.hp).toBe(964);expect(b.hp).toBe(964);expect(back.hp).toBe(1000);
+    expect(a.hp).toBeCloseTo(1000-w.stats.attackDamage/1.05);expect(b.hp).toBeCloseTo(1000-w.stats.attackDamage/1.05);expect(back.hp).toBe(1000);
     expect(w.combat.history.filter(e=>e.type==='OnHit'&&e.cause==='basic')).toHaveLength(2);
     expect(w.snapshot().swings).toHaveLength(0);
   });
@@ -25,7 +27,7 @@ describe('directional basic attacks and skill hitboxes',()=>{
   it('hits bodies grazing the edge of cleave and excludes bodies just beyond the edge',()=>{
     const w=fixture();w.loadout.Q='cleave';const angle=.97,at=(r:number)=>({x:10+Math.cos(angle)*r,y:10+Math.sin(angle)*r});
     const a=at(2),b=at(6),edge=spawn(w,a.x,a.y),outside=spawn(w,b.x,b.y);
-    w.command({type:'CastSlot',slot:'Q',point:{x:15,y:10}});expect(edge.hp).toBe(935);expect(outside.hp).toBe(1000);
+    w.command({type:'CastSlot',slot:'Q',point:{x:15,y:10}});expect(edge.hp).toBeCloseTo(1000-65/1.05);expect(outside.hp).toBe(1000);
   });
   for(const weapon of ['bow','staff'] as const)it(`${weapon} launches a physical projectile without instant or homing damage`,()=>{
     const w=fixture(weapon),e=spawn(w,13,10);w.command({type:'Attack',point:e});expect(e.hp).toBe(1000);
@@ -35,16 +37,16 @@ describe('directional basic attacks and skill hitboxes',()=>{
   });
   it('a bullet can hit an intervening body, never the selected/farther body through it',()=>{
     const w=fixture('bow'),far=spawn(w,15,10),near=spawn(w,12,10);
-    w.command({type:'Attack',point:far});run(w,.3);expect(near.hp).toBe(974);expect(far.hp).toBe(1000);expect(w.projectiles).toHaveLength(0);
+    w.command({type:'Attack',point:far});run(w,.3);expect(near.hp).toBeCloseTo(1000-w.stats.attackDamage/1.05);expect(far.hp).toBe(1000);expect(w.projectiles).toHaveLength(0);
   });
   it('uses swept collision even when the entire flight fits within one tick',()=>{
     const w=fixture('bow'),e=spawn(w,12,10);e.radius=.01;w.command({type:'Attack',point:{x:15,y:10}});
     Object.assign(w.projectiles[0]!,{vx:900,radius:.01,remaining:7.5/900});w.advance(1/30);
-    expect(e.hp).toBe(974);expect(w.projectiles).toHaveLength(0);
+    expect(e.hp).toBeCloseTo(1000-w.stats.attackDamage/1.05);expect(w.projectiles).toHaveLength(0);
   });
   it('checks the final partial flight step instead of expiring before reaching maximum range',()=>{
     const w=fixture('bow'),e=spawn(w,10,17.8);w.command({type:'Attack',point:{x:10,y:19}});run(w,.5);
-    expect(e.hp).toBe(974);expect(w.projectiles).toHaveLength(0);
+    expect(e.hp).toBeCloseTo(1000-w.stats.attackDamage/1.05);expect(w.projectiles).toHaveLength(0);
   });
   it('basic arrows and skill projectiles share collision radii, terrain blocking, and first-impact rules',()=>{
     for(const basic of [true,false]){
@@ -66,12 +68,12 @@ describe('directional basic attacks and skill hitboxes',()=>{
   it('explosion/chain search uses target body radii and terrain visibility too',()=>{
     const w=fixture();w.combat.addPerk('corpse');w.combat.addPerk('arc');
     const victim=spawn(w,4.8,6),hidden=spawn(w,7.2,6),edge=spawn(w,4.8,8.8);
-    applyStatus(victim,{id:'burn',duration:3,power:1},'hero');w.combat.damage({sourceId:'hero',targetId:victim.id,amount:1000,cause:'basic'});
+    applyStatus(victim,{id:'burn',duration:3,power:1},'hero');w.combat.damage({sourceId:'hero',targetId:victim.id,amount:5000,cause:'basic'});
     expect(hidden.hp).toBe(1000);expect(edge.hp).toBe(970);
   });
   it('enemy melee attacks keep their windup direction and can be dodged behind them',()=>{
-    const w=fixture(),e=spawn(w,10.8,10);e.windup=.05;e.aim={x:10,y:10};w.hero.x=11.5;
-    run(w,.1);expect(w.hero.hp).toBe(w.hero.maxHp);
+    const w=fixture(),e=w.spawnEnemy('melee',{x:10.8,y:10});run(w,.5);expect(w.enemies.snapshot().warnings.some(warning=>warning.sourceId===e.id)).toBe(true);w.hero.x=e.x+1.5;
+    run(w,.5);expect(w.hero.hp).toBe(w.hero.maxHp);
   });
   it('pause freezes active swings and bullets; attack input release stops subsequent attacks',()=>{
     for(const weapon of ['sword','bow'] as const){

@@ -98,7 +98,7 @@ export class InputController {
   private onContext=(e:Event):void=>{if(e.target instanceof HTMLCanvasElement)e.preventDefault();};
   private onBlur=():void=>{
     this.clear();
-    if(this.state?.phase==='fighting'&&!this.state.paused){this.state={...this.state,paused:true};this.port.send({type:'TogglePause'});}
+    if(!this.state?.network&&this.state?.phase==='fighting'&&!this.state.paused){this.state={...this.state,paused:true};this.port.send({type:'TogglePause'});}
   };
   private onVisibility=():void=>{if(document.hidden)this.onBlur();};
 }

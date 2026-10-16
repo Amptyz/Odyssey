@@ -14,7 +14,7 @@ try{
   for(const mode of ['classic','wasd'] as const){
     await page.goto('http://127.0.0.1:8080/?debug=1&seed=1234');await page.waitForFunction(()=>!!(window as any).__EMBER__);
     await click(mode==='classic'?-145:145,45);await page.keyboard.press('Enter');await page.waitForTimeout(80);
-    await click(-90,-36);check((await state()).equipment.weapon==='bow',`${mode}: equip bow through normal shop`);
+    await click(-90,-36);check((await state()).appearance.weapon==='bow',`${mode}: equip bow through normal shop`);
     await page.keyboard.press('Enter');await page.waitForTimeout(80);
     const before=await state(),h=before.hero;await aim(h.x,h.y-5);await page.mouse.down();
     await page.waitForFunction(()=>(window as any).__EMBER__.snapshot().projectiles.some((p:any)=>p.cause==='basic'));

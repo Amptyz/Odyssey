@@ -22,11 +22,19 @@
 
 以上资源使用内置 **image_gen** 工具生成，按用户提供的图片作风格参考并简化；人物背景做过一次透明清理编辑。原始参考、完整提示词、每张图的 SHA-256 / 尺寸 / 切片检查在 `art-source/living-ruins-v1/`。保存的 PNG 没有通过程序重新绘制或删改像素。提示词中的请求尺寸与实际输出不完全一致，运行时使用实际测量尺寸。
 
-## 动作约定
+## 当前17怪程序美术
 
-怪物为 4×4 图集，按行排列：待机 0–3、行走 4–7、攻击 8–11、受击 12、死亡 13–15。`content/animation.ts` 定义默认帧速、循环和优先级；每个 `UNIT_SPRITES` 外观可以选择自己的 clips。攻击 / 死亡不循环，死亡视图在 0.9 秒内淡出。
+运行敌人由render/MonsterVisual.ts和monster-palettes.ts绘制，保留明亮自然遗迹、大色块、独立器具和轮廓。它是正式代码美术，不是PNG生成结果；无新AI图、视频或怪物图集。17种身份与动作对应[战斗稿](design/MONSTER_DESIGN.md)和[美术Brief](design/MONSTER_ART_BRIEFS.md)，其中旧小场地/三槽/BossHP等纸面值以当前源码与本轮实施记录为准。
 
-小精灵攻击为刺击，守卫为重拳；远程施法暂时复用攻击帧。图像为同一三分之四视角，左右镜像形成两向表现，没有八方向转身贴图。人物采用轻量纸娃娃部件运动：行走摆臂摆腿、普攻挥动武器、施法抬臂、受击倾斜、死亡倒下。它不依赖 Spine，也不包含导出的骨骼工程。
+MonsterVisual.update(unit,pose,time)读取EnemySystem的EnemyPose，windup显示准备姿、strike对每个实际分段产生出手脉冲、phase控制炉盖/镜盘变化；步态由velocity与模拟time控制，整体左右镜像，死亡压低并淡出。本体不画预警/飞弹。drawEnemyWarnings按快照shape/contours绘制同世界坐标地面形状和独立敌弹，圆/扇形轮廓按地形视线裁切，环保留真实安全内圈；不能靠调整贴图覆盖碰撞错误。
+
+属性六个通用slot不等于六层显示。EquipmentSystem.appearance/appearanceLoadout由购买顺序从仍穿戴项为weapon/body/head选代表，HeroRig和商店预览共用这三层；其余装备继续提供属性。新增显示层先改渲染契约，不给现有角色直接叠六把武器。
+
+## 旧PNG动作约定（兼容路径）
+
+保留的旧怪物PNG为4×4图集，按行排列：待机 0–3、行走 4–7、攻击 8–11、受击 12、死亡 13–15。`content/animation.ts` 定义默认帧速、循环和优先级；每个 `UNIT_SPRITES` 外观可以选择自己的 clips。攻击 / 死亡不循环，死亡视图在 0.9 秒内淡出。
+
+旧PNG小精灵刺击、守卫重拳、远程复用帧只描述兼容资源，不代表本轮MonsterVisual的17套轮廓。图像为同一三分之四视角，左右镜像形成两向表现，没有八方向转身贴图。人物采用轻量纸娃娃部件运动：行走摆臂摆腿、普攻挥动武器、施法抬臂、受击倾斜、死亡倒下。它不依赖 Spine，也不包含导出的骨骼工程。
 
 位置与遮挡以地面脚底为基准。怪物保持每张图集固定物理像素比例，帧切换不把每张图片拉伸成统一方框。装备与基础手臂、身体、头部共用挂点，换装保留动作与镜像朝向。战场和商店预览使用同一个 HeroRig。
 
@@ -45,17 +53,25 @@
 
 1. 将透明 PNG 放入 resources 下的对应目录，通过 Creator 导入并提交编辑器生成的 `.meta`；不要手写或重建 UUID。大幅修改建议先保留版本文件。
 2. 更新 `scripts/inspect-art.py` 的图集布局，安装可选 Pillow 后运行 `python3 scripts/inspect-art.py`。它只读取 PNG，输出像素区域、脚底基准和检查报告，不修改图片与 `.meta`。若美术存在非均匀动作格，需检查每帧锚点，不能只依赖自动裁边。
-3. 新怪物在 `UNIT_SPRITES` 配置 atlas、比例、血条高度、色调、clips，再让 `content/enemies.ts` 的 appearance 引用它。新动作布局只需配置 frames；全新运动表现才扩展渲染器。
-4. 新装备在 `EQUIPMENT_SPRITES` 配置帧和挂点，在装备定义中引用稳定 appearance ID。武器 `anchorX / anchorY` 应标在实际握把位置，不能将弓、法杖都默认设为图片底部居中。武器跟随掌心，衣甲盖住肩部接头，头饰盖在头部；确认空脸区域透明、活动时不漂移。
+3. 当前新怪优先扩MonsterVisual/monster-palettes与EnemyPose相位；若明确采用PNG，才在UNIT_SPRITES配置atlas/pixelScale/height/tint/clips并实现该怪的视图选择与动作映射。不能注册图片却仍默认走程序视图后声称已加载。
+4. PNG装备在 `EQUIPMENT_SPRITES` 配置帧和挂点；原生Graphics装备在 `PROCEDURAL_EQUIPMENT` 配置分层多边形与y位置，经EquipmentVisuals创建，两者都在装备定义引用稳定appearance ID。武器 `anchorX / anchorY` 应标在实际握把位置，不能将弓、法杖都默认设为图片底部居中。武器跟随掌心，衣甲盖住肩部接头，头饰盖在头部；确认空脸区域透明、活动时不漂移。
 5. 新地图素材在 `ENVIRONMENT_APPEARANCES` 指定图集与素材角色，再通过地图 environment 引用。当前采用疏朗边缘模板，独立关卡装饰布局尚无可视编辑器。
 6. 运行 `pnpm check`，在 Creator 构建 Web Desktop，再运行 `pnpm test:art`。检查缩小到实际游玩尺寸后的轮廓、地板对比、血条位置、预警可读性和装备动作。
 
 普通运行与开发不需要 Python、Pillow、生成 API 密钥或图像生成工具。五张 PNG 当前单张约 1–2 MB，可用普通 Git 管理；以后较大 PSD、模型和音频使用 Git LFS 时，应将 `.gitattributes` 一起提交，另一台电脑安装 LFS 并拉取真实文件。不要提交 library、temp 或 build。
 
+## 导入元数据与验证
+
+新增TS表现/模拟模块也由Creator导入生成.meta；源文件与真实编辑器生成元数据一起交付，不手写UUID。核心/Vitest/Cocos类型通过不等于Creator已生成元数据或画面验收完成。新程序轮廓至少在实际1280×720、单个与密集组合、左右镜像、前摇/多段/死亡、两张跟随大图上检查；设计Brief建议帧组不是当前播放器或生成资产事实。
+
 ## 验证与边界
 
-单元测试检查动画循环 / 停帧、动作优先级、实际施法与死亡信号、PNG 格式和像素区域边界。浏览器回归在普通数值下购买装备，验证帧加载、移动 / 攻击 / 施法 / 受击 / 死亡、暂停冻结、守卫出场及三波通关，不直接修改生命或伤害。
+单元测试检查动画循环 / 停帧、动作优先级、实际施法与死亡信号、PNG 格式和像素区域边界。浏览器回归在普通数值下购买装备，验证帧加载、移动 / 攻击 / 施法 / 受击 / 死亡、暂停冻结、17种代表出手、Boss阶段和五关出口流程，不直接修改生命或伤害。
 
 可选录制动作视频：`pnpm exec playwright install ffmpeg`，然后 `EMBER_RECORD_VIDEO=1 pnpm test:art`，输出 `reports/24-art-playthrough.webm`。截图和录像仅保存在本机，JSON 验证报告随 Git 管理。
 
-这是可玩的首版素材，后续仍可精修帧间轮廓和人物关节。尚未制作八方向、美术编辑器、专属远程动作、独立冰霜建筑套装、音效与复杂粒子动画；这些不会影响本轮资源在游戏中使用。
+旧PNG与本轮程序美术并用，素材与程序姿态都可继续精修。尚未制作八方向、美术编辑器、专属远程动作、独立冰霜建筑套装、音效与复杂粒子动画；这些不会影响本轮资源在游戏中使用。
+
+## v0.8 八件装备程序外观
+
+八件新装备按[外观实施规格](design/EQUIPMENT_VISUAL_IMPLEMENTATION.md)使用大色块、多边形轮廓，挂在现有HeroRig掌心/身体/头部；沿用同一套移动、攻击、施法与镜像姿态。它们不是新生成PNG，原equipment.png仍仅含原有10件。完整PNG升级仍可作为独立ART-01任务，不影响本轮八件装备可正常显示与战斗。

@@ -1,9 +1,10 @@
 import { Node, UITransform } from 'cc';
-import { EQUIPMENT_SPRITES,EQUIPMENT_APPEARANCES,HERO_ARM_ATTACHMENTS } from '../content/appearances';
-import { equipment,type EquipmentLoadout } from '../content/equipment';
+import { EQUIPMENT_SPRITES,EQUIPMENT_APPEARANCES,HERO_ARM_ATTACHMENTS,PROCEDURAL_EQUIPMENT } from '../content/appearances';
+import { equipment,type EquipmentAppearanceLoadout } from '../content/equipment';
 import type { MotionPose } from '../content/animation';
 import { ArtLibrary } from './ArtLibrary';
 import { uiNode } from './Primitives';
+import { createEquipmentVisual } from './EquipmentVisuals';
 /** Paper-doll rig. Equipment uses the same bones as the neutral base body. */
 export class HeroRig {
   readonly node:Node;
@@ -31,16 +32,24 @@ export class HeroRig {
   private part(frame:number,w:number,h:number,x:number,y:number,top=false):Node{
     const n=this.art.sprite(this.node,'hero-parts',frame,w,h,`Base part ${frame}`);n.setPosition(x,y);if(top)n.getComponent(UITransform)!.setAnchorPoint(.5,1);return n;
   }
-  equip(loadout:EquipmentLoadout):void{
+  equip(loadout:EquipmentAppearanceLoadout):void{
     const key=JSON.stringify(loadout);if(key===this.signature)return;this.signature=key;
     for(const n of [this.bodyGear,this.headGear,this.weapon])n?.destroy();this.bodyGear=this.headGear=this.weapon=undefined;
     this.torso.active=!loadout.body;this.weaponId=loadout.weapon??'';
     for(const slot of ['body','head','weapon'] as const){
-      const id=loadout[slot];if(!id)continue;const definition=equipment(id),frame=EQUIPMENT_SPRITES[definition.appearance];
-      if(!frame)throw new Error(`Missing equipment art: ${definition.appearance}`);
-      const node=this.art.sprite(slot==='weapon'?this.weaponRoot:this.gearRoot,'equipment',frame.frame,frame.width,frame.height,`${slot} equipment`);
-      if(slot==='weapon'){const arm=HERO_ARM_ATTACHMENTS.right;this.weapon=node;this.weaponId=EQUIPMENT_APPEARANCES[definition.appearance]!.shape;node.getComponent(UITransform)!.setAnchorPoint(frame.anchorX??.5,frame.anchorY??.2);node.setPosition((arm.grip[0]-arm.anchor[0])*arm.width,(arm.grip[1]-arm.anchor[1])*arm.height);}
-      else{node.setPosition(0,frame.y??27);if(slot==='body')this.bodyGear=node;else this.headGear=node;}
+      const id=loadout[slot];if(!id)continue;const definition=equipment(id),appearance=definition.appearance;
+      const frame=EQUIPMENT_SPRITES[appearance],procedural=PROCEDURAL_EQUIPMENT[appearance];
+      if(!frame&&!procedural)throw new Error(`Missing equipment art: ${appearance}`);
+      if(procedural&&procedural.layer!==slot)throw new Error(`Equipment layer mismatch: ${appearance}`);
+      const parent=slot==='weapon'?this.weaponRoot:this.gearRoot;
+      const node=procedural?createEquipmentVisual(parent,appearance)!:this.art.sprite(parent,'equipment',frame!.frame,frame!.width,frame!.height,`${slot} equipment`);
+      if(slot==='weapon'){
+        const arm=HERO_ARM_ATTACHMENTS.right;this.weapon=node;this.weaponId=EQUIPMENT_APPEARANCES[appearance]!.shape;
+        // Graphics coordinates already use the real palm origin; PNGs retain their atlas anchor.
+        if(frame)node.getComponent(UITransform)!.setAnchorPoint(frame.anchorX??.5,frame.anchorY??.2);
+        node.setPosition((arm.grip[0]-arm.anchor[0])*arm.width,(arm.grip[1]-arm.anchor[1])*arm.height);
+      }else{node.setPosition(0,procedural?.y??frame?.y??27);if(slot==='body')this.bodyGear=node;else this.headGear=node;}
+
     }
     // Garments cover shoulder seams below the head; headgear covers the hair.
     if(this.bodyGear)this.bodyGear.setParent(this.node),this.bodyGear.setSiblingIndex(this.torso.getSiblingIndex()+1);
