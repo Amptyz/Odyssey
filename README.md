@@ -42,10 +42,14 @@ pnpm play
 | [内容扩展指南](docs/CONTENT_ARCHITECTURE.md) | 新技能、装备、敌人、地图、状态、海克斯的注册步骤与可复制示例 |
 | [美术风格设计指南](docs/ART_DIRECTION.md) | 简化遗迹风格、细节与配色、中性人物与装备辨识、怪物 / 地图 / 特效设计、AI 制作模板与验收 |
 | [美术管线](docs/ART_PIPELINE.md) | 图集、动画、换装挂点、资源导入与 .meta |
+| [美术制作 skill](.agents/skills/ember-art/SKILL.md) | 用 `$ember-art` 制作或修复贴图、装备、怪物动画、地图与特效；包含 Prompt 和验收约束 |
+| [AI 动画准则审阅](docs/ART_ANIMATION_REVIEW.md) | 外来草案的适用范围、需要调整的风格 / 坐标 / 时长规则与后续试作方案 |
 | [开发者模式](docs/DEVELOPER_MODE.md) | 快速构筑 / 跳关 / 刷怪、配置导出和 Bug 复现 |
 | [海克斯机制](docs/HEX_AUGMENTS.md) | 已实现效果、数值、触发和连锁边界 |
 
 [原始 MVP 任务书](CODEX_GAME_MVP_SPEC.md) 保留为 v0.1 历史参考，其中锁敌普攻、固定 QWER、暂不做商店 / PNG 美术等内容已经过后续迭代，不能用于覆盖当前玩法。
+
+后续制作美术可直接说：`使用 $ember-art，给遗迹小精灵制作原地行走和刺击动画，并接入游戏。` Skill 位于仓库 `.agents/skills/ember-art`，随 Git 拉取；若工具没有自动发现，直接让 AI 读取上方 SKILL.md 即可。需要只看方案或只生成候选时，在请求中说明交付范围。
 
 ## 内容扩展架构
 

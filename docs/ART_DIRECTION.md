@@ -4,6 +4,8 @@
 
 本文用于设计角色、装备、怪物、地图、动作与特效；资源格式、图集切片、挂点和 Cocos 接入步骤见 [美术管线](ART_PIPELINE.md)。新增玩法仍按 [内容扩展指南](CONTENT_ARCHITECTURE.md) 实现。设计建议不代表引擎已经具备对应功能。
 
+实际制作使用 [ember-art skill](../.agents/skills/ember-art/SKILL.md)，其中包含按素材类型选择的 Prompt、动画约束与验收流程。外来动画准则的审核结论见 [审阅结果](ART_ANIMATION_REVIEW.md)。
+
 ## 设计依据与优先级
 
 1. 用户已经明确：参考图的 AI 细节太多，实际游戏应更简洁、舒适；人物自身不承担战士、法师等职业风格，主要靠装备体现。

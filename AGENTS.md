@@ -48,6 +48,7 @@
 
 ## Cocos 资源与美术
 
+- 生成、修改、审查或接入本项目贴图 / 动画时使用 [ember-art skill](.agents/skills/ember-art/SKILL.md)（`$ember-art`）；它按需提供 Prompt、动画契约和验收流程。纯战斗数值修改不需要加载。外来动画草案的取舍见 [审阅结果](docs/ART_ANIMATION_REVIEW.md)。
 - 制作美术先读 [风格设计指南](docs/ART_DIRECTION.md)：参考图只提供氛围，实际游戏使用低细节、大色块；基础人物不带职业标志，装备表达流派。按实际战斗尺寸和多效果叠加场景验收。
 - 新资源通过 Creator 导入生成 `.meta`，与资源一起提交；不要手写 UUID 或伪造 `.scene / .prefab / .meta`。移动已有资源保留其 UUID。
 - `content/art-manifest.ts` 是 `scripts/inspect-art.py` 的生成结果；调整切片时同时维护生成来源，避免下次生成覆盖手工改动。
