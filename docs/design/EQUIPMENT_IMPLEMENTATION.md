@@ -17,7 +17,7 @@
 | sageMask | head | AP20、固定魔穿10 | 无 |
 | aegisCrown | head | HP55、MR22 | 无 |
 
-全部100金币，六栏任意分类，同ID一次购买/一次穿戴。8件用`modifiers`，旧`stats:{}`兼容字段不重复提供属性。两新武器复用sword攻击形状/时序与2.5格profile；属性、外观按已装备集合及原始purchaseOrder选择，旧物重装不变购序。8个appearance同装备ID，表现分支提供本地程序化形状；不伪造图集切片、PNG或meta。
+全部100金币，六栏任意分类，同ID一次购买/一次穿戴。8件用`modifiers`，旧`stats:{}`兼容字段不重复提供属性。装备不提供普攻形式或专属射程；全部已装备条目提供属性，外观按原始purchaseOrder选择，旧物重装不变购序。8个appearance同装备ID，表现分支提供本地程序化形状；不伪造图集切片、PNG或meta。
 
 `equipmentDetails(id)`从实际被动配置生成完整公式、时长、内部CD和资格说明，普通物品返回短description。商品短文保持两行范围，完整规则由父任务详情弹层展示；面向玩家只说同名被动一份，不展示内部group键。
 

@@ -1,6 +1,6 @@
 # 动画与坐标契约
 
-本文件只在制作或修复动画、改变图集布局时读取。以下兼容序列帧参数源自建立 skill 时的代码基线，实际任务须检查当前实现。当前 17 怪默认由 MonsterVisual 与 EnemyPose 表现，旧 PNG 播放器仍保留；像素帧组不会自动替换它。
+本文件只在制作或修复动画、改变图集布局时读取。17怪当前由 MonsterVisual 优先选择已注册 PNG，并按 EnemyPose 选择通用及专属动作 / Boss阶段帧；程序轮廓和旧 PNG 播放器保留兼容。显式切片、脚底锚点和 strike 时序正在校正，实际任务须检查当前实现。
 
 ## 当前播放器能力
 
@@ -9,12 +9,16 @@
 | 文件 | 实际职责与限制 |
 | --- | --- |
 | `content/animation.ts` | `AnimationClips` 每种状态只有 frames / fps / loop，均匀播放；无逐帧时长、方向表、事件数组 |
-| `render/AnimatedUnit.ts` | 怪物序列帧、左右镜像、固定像素比例、底边锚点；死亡 0.9 秒内淡出 |
+| `render/MonsterVisual.ts` | 当前17怪 PNG，相位 / 专属帧 / 阶段图集，固定来源比例与归一化 anchor；程序回退 |
+| `render/AnimatedUnit.ts` | 人物桥接与旧怪物序列帧；旧路径底边锚点、死亡 0.9 秒内淡出 |
 | `render/HeroRig.ts` | 玩家六部件的程序动作和装备挂点，不是整人序列帧或 Spine |
-| `render/ArtLibrary.ts` | 从 `art/living-ruins/<AtlasId>` 加载；读取 TS 图集区域，没有任意 JSON manifest 导入器 |
-| `scripts/inspect-art.py`（仓库根目录） | 寻找近网格透明切线、按 alpha 边界裁切区域，生成 TS 和检查报告，不改像素 |
+| `render/ArtLibrary.ts` | 按生成 TS 的 resourcePath 加载生产图集，另保留 living-ruins 兼容；不直接读取任意制作 JSON |
+| `scripts/inspect-pixel-art.py`（仓库根目录） | 从 production.json 与 art-completion-v2/manifest.json 引用片段生成 pixel-art.ts，支持显式 rect / anchor；--check 检查一致性，不改 PNG |
+| `scripts/inspect-art.py` | 旧兼容 art-manifest.ts 生成器，不改 PNG |
 
-现有怪物图集为 4×4：idle 0–3 / walk 4–7 / attack 8–11 / hurt 12 / death 13–15；cast 复用 attack。FPS 分别为 4 / 9 / 9 / 8 / 4，cast 为 7；仅 idle / walk 循环。不是固定的行业规格，改变布局需要同步生成器和配置。
+旧兼容怪物图集为 4×4：idle 0–3 / walk 4–7 / attack 8–11 / hurt 12 / death 13–15；cast 复用 attack。FPS 分别为 4 / 9 / 9 / 8 / 4，cast 为 7；仅 idle / walk 循环。不是固定的行业规格，改变布局需要同步生成器和配置。
+
+玩家普攻动作由 `ActionSignal.basicAttack` / `MotionPose.basicAttack` 决定；默认挥砍，飞弹增益改为释放动作。装备 shape、category、购买顺序仅用于外观和挂点，不得决定挥砍 / 射击。
 
 `motionPose` 还有状态时间窗口：受击约 0.18 秒、出手后的 attack / cast 约 0.45 秒；windup 期间将 attack age 固定为 0.08 秒。仅增加帧数并不能让动作播完，例如 12 帧 / 12 FPS 需要约 1 秒的播放时间。新长动作要检查状态选择、受击打断、死亡淡出和战斗前摇的映射；不要只改 FPS，也不要为配合美术擅自改变伤害时刻。当前 cast 的名义剪辑时长也长于出手显示窗口，验收时需观察末帧是否真正出现。
 
@@ -30,11 +34,11 @@
 
 遵循 [源像素网格标准](../../../../docs/ART_DIRECTION.md#源像素网格与显示目标)。同一对象跨动作共用逻辑网格原点、身体尺度、色板与足底基准；源坐标和切片偏移使用整数 texel，不逐帧重采样、缩放或用平滑插值补间。像素簇随姿势有目的地变化，逐帧叠看脚、武器握点与轮廓，排除无意跳动和单像素闪烁。
 
-可用较少而清楚的关键帧；帧数 / FPS 按真实模拟阶段配合，像素风不表示降低玩法更新频率。视频中间帧常带模糊与子像素，需重制 / 检查网格后才能作为候选，不能直接抽帧标成像素成品。纸娃娃继续沿用原挂点，连续旋转的像素一致性需后续渲染适配，禁止为画面对齐修改肩轴契约或世界移动。
+可用较少而清楚的关键帧；帧数 / FPS 按真实模拟阶段配合，像素风不表示降低玩法更新频率。视频中间帧常带模糊与子像素，需重制 / 检查网格后才能作为候选，不能直接抽帧标成像素成品。纸娃娃保持肩位置，新 PNG 必须实测局部 anchor / grip；当前肢体角度已量化15度，仍需检查旋转像素密度。禁止为画面对齐修改肩轴契约或世界移动。
 
 ## 两种空间策略不可混用
 
-### A. 当前按底边贴地的序列帧
+### A. 旧兼容按底边贴地的序列帧
 
 生成器以 alpha > 24 的区域估算边界并留少量边距；`ArtFrame.rect` 使用图集左上角像素坐标，`pivot` 是裁切区内像素坐标，不是 Cocos 归一化坐标。当前生成值为 `[原格中心X - 裁切X, 裁切高度]`。
 
@@ -46,7 +50,7 @@ AnimatedUnit 只消费 pivot X，将 Cocos anchor Y 固定设为 0；每帧图�
 
 对于锁定镜头的视频或已统一画布的帧：保持原画布、原始坐标、共同缩放和共同地面锚点。可以用整个动作的联合边界统一裁切并记下偏移，不逐帧居中、拉伸或强贴脚底；跨 idle / walk / attack 还要保留同一个角色坐标基准，不能各自裁成不同中心后丢弃偏移。
 
-这条路线**不是当前自动导入能力**。接入前需为该资产实现并验证一种明确方案：保存完整固定帧画布及共同 pivot，或保存裁切后的原画布尺寸、偏移与共同 pivot 并在渲染中恢复。生成器也要能够保留这些数据；不能再让默认裁边覆盖它们。改动仅针对需要的新模式，保留旧素材的兼容性。
+当前 MonsterVisual PNG 路径已支持显式 rect / 归一化 anchor 与固定 scale，可表达裁切后的空间基准；旧 AnimatedUnit 仍有贴底限制。视频或整体跳跃来源仍需逐项实现并验证：保存完整固定帧画布及共同 pivot，或保存裁切后的原画布尺寸、偏移与共同 pivot 并在渲染中恢复。生成器也要能够保留这些数据；不能再让默认裁边覆盖它们。改动仅针对需要的新模式，保留旧素材的兼容性。
 
 纸娃娃的 `anchor / grip` 使用图片左下角为原点的归一化坐标。与图集左上角像素 pivot 转换时写清原点、单位和裁切偏移；不要把草案 `[0.5,1.0]` 当作所有系统通用的“脚底”。
 
@@ -73,4 +77,4 @@ AnimatedUnit 只消费 pivot X，将 Cocos anchor Y 固定设为 0；每帧图�
 
 每批记录源文件、身份参考、实际工具 / 暴露的模型信息、最终 Prompt、实际尺寸、逻辑画布 / 色板 / 网格 / 显示倍率、帧序、动作类型、FPS / loop、空间策略、锚点原点与单位、裁切 / 采样变换及 QA 结果。未知模型 / seed 写 unknown，不虚构。
 
-可用批次内 `production.json` 保存这些制作信息，格式按素材需要取舍；它不会被游戏自动读取。运行时事实仍在 `art-manifest.ts`、`appearances.ts` 和 `animation.ts`。视觉接触点可记录用于验收，但没有现成的 `contact_visual` 事件消费器，也不能借它触发伤害。
+当前 production.json 与 art-completion-v2/manifest.json 引用片段是生成器输入，不由游戏直接读取。pixel-art.ts 是生成结果，改来源后重新生成并执行 inspect-pixel-art.py --check；旧 art-manifest.ts、appearances.ts、animation.ts 保留兼容职责。视觉接触点可记录用于验收，但没有现成的 `contact_visual` 事件消费器，也不能借它触发伤害。

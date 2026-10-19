@@ -120,4 +120,4 @@ Avoid full-screen flashes, high-frequency flicker, dense tiny particles,
 long bright trails and persistent halos that obscure enemy warnings.
 ```
 
-形态、色板、节奏与装饰预算遵循 [像素特效规范](../../../../docs/PIXEL_VFX.md)。现有 Graphics 可作结构参考，尚不是统一像素粒子系统；用户要求新位图特效时生成真实素材并说明接入需要。受击、刀光和弹体与角色动画分开，不用图片内的大小代替逻辑判定范围。
+形态、色板、节奏与装饰预算遵循 [像素特效规范](../../../../docs/PIXEL_VFX.md)。当前 Graphics 与 PixelVfxView 的火 / 冰 / 挥击 / 护盾16帧短翻页并用，后者有24节点上限并避让危险边界，尚不是完整粒子编辑器或统一像素合成；新位图仍需实际生成、注册与画面检查。受击、刀光和弹体与角色动画分开，不用图片内的大小代替逻辑判定范围。

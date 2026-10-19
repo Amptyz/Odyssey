@@ -68,4 +68,4 @@ export interface Rule {
   targetStatus?: StatusId; sourcePrimed?: boolean; effect: Effect;
   directOnly?:boolean; tags?:readonly string[]; cooldown?:number; perTarget?:boolean; every?:number; healthBelow?:number;
 }
-export interface PerkDefinition { id: string; name: string; description: string; color: string; rules: readonly Rule[]; requiresSkillTags?:readonly string[]; requiresSkillGroups?:readonly (readonly string[])[]; speedMultiplier?: number; attackMultiplier?: number; maxHpMultiplier?:number; critChance?:number; skillCrit?:boolean; trueBonusRatio?:number }
+export interface PerkDefinition { id: string; name: string; description: string; color: string; rules: readonly Rule[]; basicAttack?:import('../content/attacks').BasicAttackId; requiresSkillTags?:readonly string[]; requiresSkillGroups?:readonly (readonly string[])[]; speedMultiplier?: number; attackMultiplier?: number; maxHpMultiplier?:number; critChance?:number; skillCrit?:boolean; trueBonusRatio?:number }

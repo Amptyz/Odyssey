@@ -1,3 +1,4 @@
+import {JOURNEYS} from '../content/scenes';
 import {STAT_KEYS,validModifier,type Modifier} from '../combat-core/attributes/AttributeSet';
 import { MAPS,mapDefinition,type MapId } from '../content/maps';
 import { HERO_SKILLS,SKILL_SLOTS,type Loadout } from '../content/skills';
@@ -7,7 +8,7 @@ import type { PerkId } from '../combat-core/types';
 import type { WorldSnapshot } from './GameWorld';
 export const DEV_SPEEDS=[.25,.5,1,2] as const;
 export interface DeveloperOptions {invincible:boolean;noCooldown:boolean;freezeEnemies:boolean;speed:typeof DEV_SPEEDS[number]}
-export interface DeveloperConfig {version:2;seed:number;mapId:MapId;wave:number;loadout:Loadout;perks:PerkId[];equipment:EquipmentLoadout;purchaseOrder:EquipmentId[];options:DeveloperOptions;attributeModifiers?:Modifier[];attributeTarget?:'players'|'enemies'|'all'}
+export interface DeveloperConfig {entry?:'combat'|'camp';version:2;seed:number;mapId:MapId;wave:number;loadout:Loadout;perks:PerkId[];equipment:EquipmentLoadout;purchaseOrder:EquipmentId[];options:DeveloperOptions;attributeModifiers?:Modifier[];attributeTarget?:'players'|'enemies'|'all'}
 export interface DeveloperSnapshot {enabled:boolean;open:boolean;draft:DeveloperConfig;revision:number;notice:string}
 export const DEFAULT_DEV_OPTIONS:DeveloperOptions={invincible:false,noCooldown:false,freezeEnemies:false,speed:1};
 export function captureDeveloperConfig(s:WorldSnapshot,options=DEFAULT_DEV_OPTIONS):DeveloperConfig {
@@ -21,8 +22,10 @@ export function parseDeveloperConfig(input:unknown):DeveloperConfig {
   if(!Number.isInteger(c.seed)||c.seed!<0||c.seed!>0xffffffff)throw Error('种子必须是 0–4294967295 的整数。');
   if(typeof c.mapId!=='string'||!Object.prototype.hasOwnProperty.call(MAPS,c.mapId))throw Error('地图不存在。');
   if(!Number.isInteger(c.wave)||c.wave!<1||c.wave!>mapDefinition(c.mapId).waves.length)throw Error('波次超出当前地图范围。');
+  if(c.entry!==undefined&&!['combat','camp'].includes(c.entry))throw Error('测试场景无效。');
+  if(c.entry==='camp'&&c.wave!==1&&!JOURNEYS[c.mapId].rests[c.wave!-1])throw Error('所选关卡前没有休息点。');
   if(!c.loadout||!SKILL_SLOTS.every(slot=>HERO_SKILLS.includes(c.loadout![slot]))||new Set(SKILL_SLOTS.map(s=>c.loadout![s])).size!==4)throw Error('四个槽位必须是不同的玩家技能。');
-  if(!Array.isArray(c.perks)||c.perks.length>PERKS.length||new Set(c.perks).size!==c.perks.length||!c.perks.every(id=>PERKS.some(p=>p.id===id)))throw Error('增益包含重复或不存在的内容。');
+  if(!Array.isArray(c.perks)||c.perks.length>PERKS.length||new Set(c.perks).size!==c.perks.length||!c.perks.every(id=>PERKS.some(p=>p.id===id)))throw Error('余烬包含重复或不存在的内容。');
   if(!c.equipment||typeof c.equipment!=='object'||Array.isArray(c.equipment))throw Error('装备配置无效。');
   for(const [slot,id] of Object.entries(c.equipment))if(!EQUIPMENT_SLOTS.includes(slot as typeof EQUIPMENT_SLOTS[number])||!SHOP_CATALOG.includes(id as EquipmentId))throw Error('装备或装备栏不存在。');
   if(new Set(Object.values(c.equipment)).size!==Object.values(c.equipment).length)throw Error('同一件装备不能占用多个栏位。');
@@ -31,7 +34,7 @@ export function parseDeveloperConfig(input:unknown):DeveloperConfig {
   if(c.attributeTarget!==undefined&&!['players','enemies','all'].includes(c.attributeTarget))throw Error('属性目标无效。');
   const o=c.options;
   if(!o||typeof o.invincible!=='boolean'||typeof o.noCooldown!=='boolean'||typeof o.freezeEnemies!=='boolean'||!DEV_SPEEDS.includes(o.speed))throw Error('测试开关或时间倍率无效。');
-  return{version:2,seed:c.seed!,mapId:c.mapId,wave:c.wave!,loadout:Object.fromEntries(SKILL_SLOTS.map(slot=>[slot,c.loadout![slot]])) as Loadout,
+  return{entry:c.entry,version:2,seed:c.seed!,mapId:c.mapId,wave:c.wave!,loadout:Object.fromEntries(SKILL_SLOTS.map(slot=>[slot,c.loadout![slot]])) as Loadout,
     perks:PERKS.filter(p=>c.perks!.includes(p.id)).map(p=>p.id),equipment:{...c.equipment},purchaseOrder:[...c.purchaseOrder!],options:{invincible:o.invincible,noCooldown:o.noCooldown,freezeEnemies:o.freezeEnemies,speed:o.speed},attributeTarget:c.attributeTarget,attributeModifiers:c.attributeModifiers?.map(m=>({...m}))};
 }
 export interface PresetStorage {getItem:(key:string)=>string|null;setItem:(key:string,value:string)=>void}

@@ -22,10 +22,10 @@ export class InputController {
     if(typeof window!=='undefined'){window.addEventListener('contextmenu',this.onContext);window.addEventListener('blur',this.onBlur);document.addEventListener('visibilitychange',this.onVisibility);window.addEventListener('mouseup',this.onWindowUp);window.addEventListener('keydown',this.onBrowserKey);}
   }
   update(state:WorldSnapshot):void {
-    if(this.state&&(this.state.mapId!==state.mapId||this.state.phase!==state.phase||this.state.paused!==state.paused||this.state.wave!==state.wave||this.state.developer?.open!==state.developer?.open||state.tick<this.state.tick))this.clear();
+    if(this.state&&(this.state.mapId!==state.mapId||this.state.phase!==state.phase||this.state.scene.id!==state.scene.id||this.state.paused!==state.paused||this.state.wave!==state.wave||this.state.developer?.open!==state.developer?.open||state.tick<this.state.tick))this.clear();
     this.state=state;
     if(this.pointerLocal)this.pointer=this.aimPoint(this.pointerLocal);
-    if(state.phase!=='fighting'||state.paused)return;
+    if(!['camp','cleared','fighting'].includes(state.phase)||state.paused)return;
     this.port.send({type:'AttackInput',point:this.attacking?this.pointer:undefined});
     if(this.mode!=='wasd')return;
     const x=Number(this.held.has(KeyCode.KEY_D))-Number(this.held.has(KeyCode.KEY_A));
@@ -67,7 +67,7 @@ export class InputController {
     const p=this.local(e);this.pointerLocal=p;this.pointer=this.aimPoint(p);
     const button=e.getButton();
     if(button===EventMouse.BUTTON_LEFT&&this.hud.click(p))return;
-    if(!this.state||this.state.phase!=='fighting'||this.state.paused)return;
+    if(!this.state||!['camp','cleared','fighting'].includes(this.state.phase)||this.state.paused)return;
     if(button===EventMouse.BUTTON_LEFT){this.attacking=true;this.port.send({type:'Attack',point:this.pointer});}
     if(button===EventMouse.BUTTON_RIGHT)this.port.send(this.mode==='wasd'?{type:'CastSlot',slot:'Q',point:this.pointer}:{type:'MoveTo',point:this.pointer});
   }
@@ -75,12 +75,13 @@ export class InputController {
   private onUp(e:EventMouse):void {if(e.getButton()===EventMouse.BUTTON_LEFT)this.releaseAttack();}
   private onKey(e:EventKeyboard):void {
     if(this.held.has(e.keyCode))return;this.held.add(e.keyCode);
+    if(e.keyCode===KeyCode.KEY_F){this.port.send({type:'Interact'});return;}
     if(e.keyCode===KeyCode.F2){this.port.send({type:this.state?.developer?.open?'DevClose':'DevOpen'});return;}
     if(this.state?.developer?.open){if(e.keyCode===KeyCode.ESCAPE)this.port.send({type:'DevClose'});return;}
     const skill=this.mode==='wasd'?(e.keyCode===KeyCode.SPACE?'W':e.keyCode===KeyCode.KEY_W?undefined:KEY_SKILLS[e.keyCode]):KEY_SKILLS[e.keyCode];
     if(skill&&this.state?.phase==='reward'&&this.state.pendingSkill){this.port.send({type:'ConfirmSkill',slot:skill});return;}
     if(skill)this.port.send({type:'CastSlot',slot:skill,point:this.pointer});
-    else if(e.keyCode===KeyCode.ESCAPE)this.port.send({type:'TogglePause'});
+    else if(e.keyCode===KeyCode.ESCAPE)this.port.send({type:this.state?.phase==='shop'||this.state?.phase==='reward'?'CloseInteraction':'TogglePause'});
     else if(e.keyCode===KeyCode.F3)this.hud.toggleDebug();
     else if(e.keyCode===KeyCode.DIGIT_1)this.hud.keyChoice(0);
     else if(e.keyCode===KeyCode.DIGIT_2)this.hud.keyChoice(1);
@@ -98,7 +99,7 @@ export class InputController {
   private onContext=(e:Event):void=>{if(e.target instanceof HTMLCanvasElement)e.preventDefault();};
   private onBlur=():void=>{
     this.clear();
-    if(!this.state?.network&&this.state?.phase==='fighting'&&!this.state.paused){this.state={...this.state,paused:true};this.port.send({type:'TogglePause'});}
+    if(!this.state?.network&&this.state&&['camp','cleared','fighting'].includes(this.state.phase)&&!this.state.paused){this.state={...this.state,paused:true};this.port.send({type:'TogglePause'});}
   };
   private onVisibility=():void=>{if(document.hidden)this.onBlur();};
 }

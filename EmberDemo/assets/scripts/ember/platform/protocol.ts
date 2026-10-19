@@ -11,6 +11,7 @@ export type GameCommand =
   | { type:'DevNotice'; message:string }
   | { type:'DevAction'; action:DeveloperAction }
   | { type:'DevSpawn'; enemyId:EnemyKind;count:1|5 }
+  | { type:'Interact'|'CloseInteraction' }
   | { type:'MoveTo'; point:Vec2 }
   | { type:'DirectInput'; movement:Vec2 } | { type:'Stop' }
   | { type:'AttackInput'; point?:Vec2 }

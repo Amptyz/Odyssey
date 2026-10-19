@@ -1,6 +1,7 @@
 import { Graphics,Node,Sprite } from 'cc';
 import type { MapDefinition } from '../content/maps';
 import { ENVIRONMENT_APPEARANCES } from '../content/appearances';
+import { PIXEL_ATLASES } from '../content/pixel-art';
 import { screenVisible,visibleWorldBounds,worldToScreen,type Projection } from './IsoProjection';
 import { ArtLibrary } from './ArtLibrary';
 import { color,polygon } from './Primitives';
@@ -13,7 +14,7 @@ export class EnvironmentView {
     for(const prop of this.props)prop.node?.destroy();this.props=[];this.map=map;this.lastOrigin={x:NaN,y:NaN};
     const f=ENVIRONMENT_APPEARANCES[map.environment]!.frames;
     const add=(frame:number,x:number,y:number,width:number,height:number,ground=false,extra:Partial<Prop>={})=>this.props.push({frame,x,y,width,height,ground,...extra});
-    const crestLocations:{x:number;y:number}[]=[];for(const wave of map.waves){const start=wave.level?.start;if(start&&crestLocations.every(at=>Math.hypot(at.x-start.x,at.y-start.y)>=4)){add(f.crest,start.x,start.y,130,67,true);crestLocations.push(start);}}
+    const crestLocations:{x:number;y:number}[]=[];for(const start of map.groundEmblems??map.waves.map(wave=>wave.level?.start)){if(start&&start.x<map.width&&start.y<map.height&&crestLocations.every(at=>Math.hypot(at.x-start.x,at.y-start.y)>=4)){add(f.crest,start.x,start.y,130,67,true);crestLocations.push(start);}}
     for(const obstacle of map.obstacles)add(obstacle.height>40?f.pillar:f.rubble,obstacle.x,obstacle.y,Math.max(43,obstacle.radius*65),Math.max(33,obstacle.height));
     for(let x=4;x<map.width;x+=8){add(f.shrub,x,-.8,53,42,false,{foliage:true});add(f.foliage,x,map.height+.8,57,46,false,{foliage:true});}
     for(let y=5;y<map.height;y+=8){add(f.foliage,-.8,y,57,46,false,{foliage:true});add(f.shrub,map.width+.8,y,53,42,false,{foliage:true});}
@@ -25,10 +26,16 @@ export class EnvironmentView {
     if(camera.origin.x!==this.lastOrigin.x||camera.origin.y!==this.lastOrigin.y){this.drawFloor(camera);this.lastOrigin={...camera.origin};}
     const visible:{node:Node;y:number}[]=[];this.visibleProps=0;
     for(const [index,prop] of this.props.entries()){
-      const p=worldToScreen(prop,camera),inView=screenVisible({x:p.x,y:p.y+prop.height/2},prop.width);
+      const atlas=map.environment==='frostRuins'&&this.art.hasPixel('environment-frost-v2')?'environment-frost-v2':'environment';
+      const source=this.art.hasPixel(atlas)?PIXEL_ATLASES[atlas]!.frames[prop.frame]!.rect:this.art.region(visual.atlas,prop.frame).rect;
+      // Upright props contain within their scene box without squashing ice pillars.
+      // Ground crests keep their authored isometric footprint; no collision changes.
+      const scale=Math.min(prop.width/source[2],prop.height/source[3]);
+      const width=prop.ground?prop.width:source[2]*scale,height=prop.ground?prop.height:source[3]*scale;
+      const p=worldToScreen(prop,camera),inView=screenVisible({x:p.x,y:p.y+height/2},width);
       if(!inView){if(prop.node)prop.node.active=false;continue;}
-      if(!prop.node)prop.node=this.art.hasPixel('environment')?this.art.pixelSprite(prop.ground?this.ground:this.objects,'environment',prop.frame,prop.width,prop.height):this.art.sprite(prop.ground?this.ground:this.objects,visual.atlas,prop.frame,prop.width,prop.height,`Ruins prop ${prop.frame}`);
-      const node=prop.node;node.active=true;node.setPosition(Math.round(p.x),Math.round(p.y+(prop.ground?0:prop.height/2)));
+      if(!prop.node)prop.node=this.art.hasPixel(atlas)?this.art.pixelSprite(prop.ground?this.ground:this.objects,atlas,prop.frame,width,height):this.art.sprite(prop.ground?this.ground:this.objects,visual.atlas,prop.frame,width,height,`Ruins prop ${prop.frame}`);
+      const node=prop.node;node.active=true;node.setPosition(Math.round(p.x),Math.round(p.y+(prop.ground?0:height/2)));
       if(prop.foliage)node.angle=0;
       if(prop.waterfall)node.getComponent(Sprite)!.color=color('#F2FDFF');
       if(!prop.ground)visible.push({node,y:p.y});this.visibleProps++;
@@ -45,5 +52,5 @@ export class EnvironmentView {
       polygon(g,[project(x,y),project(Math.min(x+4,map.width),y),project(Math.min(x+4,map.width),Math.min(y+4,map.height)),project(x,Math.min(y+4,map.height))],((x+y)/4)%3===0?map.theme.floorB:map.theme.floorA,visual.seam);this.visibleTiles++;
     }
   }
-  debug(){return{visibleProps:this.visibleProps,allocatedProps:this.props.filter(p=>!!p.node).length,totalProps:this.props.length,visibleTiles:this.visibleTiles};}
+  debug(){return{atlas:this.map?.environment==='frostRuins'&&this.art.hasPixel('environment-frost-v2')?'environment-frost-v2':'environment',visibleProps:this.visibleProps,allocatedProps:this.props.filter(p=>!!p.node).length,totalProps:this.props.length,visibleTiles:this.visibleTiles};}
 }

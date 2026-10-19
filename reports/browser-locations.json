@@ -1,0 +1,2480 @@
+{
+  "status": "passed",
+  "scope": "Normal Start plus explicit F2 fixtures for all 16 places; actual title frames, two viewport sizes, same-place restart and modal/menu lifecycle. No direct world mutation.",
+  "checks": [
+    "Main menu never shows an entry title",
+    "Normal Start shows the configured camp title and subtitle",
+    "Entry title waits until the black curtain has revealed",
+    "Title fades in and out through actual rendered frames",
+    "World simulation continues throughout the entry title",
+    "Title retires after a short hold without leaving a blocking panel",
+    "ember/camp/0: renders its own editable title",
+    "ember/camp/2: renders its own editable title",
+    "ember/camp/4: renders its own editable title",
+    "ember/level/1: renders its own editable title",
+    "ember/level/2: renders its own editable title",
+    "ember/level/3: renders its own editable title",
+    "ember/level/4: renders its own editable title",
+    "ember/level/5: renders its own editable title",
+    "frost/camp/0: renders its own editable title",
+    "frost/camp/2: renders its own editable title",
+    "frost/camp/4: renders its own editable title",
+    "frost/level/1: renders its own editable title",
+    "frost/level/2: renders its own editable title",
+    "frost/level/3: renders its own editable title",
+    "frost/level/4: renders its own editable title",
+    "frost/level/5: renders its own editable title",
+    "Restarting the same level starts a fresh entry title",
+    "Entry title does not cover the developer modal",
+    "Closing a modal does not replay an expired title",
+    "Returning to the main menu clears any title",
+    "Rapid switches discard the old location title",
+    "All location titles render without browser runtime errors"
+  ],
+  "samples": [
+    {
+      "name": "normal-opening",
+      "frames": [
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0,
+            "duration": 2.36
+          },
+          "tick": 0
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.016199999928474425,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.016199999928474425,
+            "duration": 2.36
+          },
+          "tick": 0
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.033,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.033,
+            "duration": 2.36
+          },
+          "tick": 1
+        },
+        {
+          "active": true,
+          "opacity": 253,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.04959999990463257,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.04959999990463257,
+            "duration": 2.36
+          },
+          "tick": 1
+        },
+        {
+          "active": true,
+          "opacity": 240,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.06629999995231628,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.06629999995231628,
+            "duration": 2.36
+          },
+          "tick": 2
+        },
+        {
+          "active": true,
+          "opacity": 218,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.08289999997615814,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.08289999997615814,
+            "duration": 2.36
+          },
+          "tick": 2
+        },
+        {
+          "active": true,
+          "opacity": 190,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.09959999990463257,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.09959999990463257,
+            "duration": 2.36
+          },
+          "tick": 3
+        },
+        {
+          "active": true,
+          "opacity": 156,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.11629999995231628,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.11629999995231628,
+            "duration": 2.36
+          },
+          "tick": 3
+        },
+        {
+          "active": true,
+          "opacity": 121,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.13289999997615815,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.13289999997615815,
+            "duration": 2.36
+          },
+          "tick": 4
+        },
+        {
+          "active": true,
+          "opacity": 86,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.14969999992847444,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.14969999992847444,
+            "duration": 2.36
+          },
+          "tick": 4
+        },
+        {
+          "active": true,
+          "opacity": 55,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.16619999992847445,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.16619999992847445,
+            "duration": 2.36
+          },
+          "tick": 5
+        },
+        {
+          "active": true,
+          "opacity": 28,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.18289999997615816,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.18289999997615816,
+            "duration": 2.36
+          },
+          "tick": 5
+        },
+        {
+          "active": true,
+          "opacity": 9,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.1995999999046326,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.1995999999046326,
+            "duration": 2.36
+          },
+          "tick": 6
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.2162999999523163,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.2162999999523163,
+            "duration": 2.36
+          },
+          "tick": 6
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 2,
+            "elapsed": 0.233,
+            "duration": 2.36
+          },
+          "tick": 7
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 11,
+            "elapsed": 0.24969999992847444,
+            "duration": 2.36
+          },
+          "tick": 7
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 25,
+            "elapsed": 0.2662999999523163,
+            "duration": 2.36
+          },
+          "tick": 8
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 43,
+            "elapsed": 0.28289999997615817,
+            "duration": 2.36
+          },
+          "tick": 8
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 66,
+            "elapsed": 0.2995999999046326,
+            "duration": 2.36
+          },
+          "tick": 9
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 90,
+            "elapsed": 0.31629999995231634,
+            "duration": 2.36
+          },
+          "tick": 9
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 117,
+            "elapsed": 0.3331999999284745,
+            "duration": 2.36
+          },
+          "tick": 10
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 143,
+            "elapsed": 0.34959999990463264,
+            "duration": 2.36
+          },
+          "tick": 10
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 170,
+            "elapsed": 0.3668999999761582,
+            "duration": 2.36
+          },
+          "tick": 11
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 193,
+            "elapsed": 0.3828999999761582,
+            "duration": 2.36
+          },
+          "tick": 11
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 215,
+            "elapsed": 0.39959999990463263,
+            "duration": 2.36
+          },
+          "tick": 12
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 233,
+            "elapsed": 0.41629999995231637,
+            "duration": 2.36
+          },
+          "tick": 12
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 246,
+            "elapsed": 0.43289999997615825,
+            "duration": 2.36
+          },
+          "tick": 13
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 254,
+            "elapsed": 0.4495999999046327,
+            "duration": 2.36
+          },
+          "tick": 13
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.4662999999523164,
+            "duration": 2.36
+          },
+          "tick": 14
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.48300000000000015,
+            "duration": 2.36
+          },
+          "tick": 14
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.5005000000000002,
+            "duration": 2.36
+          },
+          "tick": 15
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.5180999999046327,
+            "duration": 2.36
+          },
+          "tick": 15
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.5332999999523165,
+            "duration": 2.36
+          },
+          "tick": 16
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.5500999999046328,
+            "duration": 2.36
+          },
+          "tick": 16
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.5672999999523165,
+            "duration": 2.36
+          },
+          "tick": 17
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.5830000000000002,
+            "duration": 2.36
+          },
+          "tick": 17
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.5996999999284746,
+            "duration": 2.36
+          },
+          "tick": 18
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.6165000000000002,
+            "duration": 2.36
+          },
+          "tick": 18
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.6330000000000001,
+            "duration": 2.36
+          },
+          "tick": 19
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.6498999999761582,
+            "duration": 2.36
+          },
+          "tick": 19
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.6667999999523163,
+            "duration": 2.36
+          },
+          "tick": 20
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.6831999999284745,
+            "duration": 2.36
+          },
+          "tick": 20
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.7006999999284744,
+            "duration": 2.36
+          },
+          "tick": 21
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.7163999999761581,
+            "duration": 2.36
+          },
+          "tick": 21
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.7335999999046325,
+            "duration": 2.36
+          },
+          "tick": 22
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.7503999999761581,
+            "duration": 2.36
+          },
+          "tick": 22
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.7665999999046326,
+            "duration": 2.36
+          },
+          "tick": 23
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.783,
+            "duration": 2.36
+          },
+          "tick": 23
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.8,
+            "duration": 2.36
+          },
+          "tick": 24
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.8171999999284745,
+            "duration": 2.36
+          },
+          "tick": 24
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.8328999999761582,
+            "duration": 2.36
+          },
+          "tick": 25
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.8495,
+            "duration": 2.36
+          },
+          "tick": 25
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.8661999999284744,
+            "duration": 2.36
+          },
+          "tick": 26
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.8828999999761581,
+            "duration": 2.36
+          },
+          "tick": 26
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.8995999999046325,
+            "duration": 2.36
+          },
+          "tick": 27
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.9162999999523161,
+            "duration": 2.36
+          },
+          "tick": 27
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.9329999999999998,
+            "duration": 2.36
+          },
+          "tick": 28
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.9495999999046324,
+            "duration": 2.36
+          },
+          "tick": 28
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.9661999999284743,
+            "duration": 2.36
+          },
+          "tick": 29
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.982899999976158,
+            "duration": 2.36
+          },
+          "tick": 29
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 0.9995999999046323,
+            "duration": 2.36
+          },
+          "tick": 30
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.016199999928474,
+            "duration": 2.36
+          },
+          "tick": 30
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.032899999976158,
+            "duration": 2.36
+          },
+          "tick": 31
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.0495999999046324,
+            "duration": 2.36
+          },
+          "tick": 31
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.0661999999284741,
+            "duration": 2.36
+          },
+          "tick": 32
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.082899999976158,
+            "duration": 2.36
+          },
+          "tick": 32
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.0994999999999997,
+            "duration": 2.36
+          },
+          "tick": 33
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.1161999999284742,
+            "duration": 2.36
+          },
+          "tick": 33
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.1329999999999998,
+            "duration": 2.36
+          },
+          "tick": 34
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.1495999999046322,
+            "duration": 2.36
+          },
+          "tick": 34
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.166299999952316,
+            "duration": 2.36
+          },
+          "tick": 35
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.1829999999999998,
+            "duration": 2.36
+          },
+          "tick": 35
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.1995999999046325,
+            "duration": 2.36
+          },
+          "tick": 36
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.2162999999523163,
+            "duration": 2.36
+          },
+          "tick": 36
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.2332999999523162,
+            "duration": 2.36
+          },
+          "tick": 37
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.2495999999046326,
+            "duration": 2.36
+          },
+          "tick": 37
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.2662999999523163,
+            "duration": 2.36
+          },
+          "tick": 38
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.2830000000000001,
+            "duration": 2.36
+          },
+          "tick": 38
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.2995999999046326,
+            "duration": 2.36
+          },
+          "tick": 39
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.3162999999523164,
+            "duration": 2.36
+          },
+          "tick": 39
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.3330000000000002,
+            "duration": 2.36
+          },
+          "tick": 40
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.3496999999284747,
+            "duration": 2.36
+          },
+          "tick": 40
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.3663999999761585,
+            "duration": 2.36
+          },
+          "tick": 41
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.383099999904633,
+            "duration": 2.36
+          },
+          "tick": 41
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.3996999999284747,
+            "duration": 2.36
+          },
+          "tick": 42
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.4163999999761585,
+            "duration": 2.36
+          },
+          "tick": 42
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.4330000000000003,
+            "duration": 2.36
+          },
+          "tick": 43
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.4496999999284748,
+            "duration": 2.36
+          },
+          "tick": 43
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.4662999999523165,
+            "duration": 2.36
+          },
+          "tick": 44
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.4830000000000003,
+            "duration": 2.36
+          },
+          "tick": 44
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.4996999999284748,
+            "duration": 2.36
+          },
+          "tick": 45
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.5163999999761586,
+            "duration": 2.36
+          },
+          "tick": 45
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.5328999999761586,
+            "duration": 2.36
+          },
+          "tick": 46
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.549599999904633,
+            "duration": 2.36
+          },
+          "tick": 46
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.5662999999523168,
+            "duration": 2.36
+          },
+          "tick": 47
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.5828999999761586,
+            "duration": 2.36
+          },
+          "tick": 47
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.599599999904633,
+            "duration": 2.36
+          },
+          "tick": 48
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.6162999999523169,
+            "duration": 2.36
+          },
+          "tick": 48
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.6328999999761586,
+            "duration": 2.36
+          },
+          "tick": 49
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.6495999999046331,
+            "duration": 2.36
+          },
+          "tick": 49
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.666299999952317,
+            "duration": 2.36
+          },
+          "tick": 50
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.6830000000000007,
+            "duration": 2.36
+          },
+          "tick": 50
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.7003999999761588,
+            "duration": 2.36
+          },
+          "tick": 51
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.7163999999761588,
+            "duration": 2.36
+          },
+          "tick": 51
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.733699999928475,
+            "duration": 2.36
+          },
+          "tick": 52
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.749699999928475,
+            "duration": 2.36
+          },
+          "tick": 52
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.7668999999761588,
+            "duration": 2.36
+          },
+          "tick": 53
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.7828999999761588,
+            "duration": 2.36
+          },
+          "tick": 53
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.799699999928475,
+            "duration": 2.36
+          },
+          "tick": 54
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.816199999928475,
+            "duration": 2.36
+          },
+          "tick": 54
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.8330000000000006,
+            "duration": 2.36
+          },
+          "tick": 55
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.8503999999761587,
+            "duration": 2.36
+          },
+          "tick": 55
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.8662999999523169,
+            "duration": 2.36
+          },
+          "tick": 56
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.8830999999046332,
+            "duration": 2.36
+          },
+          "tick": 56
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.8995999999046331,
+            "duration": 2.36
+          },
+          "tick": 57
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 255,
+            "elapsed": 1.916299999952317,
+            "duration": 2.36
+          },
+          "tick": 57
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 253,
+            "elapsed": 1.9328999999761587,
+            "duration": 2.36
+          },
+          "tick": 58
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 249,
+            "elapsed": 1.9495999999046332,
+            "duration": 2.36
+          },
+          "tick": 58
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 244,
+            "elapsed": 1.9665000000000006,
+            "duration": 2.36
+          },
+          "tick": 59
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 237,
+            "elapsed": 1.983199999928475,
+            "duration": 2.36
+          },
+          "tick": 59
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 229,
+            "elapsed": 1.9995999999046332,
+            "duration": 2.36
+          },
+          "tick": 60
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 219,
+            "elapsed": 2.016299999952317,
+            "duration": 2.36
+          },
+          "tick": 60
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 208,
+            "elapsed": 2.0331999999284753,
+            "duration": 2.36
+          },
+          "tick": 61
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 197,
+            "elapsed": 2.0496999999284755,
+            "duration": 2.36
+          },
+          "tick": 61
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 184,
+            "elapsed": 2.0662999999523173,
+            "duration": 2.36
+          },
+          "tick": 62
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 170,
+            "elapsed": 2.0837999999523173,
+            "duration": 2.36
+          },
+          "tick": 62
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 157,
+            "elapsed": 2.1005999999046336,
+            "duration": 2.36
+          },
+          "tick": 63
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 143,
+            "elapsed": 2.116399999976159,
+            "duration": 2.36
+          },
+          "tick": 63
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 129,
+            "elapsed": 2.133000000000001,
+            "duration": 2.36
+          },
+          "tick": 64
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 115,
+            "elapsed": 2.149699999928475,
+            "duration": 2.36
+          },
+          "tick": 64
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 101,
+            "elapsed": 2.166399999976159,
+            "duration": 2.36
+          },
+          "tick": 65
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 87,
+            "elapsed": 2.1830000000000007,
+            "duration": 2.36
+          },
+          "tick": 65
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 74,
+            "elapsed": 2.1995999999046334,
+            "duration": 2.36
+          },
+          "tick": 66
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 61,
+            "elapsed": 2.2163999999761588,
+            "duration": 2.36
+          },
+          "tick": 66
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 49,
+            "elapsed": 2.233099999904633,
+            "duration": 2.36
+          },
+          "tick": 67
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 38,
+            "elapsed": 2.249699999928475,
+            "duration": 2.36
+          },
+          "tick": 67
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 29,
+            "elapsed": 2.2663999999761586,
+            "duration": 2.36
+          },
+          "tick": 68
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 20,
+            "elapsed": 2.283099999904633,
+            "duration": 2.36
+          },
+          "tick": 68
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 13,
+            "elapsed": 2.2996999999284746,
+            "duration": 2.36
+          },
+          "tick": 69
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 7,
+            "elapsed": 2.3162999999523164,
+            "duration": 2.36
+          },
+          "tick": 69
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 3,
+            "elapsed": 2.3330999999046327,
+            "duration": 2.36
+          },
+          "tick": 70
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 2.349599999904633,
+            "duration": 2.36
+          },
+          "tick": 70
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 2.36,
+            "duration": 2.36
+          },
+          "tick": 71
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "reports/location-normal-camp.png",
+    "reports/location-ember-rest.png",
+    "reports/location-ember-level.png",
+    "reports/location-frost-rest.png",
+    "reports/location-frost-level.png"
+  ],
+  "errors": []
+}

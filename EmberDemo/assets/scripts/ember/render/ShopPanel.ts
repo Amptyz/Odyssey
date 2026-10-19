@@ -8,7 +8,7 @@ import { box,graphics,text,setText } from './Primitives';
 type Button=(title:string,x:number,y:number,width:number,action:()=>void,fill?:string)=>void;
 export function drawShop(root:Node,s:WorldSnapshot,page:number,setPage:(p:number)=>void,button:Button,send:(c:GameCommand)=>void,art:ArtLibrary,inspect:(id:EquipmentId)=>void):void {
   text('Shop title',root,'旅 人 工 坊',34,0,300,800,55,'#EFE2C1');
-  text('Shop subtitle',root,`${s.wave===0?'启程整备':`第 ${s.wave} 波后的整备`}  ·  金币 ${s.gold}  ·  固定货架，自由搭配，无职业限制`,16,0,253,1120,34,'#B8D4C7');
+  text('Shop subtitle',root,`${s.wave===0?'进入营地':`第 ${s.wave} 波后的整备`}  ·  金币 ${s.gold}  ·  固定货架，自由搭配，无职业限制`,16,0,253,1120,34,'#B8D4C7');
   const panel=graphics('Equipment preview panel',root);box(panel,-595,-209,285,430,'#243F46',14);
   text('Preview title',root,'装备即外观',20,-455,186,250,40,'#ECD8AF');
   const body=new HeroRig(root,art);body.node.setPosition(-455,-8);body.node.setScale(2.5,2.5,1);body.equip(appearanceLoadout(s.equipment,s.purchaseOrder));
@@ -49,6 +49,6 @@ export function drawEquipmentDetails(root:Node,s:WorldSnapshot,id:EquipmentId,bu
   const preview=new HeroRig(root,art);preview.equip({...appearanceLoadout(s.equipment,s.purchaseOrder),[item.category]:id});preview.node.setPosition(-400,-100);preview.node.setScale(3,3,1);
   text('Equipment preview note',root,'装备外观预览\n查看不改变当前穿戴',14,-400,-185,280,60,'#B8D4C7');
   text('Equipment details',root,equipmentDetails(id),18,155,15,750,335,'#D2DFD2');
-  text('Equipment appearance rule',root,item.category==='weapon'?'装备后：当前已装备武器中，最后购买的一件决定普攻形态与射程。':'六栏不限类型，所有已装属性生效；同部位按最后购买的当前装备显示。',14,100,-210,900,48,'#B8D4C7');
+  text('Equipment appearance rule',root,'六栏不限类型，属性与被动叠加；同部位显示最后购买的装备。普攻形式只由余烬改变。',14,100,-210,900,48,'#B8D4C7');
   button('返回工坊',0,-325,300,close,'#547B75');
 }

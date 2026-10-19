@@ -1,0 +1,1372 @@
+{
+  "url": "http://127.0.0.1:8083",
+  "errors": [],
+  "observations": [
+    {
+      "name": "0-idle",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "idle",
+          "age": 0.13333333333333333,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "0-right-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": 4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.2333333333333333,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "0-right-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.26666666666666666
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.19999999999999996,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "0-left-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": -4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0.16666666666666674,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.26666666666666666
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.7999999999999999,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "0-left-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 2,
+          "kind": "attack",
+          "time": 0.9999999999999999
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.2000000000000005,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "1-idle",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 370,
+        "maxHp": 370,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "idle",
+          "age": 0.1,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "1-right-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 370,
+        "maxHp": 370,
+        "alive": true,
+        "velocity": {
+          "x": 4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "1-right-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 370,
+        "maxHp": 370,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "1-left-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 370,
+        "maxHp": 370,
+        "alive": true,
+        "velocity": {
+          "x": -4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0.16666666666666674,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.7666666666666666,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "1-left-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 370,
+        "maxHp": 370,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 2,
+          "kind": "attack",
+          "time": 0.9666666666666666
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.2000000000000004,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "2-idle",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 270,
+        "maxHp": 270,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "idle",
+          "age": 0.1,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "2-right-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 270,
+        "maxHp": 270,
+        "alive": true,
+        "velocity": {
+          "x": 4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "2-right-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 270,
+        "maxHp": 270,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "2-left-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 270,
+        "maxHp": 270,
+        "alive": true,
+        "velocity": {
+          "x": -4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0.16666666666666674,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.7666666666666666,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "2-left-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 270,
+        "maxHp": 270,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 2,
+          "kind": "attack",
+          "time": 0.9666666666666666
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.2000000000000004,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "3-idle",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "idle",
+          "age": 0.1,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "3-right-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7.473920000000001,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": 4.739200000000006,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "3-right-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7.473920000000001,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.30724637681159417,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "3-left-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": -4.739200000000006,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.7666666666666666,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "3-left-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.30724637681159417,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 2,
+          "kind": "attack",
+          "time": 0.7999999999999999
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.19999999999999996,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "4-idle",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 300,
+        "maxHp": 300,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "idle",
+          "age": 0.1,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "4-right-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 300,
+        "maxHp": 300,
+        "alive": true,
+        "velocity": {
+          "x": 4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "4-right-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 300,
+        "maxHp": 300,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.403448275862069,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "4-left-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 300,
+        "maxHp": 300,
+        "alive": true,
+        "velocity": {
+          "x": -4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0.07011494252873574,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.7666666666666666,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "4-left-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 300,
+        "maxHp": 300,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.403448275862069,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 2,
+          "kind": "attack",
+          "time": 0.8666666666666666
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.20000000000000007,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "5-idle",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 295,
+        "maxHp": 295,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "idle",
+          "age": 0.1,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "5-right-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 295,
+        "maxHp": 295,
+        "alive": true,
+        "velocity": {
+          "x": 4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "5-right-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 295,
+        "maxHp": 295,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "5-left-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 295,
+        "maxHp": 295,
+        "alive": true,
+        "velocity": {
+          "x": -4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0.16666666666666674,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.7666666666666666,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "5-left-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 295,
+        "maxHp": 295,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 2,
+          "kind": "attack",
+          "time": 0.9666666666666666
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.2000000000000004,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "6-idle",
+      "hero": {
+        "id": "hero",
+        "x": 7,
+        "y": 8,
+        "hp": 340,
+        "maxHp": 340,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "idle",
+          "age": 0.1,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "6-right-walk",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 340,
+        "maxHp": 340,
+        "alive": true,
+        "velocity": {
+          "x": 4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 0,
+          "kind": "attack",
+          "time": 0
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "6-right-attack",
+      "hero": {
+        "id": "hero",
+        "x": 7.419999999999999,
+        "y": 8,
+        "hp": 340,
+        "maxHp": 340,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": 1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.19999999999999998,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "6-left-walk",
+      "hero": {
+        "id": "hero",
+        "x": 6.86,
+        "y": 8,
+        "hp": 340,
+        "maxHp": 340,
+        "alive": true,
+        "velocity": {
+          "x": -4.19999999999999,
+          "y": 0
+        },
+        "attackCd": 0.13333333333333341,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 0.2333333333333333
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "walk",
+          "age": 0.7999999999999999,
+          "facing": -1
+        }
+      }
+    },
+    {
+      "name": "6-left-attack",
+      "hero": {
+        "id": "hero",
+        "x": 6.86,
+        "y": 8,
+        "hp": 340,
+        "maxHp": 340,
+        "alive": true,
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.5,
+        "facing": {
+          "x": -1,
+          "y": 0
+        },
+        "action": {
+          "id": 2,
+          "kind": "attack",
+          "time": 0.9666666666666666
+        },
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "art": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "attack",
+          "age": 0.2000000000000004,
+          "facing": -1
+        }
+      }
+    }
+  ],
+  "scope": "Explicit F2 config, six triplets and empty rig, both movement directions and attacks; inspect PNGs manually, no automated art-quality assertion."
+}

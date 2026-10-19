@@ -1,3 +1,6 @@
+import {JOURNEYS,CAMP,campMap,sceneInteractions} from './scenes';
+import type {LocationDefinition} from './locations';
+import {Pathfinder} from '../ai/Pathfinder';
 import {AttributeSet,validateExpression,validModifier} from '../combat-core/attributes/AttributeSet';
 import { SKILLS,skill,SKILL_SLOTS,HERO_SKILLS } from './skills';
 import {ENEMY_ACTION_SETS,ENEMY_ACTIONS,validateEnemyActions} from './enemy-actions';
@@ -14,6 +17,10 @@ import { HERO } from './config';
 import type { PerkDefinition } from '../combat-core/types';
 function requireContent(ok:unknown,path:string):asserts ok {if(!ok)throw new Error(`Invalid game content: ${path}`);}
 function positive(value:number,path:string):void {requireContent(Number.isFinite(value)&&value>0,path);}
+function location(value:LocationDefinition|undefined,path:string):void {
+  requireContent(value&&typeof value.name==='string'&&value.name.trim().length>0,`${path}.name`);
+  requireContent(value.subtitle===undefined||typeof value.subtitle==='string'&&value.subtitle.trim().length>0,`${path}.subtitle`);
+}
 /** Run at startup and in tests so missing content references fail before combat. */
 export function validateContent():void {
   requireContent(UNIT_APPEARANCES[HERO.appearance],'hero appearance');
@@ -52,6 +59,7 @@ export function validateContent():void {
   }
   for(const id of Object.keys(MAPS) as (keyof typeof MAPS)[]){
     const m=mapDefinition(id);requireContent(Number.isInteger(m.width)&&m.width>=4&&Number.isInteger(m.height)&&m.height>=4,`maps.${id}.size`);
+    location(m,`maps.${id}`);
     requireContent(ENVIRONMENT_APPEARANCES[m.environment],`maps.${id}.environment`);
     requireContent(m.heroSpawn.x>HERO.radius&&m.heroSpawn.x<m.width-HERO.radius&&m.heroSpawn.y>HERO.radius&&m.heroSpawn.y<m.height-HERO.radius,`maps.${id}.heroSpawn`);
     requireContent(m.waves.length>0,`maps.${id}.waves`);positive(m.spawnDistance,`maps.${id}.spawnDistance`);
@@ -63,9 +71,19 @@ export function validateContent():void {
     for(const slot of SKILL_SLOTS)requireContent(SKILLS[m.loadout[slot]]&&skill(m.loadout[slot]).tags.includes('hero'),`maps.${id}.loadout.${slot}`);
     requireContent(new Set(Object.values(m.loadout)).size===4,`maps.${id}.duplicate skills`);
     requireContent(HERO_SKILLS.length>=7,`maps.${id}.skill reward pool`);
-    requireContent(new Set(m.shopAfterWaves).size===m.shopAfterWaves.length&&m.shopAfterWaves.every(w=>Number.isInteger(w)&&w>0&&w<m.waves.length),`maps.${id}.shop stages`);
+    const journey=JOURNEYS[id],stops=Object.entries(journey.rests);
+    location(journey.camp,`journeys.${id}.camp`);
+    requireContent(stops.every(([w,stop])=>Number.isInteger(Number(w))&&Number(w)>0&&Number(w)<m.waves.length&&stop&&typeof stop.merchant==='boolean'&&typeof stop.ember==='boolean'),`journeys.${id}.rests`);
+    for(const [wave,stop]of stops)location(stop,`journeys.${id}.rests.${wave}`);
+    requireContent(new Set(journey.clearEmbers).size===journey.clearEmbers.length&&journey.clearEmbers.every(w=>Number.isInteger(w)&&w>0&&w<=m.waves.length),`journeys.${id}.clearEmbers`);
+    const sceneNavigation={camp:new Pathfinder(campMap(id),HERO.radius),combat:new Pathfinder(m,HERO.radius)};
+    for(const [wave,camp]of [[0,true],...stops.map(([w])=>[Number(w),true]),...m.waves.map((_,i)=>[i+1,false])] as [number,boolean][]){
+      const nav=camp?sceneNavigation.camp:sceneNavigation.combat,start=camp?CAMP.spawn:m.waves[wave-1]!.level!.start;
+      for(const node of sceneInteractions(id,wave,camp,!camp))requireContent(node.radius>0&&nav.walkable(node)&&nav.find(start,node).length>0,`journeys.${id}.${node.id}.reachable`);
+    }
     for(const wave of m.waves){
       const level=wave.level;requireContent(level&&level.groups.length>0&&level.route.length>=2,`maps.${id}.level`);
+      location(level,`maps.${id}.${level.id}`);
       for(const point of [level.start,level.exit,...level.route,...level.groups.map(g=>g.center)])requireContent(Number.isFinite(point.x)&&Number.isFinite(point.y)&&point.x>0&&point.y>0&&point.x<m.width&&point.y<m.height,`maps.${id}.level bounds`);
       positive(level.exit.radius,`maps.${id}.exit radius`);requireContent(new Set(level.groups.map(g=>g.id)).size===level.groups.length,`maps.${id}.group IDs`);
       const aggregate:Record<string,number>={};for(const group of level.groups){positive(group.radius,`maps.${id}.group radius`);for(const spawn of group.spawns){requireContent(ENEMIES[spawn.enemyId]&&Number.isInteger(spawn.count)&&spawn.count>0,`maps.${id}.group spawn`);aggregate[spawn.enemyId]=(aggregate[spawn.enemyId]??0)+spawn.count;}}
@@ -76,7 +94,6 @@ export function validateContent():void {
   requireContent(SHOP_CATALOG.length===Object.keys(EQUIPMENT).length&&new Set(SHOP_CATALOG).size===SHOP_CATALOG.length,'shop catalog');
   for(const id of SHOP_CATALOG){const e=equipment(id);requireContent(EQUIPMENT_CATEGORIES.includes(e.category),`equipment.${id}.category`);positive(e.price,`equipment.${id}.price`);requireContent(Number.isInteger(e.price),`equipment.${id}.integer price`);
     requireContent(EQUIPMENT_APPEARANCES[e.appearance]?.layer===e.category,`equipment.${id}.appearance layer`);
-    if(e.category==='weapon')requireContent(e.attack&&BASIC_ATTACKS[e.attack],`equipment.${id}.attack`);
     requireContent((e.modifiers??[]).every(validModifier),`equipment.${id}.modifiers`);
     const sprite=EQUIPMENT_SPRITES[e.appearance],procedural=PROCEDURAL_EQUIPMENT[e.appearance];
     requireContent(procedural?.layer===e.category||sprite&&ATLAS_FRAMES.equipment[sprite.frame],`equipment.${id}.sprite or procedural`);
@@ -87,6 +104,7 @@ export function validateContent():void {
   const ids=new Set<string>();
   for(const data of PERKS){const p:PerkDefinition=data;requireContent(!ids.has(p.id),`duplicate perk ${p.id}`);ids.add(p.id);
     for(const key of ['speedMultiplier','attackMultiplier','maxHpMultiplier'] as const)if(p[key]!==undefined)positive(p[key]!,`perks.${p.id}.${key}`);
+    if(p.basicAttack!==undefined)requireContent(BASIC_ATTACKS[p.basicAttack],`perks.${p.id}.basicAttack`);
     if(p.critChance!==undefined)requireContent(p.critChance>=0&&p.critChance<=1,`perks.${p.id}.critChance`);
     if(p.trueBonusRatio!==undefined)positive(p.trueBonusRatio,`perks.${p.id}.trueBonusRatio`);
     for(const rule of p.rules){if(rule.skillId)requireContent(SKILLS[rule.skillId],`perks.${p.id}.skillId`);

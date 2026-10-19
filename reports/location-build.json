@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "sourceFilesVerified": 109,
+  "importedMeta": [
+    "EmberDemo/assets/scripts/ember/content/locations.ts.meta"
+  ],
+  "creator": "3.8.8",
+  "buildLog": "reports/location-creator.log",
+  "note": "Creator finished Web Desktop build; afterward logged a window.json recovery warning from global editor UI state."
+}

@@ -1,3 +1,4 @@
+import {openMerchantFixture,startCombatFixture} from '../helpers/scenes';
 import { describe,it,expect } from 'vitest';
 import { LocalTransport } from '../../EmberDemo/assets/scripts/ember/platform/LocalTransport';
 import { GameWorld } from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
@@ -10,7 +11,7 @@ function setup(change:(c:DeveloperConfig)=>void=()=>{}){
 function run(p:LocalTransport,seconds:number){for(let i=0;i<Math.round(seconds*30);i++)p.advance(1/30);}
 describe('developer command boundary and replay',()=>{
   it('ignores test actions until explicitly enabled; opening/closing does not modify a normal run',()=>{
-    const p=new LocalTransport();p.send({type:'Start'});p.send({type:'LeaveShop'});run(p,.3);const before=p.world.snapshot();
+    const p=new LocalTransport();openMerchantFixture(p.world);startCombatFixture(p.world);run(p,.3);const before=p.world.snapshot();
     for(const action of ['recover','cooldowns','health25','clearEnemies','step'] as const)p.send({type:'DevAction',action});p.send({type:'DevSpawn',enemyId:'warden',count:5});p.send({type:'DevApply'});p.send({type:'DevExit'});
     expect(p.world.snapshot()).toEqual(before);p.send({type:'DevOpen'});run(p,2);expect(p.snapshot().paused).toBe(true);expect(p.world.snapshot()).toEqual(before);
     p.send({type:'DevAction',action:'health25'});expect(p.world.snapshot()).toEqual(before);p.send({type:'DevClose'});expect(p.snapshot().paused).toBe(false);expect(p.world.snapshot()).toEqual(before);
@@ -30,11 +31,11 @@ describe('developer command boundary and replay',()=>{
     expect(p.world.snapshot()).toEqual(before);run(p,1);p.send({type:'Restart'});expect(p.world.snapshot()).toEqual(before);
   });
   it('can explicitly replace a stale draft with the current normal-game build',()=>{
-    const p=new LocalTransport();p.send({type:'DevOpen'});p.send({type:'DevClose'});p.send({type:'Start'});p.send({type:'BuyEquipment',equipmentId:'bow'});p.send({type:'LeaveShop'});p.send({type:'DevOpen'});expect(p.snapshot().developer!.draft.equipment.slot1).toBeUndefined();p.send({type:'DevCapture'});expect(p.snapshot().developer!.draft.equipment.slot1).toBe('bow');expect(p.snapshot().developer!.draft.wave).toBe(1);expect(p.snapshot().developer!.enabled).toBe(false);
+    const p=new LocalTransport();p.send({type:'DevOpen'});p.send({type:'DevClose'});openMerchantFixture(p.world);p.send({type:'BuyEquipment',equipmentId:'bow'});startCombatFixture(p.world);p.send({type:'DevOpen'});expect(p.snapshot().developer!.draft.equipment.slot1).toBeUndefined();p.send({type:'DevCapture'});expect(p.snapshot().developer!.draft.equipment.slot1).toBe('bow');expect(p.snapshot().developer!.draft.wave).toBe(1);expect(p.snapshot().developer!.enabled).toBe(false);
   });
   it('exit removes every debug modifier and returns to a fresh ordinary game',()=>{
     const p=setup(c=>{c.options={invincible:true,noCooldown:true,freezeEnemies:true,speed:2};c.perks=PERKS.map(p=>p.id);c.equipment={slot1:'bow'};c.purchaseOrder=['bow'];c.loadout.Q='icebolt';});
-    p.send({type:'DevExit'});const s=p.snapshot();expect(s.developer).toBeUndefined();expect(s.phase).toBe('ready');expect(s.perks).toHaveLength(0);expect(s.loadout).toEqual(DEFAULT_LOADOUT);expect(s.equipment).toEqual({});expect(s.hero.maxHp).toBe(240);p.send({type:'Start'});p.send({type:'LeaveShop'});p.world.combat.damage({sourceId:[...p.world.actors.keys()][1]!,targetId:'hero',amount:20,cause:'enemy'});expect(p.world.hero.hp).toBe(220);
+    p.send({type:'DevExit'});const s=p.snapshot();expect(s.developer).toBeUndefined();expect(s.phase).toBe('ready');expect(s.perks).toHaveLength(0);expect(s.loadout).toEqual(DEFAULT_LOADOUT);expect(s.equipment).toEqual({});expect(s.hero.maxHp).toBe(240);openMerchantFixture(p.world);startCombatFixture(p.world);p.world.combat.damage({sourceId:[...p.world.actors.keys()][1]!,targetId:'hero',amount:20,cause:'enemy'});expect(p.world.hero.hp).toBe(220);
   });
   it('invincibility and zero cooldown are opt-in; enemy AI freeze keeps positions and attacks still',()=>{
     const p=setup(c=>{c.options={invincible:true,noCooldown:true,freezeEnemies:true,speed:1};}),w=p.world,e=[...w.actors.values()].find(a=>a.team==='enemy')!,position={x:e.x,y:e.y};
@@ -61,7 +62,7 @@ describe('developer command boundary and replay',()=>{
 describe('portable developer presets',()=>{
   const base=()=>captureDeveloperConfig(new GameWorld().snapshot());
   it('round trips config and all new content IDs without changing live references',()=>{
-    const c=base();c.perks=PERKS.map(p=>p.id);c.wave=3;c.equipment={slot1:'staff',slot2:'hood',slot3:'plate'};c.purchaseOrder=['staff','hood','plate'];expect(parseDeveloperConfig(JSON.stringify(c))).toEqual(c);const copy=cloneDeveloperConfig(c);copy.perks.length=0;copy.options.invincible=true;expect(c.perks.length).toBe(20);expect(c.options.invincible).toBe(false);
+    const c=base();c.perks=PERKS.map(p=>p.id);c.wave=3;c.equipment={slot1:'staff',slot2:'hood',slot3:'plate'};c.purchaseOrder=['staff','hood','plate'];expect(parseDeveloperConfig(JSON.stringify(c))).toEqual(c);const copy=cloneDeveloperConfig(c);copy.perks.length=0;copy.options.invincible=true;expect(c.perks.length).toBe(PERKS.length);expect(c.options.invincible).toBe(false);
   });
   it('rejects malformed, unsupported and inconsistent imports atomically',()=>{
     const p=new LocalTransport();p.send({type:'DevOpen'});const before=p.snapshot().developer!.draft;

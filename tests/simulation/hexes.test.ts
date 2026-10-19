@@ -1,3 +1,4 @@
+import {openMerchantFixture,startCombatFixture,interactFixture} from '../helpers/scenes';
 import { describe,it,expect } from 'vitest';
 import { GameWorld } from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import { PERKS,LAB_PRESETS,type LabId } from '../../EmberDemo/assets/scripts/ember/content/perks';
@@ -7,7 +8,7 @@ import { DEFAULT_LOADOUT } from '../../EmberDemo/assets/scripts/ember/content/sk
 import {AttributeSet} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { Random } from '../../EmberDemo/assets/scripts/ember/utils/Random';
 function fixture(perks:PerkId[]=[],weapon?:'staff'|'bow'){
-  const w=new GameWorld(1234);w.command({type:'Start'});if(weapon)w.command({type:'BuyEquipment',equipmentId:weapon});w.command({type:'LeaveShop'});
+  const w=new GameWorld(1234);openMerchantFixture(w);if(weapon)w.command({type:'BuyEquipment',equipmentId:weapon});startCombatFixture(w);
   for(const [id,a] of w.actors)if(a.team==='enemy')w.actors.delete(id);perks.forEach(p=>w.combat.addPerk(p));
   Object.assign(w.hero,{x:10,y:10,previous:{x:10,y:10}});const sentinel=w.spawnEnemy('ranged',{x:2,y:2},99999);sentinel.attributes=new AttributeSet({...sentinel.attributes.template,canMove:false,canAttack:false});sentinel.windup=9999;return w;
 }
@@ -40,10 +41,10 @@ describe('hex simulation, hitboxes and progression',()=>{
     expect(losses[0]).toBeGreaterThan(28);expect(losses[1]).toBeGreaterThan(losses[0]!);expect(losses[1]).toBeLessThanOrEqual(56);
   });
   it('mystic punch reduces equipped skill cooldown on impact, never on a miss, clamps at zero',()=>{
-    const w=fixture(['mysticPunch'],'bow'),e=spawn(w,13,10);w.cooldowns.shield=5;w.cooldowns.fireball=.1;w.cooldowns.icebolt=5;
+    const w=fixture(['missileAttack','mysticPunch'],'bow'),e=spawn(w,13,10);w.cooldowns.shield=5;w.cooldowns.fireball=.1;w.cooldowns.icebolt=5;
     w.command({type:'Attack',point:e});expect(w.cooldowns.shield).toBe(5);run(w,.2);
     expect(w.cooldowns.shield).toBeCloseTo(4.45);expect(w.cooldowns.fireball).toBe(0);expect(w.cooldowns.icebolt).toBeCloseTo(4.8);
-    const miss=fixture(['mysticPunch'],'bow');miss.cooldowns.shield=5;miss.command({type:'Attack',point:{x:15,y:10}});run(miss,.2);expect(miss.cooldowns.shield).toBeCloseTo(4.8);
+    const miss=fixture(['missileAttack','mysticPunch'],'bow');miss.cooldowns.shield=5;miss.command({type:'Attack',point:{x:15,y:10}});run(miss,.2);expect(miss.cooldowns.shield).toBeCloseTo(4.8);
   });
   it('heavy hitter is not multiplied by staff skill power',()=>{
     const w=fixture(['heavyHitter'],'staff'),e=spawn(w,12,10);w.command({type:'Attack',point:e});run(w,.2);expect(e.hp).toBeCloseTo(972.8);
@@ -54,7 +55,7 @@ describe('hex simulation, hitboxes and progression',()=>{
     w.command({type:'TogglePause'});const s=w.snapshot();run(w,1);expect(w.snapshot()).toEqual(s);
   });
   it('typhoon uses a second projectile with independent collision and on-hit damage',()=>{
-    const w=fixture(['typhoon','heavyHitter'],'bow'),primary=spawn(w,13,10),second=spawn(w,10,13);
+    const w=fixture(['missileAttack','typhoon','heavyHitter'],'bow'),primary=spawn(w,13,10),second=spawn(w,10,13);
     w.command({type:'Attack',point:primary});expect(second.hp).toBe(1000);expect(w.projectiles).toHaveLength(2);run(w,.3);
     expect(primary.hp).toBeCloseTo(968.8);expect(second.hp).toBeCloseTo(982);
     expect(w.combat.history.filter(e=>e.type==='OnAttack')).toHaveLength(1);
@@ -75,30 +76,30 @@ describe('hex simulation, hitboxes and progression',()=>{
     w.combat.heal('hero',10);expect(hidden.hp).toBe(1000);expect(visible.hp).toBe(993);expect(far.hp).toBe(1000);
   });
   it('glass cannon recalculates with equipment and cannot heal via re-equipping',()=>{
-    const w=new GameWorld();w.command({type:'Start',lab:'hexMage'});expect(w.hero.maxHp).toBe(168);
+    const w=new GameWorld();openMerchantFixture(w,'hexMage');expect(w.hero.maxHp).toBe(168);
     w.command({type:'BuyEquipment',equipmentId:'plate'});expect(w.hero.maxHp).toBe(221);expect(w.snapshot().stats.maxHp).toBe(221);w.hero.hp=100;
     for(let i=0;i<4;i++){w.command({type:'UnequipEquipment',slot:'slot1'});w.command({type:'EquipEquipment',equipmentId:'plate'});}
-    expect(w.hero.maxHp).toBe(221);expect(w.hero.hp).toBe(100);w.command({type:'LeaveShop'});expect(w.hero.hp).toBe(221);
+    expect(w.hero.maxHp).toBe(221);expect(w.hero.hp).toBe(100);startCombatFixture(w);expect(w.hero.hp).toBe(221);
   });
-  it('all twelve enter normal rewards without duplicates; movement requirement filters earthwake',()=>{
+  it('all registered augments enter normal rewards without duplicates; movement requirement filters earthwake',()=>{
     const seen=new Set<PerkId>();for(let seed=0;seed<1000;seed++)for(const c of rewardChoices(new Random(seed),DEFAULT_LOADOUT,new Set()))if(c.kind==='perk')seen.add(c.perkId);
     expect([...seen].sort()).toEqual(PERKS.map(p=>p.id).sort());
     for(let seed=0;seed<50;seed++)expect(rewardChoices(new Random(seed),{...DEFAULT_LOADOUT,E:'cleave'},new Set(['heavyHitter'])).map(c=>c.id)).not.toEqual(expect.arrayContaining(['perk:earthwake']));
-    expect(PERKS).toHaveLength(20);
+    expect(PERKS).toHaveLength(21);
   });
-  it('normal offered glass-cannon reward applies immediately, freezes simulation in shop, and keeps perks',()=>{
-    const w=fixture();w.phase='reward';w.wave=1;w.choices=[{kind:'perk',id:'perk:glassCannon',perkId:'glassCannon'}];w.hero.hp=220;
-    w.command({type:'ChooseReward',choiceId:'perk:glassCannon'});expect(w.hero.hp).toBe(168);expect(w.hero.maxHp).toBe(168);expect(w.phase).toBe('shop');expect(w.combat.perks.has('glassCannon')).toBe(true);
-    const s=w.snapshot();run(w,3);expect(w.snapshot()).toEqual(s);
+  it('normal offered glass-cannon reward applies immediately, returns to the cleared scene, and keeps perks',()=>{
+    const w=fixture();w.phase='cleared';w.wave=1;interactFixture(w,'ember');w.choices=[{kind:'perk',id:'perk:glassCannon',perkId:'glassCannon'}];w.hero.hp=220;
+    w.command({type:'ChooseReward',choiceId:'perk:glassCannon'});expect(w.hero.hp).toBe(168);expect(w.hero.maxHp).toBe(168);expect(w.phase).toBe('cleared');expect(w.combat.perks.has('glassCannon')).toBe(true);
+    const s=w.snapshot();run(w,3);expect(w.hero.hp).toBe(s.hero.hp);expect(w.wave).toBe(s.wave);
   });
-  it('all lab presets are reachable by Start and all twelve are included',()=>{
-    const seen=new Set<PerkId>();for(const lab of ['hexMage','hexAttack','hexSurvive'] as LabId[]){const w=new GameWorld();w.command({type:'Start',lab});expect(w.snapshot().perks).toEqual(LAB_PRESETS[lab]);w.snapshot().perks.forEach(p=>seen.add(p));}
+  it('all lab presets are reachable by Start and all first-batch hexes and the missile form are included',()=>{
+    const seen=new Set<PerkId>();for(const lab of ['hexMage','hexAttack','hexSurvive'] as LabId[]){const w=new GameWorld();openMerchantFixture(w,lab);expect(w.snapshot().perks).toEqual(LAB_PRESETS[lab]);w.snapshot().perks.forEach(p=>seen.add(p));}
     expect(PERKS.slice(8).every(p=>seen.has(p.id))).toBe(true);
   });
   it('combined hexes are deterministic across render frame rates and reset encounter timers',()=>{
     const make=()=>{const w=fixture(PERKS.map(p=>p.id),'bow');spawn(w,13,10);spawn(w,10,13);w.command({type:'AttackInput',point:{x:15,y:10}});w.command({type:'CastSlot',slot:'Q',point:{x:15,y:10}});return w;};
     const a=make(),b=make();run(a,3);for(let i=0;i<432;i++)b.advance(1/144);expect(a.snapshot()).toEqual(b.snapshot());
     expect(a.combat.metrics.dropped).toBe(0);expect(a.projectiles.length).toBeLessThan(20);
-    a.combat.dashEnded('hero',{x:10,y:10},{x:12,y:10});expect(a.combat.zones.length).toBe(1);a.combat.resetEncounter();expect(a.combat.zones).toHaveLength(0);expect(a.combat.perks.size).toBe(20);
+    a.combat.dashEnded('hero',{x:10,y:10},{x:12,y:10});expect(a.combat.zones.length).toBe(1);a.combat.resetEncounter();expect(a.combat.zones).toHaveLength(0);expect(a.combat.perks.size).toBe(PERKS.length);
   });
 });

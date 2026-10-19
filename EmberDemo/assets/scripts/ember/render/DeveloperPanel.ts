@@ -1,3 +1,4 @@
+import {JOURNEYS} from '../content/scenes';
 import {STAT_KEYS,type Stat} from '../combat-core/attributes/AttributeSet';
 import { EditBox,Label,Node,UITransform } from 'cc';
 import type { Vec2 } from '../utils/math';
@@ -28,7 +29,7 @@ export class DeveloperPanel {
     const bg=graphics('Developer panel background',root);box(bg,-612,-230,1224,440,'#263E45',12);
     text('Developer title',root,'开发者模式 · 组合与关卡测试',29,0,312,1100,44,'#EDD39E');
     text('Developer subtitle',root,'面板打开时冻结战斗；修改配置后「应用并进入」将重新生成关卡。',14,0,275,1100,30,'#BBD1C7');
-    ['关卡 / 工具','技能 / 装备','海克斯 / 增益','预设 / 复现','属性 / 来源'].forEach((name,i)=>button(name,(i-2)*232,237,220,()=>{this.tab=i;this.invalidate();},this.tab===i?'#6C806A':'#3C555C'));
+    ['关卡 / 工具','技能 / 装备','余烬','预设 / 复现','属性 / 来源'].forEach((name,i)=>button(name,(i-2)*232,237,220,()=>{this.tab=i;this.invalidate();},this.tab===i?'#6C806A':'#3C555C'));
     if(this.tab===0)this.level(root,s,c,button);
     if(this.tab===1)this.build(root,c,button);
     if(this.tab===2)this.perks(root,c,button);
@@ -50,17 +51,17 @@ export class DeveloperPanel {
     node.on('editing-did-ended',()=>done(edit.string));node.active=true;this.fields.push({x,y,w,h,edit});return edit;
   }
   private level(root:Node,s:WorldSnapshot,c:DeveloperConfig,button:Button):void {
-    button(`地图：${mapDefinition(c.mapId).name}`,-390,165,340,()=>{const ids=Object.keys(MAPS) as MapId[];c.mapId=ids[(ids.indexOf(c.mapId)+1)%ids.length]!;c.wave=Math.min(c.wave,mapDefinition(c.mapId).waves.length);this.configure(c);});
-    const waves=mapDefinition(c.mapId).waves.length;
-    button('−',-120,165,70,()=>{c.wave=c.wave===1?waves:c.wave-1;this.configure(c);});
+    button(`地图：${mapDefinition(c.mapId).name}`,-390,165,340,()=>{const ids=Object.keys(MAPS) as MapId[];c.mapId=ids[(ids.indexOf(c.mapId)+1)%ids.length]!;c.wave=Math.min(c.wave,mapDefinition(c.mapId).waves.length);if(c.entry==='camp'&&c.wave!==1&&!JOURNEYS[c.mapId].rests[c.wave-1])c.wave=1;this.configure(c);});
+    const waves=mapDefinition(c.mapId).waves.length,entries=c.entry==='camp'?[1,...Object.keys(JOURNEYS[c.mapId].rests).map(w=>Number(w)+1)]:Array.from({length:waves},(_,i)=>i+1);
+    button('−',-120,165,70,()=>{c.wave=entries[(entries.indexOf(c.wave)+entries.length-1)%entries.length]!;this.configure(c);});
     text('Developer wave',root,`第 ${c.wave} / ${waves} 关`,19,5,165,170,40,'#E9DEBE');
-    button('+',130,165,70,()=>{c.wave=c.wave===waves?1:c.wave+1;this.configure(c);});
+    button('+',130,165,70,()=>{c.wave=entries[(entries.indexOf(c.wave)+1)%entries.length]!;this.configure(c);});
     text('Seed label',root,'随机种子（整数）',13,375,199,300,26,'#BBD1C7');
     this.field(root,'Developer seed',String(c.seed),375,163,300,42,false,value=>{c.seed=value.trim()===''?NaN:Number(value);this.configure(c);});
     for(const [i,key,name] of [[0,'invincible','玩家免伤'],[1,'noCooldown','技能无冷却'],[2,'freezeEnemies','停止敌人 AI']] as const)
       button(`${c.options[key]?'✓':'○'} ${name}`,(i-1)*390,93,340,()=>{c.options[key]=!c.options[key];this.configure(c);},c.options[key]?'#6E805A':'#3F5960');
     button(`时间倍率：${c.options.speed}×`,-390,31,340,()=>{c.options.speed=DEV_SPEEDS[(DEV_SPEEDS.indexOf(c.options.speed)+1)%DEV_SPEEDS.length]!;this.configure(c);});
-    text('Live test status',root,`当前：${mapDefinition(s.mapId).name} / 第 ${s.wave} 关 / Tick ${s.tick} / ${s.units.filter(u=>u.alive&&u.team==='enemy').length} 个敌人`,15,180,31,720,40,'#BBD1C7');
+    button(`场景：${c.entry==='camp'?'营地 / 休息点':'战斗关卡'}`,185,31,700,()=>{c.entry=c.entry==='camp'?'combat':'camp';if(c.entry==='camp'&&c.wave!==1&&!JOURNEYS[c.mapId].rests[c.wave-1])c.wave=1;this.configure(c);});
     for(const [i,action,title] of [[0,'recover','满血 / 复活'],[1,'health25','生命设为 25%'],[2,'cooldowns','刷新冷却'],[3,'clearEnemies','清空敌人'],[4,'step','步进 1 帧']] as const)
       button(title,(i-2)*220,-35,200,()=>{if(!s.developer?.enabled)this.notice('先应用配置进入测试关卡，再使用即时工具。');else this.send({type:'DevAction',action});},'#4A6267');
     button(`生成：${ENEMIES[this.enemyId].name}`,-290,-105,360,()=>{const ids=Object.keys(ENEMIES) as EnemyKind[];this.enemyId=ids[(ids.indexOf(this.enemyId)+1)%ids.length]!;this.invalidate();});
@@ -90,11 +91,11 @@ export class DeveloperPanel {
       const owned=c.perks.includes(p.id);button(`${owned?'✓':'○'} ${p.name}`,i%2===0?-295:295,165-Math.floor(i/2)*57,550,()=>{this.selectedPerk=p.id;c.perks=owned?c.perks.filter(id=>id!==p.id):[...c.perks,p.id];this.configure(c);},owned?'#647A61':'#3C555C');
     }
     button('上一页',-480,-125,180,()=>{this.perkPage=(this.perkPage+pages-1)%pages;this.invalidate();});
-    button('清空增益',-250,-125,210,()=>{c.perks=[];this.configure(c);},'#685852');
+    button('清空余烬',-250,-125,210,()=>{c.perks=[];this.configure(c);},'#685852');
     text('Developer perk count',root,`${this.perkPage+1}/${pages} 页 · 已选 ${c.perks.length}`,15,0,-125,230,40,'#E9DEBE');
-    button('全选增益',250,-125,210,()=>{c.perks=PERKS.map(p=>p.id);this.configure(c);});
+    button('全选余烬',250,-125,210,()=>{c.perks=PERKS.map(p=>p.id);this.configure(c);});
     button('下一页',480,-125,180,()=>{this.perkPage=(this.perkPage+1)%pages;this.invalidate();});
-    text('Selected perk detail',root,this.selectedPerk?`${perk(this.selectedPerk).name}：${perk(this.selectedPerk).description}`:'点击增益即可勾选或移除。此处可选择所有增益；不满足触发条件的增益仍保持休眠。',15,0,-188,1140,68,'#C2D6CA');
+    text('Selected perk detail',root,this.selectedPerk?`${perk(this.selectedPerk).name}：${perk(this.selectedPerk).description}`:'点击余烬即可勾选或移除。此处可选择所有余烬；不满足触发条件的余烬仍保持休眠。',15,0,-188,1140,68,'#C2D6CA');
   }
   private attributes(root:Node,s:WorldSnapshot,c:DeveloperConfig,button:Button):void {
     const units=s.units;this.inspectIndex=Math.min(this.inspectIndex,Math.max(0,units.length-1));const unit=units[this.inspectIndex];

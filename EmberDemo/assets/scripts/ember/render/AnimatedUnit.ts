@@ -6,6 +6,7 @@ import { enemy } from '../content/enemies';
 import { UNIT_SPRITES,type UnitSprite } from '../content/appearances';
 import { HeroRig } from './HeroRig';
 import { ArtLibrary } from './ArtLibrary';
+import { PIXEL_ATLASES } from '../content/pixel-art';
 import { color,uiNode } from './Primitives';
 export class AnimatedUnit {
   readonly node:Node;private readonly hero?:HeroRig;private readonly sprite?:Sprite;private readonly opacity:UIOpacity;
@@ -26,5 +27,5 @@ export class AnimatedUnit {
     sprite.color=color(pose.state==='hurt'?'#FFD2C1':visual.tint);
   }
   get height():number{return this.visual?.height??63;}
-  debug(){return{kind:this.kind,atlas:this.visual?.atlas??(this.art.hasPixel('hero')?'pixel-v1/hero':'hero-parts'),frame:this.frame,opacity:this.opacity.opacity,pose:this.currentPose?{...this.currentPose}:undefined};}
+  debug(){return{kind:this.kind,atlas:this.visual?.atlas??(this.art.hasPixel('hero')?PIXEL_ATLASES.hero!.resourcePath.replace(/^art\//,''):'hero-parts'),frame:this.frame,opacity:this.opacity.opacity,pose:this.currentPose?{...this.currentPose}:undefined};}
 }

@@ -1,3 +1,4 @@
+import {openMerchantFixture,startCombatFixture} from '../helpers/scenes';
 import { describe,it,expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { animationFrame,motionPose } from '../../EmberDemo/assets/scripts/ember/content/animation';
@@ -20,7 +21,7 @@ describe('presentation signals and imported art',()=>{
     u.alive=false;u.diedAt=1.1;u.facing={x:0,y:1};expect(motionPose(u,1.4)).toEqual({state:'death',age:expect.closeTo(.3),facing:-1});
   });
   it('emits cast/hit/death signals at simulation time without affecting damage or pause',()=>{
-    const w=new GameWorld();w.command({type:'Start'});w.command({type:'LeaveShop'});
+    const w=new GameWorld();openMerchantFixture(w);startCombatFixture(w);
     for(const [id,u] of w.actors)if(u.team==='enemy')w.actors.delete(id);
     const e=w.spawnEnemy('warden',{x:11.3,y:10},20);e.windup=999;
     w.command({type:'CastSlot',slot:'Q',point:e});expect(w.hero.action).toEqual({id:1,kind:'cast',time:0});

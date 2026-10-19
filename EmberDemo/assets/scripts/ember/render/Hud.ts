@@ -1,3 +1,4 @@
+import {BASIC_ATTACKS} from '../content/attacks';
 import { Graphics, Label, Node } from 'cc';
 import type { ControlMode } from '../input/InputController';
 import { skill,SKILL_SLOTS,SKILL_DESCRIPTIONS,DEFAULT_LOADOUT,type SkillSlot } from '../content/skills';
@@ -37,7 +38,7 @@ export class Hud {
     const gearBg=graphics('Six equipment slots',hud);box(gearBg,-616,-321,340,67,'#18191FED',8);this.gearHud=uiNode('HUD equipment icons',hud);
     this.wave=text('Wave',hud,'',14,0,316,450,38,'#E9DBBD');
     text('Perks title',hud,'试炼印记',14,475,315,220,30,'#ECDBB7');
-    this.boonList=text('Perks',hud,'尚未获得增益',13,480,261,235,76,'#B7CFC6');
+    this.boonList=text('Perks',hud,'尚未获得余烬',13,480,261,235,76,'#B7CFC6');
     this.equipmentEffects=text('Equipment passive status',hud,'',12,480,193,235,38,'#C9DCC9');
     this.hint=text('Control hint',hud,'',13,-40,-341,1000,26,'#36585B');
     for(const [i,id] of SKILL_SLOTS.entries()){
@@ -52,7 +53,7 @@ export class Hud {
   }
   setControlMode(mode:ControlMode):void {
     this.mode=mode;this.signature='';
-    setText(this.hint,mode==='wasd'?'WASD 移动 · 左键普攻 · 右键 / Q 第一技能 · 空格 第二技能 · E / R 技能 · ESC 设置':'右键移动 · 左键朝指针普攻 · Q W E R 施法   ·   ESC 暂停与操作设置');
+    setText(this.hint,mode==='wasd'?'WASD 移动 · 左键普攻 · 右键 / Q 第一技能 · 空格 第二技能 · E / R 技能 · F 互动 · ESC 设置':'右键移动 · 左键朝指针普攻 · Q W E R 施法   ·   F 互动 · ESC 设置');
     for(const skill of this.skills){const space=mode==='wasd'&&skill.id==='W';skill.key.fontSize=space?14:24;setText(skill.key,space?'空格':skill.id);}
   }
   private modeButtons(y:number):void {
@@ -64,7 +65,7 @@ export class Hud {
   get showColliders():boolean{return this.debug;}
   inspectUI(){return{phase:this.state?.phase,buttons:this.regions.map(({x,y,width,height,title})=>({x,y,width,height,title}))};}
   update(s:WorldSnapshot,fps:number):void {
-    this.battleHud.active=s.phase==='fighting'&&!s.paused;
+    this.battleHud.active=['camp','cleared','fighting'].includes(s.phase)&&!s.paused;
     if(s.phase!=='shop')this.shopItem=undefined;
     this.state=s;setText(this.hp,`生命 ${Math.ceil(s.hero.hp)} / ${s.hero.maxHp}    护盾 ${Math.ceil(s.hero.shield)}`);
     setText(this.mana,'法力 · 当前技能无消耗');setText(this.attributes,`攻击 ${s.stats.attackDamage}   法强 ${s.stats.abilityPower}   护甲 ${s.stats.armor}   急速 ${s.stats.abilityHaste}`);
@@ -72,8 +73,8 @@ export class Hud {
     const gearKey=JSON.stringify(s.equipment);if(gearKey!==this.gearKey){this.gearKey=gearKey;this.gearHud.destroyAllChildren();for(const [i,slot]of EQUIPMENT_SLOTS.entries()){const id=s.equipment[slot],x=-587+i*53;const frame=graphics('Equipment slot '+slot,this.gearHud);box(frame,x-22,-306,44,44,'#292831',6);if(id){const icon=this.art.icon(this.gearHud,id,32);icon?.setPosition(x,-284);}else text('Empty '+slot,this.gearHud,'+',20,x,-284,40,40,'#716D69');text('Slot '+slot,this.gearHud,String(i+1),10,x,-312,40,16,'#B6A88E');}}
     setText(this.developerBadge,s.network?`房间 ${s.network.code} · ${s.network.playerId===s.network.hostId?'房主':'队友'}`:s.developer?.enabled?'DEV · 测试模式 · F2':'开发者模式 · F2');
     this.meter.clear();box(this.meter,-600,290,260,8,'#484047',0);box(this.meter,-600,290,260*s.hero.hp/s.hero.maxHp,8,'#E46443',0);box(this.meter,-600,260,260,4,'#345064',0);
-    setText(this.wave,s.phase==='ready'?`PROJECT EMBER  /  ${mapDefinition(s.mapId).name}`:`${s.developer?.enabled?'DEV · ':''}${mapDefinition(s.mapId).name} · ${s.wave} / ${s.totalWaves} 关 · ${s.level.exitActive?'前往出口':s.level.remainingEnemies+' 个敌人'}${s.lab?'    ·    联动实验':''}`);
-    setText(this.boonList,`金币 ${s.gold}  ·  装备 ${Object.keys(s.equipment).length}/6\n${s.appearance.weapon?equipment(s.appearance.weapon).name:'中性武器'}\n${s.perks.map(id=>perk(id).name).join(' · ')||'每关选择增益或替换技能'}`);
+    setText(this.wave,s.scene.kind==='camp'?s.scene.name:s.phase==='ready'?`PROJECT EMBER  /  ${mapDefinition(s.mapId).name}`:`${s.developer?.enabled?'DEV · ':''}${mapDefinition(s.mapId).name} · ${s.wave} / ${s.totalWaves} 关 · ${s.level.exitActive?'前往出口':s.level.remainingEnemies+' 个敌人'}${s.lab?'    ·    联动实验':''}`);
+    setText(this.boonList,`金币 ${s.gold}  ·  装备 ${Object.keys(s.equipment).length}/6\n普攻 · ${BASIC_ATTACKS[s.basicAttack].name}\n${s.perks.map(id=>perk(id).name).join(' · ')||'靠近余烬 · F 选择效果'}`);
     setText(this.equipmentEffects,(s.equipmentPassives??[]).map(p=>`${p.kind==='spellblade'?'符击':'石息'} · ${p.readyIn>0?`冷却 ${p.readyIn.toFixed(1)}秒`:p.lockedAttackId!==undefined?'等待普攻命中':p.armedFor>0?`蓄能 ${p.armedFor.toFixed(1)}秒`:'就绪'}`).join('\n'));
     for(const entry of this.skills){const {id,g,cd,name}=entry,definition=skill(s.loadout[id]);setText(name,definition.name);if(entry.skillId!==s.loadout[id]){entry.icon?.destroy();entry.skillId=s.loadout[id];entry.icon=this.art.icon(g.node.parent!,s.loadout[id],31);entry.icon?.setPosition(-5,6);entry.key.node.setPosition(-34,5);entry.key.fontSize=15;cd.node.setPosition(30,7);}
       const remaining=s.cooldowns[id],ratio=Math.min(1,remaining/(definition.cooldown*s.stats.cooldownMultiplier)),primed=s.primed&&definition.behavior.kind==='projectile';
@@ -99,10 +100,10 @@ export class Hud {
   }
   private buildModal(s:WorldSnapshot):void {
     for(const child of [...this.overlay.children])child.destroy();this.overlay.removeAllChildren();this.regions=[];
-    this.overlay.active=!!s.developer?.open||s.phase!=='fighting'||s.paused;if(!this.overlay.active)return;
+    this.overlay.active=!!s.developer?.open||!['camp','cleared','fighting'].includes(s.phase)||s.paused||!!s.network?.blocked;if(!this.overlay.active)return;
     const veil=graphics('Veil',this.overlay);box(veil,-640,-360,1280,720,'#10242CEB',0);
     if(s.network?.blocked){text('Network waiting',this.overlay,s.network.status,23,0,40,1100,150,'#EFE2C1');text('Network hint',this.overlay,'打开左上角「联机房间」查看队友、重连或恢复进度。',17,0,-70,1000,60,'#B5CFC4');return;}
-    if(s.party?.find(p=>p.id===s.hero.id)?.ready&&(s.phase==='shop'||s.phase==='reward')){text('Team waiting',this.overlay,'已确认，等待队友完成整备 / 奖励选择',25,0,40,1100,150,'#EFE2C1');return;}
+
     if(s.developer?.open){this.developerPanel.draw(this.overlay,s,this.button.bind(this));return;}
     if(!s.network&&s.phase!=='ready'&&s.phase!=='shop')this.button('开发者面板 · F2',470,312,270,()=>this.send({type:'DevOpen'}),'#586552');
     if(s.phase==='ready'){
@@ -110,13 +111,13 @@ export class Hud {
     }else if(s.phase==='shop'){
       drawShop(this.overlay,s,this.shopPage,p=>{this.shopPage=p;this.shopItem=undefined;this.signature='';},this.button.bind(this),this.send,this.art,id=>{this.shopItem=id;this.signature='';},this.shopItem);
     }else if(s.paused&&this.inspectPerks){
-      text('Build title',this.overlay,'本局增益',34,0,265,850,60,'#EFE2C1');
+      text('Build title',this.overlay,'本局余烬',34,0,265,850,60,'#EFE2C1');
       const pages=Math.max(1,Math.ceil(s.perks.length/4));this.perkPage=Math.min(this.perkPage,pages-1);
       for(const [i,id] of s.perks.slice(this.perkPage*4,this.perkPage*4+4).entries()){
         const p=perk(id),x=i%2===0?-265:265,y=i<2?110:-90,g=graphics(`Inspect ${id}`,this.overlay);box(g,x-245,y-85,490,170,'#2D464C',12);
         text('Name',this.overlay,p.name,22,x,y+48,450,40,p.color);text('Description',this.overlay,p.description,16,x,y-13,440,100,'#C2D6CA');
       }
-      if(!s.perks.length)text('Empty build',this.overlay,'完成关卡后，可从奖励中选择增益。',20,0,30,800,80,'#C2D6CA');
+      if(!s.perks.length)text('Empty build',this.overlay,'完成关卡后，可从奖励中选择余烬。',20,0,30,800,80,'#C2D6CA');
       this.button('上一页',-290,-253,220,()=>{this.perkPage=(this.perkPage+pages-1)%pages;this.signature='';},'#3E5559');
       this.button(`返回暂停 · ${this.perkPage+1}/${pages}`,0,-253,280,()=>{this.inspectPerks=false;this.signature='';});
       this.button('下一页',290,-253,220,()=>{this.perkPage=(this.perkPage+1)%pages;this.signature='';},'#3E5559');
@@ -125,9 +126,9 @@ export class Hud {
       text('Pause title',this.overlay,s.network?'操作设置 · 战斗继续':'火种暂歇',42,0,160,700,80,'#EFE2C1');
       this.modeButtons(98);
       const help=this.mode==='wasd'?'WASD：沿屏幕方向移动，松开即停\n左键按住：朝指针普攻    右键 / Q：朝指针施放主技能\n空格 / E / R：使用当前槽位技能':'右键：移动    /    左键按住：朝指针普攻\nQ / W / E / R：使用当前槽位技能';
-      text('Help',this.overlay,help+'\n红色圆环 / 射线：敌人攻击预警    F3：调试信息\n增益可选主动技能；选择后用 1–4 确认替换槽位。',17,0,-28,1000,200,'#CDDCD0');
+      text('Help',this.overlay,help+'\n红色圆环 / 射线：敌人攻击预警    F3：调试信息\n余烬可选主动技能；选择后用 1–4 确认替换槽位。',17,0,-28,1000,200,'#CDDCD0');
       this.button('继续试炼  ESC',-145,-164,250,()=>this.send({type:'TogglePause'}));this.button(s.network?'离开联机房间':s.developer?.enabled?'重测当前配置':'重新开始',145,-164,250,()=>this.send({type:'Restart'}),'#675B58');
-      this.button(`查看本局增益 · ${s.perks.length}`,0,-230,330,()=>{this.inspectPerks=true;this.perkPage=0;this.signature='';},'#3E5559');
+      this.button(`查看本局余烬 · ${s.perks.length}`,0,-230,330,()=>{this.inspectPerks=true;this.perkPage=0;this.signature='';},'#3E5559');
     }else if(s.phase==='reward'&&s.pendingSkill){
       text('Skill acquired',this.overlay,`选择技能：${skill(s.pendingSkill).name}`,32,0,225,1000,60,'#EFE2C1');
       text('Skill description',this.overlay,SKILL_DESCRIPTIONS[s.pendingSkill]+'  选择要替换的槽位。',17,0,159,1060,55,'#BED9CD');
@@ -138,22 +139,23 @@ export class Hud {
         this.art.icon(this.overlay,s.loadout[slot],48)?.setPosition(x,30);
         this.button('替换此技能',x,-66,226,()=>this.send({type:'ConfirmSkill',slot}));
       }
-      this.button('返回增益选择',0,-213,280,()=>this.send({type:'CancelSkill'}),'#445F61');
-      text('Replacement note',this.overlay,'只替换所选槽位；被动增益保留，缺少对应技能时暂不生效。',14,0,-280,1000,35,'#A3BEB1');
+      this.button('返回余烬选择',0,-213,280,()=>this.send({type:'CancelSkill'}),'#445F61');
+      text('Replacement note',this.overlay,'只替换所选槽位；被动余烬保留，缺少对应技能时暂不生效。',14,0,-280,1000,35,'#A3BEB1');
     }else if(s.phase==='reward'){
-      text('Reward eyebrow',this.overlay,`第 ${s.wave} 关已完成   /   战斗已冻结`,14,0,236,700,30,'#A8C4B7');
-      text('Reward title',this.overlay,'选 择 增 益',38,0,286,850,65,'#EFE2C1');
+      text('Reward eyebrow',this.overlay,`${s.scene.name}   /   每人独立选择一次`,14,0,236,700,30,'#A8C4B7');
+      text('Reward title',this.overlay,'选 择 余 烬',38,0,286,850,65,'#EFE2C1');
       for(const [i,choice] of s.choices.entries()){
         const id=choice.id,p=choice.kind==='perk'?perk(choice.perkId):{name:skill(choice.skillId).name,color:'#9CCFE8',description:SKILL_DESCRIPTIONS[choice.skillId]+' 选择后替换任意技能槽。'},x=(i-1)*324,g=graphics(`Perk ${id}`,this.overlay);
         box(g,x-148,-176,296,372,'#2D464C',14);box(g,x-148,191,296,5,p.color,2);
-        text('Perk number',this.overlay,`${i+1} · ${choice.kind==='skill'?'主动技能':'被动增益'}`,13,x,165,240,30,p.color);
+        text('Perk number',this.overlay,`${i+1} · ${choice.kind==='skill'?'主动技能':'被动余烬'}`,13,x,165,240,30,p.color);
         this.art.icon(this.overlay,choice.kind==='perk'?choice.perkId:choice.skillId,92)?.setPosition(x,99);
         text('Perk name',this.overlay,p.name,24,x,24,250,50,'#F1E4C7');
         text('Perk description',this.overlay,p.description,16,x,-67,260,142,'#C2D6CA');
         this.button(`选择  ${i+1}`,x,-212,250,()=>this.send({type:'ChooseReward',choiceId:id}));
         this.regions.push({x,y:8,width:296,height:372,action:()=>this.send({type:'ChooseReward',choiceId:id})});
       }
-      text('Reward footer',this.overlay,s.wave===s.totalWaves?'选择后查看通关结果':'完成选择后继续旅程；下一关恢复 30 生命并刷新冷却。',13,0,-271,850,30,'#A5C2B5');
+      this.button('暂时离开 · Esc',470,312,270,()=>this.send({type:'CloseInteraction'}),'#445F61');
+      text('Reward footer',this.overlay,'选择后返回场景；前往出发点集合，由房主确认出发。',13,0,-271,850,30,'#A5C2B5');
       for(const [i,slot]of SKILL_SLOTS.entries()){const x=(i-1.5)*225;this.art.icon(this.overlay,s.loadout[slot],25)?.setPosition(x-65,-316);text('Reward current '+slot,this.overlay,slot+' · '+skill(s.loadout[slot]).name,12,x+9,-316,170,30,'#BEB6A8');}
     }else{
       const won=s.phase==='victory';text('Result eyebrow',this.overlay,won?'TRIAL COMPLETE':'THE EMBER REMAINS',14,0,186,800,40,'#A2C6B6');

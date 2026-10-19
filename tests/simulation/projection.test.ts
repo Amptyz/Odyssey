@@ -1,3 +1,4 @@
+import {openMerchantFixture,startCombatFixture} from '../helpers/scenes';
 import { describe, it, expect } from 'vitest';
 import { worldToScreen, screenToWorld } from '../../EmberDemo/assets/scripts/ember/render/IsoProjection';
 import { Pathfinder } from '../../EmberDemo/assets/scripts/ember/ai/Pathfinder';
@@ -22,7 +23,7 @@ describe('M0 / geometry', () => {
     expect(nav.sweep({x:19,y:10},{x:100,y:10}).x).toBeLessThan(nav.map.width);
   });
   it('click movement recovers from a position valid for the hero collision radius beside a pillar',()=>{
-    const w=new GameWorld(1234,'frost');w.command({type:'Start'});w.command({type:'LeaveShop'});
+    const w=new GameWorld(1234,'frost');openMerchantFixture(w);startCombatFixture(w);
     const pillar=w.map.obstacles.find(o=>o.id==='frost-spine-5')??w.map.obstacles.find(o=>o.x===30&&o.y===40)!;
     expect(pillar).toBeDefined();const start={x:pillar.x-pillar.radius-HERO.radius-.01,y:pillar.y};Object.assign(w.hero,start,{previous:{...start}});
     expect(w.nav.radius).toBe(w.hero.radius);expect(w.nav.walkable(w.hero,w.hero.radius)).toBe(true);

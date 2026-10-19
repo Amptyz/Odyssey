@@ -2,19 +2,19 @@
 
 ## 已有资源与工具
 
-运行时 PNG 在 `EmberDemo/assets/resources/art/living-ruins/`；制作记录在 `art-source/`。人物部件、装备和环境分别使用 hero-parts、equipment、environment 图集；兼容旧怪物图集使用 ruin-sprite、grovewarden，当前 17 怪默认由 MonsterVisual 程序绘制。上述资产均未因新规范自动像素化。实际尺寸查当前 PNG 与 `art-source/living-ruins-v1/atlas-inspection.json`，不拿 Prompt 请求尺寸代替。
+运行时已接入 pixel-v1 原26张生产 PNG，living-ruins 保留兼容。本次 hero / weapons / bodies / heads 稳定 ID 指向 pixel-v2，新增 environment-frost-v2 九个霜图部件与 vfx-bursts-v2 十六帧。17怪由 MonsterVisual 优先选 PNG，相位与显式切片正在校正。制作记录在 art-source，当前补齐批次为 art-completion-v2；实际尺寸、alpha、色数和挂点须读取本次记录，不拿 Prompt 请求当事实，也不把接入视为严格像素规格通过。
 
 源码根目录为 `EmberDemo/assets/scripts/ember/`。修改前定位：
 
 | 变更 | 数据 / 消费位置 |
 | --- | --- |
-| 图集布局与切片 | 根目录 `scripts/inspect-art.py` → `content/art-manifest.ts` → `render/ArtLibrary.ts` |
-| 怪物外观与动作 | 当前 `render/MonsterVisual.ts` / monster-palettes 与 EnemyPose；旧 PNG 路径为 UNIT_SPRITES、`content/animation.ts`、`render/AnimatedUnit.ts` |
-| 人物与装备 | HERO_ARM_ATTACHMENTS、EQUIPMENT_SPRITES、`render/HeroRig.ts`；装备图集目前固定 equipment |
+| 图集布局与切片 | production.json + art-completion-v2/manifest.json 定义片段 → inspect-pixel-art.py → content/pixel-art.ts → ArtLibrary；旧路径 inspect-art.py → art-manifest.ts |
+| 怪物外观与动作 | MonsterVisual PNG + EnemyPose；程序轮廓为回退；旧兼容为 UNIT_SPRITES / animation.ts / AnimatedUnit |
+| 人物与装备 | HeroRig 的实测 pixel-v2 挂点、hero / weapons / bodies / heads；旧挂点 / EQUIPMENT_SPRITES 保留兼容 |
 | 环境 | ENVIRONMENT_APPEARANCES、`content/maps.ts`、`render/ArenaView.ts` |
 | 技能特效 | EFFECT_APPEARANCES、`render/ArenaView.ts`；复杂新表现需相应 cue 数据 |
 
-`inspect-art.py` 依赖可选 Pillow，只读 PNG、生成 TS 和检查 JSON；它不是去背景、重排像素或任意视频帧导入器。新增布局要先扩展其来源配置，并核对 [动画空间策略](animation.md)。不要在只做审阅或 Prompt 的任务中运行它覆盖已提交数据。
+`inspect-pixel-art.py` 与旧 `inspect-art.py` 依赖可选 Pillow，只读 PNG、生成 TS 和检查 JSON；它不是去背景、重排像素或任意视频帧导入器。新增布局要先扩展其来源配置，并核对 [动画空间策略](animation.md)。不要在只做审阅或 Prompt 的任务中运行它覆盖已提交数据。
 
 ## 素材检查
 
@@ -26,7 +26,7 @@
 
 ## 像素显示迁移检查
 
-以 [像素网格标准](../../../../docs/ART_DIRECTION.md#源像素网格与显示目标) 为制作依据。新像素资源应验证最近邻、整数显示倍率、透明边缘与图集串色；这是接入目标，当前 ArtLibrary 未显式配置最近邻，跟随镜头、HeroRig 连续旋转、环境正弦运动和 Graphics 仍需适配。
+以 [像素网格标准](../../../../docs/ART_DIRECTION.md#源像素网格与显示目标) 为制作依据。新像素资源应验证最近邻、整数显示倍率、透明边缘与图集串色；ArtLibrary 已显式配置最近邻，HeroRig 肢体角度量化为15度；仍须检查源 texel 倍率、镜头 / DPR、透明边缘与 PNG / Graphics 混合密度，不因此宣称严格像素网格达标。
 
 检查纹理实际 min/mag 采样与 mipmap、Sprite 尺寸 / 节点缩放 / 相机输出，再检查 1280×720 和实际 CSS 缩放 / DPR。平移及镜像不能使源 texel 交替粗细或爬边；实现不满足时记录缺口，在已授权接入任务中补代码，不能当作已有能力。只对表现层应用像素方案，不能舍入世界模拟、CollisionWorld 或输入逆投影。
 
@@ -36,7 +36,7 @@
 
 素材验收后将选中 PNG 放入运行时资源目录，由 Creator 3.8.8 导入生成 `.meta`；移动既有素材保留 UUID，不手写 meta。记录候选到运行时文件的对应关系，避免旧图被误覆盖。
 
-改图集布局时维护 `inspect-art.py` 的生成来源、运行时图集数据和相关 clips；新文件 / 路径需要核对 ArtLibrary，不假设已支持任何 JSON manifest 或多图集装备。新增图片即使加载成功，也不自动创建装备、敌人或技能。
+改图集布局时维护 production.json 或 art-completion-v2/manifest.json 引用的定义来源，再生成 pixel-art.ts，并运行 `python3 scripts/inspect-pixel-art.py --check`；不要直接改生成表。旧 art-manifest.ts 继续由 inspect-art.py 生成。ArtLibrary 读取生成 TS 的 resourcePath，不在运行时解析任意 JSON。新增图片即使加载成功，也不自动创建装备、敌人或技能。
 
 修改脚本 / 配置后运行 `pnpm check`。使用 Creator 构建 Web Desktop，再 `pnpm play` 提供本机 8080 页面；查询参数不能重新构建。运行 `pnpm test:art` 并检查本次受影响画面；涉及装备获得 / 地图或技能流程时按 `docs/DEVELOPMENT_GUIDE.md` 增加对应测试。
 

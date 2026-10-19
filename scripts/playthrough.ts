@@ -3,13 +3,14 @@ import { GameWorld } from '../EmberDemo/assets/scripts/ember/simulation/GameWorl
 import { distance } from '../EmberDemo/assets/scripts/ember/utils/math';
 const outcomes=[];
 for(const seed of [0,1,2,42,1234,2026,31415,65535,99999,4294967295]) {
-  const world=new GameWorld(seed);world.command({type:'Start'});world.command({type:'LeaveShop'});
+  const world=new GameWorld(seed);world.command({type:'Start'});
   // A deterministic naive player: attack nearest, cast Q/W when available, R on clusters.
   // No damage, HP, enemy or cooldown changes are permitted in this real-rules run.
   for(let step=0;step<30*240 && world.phase!=='defeat'&&world.phase!=='victory';step++) {
-    if(world.phase==='shop')world.command({type:'LeaveShop'});
-    if(world.phase==='reward'){const c=world.choices.find(c=>c.kind==='perk'&&(c.perkId==='burn'||c.perkId==='leech'))??world.choices[0]!;world.command({type:'ChooseReward',choiceId:c.id});if(world.pendingSkill)world.command({type:'ConfirmSkill',slot:'Q'});}
-    if(step%6===0){const enemies=[...world.actors.values()].filter(a=>a.team==='enemy'&&a.alive).sort((a,b)=>distance(a,world.hero)-distance(b,world.hero));
+    if(world.snapshot().phase==='shop')world.command({type:'LeaveShop'});
+    if(world.snapshot().phase==='reward'){const c=world.choices.find(c=>c.kind==='perk'&&(c.perkId==='burn'||c.perkId==='leech'))??world.choices[0]!;world.command({type:'ChooseReward',choiceId:c.id});if(world.pendingSkill)world.command({type:'ConfirmSkill',slot:'Q'});}
+    if(world.phase==='camp'||world.phase==='cleared'){const nodes=world.snapshot().scene.interactions,target=nodes.find(n=>n.kind==='ember'&&!n.claimed)??nodes.find(n=>n.kind==='departure')!;if(distance(world.hero,target)<=target.radius*.75)world.command({type:'Interact'});else world.command({type:'MoveTo',point:target});}
+    if(world.phase==='fighting'&&step%6===0){const enemies=[...world.actors.values()].filter(a=>a.team==='enemy'&&a.alive).sort((a,b)=>distance(a,world.hero)-distance(b,world.hero));
       const target=enemies[0];if(target){
         if(distance(target,world.hero)>world.equipment.stats.attackRange*0.8)world.command({type:'MoveTo',point:target});else world.command({type:'Stop'});world.command({type:'AttackInput',point:target});world.command({type:'CastSkill',skillId:'fireball',point:target});
         if(distance(target,world.hero)<5)world.command({type:'CastSkill',skillId:'shield',point:world.hero});

@@ -1,3 +1,4 @@
+import {BASIC_ATTACKS,DEFAULT_BASIC_ATTACK,resolveBasicAttack,type BasicAttackId} from '../content/attacks';
 import {effectiveResistance,resistanceMultiplier,omnivampEfficiency,evaluate,type Modifier,type AttributeSource} from './attributes/AttributeSet';
 import { PERKS } from '../content/perks';
 import { skill } from '../content/skills';
@@ -34,7 +35,26 @@ export class CombatEngine {
   private castResult?: CastResult;
   constructor(readonly actors: Map<string,Actor>, private readonly cue: (cue: CombatCue) => void = () => {},private readonly damagePolicy:(hit:Hit,target:Actor)=>number=hit=>hit.amount,readonly collision=new CollisionWorld(),private readonly hooks:CombatHooks={}) {}
   perksFor(actorId='hero'):Set<PerkId> {if(actorId==='hero')return this.perks;let perks=this.playerPerks.get(actorId);if(!perks){perks=new Set();this.playerPerks.set(actorId,perks);}return perks;}
-  addPerk(id: PerkId,actorId='hero'): void { this.perksFor(actorId).add(id);const actor=this.actors.get(actorId),p=PERKS.find(p=>p.id===id) as PerkDefinition|undefined;if(actor&&p){const modifiers:Modifier[]=[];if(p.critChance)modifiers.push({stat:'critChance',operation:'flat',value:p.critChance});if(p.maxHpMultiplier)modifiers.push({stat:'maxHealth',operation:'multiply',value:p.maxHpMultiplier});if(p.speedMultiplier)modifiers.push({stat:'moveSpeed',operation:'multiply',value:p.speedMultiplier});if(p.attackMultiplier)modifiers.push({stat:'attackSpeed',operation:'multiply',value:1/p.attackMultiplier});actor.attributes.upsert({sourceId:'perk:'+id,modifiers});} }
+  basicAttackFor(actorId='hero'):BasicAttackId {
+    return resolveBasicAttack(Array.from(this.perksFor(actorId),id=>PERKS.find(p=>p.id===id)! as PerkDefinition));
+  }
+  addPerk(id:PerkId,actorId='hero'):void {
+    const p=PERKS.find(p=>p.id===id) as PerkDefinition|undefined;if(!p)return;
+    this.perksFor(actorId).add(id);
+    const actor=this.actors.get(actorId);if(!actor)return;
+    const modifiers:Modifier[]=[];
+    if(p.critChance)modifiers.push({stat:'critChance',operation:'flat',value:p.critChance});
+    if(p.maxHpMultiplier)modifiers.push({stat:'maxHealth',operation:'multiply',value:p.maxHpMultiplier});
+    if(p.speedMultiplier)modifiers.push({stat:'moveSpeed',operation:'multiply',value:p.speedMultiplier});
+    if(p.attackMultiplier)modifiers.push({stat:'attackSpeed',operation:'multiply',value:1/p.attackMultiplier});
+    actor.attributes.upsert({sourceId:'perk:'+id,modifiers});
+    // One replaceable source, never a sum of multiple form ranges. Independent reach modifiers still apply.
+    const form=this.basicAttackFor(actorId);
+    actor.attributes.remove('perk:attack-form');
+    if(form!==DEFAULT_BASIC_ATTACK)actor.attributes.upsert({sourceId:'perk:attack-form',modifiers:[{
+      stat:'attackRange',operation:'flat',value:BASIC_ATTACKS[form].range-(actor.attributes.template.stats.attackRange??BASIC_ATTACKS[DEFAULT_BASIC_ATTACK].range),
+    }]});
+  }
   isPrimed(id: string): boolean { return this.primed.has(id); }
   modifier(stat:'maxHpMultiplier',actorId='hero'):number {return PERKS.reduce((n,p)=>n*(this.perksFor(actorId).has(p.id)?(p as PerkDefinition)[stat]??1:1),1);}
   private sum(stat:'critChance'|'trueBonusRatio',actorId:string):number {return PERKS.reduce((n,p)=>n+(this.perksFor(actorId).has(p.id)?(p as PerkDefinition)[stat]??0:0),0);}

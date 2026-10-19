@@ -26,7 +26,10 @@
     "test:multiplayer": "node --import tsx scripts/browser-multiplayer.ts",
     "test:campaign": "node --import tsx scripts/campaign-playthrough.ts",
     "test:levels": "node --import tsx scripts/browser-levels.ts",
-    "test:equipment": "node --import tsx scripts/browser-equipment.ts"
+    "test:equipment": "node --import tsx scripts/browser-equipment.ts",
+    "test:scenes": "node --import tsx scripts/browser-scenes.ts",
+    "test:transitions": "node scripts/browser-transitions.mjs",
+    "test:locations": "node --import tsx scripts/browser-locations.ts"
   },
   "devDependencies": {
     "@cocos/creator-types": "3.8.7",

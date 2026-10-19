@@ -1,0 +1,374 @@
+[
+  {
+    "id": "hero",
+    "path": "EmberDemo/assets/resources/art/pixel-v2/hero.png",
+    "resourcePath": "art/pixel-v2/hero",
+    "kind": "icon",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 64,
+    "poses": [
+      "head",
+      "torso",
+      "rightArm",
+      "leftArm",
+      "leftLeg",
+      "rightLeg"
+    ],
+    "explicitFrames": [
+      {
+        "rect": [
+          75,
+          47,
+          416,
+          440
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          595,
+          124,
+          396,
+          371
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          1157,
+          77,
+          256,
+          426
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          116,
+          538,
+          269,
+          434
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          649,
+          542,
+          214,
+          430
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          1187,
+          538,
+          262,
+          434
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      }
+    ]
+  },
+  {
+    "id": "weapons",
+    "path": "EmberDemo/assets/resources/art/pixel-v2/weapons.png",
+    "resourcePath": "art/pixel-v2/weapons",
+    "kind": "icon",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 64,
+    "poses": [
+      "sword",
+      "staff",
+      "bow",
+      "bulwark",
+      "reaver",
+      "runeblade"
+    ],
+    "explicitFrames": [
+      {
+        "rect": [
+          246,
+          48,
+          121,
+          439
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          720,
+          19,
+          97,
+          468
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          1146,
+          21,
+          123,
+          466
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          198,
+          554,
+          218,
+          422
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          692,
+          516,
+          150,
+          479
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          1160,
+          525,
+          140,
+          470
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bodies",
+    "path": "EmberDemo/assets/resources/art/pixel-v2/bodies.png",
+    "resourcePath": "art/pixel-v2/bodies",
+    "kind": "icon",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 64,
+    "poses": [
+      "plate",
+      "robe",
+      "leather",
+      "duelistVest",
+      "wardMantle",
+      "sanguineWrap"
+    ],
+    "explicitFrames": [
+      {
+        "rect": [
+          41,
+          75,
+          459,
+          414
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          537,
+          75,
+          465,
+          415
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          1057,
+          75,
+          434,
+          415
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          50,
+          553,
+          440,
+          404
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          535,
+          555,
+          467,
+          410
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          1056,
+          558,
+          435,
+          408
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      }
+    ]
+  },
+  {
+    "id": "heads",
+    "path": "EmberDemo/assets/resources/art/pixel-v2/heads.png",
+    "resourcePath": "art/pixel-v2/heads",
+    "kind": "icon",
+    "grid": [
+      3,
+      2
+    ],
+    "height": 64,
+    "poses": [
+      "helm",
+      "circlet",
+      "hood",
+      "keenVisor",
+      "sageMask",
+      "aegisCrown"
+    ],
+    "explicitFrames": [
+      {
+        "rect": [
+          64,
+          99,
+          416,
+          419
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          581,
+          200,
+          376,
+          162
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          1034,
+          83,
+          470,
+          475
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          34,
+          627,
+          435,
+          253
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          548,
+          637,
+          429,
+          311
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "rect": [
+          1051,
+          592,
+          434,
+          335
+        ],
+        "anchor": [
+          0.5,
+          0.5
+        ]
+      }
+    ]
+  }
+]

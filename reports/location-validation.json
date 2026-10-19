@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-19",
+  "status": "passed",
+  "scope": "Shared required location names and optional subtitles; local entry title presentation for 16 playable places. No gameplay balance, route order, save ID or protocol version changes.",
+  "commands": {
+    "pnpm check": {
+      "status": "passed",
+      "files": 27,
+      "tests": 343,
+      "log": "reports/location-check.log"
+    },
+    "pnpm typecheck:tools": {
+      "status": "passed",
+      "log": "reports/location-tools.log"
+    }
+  },
+  "build": {
+    "status": "passed",
+    "sourceFilesVerified": 109,
+    "importedMeta": [
+      "EmberDemo/assets/scripts/ember/content/locations.ts.meta"
+    ],
+    "creator": "3.8.8",
+    "buildLog": "reports/location-creator.log",
+    "note": "Creator finished Web Desktop build; afterward logged a window.json recovery warning from global editor UI state."
+  },
+  "browser": {
+    "locations": {
+      "status": "passed",
+      "checks": 28,
+      "report": "reports/browser-locations.json"
+    },
+    "transitions": {
+      "status": "passed",
+      "checks": 36,
+      "report": "reports/browser-transitions.json"
+    },
+    "multiplayer": {
+      "status": "passed",
+      "checks": 19,
+      "report": "reports/browser-multiplayer.json"
+    }
+  },
+  "visualReview": [
+    "reports/location-normal-camp.png",
+    "reports/location-ember-level.png",
+    "reports/location-frost-rest.png"
+  ],
+  "notCovered": [
+    "Full ten-level campaign balance rerun",
+    "Four-player performance",
+    "Public Internet / impaired networks"
+  ],
+  "notes": [
+    "Initial browser run required restarting the local preview service.",
+    "tsx browser callback helper issue in the new test recorder was fixed before the successful run.",
+    "No commit or push performed."
+  ]
+}

@@ -1,3 +1,4 @@
+import {openMerchantFixture,startCombatFixture,departFixture} from './helpers/scenes';
 import {GameWorld} from '../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import {FIXED_DT} from '../EmberDemo/assets/scripts/ember/content/config';
 import {describe,it,expect} from 'vitest';
@@ -47,21 +48,21 @@ function enterExit(world:GameWorld,playerId='hero'):void {const actor=world.play
 function chooseReward(world:GameWorld,playerId='hero'):void {const player=world.players.get(playerId)!,choice=player.choices.find(c=>c.kind==='perk')??player.choices[0]!;world.command({type:'ChooseReward',choiceId:choice.id},playerId);if(player.pendingSkill)world.command({type:'ConfirmSkill',slot:'Q'},playerId);}
 describe('authoritative level progression integration',()=>{
  for(const mapId of Object.keys(MAPS) as (keyof typeof MAPS)[])it(`${mapId}: clearing opens exit, five completed exits lead through rewards to victory`,()=>{
-  const world=new GameWorld(1234,mapId);world.command({type:'Start'});
+  const world=new GameWorld(1234,mapId);startCombatFixture(world);
   for(let wave=1;wave<=5;wave++){
-   expect(world.phase).toBe('shop');world.command({type:'LeaveShop'});const start=levelSpawn(world.map,wave);expect(world.wave).toBe(wave);expect({x:world.hero.x,y:world.hero.y}).toEqual(start);
+   expect(world.phase).toBe('fighting');const start=levelSpawn(world.map,wave);expect(world.wave).toBe(wave);expect({x:world.hero.x,y:world.hero.y}).toEqual(start);
    if(wave===5)expect(Array.from(world.actors.values()).filter(unit=>unit.team==='enemy'&&unit.alive).map(unit=>unit.kind)).toEqual([mapId==='ember'?'courtyardHeart':'mirrorRegent']);
    enterExit(world);world.advance(FIXED_DT);expect(world.phase).toBe('fighting');world.hero.x=start.x;world.hero.y=start.y;
-   finishLevelEnemies(world);expect(world.phase).toBe('fighting');expect(world.snapshot().level.exitActive).toBe(true);expect(world.snapshot().level.remainingEnemies).toBe(0);
-   enterExit(world);world.advance(FIXED_DT);expect(world.phase).toBe('reward');chooseReward(world);expect(world.phase).toBe(wave===5?'victory':'shop');
+   finishLevelEnemies(world);expect(world.phase).toBe('cleared');expect(world.snapshot().level.exitActive).toBe(true);expect(world.snapshot().level.remainingEnemies).toBe(0);
+   enterExit(world);world.advance(FIXED_DT);expect(world.phase).toBe('cleared');departFixture(world);if(world.phase==='camp')departFixture(world);expect(world.phase).toBe(wave===5?'victory':'fighting');
   }
  });
- it('waits for all living participating teammates but skips dead and inactive members',()=>{
-  const world=new GameWorld();world.addPlayer('p2');world.addPlayer('dead');world.addPlayer('offline');world.command({type:'Start'});for(const id of world.players.keys())world.command({type:'LeaveShop'},id);world.setPlayerActive('offline',false);const dead=world.players.get('dead')!.hero;dead.hp=0;dead.alive=false;
-  finishLevelEnemies(world);enterExit(world);world.advance(FIXED_DT);expect(world.phase).toBe('fighting');expect(world.snapshot().level.requiredIds).toEqual(['hero','p2']);enterExit(world,'p2');world.advance(FIXED_DT);expect(world.phase).toBe('reward');
+ it('revives fallen teammates at clear and requires all active members at departure',()=>{
+  const world=new GameWorld();world.addPlayer('p2');world.addPlayer('dead');world.addPlayer('offline');openMerchantFixture(world);startCombatFixture(world);world.setPlayerActive('offline',false);const dead=world.players.get('dead')!.hero;dead.hp=0;dead.alive=false;
+  finishLevelEnemies(world);enterExit(world);world.advance(FIXED_DT);expect(world.phase).toBe('cleared');expect(dead.alive).toBe(true);expect(world.snapshot().scene.requiredIds.sort()).toEqual(['dead','hero','p2']);world.command({type:'Interact'});expect(world.phase).toBe('cleared');departFixture(world);expect(world.phase).toBe('fighting');
  });
  it('rebuilds the same encounter and formation at its starting boundary after a fighting checkpoint',()=>{
-  const world=new GameWorld(31,'frost');world.addPlayer('p2');world.command({type:'Start'});world.command({type:'LeaveShop'});world.command({type:'LeaveShop'},'p2');const checkpoint=world.savedRun!,initialEnemies=Array.from(world.actors.values()).filter(unit=>unit.team==='enemy').map(unit=>({id:unit.id,kind:unit.kind,x:unit.x,y:unit.y,hp:unit.hp}));world.hero.x+=3;world.hero.y+=2;finishLevelEnemies(world);
+  const world=new GameWorld(31,'frost');world.addPlayer('p2');openMerchantFixture(world);startCombatFixture(world);world.command({type:'LeaveShop'},'p2');const checkpoint=world.savedRun!,initialEnemies=Array.from(world.actors.values()).filter(unit=>unit.team==='enemy').map(unit=>({id:unit.id,kind:unit.kind,x:unit.x,y:unit.y,hp:unit.hp}));world.hero.x+=3;world.hero.y+=2;finishLevelEnemies(world);
   const resumed=GameWorld.resume(checkpoint);expect(resumed.phase).toBe('fighting');expect({x:resumed.hero.x,y:resumed.hero.y}).toEqual(levelSpawn(resumed.map,1,0));const teammate=resumed.players.get('p2')!.hero;expect({x:teammate.x,y:teammate.y}).toEqual(levelSpawn(resumed.map,1,1));expect(Array.from(resumed.actors.values()).filter(unit=>unit.team==='enemy').map(unit=>({id:unit.id,kind:unit.kind,x:unit.x,y:unit.y,hp:unit.hp}))).toEqual(initialEnemies);expect(resumed.snapshot().level.exitActive).toBe(false);
  });
 });

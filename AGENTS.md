@@ -25,7 +25,9 @@
 
 ## 开发时保持的约定
 
-- 六个通用装备栏slot1–slot6不限类型；weapon/body/head仅是显示部位。外观和普攻按已装备物品的purchaseOrder解析，重装旧件不改变购序；保存/恢复必须携带购序。
+- 六个通用装备栏slot1–slot6不限类型；weapon/body/head仅是显示部位。各部位外观按已装备物品的purchaseOrder解析；玩家普攻默认近战挥砍，只由余烬改变形式，与装备无关，重装旧件不改变购序；保存/恢复必须携带购序。
+- 场景与交互遵循 [营地与休息点](docs/SCENES.md)：Start 进入营地；商店/余烬是每人面板，不能恢复每关自动弹窗。交互按世界坐标 F 校验，全员集合后仅房主出发；首个余烬必选。
+- 每个地点遵循 `content/locations.ts` 的 `LocationDefinition`，必填 name、可选 subtitle；在 maps / scenes 中编辑，由 SceneSnapshot 和 SceneTransition 统一显示入场标题。显示名称不参与稳定 ID、存档或领取标记。
 - 无固定职业。玩家通过主动技能奖励与确定性装备购买形成构筑；装备同时决定外观。基础人物保持中性、简洁的遗迹风格。
 - 两种操作都以左键朝鼠标地面方向普攻，允许挥空；不恢复锁定、自动追击或鼠标吸附。QWER 是槽位，技能逻辑使用稳定 `SkillId`。
 - 先判断能否复用已有配置和处理器。新技能 / 装备 / 敌人变种通常不需要在 `GameWorld` 加 ID 分支。
@@ -33,7 +35,7 @@
 - 命中使用 `CollisionWorld` 的世界坐标查询；移动使用 `Pathfinder.sweep`。不能用贴图距离、动画回调或 Cocos 刚体另建一套伤害判定。
 - 战斗时间使用 `FIXED_DT` / `GameWorld.time`，随机使用已有 `Random`。保留暂停、重开、阶段切换与旧输入清理。
 - 伤害 / 治疗进入 `CombatEngine`；连锁效果保留 `rootId / depth / proc` 等来源信息和预算保护。不要用直接扣 HP 绕过事件链。
-- 多人逻辑必须通过 playerId 访问 `GameWorld.players`，事件规则按 sourceId 读取增益；`world.hero / equipment / loadout` 只是初始玩家的兼容入口。恢复点不是任意战斗快照；跨波字段同步保存 / 校验 / 恢复。
+- 多人逻辑必须通过 playerId 访问 `GameWorld.players`，事件规则按 sourceId 读取余烬；`world.hero / equipment / loadout` 只是初始玩家的兼容入口。恢复点不是任意战斗快照；跨波字段同步保存 / 校验 / 恢复。
 - 配置是共享定义，不作为可变的角色实例存储。新增快照字段要复制其中的可变对象，不把实体、Node 或 Set 暴露给 UI 修改。
 - 开发者开关仅在显式应用的测试世界中生效；新增工具继续经过配置校验、命令和模式检查，不默认给普通局加作弊效果。
 
@@ -42,12 +44,13 @@
 | 需求 | 首先查看 |
 | --- | --- |
 | 新技能 / 新技能行为 | `content/skills.ts` → `simulation/SkillSystem.ts` |
-| 装备 / 属性 / 武器普攻 | `content/equipment.ts`、`content/attacks.ts`、`simulation/EquipmentSystem.ts` |
+| 装备 / 属性 / 外观 | `content/equipment.ts`、`simulation/EquipmentSystem.ts` |
+| 玩家普攻形式 / 形式余烬 | `content/attacks.ts`、`content/perks.ts` → `combat-core/CombatEngine.ts`、`simulation/GameWorld.ts` |
 | 装备独立被动 / 内部冷却 | `content/equipment.ts` 的 passives → `simulation/EquipmentEffectSystem.ts`；通过 CombatEngine 实际事件触发 |
 | 全单位属性 / 公式 / 来源 | `combat-core/attributes/AttributeSet.ts`、`combat-core/ActorFactory.ts`；`content/enemies.ts` 的 template |
 | 敌人 / AI | `content/enemies.ts`、`content/enemy-actions.ts` → `simulation/EnemySystem.ts` |
-| 增益 / 新效果 / 状态 | `content/perks.ts`、`content/statuses.ts` → `combat-core/types.ts`、`EffectHandlers.ts`、`StatusSystem.ts` |
-| 地图 / 波次 / 开店阶段 | `content/maps.ts`、`content/progression.ts` → `simulation/LevelSystem.ts` |
+| 余烬 / 新效果 / 状态 | `content/perks.ts`、`content/statuses.ts` → `combat-core/types.ts`、`EffectHandlers.ts`、`StatusSystem.ts` |
+| 地图 / 波次 / 营地与休息点 | `content/maps.ts`、`content/scenes.ts` → `simulation/LevelSystem.ts`、`simulation/SceneSystem.ts` |
 | 人物 / 装备贴图、动画 | `content/appearances.ts`、`content/animation.ts` → `render/HeroRig.ts`、`AnimatedUnit.ts` |
 | 命中 / 遮挡 / 弹体 | `combat-core/CollisionWorld.ts`、`simulation/GameWorld.ts` |
 | 联机 / 存档 / 掉线 | `platform/RoomTransport.ts`、`platform/room-protocol.ts`、`simulation/RunCheckpoint.ts`；根 `scripts/relay-server.ts` |

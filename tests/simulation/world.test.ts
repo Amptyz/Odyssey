@@ -1,3 +1,4 @@
+import {openMerchantFixture,startCombatFixture,interactFixture,departFixture,chooseFixture} from '../helpers/scenes';
 import { describe,it,expect } from 'vitest';
 import { GameWorld } from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import { LocalTransport } from '../../EmberDemo/assets/scripts/ember/platform/LocalTransport';
@@ -5,10 +6,10 @@ import { HERO, SKILLS } from '../../EmberDemo/assets/scripts/ember/content/confi
 import {AttributeSet} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { distance } from '../../EmberDemo/assets/scripts/ember/utils/math';
 function run(w:GameWorld,seconds:number,hz=60) { for(let i=0;i<seconds*hz;i++)w.advance(1/hz); }
-function start(seed=1234) {const w=new GameWorld(seed);w.command({type:'Start'});w.command({type:'LeaveShop'});return w;}
+function start(seed=1234) {const w=new GameWorld(seed);openMerchantFixture(w);startCombatFixture(w);return w;}
 function freeze(e:GameWorld['hero']){e.attributes=new AttributeSet({...e.attributes.template,canMove:false,canAttack:false});return e;}
 function sandbox() { const w=start();for(const [id,a] of w.actors)if(a.team==='enemy')w.actors.delete(id);Object.assign(w.hero,{x:10,y:10,previous:{x:10,y:10}});freeze(w.spawnEnemy('melee',{x:1,y:1},99999));return w; }
-function finishLevel(w:GameWorld){for(const e of w.actors.values())if(e.team==='enemy'&&e.alive)w.combat.damage({sourceId:'hero',targetId:e.id,amount:100000,cause:'basic'});run(w,1/30,30);expect(w.phase).toBe('fighting');const exit=w.snapshot().level.exit;Object.assign(w.hero,{x:exit.x,y:exit.y});run(w,1/30,30);}
+function finishLevel(w:GameWorld){for(const e of w.actors.values())if(e.team==='enemy'&&e.alive)w.combat.damage({sourceId:'hero',targetId:e.id,amount:100000,cause:'basic'});run(w,1/30,30);expect(w.phase).toBe('cleared');const exit=w.snapshot().level.exit;Object.assign(w.hero,{x:exit.x,y:exit.y});run(w,1/30,30);}
 describe('fixed-step world and inputs',()=>{
   it('reproduces spawns with safe positions',()=>{
     const a=start(),b=start();expect(a.snapshot()).toEqual(b.snapshot());
@@ -62,19 +63,17 @@ describe('fixed-step world and inputs',()=>{
     w.command({type:'CastSkill',skillId:'fireball',point:{x:0,y:0}});expect(w.snapshot()).toEqual(before);
     w.command({type:'TogglePause'});run(w,1);expect(w.time).toBeCloseTo(1);
   });
-  it('five cleared levels require reaching the exit, then offer distinct rewards and victory',()=>{
+  it('five cleared levels wait for explicit exit interactions and preserve unique ember choices',()=>{
     const w=start();
-    for(let wave=1;wave<=5;wave++) {
-      expect(w.wave).toBe(wave);
-      finishLevel(w);expect(w.phase).toBe('reward');expect(new Set(w.choices).size).toBe(3);
-      w.choices.forEach(c=>{if(c.kind==='perk')expect(w.combat.perks.has(c.perkId)).toBe(false);});
-      const t=w.time;run(w,2);expect(w.time).toBe(t);
-      w.command({type:'ChooseReward',choiceId:w.choices[0]!.id});if(w.pendingSkill)w.command({type:'ConfirmSkill',slot:'Q'});w.command({type:'LeaveShop'});
+    for(let wave=1;wave<=5;wave++){
+      expect(w.wave).toBe(wave);finishLevel(w);expect(w.phase).toBe('cleared');expect(w.choices).toHaveLength(0);
+      if(w.snapshot().scene.interactions.some(n=>n.kind==='ember')){interactFixture(w,'ember');expect(new Set(w.choices.map(c=>c.id)).size).toBe(3);chooseFixture(w);}
+      departFixture(w);if(w.phase==='camp'){if(w.snapshot().scene.interactions.some(n=>n.kind==='ember'))chooseFixture(w);departFixture(w);}
     }
     expect(w.phase).toBe('victory');
   });
   it('death, restart and snapshots cannot leak prior state',()=>{
-    const port=new LocalTransport();port.send({type:'Start'});port.send({type:'LeaveShop'});const snapshot=port.snapshot();snapshot.hero.hp=0;
+    const port=new LocalTransport();openMerchantFixture(port.world);startCombatFixture(port.world);const snapshot=port.snapshot();snapshot.hero.hp=0;
     expect(port.world.hero.hp).toBe(HERO.hp);
     port.world.combat.damage({sourceId:'enemy',targetId:'hero',amount:999,cause:'enemy'});run(port.world,1/30,30);
     expect(port.world.phase).toBe('defeat');port.send({type:'Restart'});expect(port.world.phase).toBe('ready');expect(port.world.hero.hp).toBe(HERO.hp);
@@ -90,11 +89,9 @@ describe('fixed-step world and inputs',()=>{
     w.command({type:'CastSkill',skillId:'shield',point:w.hero});w.command({type:'CastSkill',skillId:'fireball',point:{x:15,y:10}});
     expect(w.projectiles).toHaveLength(2);w.projectiles.forEach(p=>expect(p.damage).toBe(SKILLS.fireball.behavior.damage*1.5));
   });
-  it('all three lab presets retain three available choices per wave',()=>{
-    for(const lab of ['burn','arc','reserve'] as const) {
-      const w=new GameWorld();w.command({type:'Start',lab});w.command({type:'LeaveShop'});
-      for(let i=0;i<5;i++) {finishLevel(w);expect(w.choices).toHaveLength(3);w.command({type:'ChooseReward',choiceId:w.choices[0]!.id});if(w.pendingSkill)w.command({type:'ConfirmSkill',slot:'Q'});w.command({type:'LeaveShop'});}
-    }
+  it.each(['burn','arc','reserve'] as const)('%s preset retains three choices at configured ember sources',lab=>{
+      const w=new GameWorld();openMerchantFixture(w,lab);startCombatFixture(w);
+      for(let i=0;i<5;i++) {finishLevel(w);if(w.snapshot().scene.interactions.some(n=>n.kind==='ember')){interactFixture(w,'ember');expect(w.choices).toHaveLength(3);chooseFixture(w);}departFixture(w);if(w.phase==='camp')departFixture(w);}
   });
 });
 
@@ -119,11 +116,11 @@ describe('direct movement and pointer attacks',()=>{
     const w=sandbox(),front=w.spawnEnemy('melee',{x:11.5,y:10},500),back=w.spawnEnemy('melee',{x:8.5,y:10},500);
     freeze(front);freeze(back);
     w.command({type:'Attack',point:front});w.command({type:'Attack',point:front});
-    expect(front.hp).toBe(500);run(w,0.1);expect(front.hp).toBe(500-HERO.attackDamage/1.05);expect(back.hp).toBe(500);
+    expect(front.hp).toBe(500);run(w,0.1);expect(front.hp).toBe(500);run(w,1/30);expect(front.hp).toBe(500-HERO.attackDamage/1.05);expect(back.hp).toBe(500);
     w.command({type:'AttackInput',point:front});run(w,0.8);
     expect(front.hp).toBe(500-HERO.attackDamage*2/1.05);expect(distance(w.hero,{x:10,y:10})).toBe(0);
     w.command({type:'AttackInput'});run(w,1);expect(front.hp).toBe(500-HERO.attackDamage*2/1.05);
-    w.command({type:'Attack',point:back});run(w,0.1);expect(back.hp).toBe(500-HERO.attackDamage/1.05);
+    w.command({type:'Attack',point:back});run(w,.15);expect(back.hp).toBe(500-HERO.attackDamage/1.05);
   });
   it('does not hit out of range or through obstacles',()=>{
     const w=sandbox(),far=w.spawnEnemy('melee',{x:10+HERO.attackRange+1,y:10},500);

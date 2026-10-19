@@ -1,3 +1,4 @@
+import {openMerchantFixture,startCombatFixture} from './helpers/scenes';
 import {describe,it,expect} from 'vitest';
 import {PIXEL_ATLASES} from '../EmberDemo/assets/scripts/ember/content/pixel-art';
 import {ENEMIES} from '../EmberDemo/assets/scripts/ember/content/enemies';
@@ -21,6 +22,6 @@ describe('production pixel assets and authoritative visual geometry',()=>{
   const lane:HitShape={kind:'rectangle',center:{x:10,y:10},facing:{x:1,y:0},length:13,width:.72};const line=shapeContours(lane)[0]!;expect(Math.max(...line.map(p=>p.y))-Math.min(...line.map(p=>p.y))).toBeCloseTo(.72);expect(Math.max(...line.map(p=>p.x))).toBe(23);
  });
  it('freezes and deep copies exact skill core geometry in snapshots',()=>{
-  const world=new GameWorld(1234);world.command({type:'Start'});world.command({type:'LeaveShop'});world.command({type:'CastSlot',slot:'R',point:{x:world.hero.x+1,y:world.hero.y}});const first=world.snapshot(),cue=first.cues.find(c=>c.kind==='explosion')!;expect(cue.shape?.kind).toBe('circle');expect(cue.radius).toBe(7.6);expect(cue.contours?.length).toBeGreaterThan(0);if(cue.shape){const c=cloneShape(cue.shape);c.center.x=-100;expect(cue.shape.center.x).not.toBe(-100);}cue.contours![0]![0]!.x=-100;expect(world.snapshot().cues.find(c=>c.id===cue.id)!.contours![0]![0]!.x).not.toBe(-100);
+  const world=new GameWorld(1234);openMerchantFixture(world);startCombatFixture(world);world.command({type:'CastSlot',slot:'R',point:{x:world.hero.x+1,y:world.hero.y}});const first=world.snapshot(),cue=first.cues.find(c=>c.kind==='explosion')!;expect(cue.shape?.kind).toBe('circle');expect(cue.radius).toBe(7.6);expect(cue.contours?.length).toBeGreaterThan(0);if(cue.shape){const c=cloneShape(cue.shape);c.center.x=-100;expect(cue.shape.center.x).not.toBe(-100);}cue.contours![0]![0]!.x=-100;expect(world.snapshot().cues.find(c=>c.id===cue.id)!.contours![0]![0]!.x).not.toBe(-100);
  });
 });

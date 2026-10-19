@@ -1,3 +1,4 @@
+import {openMerchantFixture,startCombatFixture,interactFixture,departFixture,chooseFixture} from '../helpers/scenes';
 import { describe,it,expect } from 'vitest';
 import { GameWorld } from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import { LocalTransport } from '../../EmberDemo/assets/scripts/ember/platform/LocalTransport';
@@ -10,7 +11,7 @@ import { Pathfinder } from '../../EmberDemo/assets/scripts/ember/ai/Pathfinder';
 import { fitMapProjection,worldToScreen,screenToWorld } from '../../EmberDemo/assets/scripts/ember/render/IsoProjection';
 import { distance } from '../../EmberDemo/assets/scripts/ember/utils/math';
 function advance(w:GameWorld,seconds:number){for(let i=0;i<Math.round(seconds*30);i++)w.advance(1/30);}
-function fixture(){const w=new GameWorld();w.loadout.Q='icebolt';w.command({type:'Start'});w.command({type:'LeaveShop'});
+function fixture(){const w=new GameWorld();w.loadout.Q='icebolt';openMerchantFixture(w);startCombatFixture(w);
   Object.assign(w.hero,{x:10,y:10,previous:{x:10,y:10}});
   for(const [id,u] of w.actors)if(u.team==='enemy')w.actors.delete(id);
   const e=w.spawnEnemy('melee',{x:11.3,y:10},300);e.windup=999;return{w,e};}
@@ -56,21 +57,21 @@ describe('extensible game content',()=>{
   });
   it('map switch and restart preserve map/loadout but reset combat; active map cannot switch',()=>{
     const port=new LocalTransport();port.send({type:'SelectMap',mapId:'frost'});expect(port.world.hero.x).toBe(mapDefinition('frost').heroSpawn.x);expect(port.world.loadout.Q).toBe('fireball');
-    port.send({type:'Start'});port.send({type:'LeaveShop'});port.send({type:'SelectMap',mapId:'ember'});expect(port.world.mapId).toBe('frost');
+    openMerchantFixture(port.world);startCombatFixture(port.world);port.send({type:'SelectMap',mapId:'ember'});expect(port.world.mapId).toBe('frost');
     port.send({type:'Restart'});expect(port.world.phase).toBe('ready');expect(port.world.mapId).toBe('frost');expect(port.world.loadout.Q).toBe('fireball');expect(port.world.hero.statuses).toHaveLength(0);
   });
   for(const id of Object.keys(MAPS) as MapId[]){
     it(`${id}: deterministic safe spawns, data-driven wave count and reward filtering`,()=>{
-      const w=new GameWorld(1234,id),copy=new GameWorld(1234,id);w.command({type:'Start'});w.command({type:'LeaveShop'});copy.command({type:'Start'});copy.command({type:'LeaveShop'});expect(w.snapshot()).toEqual(copy.snapshot());
+      const w=new GameWorld(1234,id),copy=new GameWorld(1234,id);openMerchantFixture(w);startCombatFixture(w);openMerchantFixture(copy);startCombatFixture(copy);expect(w.snapshot()).toEqual(copy.snapshot());
       for(let wave=1;wave<=w.map.waves.length;wave++){
         expect(w.wave).toBe(wave);expect(w.snapshot().totalWaves).toBe(w.map.waves.length);
         for(const e of w.actors.values())if(e.team==='enemy'){
           expect(w.nav.walkable(e,e.radius)).toBe(true);expect(distance(e,w.hero)).toBeGreaterThanOrEqual(w.map.spawnDistance);
           w.combat.damage({sourceId:'hero',targetId:e.id,amount:100000,cause:'basic',damageType:'true'});
         }
-        Object.assign(w.hero,w.map.waves[wave-1]!.level!.exit);advance(w,1/30);expect(w.phase).toBe('reward');expect(w.choices).toHaveLength(3);
-        expect(w.choices.some(c=>c.kind==='skill')).toBe(true);
-        w.command({type:'ChooseReward',choiceId:w.choices[0]!.id});if(w.pendingSkill)w.command({type:'ConfirmSkill',slot:'Q'});w.command({type:'LeaveShop'});
+        advance(w,1/30);expect(w.phase).toBe('cleared');
+        if(w.snapshot().scene.interactions.some(n=>n.kind==='ember')){interactFixture(w,'ember');expect(w.choices).toHaveLength(3);expect(w.choices.some(c=>c.kind==='skill')).toBe(true);chooseFixture(w);}
+        departFixture(w);if(w.phase==='camp')departFixture(w);
       }
       expect(w.phase).toBe('victory');
     });

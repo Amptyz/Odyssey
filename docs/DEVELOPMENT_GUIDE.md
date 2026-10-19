@@ -1,8 +1,10 @@
 # 开发架构指南
 
+当前流程（2026-10-19）：出生营地 / 休息点 / 清场余烬采用 F 交互，取消开局及逐关自动商店和奖励。扩展位置、状态与验证见 [场景指南](SCENES.md)。对外统一称“余烬”，代码保留稳定 Perk ID。
+
 目标是让没有参与历史对话的开发者或 AI，能找到修改位置、接通完整链路，并给出可复核的结果。先读 [整体架构](ARCHITECTURE.md)；具体注册示例在 [内容扩展指南](CONTENT_ARCHITECTURE.md)。文中的源码路径相对于 `EmberDemo/assets/scripts/ember/`，命令在仓库根目录执行。
 
-统一属性开发按 [属性系统](ATTRIBUTE_SYSTEM.md) 执行：技能只用总 AD、仅全能吸血。ActorFactory 创建每单位 AttributeSet，装备 / 增益 / 状态按来源贡献；HeroStats 是只读结果的兼容面板视图，不是第二套属性公式。
+统一属性开发按 [属性系统](ATTRIBUTE_SYSTEM.md) 执行：技能只用总 AD、仅全能吸血。ActorFactory 创建每单位 AttributeSet，装备 / 余烬 / 状态按来源贡献；HeroStats 是只读结果的兼容面板视图，不是第二套属性公式。
 
 ## 开始工作
 
@@ -24,12 +26,13 @@ rg -n 'CastSlot|executeSkill|firstImpact|OnAttackHit' EmberDemo/assets/scripts/e
 | 需求形态 | 应修改的位置 | 不应采取的做法 |
 | --- | --- | --- |
 | 火弹变成低伤害高速冰弹 | skills 定义、描述、必要的已有外观引用 | 在 GameWorld 中判断某个新技能 ID |
-| 新武器使用现有剑挥击，增加属性 | equipment 定义，可复用 attack / appearance | 购买时直接给角色字段反复累加属性 |
+| 新武器外观和属性 | equipment 定义，可复用 appearance；不配置普攻形式 | 购买时直接给角色字段反复累加属性 |
 | 新远程怪物使用已有弹道 | enemies模板、enemy-actions动作集、level.groups、MonsterVisual | 复制敌人更新循环或塞进玩家SkillId |
 | 已有事件加减速 / 爆炸 / 冷却效果 | perks 条件与 effect 配置 | 在每个技能命中点分别写联动判断 |
 | 穿透弹、召唤、击退、新动作原语 | 先扩展联合类型、EnemySystem/对应处理器、CollisionWorld及状态，再加内容 | 写一个配置字段但没有消费逻辑 |
 | 新反馈、颜色、动画、贴图 | appearances / animation / render | 用动画帧事件扣血，或让贴图尺寸决定碰撞 |
 | 新输入或玩家操作 | protocol → 处理边界 → InputController / Hud | UI 直接改 port.world、背包或 HP |
+| 新地点 / 改名 / 入场标题 | LocationDefinition → maps / scenes 配置 → SceneSnapshot → SceneTransition | 在 HUD 硬编码各地点名称，或改显示名称时更改存档 ID |
 | 房间 / 掉线 / 保存 | room-protocol → RoomTransport / relay-server → RunCheckpoint / GameWorld.players | 把展示快照当完整存档，或用初始 hero 的属性处理所有玩家 |
 | 新测试配置字段 | DeveloperConfig → 解析 / 拷贝 / 捕获 → LocalTransport / 世界 → 面板 | 只给表单加开关，普通世界默认生效 |
 
@@ -48,7 +51,7 @@ rg -n 'CastSlot|executeSkill|firstImpact|OnAttackHit' EmberDemo/assets/scripts/e
 - 技能按 `SkillSystem` 的穷尽 handlers 实现；新增能力通过 SkillContext 注入。需要长生命周期的弹体 / 实体状态再由模拟层持有。
 - 效果按 `EffectHandlers` 实现，复用 CombatEngine、CollisionWorld 和 CombatHooks。派生伤害保留来源、根事件与深度，明确是否允许攻击特效和属性放大。
 - 敌人新内容优先放入ENEMY_ACTIONS/ENEMY_ACTION_SETS，EnemySystem统一调度。新增原语同时接分段状态、碰撞、预警与清理；当前17怪都不调用旧ENEMY_BEHAVIORS.monster（它会明确报错）。移动按PathfinderPool体型网格，寻路时间用EnemySystem.pathTimes，不重复扣GameWorld.repath。
-- 新属性走 `attributes/AttributeSet.ts 定义与叠加规则 → 来源配置 → 实际行为 / CombatEngine 消费 → 快照与面板 → 数值与隔离测试`。使用已有属性的装备只新增来源配置，不给 GameWorld 加装备 ID 分支；装备为六个通用slot1..slot6，category只决定三个外观层。新显示层才需要扩HeroRig；不能把六个属性栏直接映射成六层武器。变更仍需检查ShopPanel/DeveloperPanel、配置解析、purchaseOrder和测试。
+- 新属性走 `attributes/AttributeSet.ts 定义与叠加规则 → 来源配置 → 实际行为 / CombatEngine 消费 → 快照与面板 → 数值与隔离测试`。使用已有属性的装备只新增来源配置，不给 GameWorld 加装备 ID 分支；装备为六个通用slot1..slot6，category只决定三个外观层，禁止恢复装备attack/attackRange配置或根据外观选择普攻。新显示层才需要扩HeroRig；不能把六个属性栏直接映射成六层武器。变更仍需检查ShopPanel/DeveloperPanel、配置解析、purchaseOrder和测试。
 - 不新增无需求的网络框架、资源编辑器或通用插件系统。若局部模型已经无法表达需求，应明确实现所需能力，而不是隐藏为一次性 ID 特判。
 
 ### 3. 接通获得入口和表现
@@ -105,31 +108,31 @@ pnpm check
 
 | 改动 | 逻辑 / 类型 | 实际引擎与浏览器检查 |
 | --- | --- | --- |
-| 技能、范围、弹体、普攻 | pnpm check；content / hitboxes 对应机制测试 | Creator Web Desktop 构建；test:hitboxes；验证奖励替换时加 test:content |
-| 装备、经济、奖励 | pnpm check；progression | 构建；test:content；新装备使用 test:equipment；换装外观变化加 test:art / 人工画面 |
-| 全单位属性、抗性、吸血、护盾 | pnpm check；attributes / combat / multiplayer | 构建；test:attributes；test:content；跨波保存改动加 test:multiplayer |
+| 技能、范围、弹体、普攻 | pnpm check；content / hitboxes 对应机制测试 | Creator Web Desktop 构建；test:hitboxes；涉及主动技能奖励时人工验证选择与槽位确认 |
+| 装备、经济、奖励 | pnpm check；progression / equipment-effects | 构建；test:scenes 的商人购买；新增商品 / 被动用 F2 定向验收；换装外观变化加 test:art |
+| 全单位属性、抗性、吸血、护盾 | pnpm check；attributes / combat / multiplayer | 构建；F2 属性与实际伤害针对性验收；跨波保存改动加 test:multiplayer |
 | 敌人、地图、导航 | pnpm check；content / world / collision | 构建；相关地图正常通关；必要时playthrough与benchmark；五关出口后才算通关 |
-| 海克斯、状态、触发系统 | pnpm check；两层 hexes / combat | 构建；test:hexes；涉及弹体或普攻再加 test:hitboxes |
-| 操作方式、输入坐标、HUD 交互 | pnpm check；projection / world | 构建；test:controls；缩放、失焦、暂停、松键 |
+| 余烬、状态、触发系统 | pnpm check；两层 hexes / combat | 构建；test:scenes 领取路径与 F2 效果定向验收；涉及弹体或普攻再加 test:hitboxes |
+| 操作方式、输入坐标、HUD 交互 | pnpm check；projection / world | 构建；test:scenes / test:hitboxes；针对改动检查缩放、失焦、暂停、松键 |
+| 营地、休息点、集合与清场 | pnpm check；scenes / progression / transport | 构建；test:scenes / test:multiplayer；切换表现加 test:transitions；地点名称 / 标题加 test:locations；改变旅程顺序、休息点或奖励配置再跑 test:campaign |
 | 贴图、动作、挂点 | pnpm check；有格式变更时核对图集 | 构建；test:art 与人工检查，含镜像、动作最大角度、换装 |
-| 开发者模式 | pnpm check；developer | 构建；test:developer；退出后普通模式不带测试效果 |
+| 开发者模式 | pnpm check；developer | 构建；test:scenes 的场景入口及新增工具定向验收；退出后普通模式不带测试效果 |
 | 联机 / 玩家状态 / 波次保存 | pnpm check；multiplayer / relay / transport 测试 | 构建；test:multiplayer；对应单人回归 |
 | 纯文档 / 注释 | 引用、示例类型与源码一致性；git diff --check | 通常无需重建或重跑游戏全流程 |
 
-相关浏览器脚本先查看其当前前置条件。大多固定使用 8080，只有 smoke 读取 `EMBER_PREVIEW_URL`；在服务端设置其他 PORT 不会自动修改测试目标。它们使用本机 Chrome，构建后先运行 `pnpm play`，测试建议逐个执行，避免同时争用截图 / 报告路径。
+相关浏览器脚本先查看其当前前置条件。当前 scenes / transitions / multiplayer / hitboxes / art 已适配营地流程；其他旧脚本的自动商店 / 逐关奖励配方待 [TEST-01](../todoList.md) 迁移，不能将历史通过报告当作当前验证。脚本大多固定使用 8080，在服务端设置其他 PORT 不会自动修改测试目标。它们使用本机 Chrome，构建后先运行 `pnpm play`，测试建议逐个执行，避免同时争用截图 / 报告路径。
 
 ```bash
 # 已完成新的 Creator Web Desktop 构建；另一个终端保持 pnpm play 运行
-EMBER_PREVIEW_URL=http://127.0.0.1:8080 pnpm smoke
-pnpm test:content
-# 其余按上表选择：test:controls / test:art / test:hitboxes / test:hexes / test:developer / test:attributes / test:multiplayer
+pnpm test:scenes
+# 其余按上表选择：test:transitions / test:locations / test:art / test:hitboxes / test:multiplayer / test:campaign
 ```
 
 `pnpm build:core` 只输出无引擎核心到 `dist-core`。类型通过不代表图集已导入、组件已挂载或发布构建成功。不要编辑 `build/` 修问题；回到源码 / 模板修复后重新通过 Creator 构建。没有可用编辑器时保留已完成的源码和验证结果，明确报告尚未运行的引擎检查。
 
 ## 使用开发者模式复现
 
-按 [开发者模式说明](DEVELOPER_MODE.md) 选择地图 / 波次 / 种子，搭配技能、装备和增益，再应用。面板关闭继续模拟；重测恢复已应用的初始配置。F3 检查命中体积。低血量 / 治疗触发需要真实战斗事件：调试回血和设血量工具不会伪造这些事件。
+按 [开发者模式说明](DEVELOPER_MODE.md) 选择地图 / 波次 / 种子，搭配技能、装备和余烬，再应用。面板关闭继续模拟；重测恢复已应用的初始配置。F3 检查命中体积。低血量 / 治疗触发需要真实战斗事件：调试回血和设血量工具不会伪造这些事件。
 
 提交 Bug 时保存：代码版本、导出的 DeveloperConfig、操作方式、输入步骤 / 时机、预期与实际结果、截图 / 控制台错误。配置不是战斗中途存档，也不是输入录像。随机种子只复现随机流；内容表变更、额外随机调用或不同命令时刻都可能改变结果。
 
@@ -138,11 +141,11 @@ pnpm test:content
 ## 兼容性与容易漏掉的改动
 
 - **新增内容数量**：SHOP_CATALOG、HERO_SKILLS、开发面板由注册表枚举；但已有测试含固定装备数量、总击杀数、商店坐标 / 页码或特定种子。先读失败原因，因产品变化更新相应预期，不盲目删除断言。
-- **更改技能池 / 增益池**：会改变奖励随机序列。检查已有构筑是否还能获得要求的技能、后续波次能否始终生成三张候选，以及更换技能后的增益是否休眠。
+- **更改技能池 / 余烬池**：会改变奖励随机序列。检查已有构筑是否还能获得要求的技能、后续波次能否始终生成三张候选，以及更换技能后的余烬是否休眠。
 - **重命名 ID**：会影响地图 / 技能引用、奖励、测试、开发者预设文本。v1 导入会拒绝不存在的 ID；如果需要兼容旧配置，要明确迁移策略或升级版本，不静默映射成别的内容。
 - **新配置字段**：同步 parse / clone / capture / 应用 / 默认值 / UI / 导出导入 / 测试；只有界面上有值但世界未消费不算完成。
 - **扩大敌人体积**：实测窄路、边界、出生和攻击扇形。玩家导航与移动都用实际半径.32；敌人移动和冲锋必须使用PathfinderPool.forRadius的同一保守半径，不能把Boss放进玩家网格。
-- **装备栏/外观层或图集**：六个属性栏与三个显示层分离；检查purchaseOrder、appearanceLoadout、最终武器profile/range、固定equipment图集与资源枚举。新资源遵循美术管线。
+- **装备栏/外观层或图集**：六个属性栏与三个显示层分离；检查purchaseOrder、appearanceLoadout、余烬决定的basicAttack及其独立射程、固定equipment图集与资源枚举。新资源遵循美术管线。
 - **改动画**：攻击前摇和伤害窗口属于模拟；若修改手感要同时考虑判定与预警。纯摆臂变化不自动改变碰撞。
 
 ## 本轮扩展约束
@@ -171,7 +174,7 @@ pnpm test:content
 再按 docs/CONTENT_ARCHITECTURE.md 找到该内容的注册、获得入口和表现链路。
 
 内容定义：[名称、稳定 ID 或命名要求、数值、范围、前摇、持续时间、叠加 / 触发规则]。
-获得方式：[主动技能奖励 / 固定装备商店 / 地图波次 / 被动增益]。
+获得方式：[主动技能奖励 / 固定装备商店 / 地图波次 / 被动余烬]。
 美术要求：[复用现有 appearance 或新增资源、动作与握点要求]。
 验收：[正常案例、边界案例、需测试的已有组合]。
 

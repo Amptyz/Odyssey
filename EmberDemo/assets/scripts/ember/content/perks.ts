@@ -1,4 +1,4 @@
-import {scaleAttackRange} from './attacks';
+import {BASIC_ATTACKS,scaleAttackRange} from './attacks';
 import type { PerkDefinition, PerkId } from '../combat-core/types';
 export const PERKS = [
   { id:'burn', requiresSkillTags:['fire','projectile'], name:'燃烧弹', color:'#E3A16D', description:'烬火弹附加 3 秒灼烧，每秒造成 9 点伤害。', rules:[{event:'OnHit',skillTags:['hero','projectile','fire'],causes:['skill'],effect:{type:'status',status:{id:'burn',power:9,duration:3}}}] },
@@ -21,13 +21,14 @@ export const PERKS = [
   { id:'dawnbringer', name:'黎明使者的坚决', color:'#A8D3AD', description:'受伤后低于 50% 生命时，3 秒内恢复 30% 生命上限；冷却 45 秒。致命伤害不会触发。', rules:[{event:'OnDamaged',healthBelow:.5,cooldown:45,effect:{type:'regenerate',maxHpRatio:.3,duration:3}}] },
   { id:'circleOfDeath', name:'死亡之环', color:'#BEAED2', description:`战斗中有效治疗量的 70% 转化为伤害，作用于 ${scaleAttackRange(5)} 格内最近敌人。溢出治疗与波间补给不触发。`, rules:[{event:'OnHeal',effect:{type:'healNova',ratio:.7,radius:scaleAttackRange(5)}}] },
   { id:'glassCannon', name:'玻璃大炮', color:'#D9A6A0', description:'生命上限降低 30%；非真实伤害额外附带 25% 真实伤害。装备生命加成同样受此影响。', maxHpMultiplier:.7,trueBonusRatio:.25,rules:[] },
+  { id:'missileAttack', name:'飞弹普攻', color:'#ADC8E8', basicAttack:'missile', description:`普攻变为朝鼠标方向发射直线飞弹，射程 ${BASIC_ATTACKS.missile.range} 格。命中首个敌人造成总攻击力的物理伤害，可暴击并触发攻击特效；不追踪，受地形阻挡。与装备无关。`, rules:[] },
 ] as const satisfies readonly PerkDefinition[];
 export function perk(id: PerkId): PerkDefinition { return PERKS.find(p => p.id===id)!; }
 /** Explicit reproducible demonstration presets; normal play starts with no perks. */
 export const LAB_PRESETS = {
   burn: ['burn','corpse'], arc: ['burn','corpse','arc'], reserve: ['reserve','double'],
   hexMage:['magicMissile','jeweledGauntlet','infernalConduit','glassCannon'],
-  hexAttack:['etherealWeapon','lightEmUp','heavyHitter','mysticPunch','typhoon'],
+  hexAttack:['missileAttack','etherealWeapon','lightEmUp','heavyHitter','mysticPunch','typhoon'],
   hexSurvive:['earthwake','dawnbringer','circleOfDeath','leech'],
 } satisfies Record<string,PerkId[]>;
 export type LabId=keyof typeof LAB_PRESETS;

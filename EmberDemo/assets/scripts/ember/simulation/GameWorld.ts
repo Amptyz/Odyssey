@@ -1,3 +1,6 @@
+import {CAMP,JOURNEYS,campMap,sceneInteractions,sceneLocation} from '../content/scenes';
+import {inspectScene,type SceneSnapshot} from './SceneSystem';
+import {BASIC_ATTACKS,type BasicAttackId} from '../content/attacks';
 import {EquipmentEffectSystem,type EquipmentPassiveSnapshot} from './EquipmentEffectSystem';
 import {createActor} from '../combat-core/ActorFactory';
 import {AttributeSet,PLAYER_TEMPLATE,movementSpeed,cooldownMultiplier,evaluate,type Attributes,type ValueExpression} from '../combat-core/attributes/AttributeSet';
@@ -13,7 +16,7 @@ import { enemy } from '../content/enemies';
 import { applyStatus,movementMultiplier } from '../combat-core/StatusSystem';
 import { executeSkill,type ProjectileBehavior } from './SkillSystem';
 import {EnemySystem,type EnemySnapshot} from './EnemySystem';
-import {levelSpawn,enemyPlacements,exitProgress,levelSnapshot,type LevelSnapshot} from './LevelSystem';
+import {levelSpawn,enemyPlacements,levelSnapshot,type LevelSnapshot} from './LevelSystem';
 import { LAB_PRESETS, PERKS,type LabId } from '../content/perks';
 import type { GameCommand } from '../platform/protocol';
 import { clamp, direction, distance, type Vec2 } from '../utils/math';
@@ -26,7 +29,9 @@ import type { ActionSignal } from '../content/animation';
 import { Random } from '../utils/Random';
 import { parseDeveloperConfig,type DeveloperConfig,type DeveloperOptions,type DeveloperSnapshot } from './DeveloperConfig';
 import { detached,parseRunCheckpoint,type RunCheckpoint } from './RunCheckpoint';
-export type Phase = 'ready'|'shop'|'fighting'|'reward'|'victory'|'defeat';
+export type StagePhase = 'ready'|'camp'|'fighting'|'cleared'|'victory'|'defeat';
+/** shop/reward are LOCAL overlays, never shared simulation stages. */
+export type Phase = StagePhase|'shop'|'reward';
 export interface Unit extends Actor {
   kind:'hero'|EnemyKind; previous:Vec2; velocity:Vec2; attackCd:number;
   path:Vec2[]; repath:number; windup:number; aim:Vec2;facing:Vec2;action:ActionSignal;hurtAt:number;diedAt:number;skillCooldowns:Record<SkillId,number>;attackWindup:number;
@@ -37,11 +42,11 @@ export interface Swing { attackId?:number;id:number;sourceId:string;center:Vec2;
 interface ActiveSwing extends Swing {hitIds:Set<string>}
 export interface VisualCue extends CombatCue { id:number; ttl:number; duration:number }
 export interface WorldSnapshot {
-  tick:number; time:number; phase:Phase; paused:boolean; wave:number; seed:number; lab:string;
+  stagePhase:StagePhase;scene:SceneSnapshot;tick:number; time:number; phase:Phase; paused:boolean; wave:number; seed:number; lab:string;
   hero:UnitSnapshot; units:UnitSnapshot[]; projectiles:Projectile[]; swings:Swing[]; cues:VisualCue[];zones:DamageZone[];
   mapId:MapId;totalWaves:number;loadout:Loadout;level:LevelSnapshot;enemies:EnemySnapshot;
   cooldowns:Record<SkillSlot,number>; perks:PerkId[]; choices:RewardChoice[];pendingSkill?:SkillId;gold:number;inventory:EquipmentId[];equipment:EquipmentLoadout;purchaseOrder:EquipmentId[];appearance:EquipmentAppearanceLoadout;stats:HeroStats;
-  equipmentPassives:EquipmentPassiveSnapshot[];
+  basicAttack:BasicAttackId;equipmentPassives:EquipmentPassiveSnapshot[];
   destination?:Vec2; kills:number; primed:boolean;
   metrics:{processed:number;dropped:number;maxDepth:number;kills:number};
   party?:{id:string;ready:boolean;equipment:EquipmentLoadout;purchaseOrder:EquipmentId[];appearance:EquipmentAppearanceLoadout}[];
@@ -50,16 +55,17 @@ export interface WorldSnapshot {
 }
 export interface PlayerState {
   id:string;active:boolean;hero:Unit;loadout:Loadout;equipment:EquipmentSystem;cooldowns:Record<SkillId,number>;
-  choices:RewardChoice[];pendingSkill?:SkillId;destination?:Vec2;ready:boolean;
+  panel?:'shop'|'reward';interactionId?:string;claimed:string[];choices:RewardChoice[];pendingSkill?:SkillId;destination?:Vec2;ready:boolean;
   dashTime:number;dashDirection:Vec2;dashSpeed:number;dashStart?:Vec2;
   direct?:{movement:Vec2};attackPoint?:Vec2;
 }
 export class GameWorld {
   readonly actors = new Map<string,Unit>();
-  readonly nav:Pathfinder;
-  readonly enemies:EnemySystem;
+  nav:Pathfinder;
+  enemies:EnemySystem;
   readonly collision:CollisionWorld;
   readonly map:MapDefinition;
+  private readonly terrains=new Map<boolean,{nav:Pathfinder;enemies:EnemySystem}>();
   readonly players=new Map<string,PlayerState>();
   readonly combat:CombatEngine;
   readonly random:Random;
@@ -77,7 +83,8 @@ export class GameWorld {
   readonly projectiles:Projectile[]=[];
   readonly cues:VisualCue[]=[];
   private readonly swings:ActiveSwing[]=[];
-  phase:Phase='ready'; paused=false; wave=0; tickCount=0; time=0; lab:LabId|''='';
+  hostId='hero';
+  phase:StagePhase='ready'; paused=false; wave=0; tickCount=0; time=0; lab:LabId|''='';
   private serial=0;private accumulator=0;
   private readonly combatRandom:Random;
   private spawnRandom=0;private spawnSerial=0;
@@ -89,7 +96,7 @@ export class GameWorld {
   constructor(readonly seed=1234,readonly mapId:MapId='ember',developerOptions?:DeveloperOptions) {
     this.developerOptions=developerOptions?{...developerOptions}:undefined;
     this.map=mapDefinition(mapId);this.nav=new Pathfinder(this.map,HERO.radius);
-    this.collision=new CollisionWorld(this.map);this.enemies=new EnemySystem(this.map);
+    this.collision=new CollisionWorld(this.map);this.enemies=new EnemySystem(this.map);this.terrains.set(false,{nav:this.nav,enemies:this.enemies});
     this.random=new Random(seed);
     this.addPlayer('hero');
     this.combatRandom=new Random(seed^0x51ed270b);
@@ -109,11 +116,11 @@ export class GameWorld {
     if(this.players.has(id))return true;if(this.phase!=='ready'||this.players.size>=4||!/^([a-zA-Z0-9_-]){1,48}$/.test(id))return false;
     const at=this.nav.nearest(levelSpawn(this.map,1,this.players.size));
     const hero=this.makeUnit(id,'hero',at,HERO.hp);
-    this.players.set(id,{id,active:true,hero,loadout:{...this.map.loadout},equipment:new EquipmentSystem(hero.attributes),cooldowns:hero.skillCooldowns,choices:[],ready:false,dashTime:0,dashDirection:{x:0,y:0},dashSpeed:0});return true;
+    this.players.set(id,{id,active:true,hero,loadout:{...this.map.loadout},equipment:new EquipmentSystem(hero.attributes),cooldowns:hero.skillCooldowns,choices:[],claimed:[],ready:false,dashTime:0,dashDirection:{x:0,y:0},dashSpeed:0});return true;
   }
   setPlayerActive(id:string,active:boolean):void {const p=this.players.get(id);if(!p||p.active===active)return;p.active=active;this.stopControls(p);if(!active)this.equipmentEffects.deactivate(id);if(active)this.actors.set(id,p.hero);else this.actors.delete(id);
-    if(!active&&this.activePlayers.length&&this.activePlayers.every(member=>member.ready)){if(this.phase==='shop')this.spawnWave();else if(this.phase==='reward')this.finishReward(this.activePlayers[0]!);this.saveBoundary();}
   }
+
   private get activePlayers():PlayerState[]{return Array.from(this.players.values()).filter(p=>p.active);}
   stopPlayer(id:string):void {const p=this.players.get(id);if(p)this.stopControls(p);}
   stopAll():void {for(const p of this.players.values())this.stopControls(p);}
@@ -125,14 +132,12 @@ export class GameWorld {
     Object.assign(this.loadout,c.loadout);for(const p of c.perks)this.combat.addPerk(p);
     for(const id of Object.values(c.equipment))this.equipment.inventory.add(id);
     Object.assign(this.equipment.equipped,c.equipment);this.equipment.purchaseOrder.push(...c.purchaseOrder);this.refreshStats();this.hero.hp=this.hero.maxHp;
-    this.wave=c.wave-1;this.spawnWave();
+    this.wave=c.wave-1;if(c.entry==='camp')this.enterCamp();else this.spawnWave();
   }
   command(command:GameCommand,playerId='hero'):void {
-    const phase=this.phase,wave=this.wave;
     this.handleCommand(command,playerId);
-    const boundary=['Start','LeaveShop','BuyEquipment','EquipEquipment','UnequipEquipment','ChooseReward','ConfirmSkill','CancelSkill'].includes(command.type);
-    if(boundary&&this.phase!=='defeat'&&(this.phase!=='fighting'||phase!=='fighting'||wave!==this.wave))this.saveBoundary();
   }
+
   private handleCommand(command:GameCommand,playerId:string):void {
     const p=this.players.get(playerId);if(!p||!p.active)return;
     if(command.type==='DevAction'){
@@ -169,33 +174,52 @@ export class GameWorld {
       this.lab=command.lab ?? '';
       if(this.lab)p.loadout.Q='fireball';
       for(const member of this.players.values()){if(this.lab)member.loadout.Q='fireball';for(const id of this.lab?LAB_PRESETS[this.lab]:[])this.combat.addPerk(id,member.id);this.refreshStats(member);member.ready=false;}
-      this.phase='shop';return;
+      this.enterCamp();this.saveBoundary();return;
     }
-    if (command.type==='TogglePause' && this.phase==='fighting') { this.paused=!this.paused; this.accumulator=0; this.stopAll(); return; }
-    if(this.phase==='shop'){
-      if(command.type==='LeaveShop'){p.ready=true;if(this.activePlayers.every(member=>member.ready))this.spawnWave();return;}
-      if(p.ready)return;
+    if (command.type==='TogglePause' && ['camp','fighting','cleared'].includes(this.phase)) { this.paused=!this.paused; this.accumulator=0; this.stopAll(); return; }
+    if(this.paused||!p.hero.alive)return;
+    if(command.type==='CloseInteraction'||command.type==='LeaveShop'){
+      if(p.panel){p.panel=undefined;this.stopControls(p);this.saveBoundary();}return;
+    }
+    if(command.type==='Interact'){
+      if(p.panel||!['camp','cleared'].includes(this.phase))return;
+      const scene=this.sceneFor(p.id),node=scene.interactions.find(n=>n.id===scene.nearbyId);if(!node)return;
+      if(node.kind==='departure'){
+        if(playerId!==this.hostId||!scene.canDepart)return;
+        if(this.phase==='camp')this.spawnWave();
+        else if(this.wave===this.map.waves.length){this.phase='victory';this.stopAll();for(const member of this.players.values()){member.panel=undefined;member.interactionId=undefined;member.choices=[];member.pendingSkill=undefined;}}
+        else if(JOURNEYS[this.mapId].rests[this.wave])this.enterCamp();
+        else this.spawnWave();
+      }else{
+        p.panel=node.kind==='merchant'?'shop':'reward';
+        if(node.kind==='ember'&&!p.choices.length){p.choices=rewardChoices(this.random,p.loadout,this.combat.perksFor(p.id));p.pendingSkill=undefined;}
+        p.interactionId=node.id;this.stopControls(p);
+      }
+      this.saveBoundary();return;
+    }
+    if(p.panel==='shop'){
       let changed=false;
       if(command.type==='BuyEquipment')changed=p.equipment.buy(command.equipmentId,command.replaceSlot);
       if(command.type==='EquipEquipment')changed=p.equipment.equip(command.equipmentId,command.slot);
       if(command.type==='UnequipEquipment')changed=p.equipment.unequip(command.slot);
-      if(changed)this.refreshStats(p);
-      return;
+      if(changed){this.refreshStats(p);this.saveBoundary();}return;
     }
-    if(this.phase==='reward'){
-      if(p.ready)return;
-      if(command.type==='CancelSkill'){p.pendingSkill=undefined;return;}
+    if(p.panel==='reward'){
+      if(command.type==='CancelSkill'){if(p.pendingSkill){p.pendingSkill=undefined;this.saveBoundary();}return;}
       if(command.type==='ChooseReward'&&!p.pendingSkill){
         const choice=p.choices.find(c=>c.id===command.choiceId);if(!choice)return;
-        if(choice.kind==='skill'){p.pendingSkill=choice.skillId;return;}
-        this.combat.addPerk(choice.perkId,p.id);this.refreshStats(p);this.finishReward(p);return;
+        if(choice.kind==='skill')p.pendingSkill=choice.skillId;
+        else {this.combat.addPerk(choice.perkId,p.id);this.refreshStats(p);this.finishReward(p);}
+        this.saveBoundary();return;
       }
       if(command.type==='ConfirmSkill'&&p.pendingSkill&&SKILL_SLOTS.includes(command.slot)&&!Object.values(p.loadout).includes(p.pendingSkill)){
-        p.loadout[command.slot]=p.pendingSkill;p.pendingSkill=undefined;this.finishReward(p);
+        p.loadout[command.slot]=p.pendingSkill;p.pendingSkill=undefined;this.finishReward(p);this.saveBoundary();
       }
       return;
     }
-    if (this.phase!=='fighting' || this.paused || !p.hero.alive) return;
+    if (!['camp','fighting','cleared'].includes(this.phase)) return;
+    if(this.phase!=='fighting'&&['AttackInput','Attack','CastSkill'].includes(command.type))return;
+
     if(command.type==='AttackInput'&&(!command.point||this.validPoint(command.point))){
       p.attackPoint=command.point?{...command.point}:undefined;
     } else if(command.type==='DirectInput'&&this.validPoint(command.movement)){
@@ -212,9 +236,9 @@ export class GameWorld {
   }
   /** Fixed 30 Hz; cap wall-clock catch-up after background tabs at 250 ms. */
   advance(realDt:number):number {
-    if (this.phase!=='fighting' || this.paused || !Number.isFinite(realDt) || realDt<0) { this.accumulator=0; return 1; }
+    if (!['camp','fighting','cleared'].includes(this.phase) || this.paused || !Number.isFinite(realDt) || realDt<0) { this.accumulator=0; return 1; }
     this.accumulator+=Math.min(realDt,0.25)*(this.developerOptions?.speed??1);
-    while (this.accumulator+1e-10>=FIXED_DT && this.phase==='fighting' && !this.paused) {
+    while (this.accumulator+1e-10>=FIXED_DT && ['camp','fighting','cleared'].includes(this.phase) && !this.paused) {
       this.accumulator-=FIXED_DT; this.step();
     }
     return clamp(this.accumulator/FIXED_DT,0,1);
@@ -222,25 +246,25 @@ export class GameWorld {
   snapshot(playerId='hero'):WorldSnapshot {
     const p=this.players.get(playerId)??this.players.get('hero')!;
     const units=Array.from(this.actors.values(),u=>this.unitSnapshot(u));
-    return {tick:this.tickCount,time:this.time,phase:this.phase,paused:this.paused,wave:this.wave,seed:this.seed,lab:this.lab,
-      equipmentPassives:this.equipmentEffects.snapshot(p.id),
+    return {tick:this.tickCount,time:this.time,phase:p.panel??this.phase,stagePhase:this.phase,scene:this.sceneFor(p.id),paused:this.paused,wave:this.wave,seed:this.seed,lab:this.lab,
+      basicAttack:this.combat.basicAttackFor(p.id),equipmentPassives:this.equipmentEffects.snapshot(p.id),
       hero:units.find(u=>u.id===p.id)??this.unitSnapshot(p.hero),units,projectiles:this.projectiles.map(p=>({...p,previous:{...p.previous},payload:p.payload?{...p.payload}:undefined,targetExpression:p.targetExpression?{...p.targetExpression}:undefined,onHit:p.onHit?.map(s=>({...s}))})),
       zones:this.combat.zones.map(z=>({...z,from:{...z.from},to:{...z.to}})),
       swings:this.swings.map(({hitIds,...s})=>({...s,center:{...s.center},facing:{...s.facing}})),
       cues:this.cues.map(c=>({...c,at:{...c.at},to:c.to?{...c.to}:undefined,facing:c.facing?{...c.facing}:undefined,shape:c.shape?cloneShape(c.shape):undefined,contours:c.contours?.map(path=>path.map(p=>({...p})))})),mapId:this.mapId,totalWaves:this.map.waves.length,level:levelSnapshot(this.map,Math.max(1,this.wave),this.levelParticipants(),this.remainingEnemies),enemies:this.enemies.snapshot(),loadout:{...p.loadout},
       cooldowns:Object.fromEntries(SKILL_SLOTS.map(slot=>[slot,p.cooldowns[p.loadout[slot]]])) as Record<SkillSlot,number>,
       perks:Array.from(this.combat.perksFor(p.id)),choices:p.choices.map(c=>({...c})),pendingSkill:p.pendingSkill,...p.equipment.snapshot(),stats:this.statsFor(p.id),destination:p.destination?{...p.destination}:undefined,
-      kills:this.combat.metrics.kills,primed:this.combat.isPrimed(p.id),metrics:{...this.combat.metrics},party:Array.from(this.players.values(),member=>({id:member.id,ready:member.ready,equipment:{...member.equipment.equipped},purchaseOrder:[...member.equipment.purchaseOrder],appearance:{...member.equipment.appearance}}))};
+      kills:this.combat.metrics.kills,primed:this.combat.isPrimed(p.id),metrics:{...this.combat.metrics},party:Array.from(this.players.values(),member=>({id:member.id,ready:this.sceneFor(member.id).insideIds.includes(member.id),equipment:{...member.equipment.equipped},purchaseOrder:[...member.equipment.purchaseOrder],appearance:{...member.equipment.appearance}}))};
   }
   private unitSnapshot(u:Unit):UnitSnapshot {const {attributes,...rest}=u;return detached({...rest,attributeValues:{...attributes.value},attributeExplanation:attributes.explain(),movementPoints:movementSpeed(attributes.value,movementMultiplier(u))/.01,worldMoveSpeed:movementSpeed(attributes.value,movementMultiplier(u))});}
   /** Capture only a stable stage boundary, never an arbitrary combat frame. */
   private saveBoundary():void {
     if(this.developerOptions||this.phase==='defeat')return;
-    this.checkpoint={version:3,seed:this.seed,mapId:this.mapId,wave:this.wave,phase:this.phase,time:this.time,tick:this.tickCount,
+    this.checkpoint={version:4,seed:this.seed,mapId:this.mapId,wave:this.wave,phase:this.phase,time:this.time,tick:this.tickCount,
       kills:this.combat.metrics.kills,random:this.random.save(),combatRandom:this.combatRandom.save(),spawnRandom:this.spawnRandom,serial:this.serial,spawnSerial:this.spawnSerial,
       players:Array.from(this.players.values(),p=>({id:p.id,loadout:{...p.loadout},perks:Array.from(this.combat.perksFor(p.id)),gold:p.equipment.gold,
         inventory:Array.from(p.equipment.inventory),equipment:{...p.equipment.equipped},purchaseOrder:[...p.equipment.purchaseOrder],attributeSources:p.hero.attributes.exportSources().filter(s=>!s.sourceId.startsWith('equipment:')&&!s.sourceId.startsWith('perk:')&&s.sourceId!=='developer'&&!s.sourceId.startsWith('temporary:')),hp:p.hero.hp,mana:p.hero.mana,position:{x:p.hero.x,y:p.hero.y},facing:{...p.hero.facing},
-        choices:detached(p.choices),pendingSkill:p.pendingSkill,ready:p.ready}))};
+        choices:detached(p.choices),pendingSkill:p.pendingSkill,ready:p.ready,panel:p.panel,interactionId:p.interactionId,claimed:[...p.claimed]}))};
     this.checkpointRevision++;
   }
   saveLobby():void {if(this.phase==='ready')this.saveBoundary();}
@@ -251,12 +275,12 @@ export class GameWorld {
       Object.assign(p.loadout,saved.loadout);for(const id of saved.perks)w.combat.addPerk(id,p.id);
       p.equipment.gold=saved.gold;for(const id of saved.inventory)p.equipment.inventory.add(id);Object.assign(p.equipment.equipped,saved.equipment);p.equipment.purchaseOrder.push(...saved.purchaseOrder);
       for(const source of saved.attributeSources)p.hero.attributes.upsert(source);w.refreshStats(p);Object.assign(p.hero,saved.position,{previous:{...saved.position},facing:{...saved.facing},mana:Math.min(saved.mana,p.hero.attributes.value.maxMana),hp:Math.min(saved.hp,p.hero.maxHp),alive:saved.hp>0});
-      p.choices=detached(saved.choices);p.pendingSkill=saved.pendingSkill;p.ready=saved.ready;
+      p.choices=detached(saved.choices);p.pendingSkill=saved.pendingSkill;p.ready=saved.ready;p.panel=saved.panel;p.interactionId=saved.interactionId;p.claimed=[...saved.claimed];
     }
     if(c.phase==='fighting'){
       w.wave=c.wave-1;w.random.restore(c.spawnRandom);w.serial=c.spawnSerial;w.spawnWave();
       for(const saved of c.players)w.players.get(saved.id)!.hero.hp=Math.min(saved.hp,w.players.get(saved.id)!.hero.maxHp);
-    }else{w.wave=c.wave;w.phase=c.phase;}
+    }else{w.wave=c.wave;w.phase=c.phase;if(c.phase==='camp')w.configureTerrain(true);}
     w.time=c.time;w.tickCount=c.tick;w.combat.metrics.kills=c.kills;w.random.restore(c.random);w.combatRandom.restore(c.combatRandom);w.spawnRandom=c.spawnRandom;w.serial=c.serial;w.spawnSerial=c.spawnSerial;
     w.stopAll();w.saveBoundary();return w;
   }
@@ -273,14 +297,39 @@ export class GameWorld {
   }
   private applyDeveloperAttributes(unit:Unit):void {const c=this.developerAttributeConfig;if(c?.attributeModifiers&&(c.attributeTarget==='all'||c.attributeTarget==='enemies'&&unit.team==='enemy'||c.attributeTarget!=='enemies'&&unit.team==='hero'))unit.attributes.upsert({sourceId:'developer',modifiers:c.attributeModifiers});}
   private finishReward(p:PlayerState):void {
-    p.choices=[];p.pendingSkill=undefined;p.ready=true;
-    if(!this.activePlayers.every(member=>member.ready))return;
-    for(const member of this.players.values())member.ready=false;
-    if(this.wave===this.map.waves.length)this.phase='victory';
-    else if(this.map.shopAfterWaves.includes(this.wave))this.phase='shop';
-    else this.spawnWave();
+    if(p.interactionId&&!p.claimed.includes(p.interactionId))p.claimed.push(p.interactionId);
+    p.choices=[];p.pendingSkill=undefined;p.panel=undefined;this.stopControls(p);
+  }
+  private sceneFor(playerId:string):SceneSnapshot {
+    const camp=this.phase==='camp';
+    return inspectScene(camp?`camp:${this.wave}`:`level:${this.wave}`,sceneLocation(this.mapId,this.wave,camp),camp,
+      sceneInteractions(this.mapId,this.wave,camp,this.phase==='cleared'),Array.from(this.players.values(),p=>({id:p.id,active:p.active,alive:p.hero.alive,x:p.hero.x,y:p.hero.y,panel:p.panel,claimed:p.claimed})),playerId,this.hostId);
+  }
+  private configureTerrain(camp:boolean):void {
+    const terrain=camp?campMap(this.mapId):this.map;
+    let systems=this.terrains.get(camp);if(!systems){systems={nav:new Pathfinder(terrain,HERO.radius),enemies:new EnemySystem(terrain)};this.terrains.set(camp,systems);}
+    this.enemies.reset();this.nav=systems.nav;this.enemies=systems.enemies;this.enemies.reset();this.collision.setTerrain(terrain);
+  }
+  /** Safe stages do not tick combat; discard encounter effects before freezing that clock. */
+  private clearEncounterEffects(p:PlayerState):void {
+    const h=p.hero;
+    for(const effect of h.attributeEffects)h.attributes.remove(effect.sourceId);
+    h.attributeEffects=[];h.combatEffects=[];h.statuses=[];h.shield=0;h.shields=[];h.shieldTime=0;
+    this.refreshStats(p);
+  }
+  private enterCamp():void {
+    this.phase='camp';this.paused=false;this.accumulator=0;this.stopAll();this.combat.resetEncounter();this.equipmentEffects.resetEncounter();
+    this.configureTerrain(true);this.projectiles.length=0;this.swings.length=0;this.cues.length=0;
+    for(const [id,a]of this.actors)if(a.team==='enemy')this.actors.delete(id);
+    for(const [i,p]of Array.from(this.players.values()).entries()){
+      this.clearEncounterEffects(p);
+      const at={x:CAMP.spawn.x+(i%2)*.9,y:CAMP.spawn.y+Math.floor(i/2)*.9};
+      Object.assign(p.hero,at,{previous:{...at},velocity:{x:0,y:0},alive:true,diedAt:-1});
+      p.hero.hp=Math.max(1,p.hero.hp);p.panel=undefined;p.interactionId=undefined;p.choices=[];p.pendingSkill=undefined;p.dashTime=0;p.dashStart=undefined;
+    }
   }
   private spawnWave():void {
+    this.configureTerrain(false);
     this.spawnRandom=this.random.save();this.spawnSerial=this.serial;
     this.stopAll();this.combat.resetEncounter();this.equipmentEffects.resetEncounter();this.enemies.reset();
     for (const [id,a] of this.actors) if (a.team==='enemy') this.actors.delete(id);
@@ -288,8 +337,8 @@ export class GameWorld {
     this.swings.length=0;this.projectiles.length=0;this.cues.length=0;
     for(const [index,p] of Array.from(this.players.values()).entries()){
       const at=levelSpawn(this.map,this.wave,index);Object.assign(p.hero,at,{previous:{...at},velocity:{x:0,y:0},attackCd:0});
-      p.ready=false;p.dashStart=undefined;p.dashTime=0;p.destination=undefined;const h=p.hero;
-      h.hp=this.wave===1?h.maxHp:Math.min(h.maxHp,h.hp+30);h.alive=true;h.diedAt=-1;for(const effect of h.attributeEffects)h.attributes.remove(effect.sourceId);h.attributeEffects=[];h.combatEffects=[];h.shield=0;h.shields=[];h.shieldTime=0;h.statuses=[];h.action.id=0;h.hurtAt=-1;
+      p.ready=false;p.panel=undefined;p.interactionId=undefined;p.choices=[];p.pendingSkill=undefined;p.dashStart=undefined;p.dashTime=0;p.destination=undefined;const h=p.hero;
+      this.clearEncounterEffects(p);h.hp=this.wave===1?h.maxHp:Math.min(h.maxHp,h.hp+30);h.alive=true;h.diedAt=-1;h.action.id=0;h.hurtAt=-1;
       for(const key of Object.keys(SKILLS) as SkillId[])p.cooldowns[key]=0;
     }
     for(const spawn of enemyPlacements(this.map,this.wave))this.spawnEnemy(spawn.enemyId,spawn.at,(enemy(spawn.enemyId).template.stats.maxHealth??1)*spawn.hpScale);
@@ -302,8 +351,8 @@ export class GameWorld {
     if(skill(id).behavior.kind==='dash'&&p.dashTime>0)return;
     this.castFrom(p.hero,id,point);
   }
-  private animateAction(source:Unit,point:Vec2,kind:'attack'|'cast'):void {
-    const aim=direction(source,point);if(aim.x||aim.y)source.facing=aim;source.action={id:source.action.id+1,kind,time:this.time};
+  private animateAction(source:Unit,point:Vec2,kind:'attack'|'cast',basicAttack?:BasicAttackId):void {
+    const aim=direction(source,point);if(aim.x||aim.y)source.facing=aim;source.action={id:source.action.id+1,kind,time:this.time,...(basicAttack?{basicAttack}:{})};
   }
   private castFrom(source:Unit,id:SkillId,point:Vec2):void {
     const definition=skill(id),cost=definition.manaCost??0;if(source.skillCooldowns[id]>1e-8||source.attributes.template.resourceKind==='mana'&&source.mana<cost)return;if(source.attributes.template.resourceKind==='mana')source.mana-=cost;source.skillCooldowns[id]=source.team==='hero'&&this.developerOptions?.noCooldown?0:definition.cooldown*cooldownMultiplier(source.attributes.value);
@@ -317,21 +366,25 @@ export class GameWorld {
     const dt=FIXED_DT; this.tickCount++; this.time+=dt;
     for (const a of this.actors.values()) { a.previous={x:a.x,y:a.y}; a.attackCd=Math.max(0,a.attackCd-dt); a.repath-=dt; }
     for(const unit of this.actors.values())for(const key of Object.keys(SKILLS) as SkillId[])unit.skillCooldowns[key]=Math.max(0,unit.skillCooldowns[key]-dt);
-    this.combat.tick(dt);
-    for(const p of this.players.values())if(p.active&&p.hero.alive)this.updateHero(p,dt);
+    if(this.phase==='fighting')this.combat.tick(dt);
+    for(const p of this.players.values())if(p.active&&p.hero.alive&&!p.panel)this.updateHero(p,dt);
+    for (let i=this.cues.length-1;i>=0;i--) { this.cues[i]!.ttl-=dt; if(this.cues[i]!.ttl<=0) this.cues.splice(i,1); }
+    if(this.phase!=='fighting')return;
     this.enemies.step(dt,{time:this.time,actors:this.actors,players:this.activePlayers.map(p=>p.hero),collision:this.collision,combat:this.combat,freezeAI:this.developerOptions?.freezeEnemies});
     this.updateSwings(dt);this.updateProjectiles(dt);
-    for (let i=this.cues.length-1;i>=0;i--) { this.cues[i]!.ttl-=dt; if(this.cues[i]!.ttl<=0) this.cues.splice(i,1); }
-    // Death is resolved before wave rewards; simultaneous lethal hits cannot revive the hero.
     if(this.activePlayers.length&&!this.activePlayers.some(p=>p.hero.alive)){this.phase='defeat';this.stopAll();return;}
-    if (exitProgress(this.map,this.wave,this.levelParticipants(),this.remainingEnemies).complete) {
-      if(this.developerOptions)return; // Keep a cleared sandbox available for spawning and inspection.
-      this.phase='reward';this.equipmentEffects.releaseAttacks();this.projectiles.length=0;this.swings.length=0;this.enemies.reset();
-      this.stopAll();this.combat.zones.length=0;
-      for(const p of this.players.values()){p.ready=false;p.equipment.gold+=waveGold(this.wave);p.choices=rewardChoices(this.random,p.loadout,this.combat.perksFor(p.id));}
+    if(this.remainingEnemies===0&&!this.developerOptions){
+      this.phase='cleared';this.stopAll();this.combat.resetEncounter();this.equipmentEffects.resetEncounter();this.projectiles.length=0;this.swings.length=0;this.enemies.reset();this.cues.length=0;
+      const survivor=this.activePlayers.find(p=>p.hero.alive)!.hero;
+      for(const p of this.players.values()){
+        this.clearEncounterEffects(p);
+        p.equipment.gold+=waveGold(this.wave);p.dashTime=0;p.dashStart=undefined;
+        if(!p.hero.alive){const at=this.nav.nearest(survivor);Object.assign(p.hero,at,{previous:{...at},alive:true,hp:Math.max(1,p.hero.maxHp*.3),diedAt:-1});}
+      }
       this.saveBoundary();
     }
   }
+
   private updateHero(p:PlayerState,dt:number):void {
     const h=p.hero;
     if(h.attributes.template.canMove===false){h.path=[];h.velocity={x:0,y:0};if(p.attackPoint&&h.attackCd<=0)this.attackToward(p,p.attackPoint);return;}
@@ -361,9 +414,10 @@ export class GameWorld {
   /** No target IDs: direction is fixed at release; only intersecting bodies can be damaged. */
   private attackToward(p:PlayerState,point:Vec2):void {
     const h=p.hero;if(h.attributes.template.canAttack===false)return;const aim=direction(h,point);if(aim.x===0&&aim.y===0)return;
-    this.animateAction(h,point,'attack');
+    const form=this.combat.basicAttackFor(p.id);
+    this.animateAction(h,point,'attack',form);
     h.attackCd=1/h.attributes.value.attackSpeed;
-    const attack=p.equipment.attack,stats=p.equipment.stats;
+    const attack=BASIC_ATTACKS[form],stats=this.statsFor(p.id);
     const attackId=++this.serial;this.equipmentEffects.beginAttack(h.id,attackId);
     this.combat.attack(h.id,aim,attackId);
     if(attack.kind==='projectile'){

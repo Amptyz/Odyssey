@@ -1,0 +1,255 @@
+{
+  "url": "http://127.0.0.1:8083",
+  "errors": [],
+  "shots": [
+    "reports/hero-equipment-v2/extra-hero-cast.png",
+    "reports/hero-equipment-v2/extra-boss-p2-alive.png",
+    "reports/hero-equipment-v2/extra-boss-death0.png",
+    "reports/hero-equipment-v2/extra-boss-death1.png",
+    "reports/hero-equipment-v2/extra-boss-death2.png",
+    "reports/hero-equipment-v2/extra-hero-hurt.png",
+    "reports/hero-equipment-v2/extra-hero-death.png"
+  ],
+  "evidence": [
+    {
+      "name": "extra-hero-cast",
+      "time": 0.19999999999999998,
+      "phase": "fighting",
+      "unit": {
+        "id": "hero",
+        "kind": "hero",
+        "hp": 240,
+        "maxHp": 240,
+        "alive": true,
+        "x": 7,
+        "y": 8,
+        "hurtAt": -1,
+        "diedAt": -1
+      },
+      "visual": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "cast",
+          "age": 0.1333333333333333,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "event": "formal-fireball-hit",
+      "hpBefore": 7200,
+      "hpAfter": 4832.307692307692,
+      "time": 0.7999999999999999,
+      "phase": 1
+    },
+    {
+      "event": "formal-fireball-hit",
+      "hpBefore": 4832.307692307692,
+      "hpAfter": 2464.6153846153848,
+      "time": 1.0333333333333332,
+      "phase": 1
+    },
+    {
+      "event": "formal-fireball-hit",
+      "hpBefore": 2464.6153846153848,
+      "hpAfter": 96.92307692307713,
+      "time": 1.2666666666666673,
+      "phase": 2
+    },
+    {
+      "name": "extra-boss-p2-alive",
+      "time": 1.2666666666666673,
+      "phase": "fighting",
+      "unit": {
+        "id": "enemy-8",
+        "kind": "courtyardHeart",
+        "hp": 96.92307692307713,
+        "maxHp": 7200,
+        "alive": true,
+        "x": 10,
+        "y": 8,
+        "hurtAt": 1.2666666666666673,
+        "diedAt": -1
+      },
+      "enemyPhase": 2,
+      "visual": {
+        "id": "enemy-8",
+        "kind": "courtyardHeart",
+        "atlas": "pixel-v1/courtyardHeart-phase2",
+        "frame": 6,
+        "poseKey": "hurt",
+        "phase": 2,
+        "pose": {
+          "state": "hurt"
+        }
+      }
+    },
+    {
+      "event": "formal-fireball-hit",
+      "hpBefore": 96.92307692307713,
+      "hpAfter": 0,
+      "time": 1.5000000000000013,
+      "phase": 2
+    },
+    {
+      "name": "extra-boss-death0",
+      "time": 1.5000000000000013,
+      "phase": "fighting",
+      "unit": {
+        "id": "enemy-8",
+        "kind": "courtyardHeart",
+        "hp": 0,
+        "maxHp": 7200,
+        "alive": false,
+        "x": 10,
+        "y": 8,
+        "hurtAt": 1.5000000000000013,
+        "diedAt": 1.5000000000000013,
+        "deathAge": 0
+      },
+      "enemyPhase": 2,
+      "visual": {
+        "id": "enemy-8",
+        "kind": "courtyardHeart",
+        "atlas": "pixel-v2/monsters/courtyardHeart-phase2-death",
+        "frame": 0,
+        "poseKey": "death0",
+        "phase": 2,
+        "pose": {
+          "state": "death"
+        }
+      }
+    },
+    {
+      "name": "extra-boss-death1",
+      "time": 1.7666666666666688,
+      "phase": "fighting",
+      "unit": {
+        "id": "enemy-8",
+        "kind": "courtyardHeart",
+        "hp": 0,
+        "maxHp": 7200,
+        "alive": false,
+        "x": 10,
+        "y": 8,
+        "hurtAt": 1.5000000000000013,
+        "diedAt": 1.5000000000000013,
+        "deathAge": 0.2666666666666675
+      },
+      "enemyPhase": 2,
+      "visual": {
+        "id": "enemy-8",
+        "kind": "courtyardHeart",
+        "atlas": "pixel-v2/monsters/courtyardHeart-phase2-death",
+        "frame": 1,
+        "poseKey": "death1",
+        "phase": 2,
+        "pose": {
+          "state": "death"
+        }
+      }
+    },
+    {
+      "name": "extra-boss-death2",
+      "time": 2.0000000000000027,
+      "phase": "fighting",
+      "unit": {
+        "id": "enemy-8",
+        "kind": "courtyardHeart",
+        "hp": 0,
+        "maxHp": 7200,
+        "alive": false,
+        "x": 10,
+        "y": 8,
+        "hurtAt": 1.5000000000000013,
+        "diedAt": 1.5000000000000013,
+        "deathAge": 0.5000000000000013
+      },
+      "enemyPhase": 2,
+      "visual": {
+        "id": "enemy-8",
+        "kind": "courtyardHeart",
+        "atlas": "pixel-v2/monsters/courtyardHeart-phase2-death",
+        "frame": 2,
+        "poseKey": "death2",
+        "phase": 2,
+        "pose": {
+          "state": "death"
+        }
+      }
+    },
+    {
+      "name": "extra-hero-hurt",
+      "time": 0.9999999999999999,
+      "phase": "fighting",
+      "unit": {
+        "id": "hero",
+        "kind": "hero",
+        "hp": 48,
+        "maxHp": 240,
+        "alive": true,
+        "x": 7,
+        "y": 8,
+        "hurtAt": 0.9999999999999999,
+        "diedAt": -1
+      },
+      "visual": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "hurt",
+          "age": 0,
+          "facing": 1
+        }
+      }
+    },
+    {
+      "name": "extra-hero-death",
+      "time": 2.6333333333333337,
+      "phase": "defeat",
+      "unit": {
+        "id": "hero",
+        "kind": "hero",
+        "hp": 0,
+        "maxHp": 240,
+        "alive": false,
+        "x": 7,
+        "y": 8,
+        "hurtAt": 2.6333333333333337,
+        "diedAt": 2.6333333333333337,
+        "deathAge": 0
+      },
+      "visual": {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "death",
+          "age": 0.033099999904632416,
+          "facing": 1
+        }
+      }
+    }
+  ],
+  "scope": "Actual skill casts and damage only. F2 configured player AP and enemy AD; no health action, HP or snapshot injection. Parent Creator second build; visual review separate.",
+  "timestamp": "2026-10-19T03:52:56.552Z",
+  "review": {
+    "status": "reviewed",
+    "boss": "Actual four fireball impacts; living phase2 observed before death. Dead actor remains at world (10,8). Death frames 0/1/2 selected at ages0/.2667/.5. Lid closes and body settles; no large foot translation or per-frame scale jump observed.",
+    "hero": "Actual shield cast pose age.1333; enemy melee damage leaves48/240 and selects hurt age0. Second hit kills with invincible=false. Death state observed age.0331 behind normal loss overlay.",
+    "limits": [
+      "Hero final collapse is obscured by loss overlay; this is a death transition screenshot, not full collapse-sequence acceptance.",
+      "Single-player explicit developer modifiers; no four-player pressure or strict source pixel-grid claim."
+    ],
+    "browserClosed": true
+  }
+}

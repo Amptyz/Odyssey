@@ -47,7 +47,8 @@ export function sweepCircle(from:Vec2,to:Vec2,radius:number,body:Circle,end:Vec2
 }
 /** Deterministic collision queries in world units; independent of sprites and Cocos physics. */
 export class CollisionWorld {
-  constructor(private readonly terrain?:Terrain){}
+  constructor(private terrain?:Terrain){}
+  setTerrain(terrain:Terrain):void {this.terrain=terrain;}
   blocker(from:Vec2,to:Vec2,radius=0):number|undefined {
     if(!this.terrain)return undefined;
     const {width,height,obstacles}=this.terrain;

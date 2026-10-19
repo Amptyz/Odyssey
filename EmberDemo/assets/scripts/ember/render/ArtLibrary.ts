@@ -22,7 +22,7 @@ export class ArtLibrary {
       });
     })));
     await Promise.all(Object.entries(PIXEL_ATLASES).map(([id,atlas])=>new Promise<void>((resolve,reject)=>{
-      resources.load(`art/pixel-v1/${id}`,ImageAsset,(error,image)=>{
+      resources.load(atlas.resourcePath,ImageAsset,(error,image)=>{
         if(error){reject(error);return;}const texture=new Texture2D();texture.image=image;texture.setFilters(Texture2D.Filter.NEAREST,Texture2D.Filter.NEAREST);this.pixelTextures.push(texture);
         atlas.frames.forEach((f,i)=>{const frame=new SpriteFrame();frame.texture=texture;frame.rect=new Rect(...f.rect);frame.originalSize=new Size(f.rect[2],f.rect[3]);this.pixelFrames.set(`${id}:${i}`,frame);});resolve();
       });
@@ -33,8 +33,10 @@ export class ArtLibrary {
   region(atlas:AtlasId,index:number):ArtFrame{return ATLAS_FRAMES[atlas][index]!;}
   pixelFrame(id:string,index:number):SpriteFrame {const frame=this.pixelFrames.get(`${id}:${index}`);if(!frame)throw new Error(`Missing pixel frame ${id}:${index}`);return frame;}
   hasPixel(id:string):boolean{return!!PIXEL_ATLASES[id];}
-  debug(){return{atlases:Object.entries(PIXEL_ATLASES).map(([id,a])=>({id,frames:a.frames.length,loaded:a.frames.every((_,i)=>this.pixelFrames.has(`${id}:${i}`)),filter:'nearest'})),frames:this.pixelFrames.size};}
+  debug(){return{atlases:Object.entries(PIXEL_ATLASES).map(([id,a])=>({id,path:a.resourcePath,frames:a.frames.length,loaded:a.frames.every((_,i)=>this.pixelFrames.has(`${id}:${i}`)),filter:'nearest'})),frames:this.pixelFrames.size};}
   icon(parent:Node,id:string,size=40):Node|undefined {
+    // The form perk reuses the existing volley icon; it is not the skill-triggered magicMissile perk.
+    if(id==='missileAttack')id='volley';
     const groups:Record<string,string[]>={weapons:['sword','staff','bow','bulwark','reaver','runeblade'],bodies:['plate','robe','leather','duelistVest','wardMantle','sanguineWrap'],heads:['helm','circlet','hood','keenVisor','sageMask','aegisCrown'],skills:['fireball','icebolt','shield','dash','nova','cleave','volley','ironGuard','frostNova']};
     groups.perks=PIXEL_ATLASES.perks?.poses??[];
     for(const [atlas,ids]of Object.entries(groups)){const index=ids.indexOf(id);if(index<0||!this.hasPixel(atlas))continue;const f=PIXEL_ATLASES[atlas]!.frames[index]!,ratio=f.rect[2]/f.rect[3];return this.pixelSprite(parent,atlas,index,ratio>1?size:size*ratio,ratio>1?size/ratio:size);}return undefined;
@@ -47,5 +49,5 @@ export class ArtLibrary {
     const sprite=node.addComponent(Sprite);sprite.spriteFrame=this.frame(atlas,index);sprite.sizeMode=Sprite.SizeMode.CUSTOM;
     node.getComponent(UITransform)!.setContentSize(width,height??width*frame.rect[3]/frame.rect[2]);return node;
   }
-  dispose():void{for(const f of [...this.frames.values(),...this.pixelFrames.values()])f.destroy();for(const t of [...this.textures.values(),...this.pixelTextures])t.destroy();this.frames.clear();this.pixelFrames.clear();this.textures.clear();this.pixelTextures.length=0;this.loaded=false;}
+  dispose():void{for(const f of Array.from(this.frames.values()).concat(Array.from(this.pixelFrames.values())))f.destroy();for(const t of Array.from(this.textures.values()).concat(this.pixelTextures))t.destroy();this.frames.clear();this.pixelFrames.clear();this.textures.clear();this.pixelTextures.length=0;this.loaded=false;}
 }

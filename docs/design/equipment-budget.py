@@ -23,21 +23,20 @@ ITEMS = {
 'sageMask':('head',100,dict(ap=20,mpen=10)),
 'aegisCrown':('head',100,dict(hp=55,mr=22)),
 }
-ATTACK_RANGES={'sword':2.5,'staff':6.5,'bow':7.5,'bulwark':2.5,'reaver':2.5,'runeblade':2.5}
 BUILDS={
 '裸装':(),
-'历史10件六格远程输出':('sword','staff','leather','circlet','hood','bow'),
+'历史10件六格输出':('sword','staff','leather','circlet','hood','bow'),
 '历史10件六格防御':('sword','plate','robe','helm','circlet','bulwark'),
 '开局近战':('sword',),
 '首次店近战':('sword','plate'),
 '第三关前近战':('sword','plate','hood'),
 '五件攻速暴击':('sword','reaver','leather','duelistVest','bow'),
 '六件攻速暴击':('sword','reaver','leather','duelistVest','bow','keenVisor'),
-'六件AP远程':('runeblade','robe','circlet','sageMask','reaver','staff'),
+'六件AP':('runeblade','robe','circlet','sageMask','reaver','staff'),
 '六件混合近战':('staff','robe','circlet','sageMask','keenVisor','runeblade'),
 '六件双抗坦克':('plate','helm','wardMantle','aegisCrown','sanguineWrap','bulwark'),
 '六件AD施法':('sword','hood','keenVisor','reaver','sanguineWrap','circlet'),
-'六件远程均衡':('sword','plate','robe','circlet','helm','bow'),
+'六件均衡':('sword','plate','robe','circlet','helm','bow'),
 '六件全武器':('sword','staff','bulwark','reaver','runeblade','bow'),
 '六件全身体':('plate','robe','leather','duelistVest','wardMantle','sanguineWrap'),
 '六件全头部':('helm','circlet','hood','keenVisor','sageMask','aegisCrown'),
@@ -60,7 +59,7 @@ def calculate(ids,armor=30,mr=30):
  world_ms=(raw_ms*.5+230 if raw_ms>490 else raw_ms*.8+83 if raw_ms>415 else raw_ms*.5+110 if raw_ms<220 else raw_ms)*.01
  current_weapon=next((i for i in reversed(ids) if ITEMS[i][0]=='weapon'),None)
  total=physical*100/(100+max(0,armor))+magic*100/(100+max(0,mr-s['mpen']))
- return dict(items=ids,cost=100*len(ids),attackWeapon=current_weapon or 'unarmed',attackRange=ATTACK_RANGES.get(current_weapon,2.5),AD=s['ad'],AP=s['ap'],HP=s['hp'],armor=s['armor'],MR=s['mr'],AS=round(attack_speed,4),crit=s['crit'],haste=s['haste'],vamp=s['vamp'],worldMoveSpeed=round(world_ms,4),basicRaw=round(basic,2),fireRaw=round(fire,2),novaRaw=round(nova,2),procRaw=round(proc,2),totalVs30=round(total,2),physicalEHP=round(s['hp']*(1+s['armor']/100),2),magicEHP=round(s['hp']*(1+s['mr']/100),2),passiveShield=round(passive_shield,2),skillShieldCooldown=round(9/(1+s['haste']/100),3),vampHealingPerSecond=round(total*s['vamp'],2))
+ return dict(items=ids,cost=100*len(ids),appearanceWeapon=current_weapon,basicAttack='slash',attackRange=5,AD=s['ad'],AP=s['ap'],HP=s['hp'],armor=s['armor'],MR=s['mr'],AS=round(attack_speed,4),crit=s['crit'],haste=s['haste'],vamp=s['vamp'],worldMoveSpeed=round(world_ms,4),basicRaw=round(basic,2),fireRaw=round(fire,2),novaRaw=round(nova,2),procRaw=round(proc,2),totalVs30=round(total,2),physicalEHP=round(s['hp']*(1+s['armor']/100),2),magicEHP=round(s['hp']*(1+s['mr']/100),2),passiveShield=round(passive_shield,2),skillShieldCooldown=round(9/(1+s['haste']/100),3),vampHealingPerSecond=round(total*s['vamp'],2))
 AVAILABLE_IDS=tuple(ITEMS) # All 18 items now registered by EQ-02.
 assert len(ITEMS)==18
 for category in ('weapon','body','head'):

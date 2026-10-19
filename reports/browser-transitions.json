@@ -1,0 +1,2025 @@
+{
+  "status": "passed",
+  "scope": "Actual Creator keyboard opening/departure/panels, explicit F2 rest/map/retest fixtures, render-frame samples and screenshots; no world-state mutation.",
+  "checks": [
+    "Initial main menu has no artificial transition",
+    "opening: actual rendered transition begins fully opaque",
+    "opening: reveals through intermediate opacity frames",
+    "opening: curtain retires completely",
+    "opening: entry title follows the new scene snapshot",
+    "Camp simulation continues while the local curtain reveals",
+    "Opening ember choices does not black out",
+    "Closing choices does not black out",
+    "camp-to-level: actual rendered transition begins fully opaque",
+    "camp-to-level: reveals through intermediate opacity frames",
+    "camp-to-level: curtain retires completely",
+    "camp-to-level: entry title follows the new scene snapshot",
+    "Normal departure renders the new battle",
+    "rest-fixture: actual rendered transition begins fully opaque",
+    "rest-fixture: reveals through intermediate opacity frames",
+    "rest-fixture: curtain retires completely",
+    "rest-fixture: entry title follows the new scene snapshot",
+    "Merchant interaction does not black out",
+    "Leaving the merchant does not black out",
+    "rest-to-level: actual rendered transition begins fully opaque",
+    "rest-to-level: reveals through intermediate opacity frames",
+    "rest-to-level: curtain retires completely",
+    "rest-to-level: entry title follows the new scene snapshot",
+    "Rest departure enters its configured next level",
+    "paused-map: actual rendered transition begins fully opaque",
+    "paused-map: reveals through intermediate opacity frames",
+    "paused-map: curtain retires completely",
+    "Presentation completes even when the new world is paused",
+    "Map change preserves the paused state",
+    "same-place-retest: actual rendered transition begins fully opaque",
+    "same-place-retest: reveals through intermediate opacity frames",
+    "same-place-retest: curtain retires completely",
+    "same-place-retest: entry title follows the new scene snapshot",
+    "Rapid scene changes end on the latest scene without a stuck curtain",
+    "Switching scenes requests no additional assets or loading screen",
+    "Actual Creator transition has no browser runtime errors"
+  ],
+  "samples": [
+    {
+      "name": "opening",
+      "frames": [
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.03660000002384186,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.03660000002384186,
+            "duration": 2.36
+          },
+          "tick": 2,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 251,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.053200000047683715,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.053200000047683715,
+            "duration": 2.36
+          },
+          "tick": 2,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 236,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.07,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.07,
+            "duration": 2.36
+          },
+          "tick": 3,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 213,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.0862999999523163,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.0862999999523163,
+            "duration": 2.36
+          },
+          "tick": 3,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 183,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.10310000002384187,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.10310000002384187,
+            "duration": 2.36
+          },
+          "tick": 3,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 149,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.1197999999523163,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.1197999999523163,
+            "duration": 2.36
+          },
+          "tick": 4,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 114,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.1365,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.1365,
+            "duration": 2.36
+          },
+          "tick": 4,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 79,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.1532999999523163,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.1532999999523163,
+            "duration": 2.36
+          },
+          "tick": 5,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 48,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.17010000002384187,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.17010000002384187,
+            "duration": 2.36
+          },
+          "tick": 6,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 23,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.18660000002384186,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.18660000002384186,
+            "duration": 2.36
+          },
+          "tick": 6,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 6,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.2032999999523163,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.2032999999523163,
+            "duration": 2.36
+          },
+          "tick": 7,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.21970000004768372,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 0,
+            "elapsed": 0.21970000004768372,
+            "duration": 2.36
+          },
+          "tick": 7,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 3,
+            "elapsed": 0.23650000000000002,
+            "duration": 2.36
+          },
+          "tick": 7,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 13,
+            "elapsed": 0.2532000000476837,
+            "duration": 2.36
+          },
+          "tick": 8,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 1,
+          "place": "local:1:ember:camp:0:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院",
+            "subtitle": "启程营地",
+            "opacity": 28,
+            "elapsed": 0.2697999999523163,
+            "duration": 2.36
+          },
+          "tick": 8,
+          "paused": false
+        }
+      ]
+    },
+    {
+      "name": "camp-to-level",
+      "frames": [
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0,
+            "duration": 2.36
+          },
+          "tick": 120,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.020300000071525572,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.020300000071525572,
+            "duration": 2.36
+          },
+          "tick": 121,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.020300000071525572,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.020300000071525572,
+            "duration": 2.36
+          },
+          "tick": 121,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.041999999999999996,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.041999999999999996,
+            "duration": 2.36
+          },
+          "tick": 121,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 247,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.05910000002384185,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.05910000002384185,
+            "duration": 2.36
+          },
+          "tick": 122,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 229,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.07540000009536743,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.07540000009536743,
+            "duration": 2.36
+          },
+          "tick": 122,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 203,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.0925,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.0925,
+            "duration": 2.36
+          },
+          "tick": 123,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 170,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.1095,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.1095,
+            "duration": 2.36
+          },
+          "tick": 124,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 136,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.12620000004768372,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.12620000004768372,
+            "duration": 2.36
+          },
+          "tick": 124,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 100,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.14300000000000002,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.14300000000000002,
+            "duration": 2.36
+          },
+          "tick": 125,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 67,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.15950000000000003,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.15950000000000003,
+            "duration": 2.36
+          },
+          "tick": 125,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 38,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.17620000004768374,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.17620000004768374,
+            "duration": 2.36
+          },
+          "tick": 126,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 17,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.19170000004768373,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.19170000004768373,
+            "duration": 2.36
+          },
+          "tick": 126,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 3,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.20900000000000002,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 0,
+            "elapsed": 0.20900000000000002,
+            "duration": 2.36
+          },
+          "tick": 126,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 1,
+            "elapsed": 0.22620000004768373,
+            "duration": 2.36
+          },
+          "tick": 127,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 6,
+            "elapsed": 0.24250000000000002,
+            "duration": 2.36
+          },
+          "tick": 127,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 18,
+            "elapsed": 0.2588000000715256,
+            "duration": 2.36
+          },
+          "tick": 128,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 2,
+          "place": "local:1:ember:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·一",
+            "subtitle": "苔阶巡径",
+            "opacity": 35,
+            "elapsed": 0.2758000000715256,
+            "duration": 2.36
+          },
+          "tick": 128,
+          "paused": false
+        }
+      ]
+    },
+    {
+      "name": "rest-fixture",
+      "frames": [
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0,
+            "duration": 2.36
+          },
+          "tick": 3,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.016899999976158143,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.016899999976158143,
+            "duration": 2.36
+          },
+          "tick": 3,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.016899999976158143,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.016899999976158143,
+            "duration": 2.36
+          },
+          "tick": 3,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.039899999976158146,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.039899999976158146,
+            "duration": 2.36
+          },
+          "tick": 4,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 250,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.05550000000000001,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.05550000000000001,
+            "duration": 2.36
+          },
+          "tick": 4,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 232,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.07309999990463258,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.07309999990463258,
+            "duration": 2.36
+          },
+          "tick": 5,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 207,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.08989999997615815,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.08989999997615815,
+            "duration": 2.36
+          },
+          "tick": 5,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 176,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.10650000000000001,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.10650000000000001,
+            "duration": 2.36
+          },
+          "tick": 6,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 142,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.12319999992847444,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.12319999992847444,
+            "duration": 2.36
+          },
+          "tick": 6,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 108,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.139,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.139,
+            "duration": 2.36
+          },
+          "tick": 7,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 73,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.15639999997615817,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.15639999997615817,
+            "duration": 2.36
+          },
+          "tick": 7,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 44,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.17250000000000001,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.17250000000000001,
+            "duration": 2.36
+          },
+          "tick": 8,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 19,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.18989999997615817,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.18989999997615817,
+            "duration": 2.36
+          },
+          "tick": 8,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 4,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.20629999995231632,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.20629999995231632,
+            "duration": 2.36
+          },
+          "tick": 9,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 0,
+            "elapsed": 0.22319999992847447,
+            "duration": 2.36
+          },
+          "tick": 9,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 5,
+            "elapsed": 0.23919999992847446,
+            "duration": 2.36
+          },
+          "tick": 10,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 15,
+            "elapsed": 0.2558999999761582,
+            "duration": 2.36
+          },
+          "tick": 10,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 3,
+          "place": "local:2:ember:camp:2:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·行商营地",
+            "subtitle": "第 2 关后的休息点",
+            "opacity": 31,
+            "elapsed": 0.2725000000000001,
+            "duration": 2.36
+          },
+          "tick": 11,
+          "paused": false
+        }
+      ]
+    },
+    {
+      "name": "rest-to-level",
+      "frames": [
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0,
+            "duration": 2.36
+          },
+          "tick": 152,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0,
+            "duration": 2.36
+          },
+          "tick": 152,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.018300000071525574,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.018300000071525574,
+            "duration": 2.36
+          },
+          "tick": 153,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.035,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.035,
+            "duration": 2.36
+          },
+          "tick": 153,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 252,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.050800000071525575,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.050800000071525575,
+            "duration": 2.36
+          },
+          "tick": 153,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 238,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.06840000009536742,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.06840000009536742,
+            "duration": 2.36
+          },
+          "tick": 154,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 216,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.08449999999999999,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.08449999999999999,
+            "duration": 2.36
+          },
+          "tick": 154,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 187,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.10080000007152556,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.10080000007152556,
+            "duration": 2.36
+          },
+          "tick": 155,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 153,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.11790000009536741,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.11790000009536741,
+            "duration": 2.36
+          },
+          "tick": 155,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 118,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.13460000002384184,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.13460000002384184,
+            "duration": 2.36
+          },
+          "tick": 156,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 84,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.151,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.151,
+            "duration": 2.36
+          },
+          "tick": 156,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 53,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.16740000009536743,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.16740000009536743,
+            "duration": 2.36
+          },
+          "tick": 157,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 25,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.185,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.185,
+            "duration": 2.36
+          },
+          "tick": 158,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 7,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.2017000000476837,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.2017000000476837,
+            "duration": 2.36
+          },
+          "tick": 158,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.218,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 0,
+            "elapsed": 0.218,
+            "duration": 2.36
+          },
+          "tick": 158,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 3,
+            "elapsed": 0.235,
+            "duration": 2.36
+          },
+          "tick": 159,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 12,
+            "elapsed": 0.25160000002384186,
+            "duration": 2.36
+          },
+          "tick": 160,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 4,
+          "place": "local:2:ember:level:3:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "余烬庭院·三",
+            "subtitle": "日芽回庭",
+            "opacity": 27,
+            "elapsed": 0.268,
+            "duration": 2.36
+          },
+          "tick": 160,
+          "paused": false
+        }
+      ]
+    },
+    {
+      "name": "paused-map",
+      "frames": [
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.009,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.009,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.009,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.009,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.028200000047683714,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.028200000047683714,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 254,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.044700000047683715,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.044700000047683715,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 245,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.06139999997615814,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.06139999997615814,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 226,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.07770000004768371,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.07770000004768371,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 199,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.09470000004768371,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.09470000004768371,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 166,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.11149999999999999,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.11149999999999999,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 131,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.1282000000476837,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.1282000000476837,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 96,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.14480000007152555,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.14480000007152555,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 63,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.16139999997615812,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.16139999997615812,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 35,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.17799999999999996,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.17799999999999996,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 13,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.19489999997615812,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.19489999997615812,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": true,
+          "opacity": 2,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.21049999999999996,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.21049999999999996,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 1,
+            "elapsed": 0.22739999997615812,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 7,
+            "elapsed": 0.24460000002384183,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 20,
+            "elapsed": 0.2607000000476837,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 5,
+          "place": "local:3:frost:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 37,
+            "elapsed": 0.27730000007152555,
+            "duration": 2.36
+          },
+          "tick": 0,
+          "paused": true
+        }
+      ]
+    },
+    {
+      "name": "same-place-retest",
+      "frames": [
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0,
+            "duration": 2.36
+          },
+          "tick": 4,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.0016000000238418578,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.0016000000238418578,
+            "duration": 2.36
+          },
+          "tick": 4,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.0016000000238418578,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.0016000000238418578,
+            "duration": 2.36
+          },
+          "tick": 4,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.023299999952316283,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.023299999952316283,
+            "duration": 2.36
+          },
+          "tick": 5,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 255,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.040100000023841856,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.040100000023841856,
+            "duration": 2.36
+          },
+          "tick": 5,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 249,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.056799999952316285,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.056799999952316285,
+            "duration": 2.36
+          },
+          "tick": 6,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 233,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.07270000004768372,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.07270000004768372,
+            "duration": 2.36
+          },
+          "tick": 6,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 209,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.089,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.089,
+            "duration": 2.36
+          },
+          "tick": 6,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 176,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.10670000004768371,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.10670000004768371,
+            "duration": 2.36
+          },
+          "tick": 7,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 144,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.12229999995231627,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.12229999995231627,
+            "duration": 2.36
+          },
+          "tick": 7,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 107,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.13960000002384185,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.13960000002384185,
+            "duration": 2.36
+          },
+          "tick": 8,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 75,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.15560000002384183,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.15560000002384183,
+            "duration": 2.36
+          },
+          "tick": 8,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 43,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.17320000004768368,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.17320000004768368,
+            "duration": 2.36
+          },
+          "tick": 9,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 20,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.18899999999999997,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.18899999999999997,
+            "duration": 2.36
+          },
+          "tick": 9,
+          "paused": false
+        },
+        {
+          "active": true,
+          "opacity": 4,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.20660000002384182,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.20660000002384182,
+            "duration": 2.36
+          },
+          "tick": 10,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": false,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 0,
+            "elapsed": 0.22339999997615811,
+            "duration": 2.36
+          },
+          "tick": 11,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 5,
+            "elapsed": 0.24010000002384183,
+            "duration": 2.36
+          },
+          "tick": 11,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 15,
+            "elapsed": 0.2557999999523162,
+            "duration": 2.36
+          },
+          "tick": 11,
+          "paused": false
+        },
+        {
+          "active": false,
+          "opacity": 0,
+          "sequence": 6,
+          "place": "local:4:frost:level:1:world",
+          "elapsed": 0.22,
+          "duration": 0.22,
+          "title": {
+            "active": true,
+            "name": "霜镜回廊·一",
+            "subtitle": "霜足迎廊",
+            "opacity": 32,
+            "elapsed": 0.27329999995231624,
+            "duration": 2.36
+          },
+          "tick": 12,
+          "paused": false
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    "reports/transition-opening-curtain.png",
+    "reports/transition-opening-revealed.png",
+    "reports/transition-paused-map-curtain.png",
+    "reports/transition-paused-map-revealed.png"
+  ],
+  "errors": []
+}

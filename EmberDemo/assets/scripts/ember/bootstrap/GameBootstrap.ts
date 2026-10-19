@@ -7,6 +7,7 @@ import { ArenaView } from '../render/ArenaView';
 import { Hud } from '../render/Hud';
 import { worldToScreen } from '../render/IsoProjection';
 import { ArtLibrary } from '../render/ArtLibrary';
+import { SceneTransition } from '../render/SceneTransition';
 import { text,uiNode } from '../render/Primitives';
 import type { GameCommand } from '../platform/protocol';
 const { ccclass }=_decorator;
@@ -14,7 +15,7 @@ const { ccclass }=_decorator;
 @ccclass('GameBootstrap')
 export class GameBootstrap extends Component {
   private port!:RoomTransport;private roomPanel?:RoomPanel;private arena!:ArenaView;private hud!:Hud;private controls!:InputController;
-  private readonly art=new ArtLibrary();
+  private readonly art=new ArtLibrary();private transition!:SceneTransition;
   private fps=60;private frameTime=0;private frames=0;private disposeDebug?:()=>void;
   async start():Promise<void> {
     validateContent();
@@ -29,10 +30,11 @@ export class GameBootstrap extends Component {
     this.port=new RoomTransport(seed);if(typeof document!=='undefined')this.roomPanel=new RoomPanel(this.port);
     this.arena=new ArenaView(root,this.art);this.hud=new Hud(root,c=>this.port.send(c),this.art);
     this.controls=new InputController(root,this.arena.camera,this.port,this.hud);
+    this.transition=new SceneTransition(root);
     game.canvas?.focus();
     // Explicit debug opt-in for browser automation. Normal games expose no mutable world.
     if(params.get('debug')==='1'&&typeof window!=='undefined'){
-      const api={controls:()=>({mode:this.controls.controlMode,pointer:{...this.controls.pointer},colliders:this.hud.showColliders}),art:()=>({loaded:this.art.loaded,library:this.art.debug(),...this.arena.debug()}),ui:()=>this.hud.inspectUI(),snapshot:()=>this.port.snapshot(),send:(c:GameCommand)=>this.port.send(c),
+      const api={controls:()=>({mode:this.controls.controlMode,pointer:{...this.controls.pointer},colliders:this.hud.showColliders}),art:()=>({loaded:this.art.loaded,library:this.art.debug(),...this.arena.debug()}),ui:()=>this.hud.inspectUI(),transition:()=>this.transition.debug(),snapshot:()=>this.port.snapshot(),send:(c:GameCommand)=>this.port.send(c),
         screen:(x:number,y:number)=>worldToScreen({x,y},this.arena.camera)};
       Object.assign(window,{__EMBER__:api});
       this.disposeDebug=()=>{delete (window as unknown as Record<string,unknown>).__EMBER__;};
@@ -45,5 +47,5 @@ export class GameBootstrap extends Component {
     this.draw(this.port.advance(dt),dt);
   }
   onDestroy():void {this.controls?.destroy();this.roomPanel?.destroy();this.port?.destroy();this.disposeDebug?.();this.art.dispose();}
-  private draw(alpha:number,dt=0):void {const s=this.port.snapshot();this.arena.prepareCamera(s,alpha);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer,dt,this.hud.showColliders);this.hud.update(s,this.fps);}
+  private draw(alpha:number,dt=0):void {const s=this.port.snapshot();this.arena.prepareCamera(s,alpha);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer,dt,this.hud.showColliders);this.hud.update(s,this.fps);this.transition.update(s,dt,this.port.presentationKey);}
 }

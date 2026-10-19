@@ -1,3 +1,5 @@
+import {campMap} from '../content/scenes';
+import {InteractionView} from './InteractionView';
 import { Graphics, Label, Node } from 'cc';
 import { enemy } from '../content/enemies';
 import { mapDefinition,type MapId } from '../content/maps';
@@ -10,6 +12,7 @@ import {CollisionWorld} from '../combat-core/CollisionWorld';
 import { AnimatedUnit } from './AnimatedUnit';
 import {LevelGuidanceView} from './LevelGuidanceView';
 import { EnvironmentView } from './EnvironmentView';
+import { PixelVfxView } from './PixelVfxView';
 import { motionPose } from '../content/animation';
 import type { UnitSnapshot as Unit, WorldSnapshot } from '../simulation/GameWorld';
 import { lerp, type Vec2 } from '../utils/math';
@@ -19,9 +22,10 @@ interface UnitView {node:Node;body:AnimatedUnit|MonsterVisual;bars:Graphics;ring
 /** Nodes are retained/recycled. Only dynamic vector paths are redrawn. */
 export class ArenaView {
   readonly camera:Projection={...DEFAULT_PROJECTION,origin:{x:0,y:265}};
-  private readonly objects:Node;private readonly floor:Graphics;private mapId?:MapId;
+  private readonly objects:Node;private readonly floor:Graphics;private mapKey='';private readonly interactions:InteractionView;
   private readonly effects:Graphics;
   private readonly projectiles:Graphics;
+  private readonly pixelVfx:PixelVfxView;
   private readonly targeting:Graphics;private readonly colliders:Graphics;
   private readonly units=new Map<string,UnitView>();
   private readonly spare:UnitView[]=[];
@@ -31,28 +35,29 @@ export class ArenaView {
   constructor(private readonly root:Node,private readonly art:ArtLibrary) {
     const backdrop=graphics('Backdrop',root);box(backdrop,-640,-360,1280,720,'#A9D0CC',0);
     this.floor=graphics('Arena tiles',root);const ground=uiNode('Ground textures',root);this.targeting=graphics('Ground indicators',root);
-    this.objects=uiNode('Depth sorted actors and props',root);this.environment=new EnvironmentView(this.floor,ground,this.objects,art);
+    this.objects=uiNode('Depth sorted actors and props',root);this.environment=new EnvironmentView(this.floor,ground,this.objects,art);this.interactions=new InteractionView(this.objects,art);
     this.projectiles=graphics('Projectile batch',root);this.effects=graphics('Effect batch',root);
+    this.pixelVfx=new PixelVfxView(uiNode('Bounded pixel flipbooks',root),art);
     this.guidance=new LevelGuidanceView(root);
     this.colliders=graphics('Collision debug',root);
     for(let i=0;i<40;i++) {const label=text(`Floating number ${i}`,root,'',17,0,0,140,36);label.node.active=false;this.numbers.push(label);}
   }
-  configureMap(id:MapId):void {
-    if(this.mapId===id)return;this.mapId=id;const map=mapDefinition(id);Object.assign(this.camera,fitMapProjection(map));
+  configureMap(id:MapId,camp=false):void {
+    const key=id+':'+camp;if(this.mapKey===key)return;this.mapKey=key;const map=camp?campMap(id):mapDefinition(id);Object.assign(this.camera,fitMapProjection(map));
     this.obstacles.length=0;this.obstacles.push(...this.environment.configure(map,this.camera));
   }
 
-  prepareCamera(state:WorldSnapshot,alpha:number):void {this.configureMap(state.mapId);followProjection(this.camera,{x:lerp(state.hero.previous.x,state.hero.x,alpha),y:lerp(state.hero.previous.y,state.hero.y,alpha)});}
+  prepareCamera(state:WorldSnapshot,alpha:number):void {this.configureMap(state.mapId,state.scene.kind==='camp');followProjection(this.camera,{x:lerp(state.hero.previous.x,state.hero.x,alpha),y:lerp(state.hero.previous.y,state.hero.y,alpha)});}
 
   update(state:WorldSnapshot,alpha:number,pointer:Vec2,dt=0,debug=false):void {
     this.prepareCamera(state,alpha);
     if(state.tick<this.lastTick)this.visualTime=state.time;this.lastTick=state.tick;
-    if(!state.paused)this.visualTime=state.phase==='fighting'?state.time:Math.max(this.visualTime,state.time)+Math.min(dt,.05);
+    if(!state.paused)this.visualTime=['camp','cleared','fighting'].includes(state.phase)?state.time:Math.max(this.visualTime,state.time)+Math.min(dt,.05);
     this.obstacles.length=0;this.obstacles.push(...this.environment.update(this.visualTime,this.camera));
     const visible=(u:Unit)=>u.alive||this.visualTime-u.diedAt<.9;
     const alive=new Set(state.units.filter(visible).map(u=>u.id));
     for(const [id,view] of this.units)if(!alive.has(id)){view.node.active=false;this.spare.push(view);this.units.delete(id);}
-    const order=[...this.obstacles];
+    const order=[...this.obstacles,...this.interactions.update(state,this.camera)];
     for(const u of state.units)if(visible(u)) {
       const projected=worldToScreen({x:lerp(u.previous.x,u.x,alpha),y:lerp(u.previous.y,u.y,alpha)},this.camera);
       if(!screenVisible(projected,150)){const cached=this.units.get(u.id);if(cached)cached.node.active=false;continue;}
@@ -71,17 +76,18 @@ export class ArenaView {
     }
     order.sort((a,b)=>b.y-a.y);order.forEach((v,i)=>v.node.setSiblingIndex(i));
     this.drawGround(state,pointer);this.drawProjectiles(state,alpha);this.drawEffects(state);
+    this.pixelVfx.update(state,this.camera);
     this.drawColliders(state,debug);this.guidance.update(state,this.camera);
   }
   private makeView(kind:Unit['kind']):UnitView {
     const node=uiNode('Unit',this.objects);const ring=graphics('Indicators',node),body=kind==='hero'?new AnimatedUnit(node,kind,this.art):new MonsterVisual(node,kind,this.art),bars=graphics('Health',node);
     return {node,body,bars,ring,kind};
   }
-  debug(){return{time:this.visualTime,camera:{...this.camera,origin:{...this.camera.origin}},environment:this.environment.debug(),units:Array.from(this.units,([id,v])=>({id,...v.body.debug()}))};}
+  debug(){return{time:this.visualTime,camera:{...this.camera,origin:{...this.camera.origin}},environment:this.environment.debug(),vfx:this.pixelVfx.debug(),units:Array.from(this.units,([id,v])=>({id,...v.body.debug()}))};}
 
   private drawGround(state:WorldSnapshot,pointer:Vec2):void {
     const g=this.targeting;g.clear();
-    if(state.phase!=='fighting')return;const enemies=state.enemies;if(enemies)drawEnemyWarnings(g,enemies,this.camera,this.visualTime);
+    if(!['camp','cleared','fighting'].includes(state.phase))return;const enemies=state.enemies;if(enemies)drawEnemyWarnings(g,enemies,this.camera,this.visualTime);
     const aim=worldToScreen(pointer,this.camera);g.strokeColor=color('#FBF5D4');g.lineWidth=1.5;
     g.ellipse(aim.x,aim.y,9,5);g.stroke();g.moveTo(aim.x-13,aim.y);g.lineTo(aim.x+13,aim.y);g.stroke();
     if(state.destination){const p=worldToScreen(state.destination,this.camera);g.strokeColor=color('#548C8A');g.lineWidth=3;g.ellipse(p.x,p.y,14,7);g.stroke();}
@@ -134,7 +140,7 @@ export class ArenaView {
   private drawColliders(state:WorldSnapshot,enabled:boolean):void {
     const g=this.colliders;g.clear();if(!enabled)return;g.lineWidth=1.5;
     const circle=(at:Vec2,radius:number,tint:string)=>{const p=worldToScreen(at,this.camera);g.strokeColor=color(tint);g.ellipse(p.x,p.y,radius*this.camera.tileWidth*this.camera.zoom/Math.SQRT2,radius*this.camera.tileHeight*this.camera.zoom/Math.SQRT2);g.stroke();};
-    for(const o of mapDefinition(state.mapId).obstacles)circle(o,o.radius,'#50635A');
+    for(const o of (state.scene.kind==='camp'?campMap(state.mapId):mapDefinition(state.mapId)).obstacles)circle(o,o.radius,'#50635A');
     for(const u of state.units)if(u.alive)circle(u,u.radius,u.team==='hero'?'#008BA3':'#BD4935');
     for(const p of state.projectiles)circle(p,p.radius,'#CB9A1C');
     for(const p of state.enemies.projectiles)drawWorldShape(g,{kind:'circle',center:p,radius:p.radius},this.camera,'#ED2C63',1.5);

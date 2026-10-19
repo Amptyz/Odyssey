@@ -1,6 +1,7 @@
+import type {BasicAttackId} from './attacks';
 /** Animation timing is presentation data; changing it must never change damage timing. */
 export type MotionState='idle'|'walk'|'attack'|'cast'|'hurt'|'death';
-export interface MotionPose {state:MotionState;age:number;facing:1|-1}
+export interface MotionPose {state:MotionState;age:number;facing:1|-1;basicAttack?:BasicAttackId}
 export type AnimationClips=Record<MotionState,{frames:readonly number[];fps:number;loop:boolean}>;
 export const CLIPS:AnimationClips={
   idle:{frames:[0,1,2,3],fps:4,loop:true},walk:{frames:[4,5,6,7],fps:9,loop:true},
@@ -12,12 +13,12 @@ export function animationFrame(state:MotionState,age:number,clips:AnimationClips
   return clip.frames[clip.loop?index%clip.frames.length:Math.min(index,clip.frames.length-1)]!;
 }
 /** Minimal animation signals from simulation. They do not depend on the renderer. */
-export interface ActionSignal {id:number;kind:'attack'|'cast';time:number}
+export interface ActionSignal {id:number;kind:'attack'|'cast';time:number;basicAttack?:BasicAttackId}
 export function motionPose(unit:{alive:boolean;velocity:{x:number;y:number};windup:number;action:ActionSignal;hurtAt:number;diedAt:number;facing:{x:number;y:number}},time:number):MotionPose {
   const facing=unit.facing.x-unit.facing.y<0?-1:1;
   if(!unit.alive)return{state:'death',age:Math.max(0,time-unit.diedAt),facing};
   if(unit.hurtAt>=0&&time-unit.hurtAt<0.18)return{state:'hurt',age:time-unit.hurtAt,facing};
   if(unit.windup>0)return{state:'attack',age:0.08,facing};
-  if(unit.action.id>0&&time-unit.action.time<0.45)return{state:unit.action.kind,age:time-unit.action.time,facing};
+  if(unit.action.id>0&&time-unit.action.time<0.45)return{state:unit.action.kind,age:time-unit.action.time,facing,...(unit.action.basicAttack?{basicAttack:unit.action.basicAttack}:{})};
   return{state:Math.hypot(unit.velocity.x,unit.velocity.y)>0.15?'walk':'idle',age:time,facing};
 }

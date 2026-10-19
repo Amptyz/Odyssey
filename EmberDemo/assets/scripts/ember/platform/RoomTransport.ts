@@ -10,6 +10,7 @@ export interface RoomControls {
 /** Host-authoritative room transport. Only the host advances the shared GameWorld. */
 export class RoomTransport implements CommandPort {
   readonly local:LocalTransport;
+  get presentationKey():string{return this.ui.room?`room:${this.ui.room.code}`:`local:${this.local.presentationGeneration}`;}
   uiOpen=false;
   readonly ui:RoomControls={endpoint:'ws://127.0.0.1:8787',name:'旅人',code:'',status:'单人模式',connected:false,saved:false};
   private socket?:WebSocket;private world?:GameWorld;private remote?:WorldSnapshot;
@@ -94,6 +95,7 @@ export class RoomTransport implements CommandPort {
   }
   private syncMembers():void {
     if(!this.isHost||!this.world||!this.ui.room)return;
+    this.world.hostId=this.ui.room.hostId;
     let added=false;
     for(const member of this.ui.room.members){
       if(!this.world.players.has(member.id))added=this.world.addPlayer(member.id)||added;
@@ -141,8 +143,8 @@ export class RoomTransport implements CommandPort {
       this.lastFrame=now;const base=this.world.snapshot(this.ui.playerId),views:Record<string,PlayerView>={};
       for(const member of this.ui.room!.members){
         if(!this.world.players.has(member.id))continue;const s=this.world.snapshot(member.id);
-        const {hero,loadout,cooldowns,perks,choices,pendingSkill,gold,inventory,equipment,purchaseOrder,appearance,stats,destination,primed,equipmentPassives}=s;
-        views[member.id]={hero,loadout,cooldowns,perks,choices,pendingSkill,gold,inventory,equipment,purchaseOrder,appearance,stats,destination,primed,equipmentPassives};
+        const {phase,scene,hero,loadout,cooldowns,perks,choices,pendingSkill,gold,inventory,equipment,purchaseOrder,appearance,stats,destination,primed,equipmentPassives,basicAttack}=s;
+        views[member.id]={phase,scene,hero,loadout,cooldowns,perks,choices,pendingSkill,gold,inventory,equipment,purchaseOrder,appearance,stats,destination,primed,equipmentPassives,basicAttack};
       }
       // Navigation paths are simulation internals, not required by remote renderers.
       for(const u of base.units)u.path=[];
@@ -154,7 +156,7 @@ export class RoomTransport implements CommandPort {
     if(!this.request){const s=this.local.snapshot();return{...s,paused:s.paused||this.uiOpen};}
     let s=this.isHost&&this.world?this.world.snapshot(this.ui.playerId):this.remote?detached(this.remote):this.local.snapshot();
     // One snapshot interval of interpolation keeps other players/monsters smooth.
-    if(!this.isHost&&this.previous&&this.remote&&this.previous.wave===s.wave){
+    if(!this.isHost&&this.previous&&this.remote&&this.previous.wave===s.wave&&this.previous.scene.id===s.scene.id){
       const alpha=Math.min(1,(performance.now()-this.remoteReceived)/100);
       for(const unit of s.units){const before=this.previous.units.find(u=>u.id===unit.id);if(before){unit.x=before.x+(unit.x-before.x)*alpha;unit.y=before.y+(unit.y-before.y)*alpha;unit.previous={x:unit.x,y:unit.y};}}
       s.hero=s.units.find(u=>u.id===this.ui.playerId)??s.hero;
@@ -173,7 +175,7 @@ export class RoomTransport implements CommandPort {
     if(this.pendingSave)return '正在保存进度…';
     return `联机中 · ${this.ui.saved?'进度已保存':'等待保存'} · ${r.members.filter(m=>m.connected).length} 人`;
   }
-  get savedLabel():string {const s=this.saved;if(!s)return '尚无已保存进度';return s.phase==='fighting'?`已保存：第 ${s.wave} 波起点`:s.phase==='reward'?`已保存：第 ${s.wave} 波奖励`:s.phase==='shop'?`已保存：第 ${s.wave+1} 波整备`:s.phase==='victory'?'已保存：试炼通关':'已保存：队伍准备';}
+  get savedLabel():string {const s=this.saved;if(!s)return '尚无已保存进度';return s.phase==='fighting'?`已保存：第 ${s.wave} 波起点`:s.phase==='cleared'?`已保存：第 ${s.wave} 关清场`:s.phase==='camp'?`已保存：${s.wave===0?'启程营地':`第 ${s.wave} 关后休息点`}`:s.phase==='victory'?'已保存：试炼通关':'已保存：队伍准备';}
   exportSave():string {if(!this.saved)throw Error('尚无已保存的进度');return JSON.stringify({room:this.ui.code,version:ROOM_VERSION,checkpoint:this.saved},null,2);}
   leave():void {
     this.closed=true;if(this.reconnect)clearTimeout(this.reconnect);if(this.timer)clearInterval(this.timer);

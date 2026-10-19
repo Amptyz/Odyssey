@@ -17,6 +17,10 @@ reports/*.png
 reports/*.webm
 reports/*.zip
 reports/*.log
+reports/**/*.png
+reports/**/*.webm
+reports/**/*.zip
+reports/**/*.log
 reports/installation.json
 
 # Local credentials

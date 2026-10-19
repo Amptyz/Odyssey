@@ -1,0 +1,121 @@
+{
+  "status": "passed",
+  "timestamp": "2026-10-19T09:13:02.683115+00:00",
+  "baselineCommit": "85bcbaf",
+  "workingTree": "Preserves pre-existing art and basic-attack changes; no new commit or push.",
+  "features": [
+    "Traversable birth camp and per-player initial ember choice",
+    "Configurable rest merchants, optional rest and cleared-level embers",
+    "Range-based party gathering and authoritative host-only departure",
+    "Personal interaction panels, stable candidates, one-time claims and clear gold",
+    "Checkpoint v4 / room protocol ember-coop-6, reconnect and new-host recovery",
+    "F2 camp/rest entry and transient effect cleanup before safe stages"
+  ],
+  "checks": {
+    "pnpm check": {
+      "passed": true,
+      "testFiles": 26,
+      "tests": 336,
+      "includes": [
+        "core types",
+        "Cocos types",
+        "tool types",
+        "Vitest including real relay",
+        "core compilation"
+      ]
+    },
+    "campaign": {
+      "passed": true,
+      "report": "reports/campaign-playthrough.json",
+      "scope": "Normal authoritative GameWorld commands only; no developer options, HP/damage/cooldown mutations or forced progress. Bot reads snapshots for movement/dodging and uses normal shop/reward/exit rules.",
+      "outcomes": [
+        {
+          "mapId": "ember",
+          "phase": "victory",
+          "wave": 5,
+          "simulationSeconds": 189.3
+        },
+        {
+          "mapId": "frost",
+          "phase": "victory",
+          "wave": 5,
+          "simulationSeconds": 188.8
+        }
+      ]
+    },
+    "browser": [
+      {
+        "command": "pnpm test:scenes",
+        "checks": 52,
+        "report": "reports/browser-scenes.json",
+        "scope": "Actual Creator Web Desktop, real keyboard/mouse for normal opening in both controls; explicit F2 fixtures for rest merchants/embers in both themes. Full campaign and relay are validated separately.",
+        "passed": true
+      },
+      {
+        "command": "pnpm test:multiplayer",
+        "checks": 15,
+        "report": "reports/browser-multiplayer.json",
+        "scope": "Normal two-browser room-code flow: movable camp, independent ember UI, range and host departure, input synchronization, reconnect and new-host recovery. Equipment transactions separately covered by relay unit integration and browser-scenes.",
+        "passed": true
+      },
+      {
+        "command": "pnpm test:hitboxes",
+        "checks": 92,
+        "report": "reports/browser-hitboxes.json",
+        "scope": "Normal start enters camp; F2 rest fixtures use merchant purchases of bow/staff; both combat controls; explicit F2 empty and six-weapon form changes; pause, mirrored animation, pointer, collider and reset checks",
+        "passed": true
+      },
+      {
+        "command": "pnpm test:art",
+        "checks": 106,
+        "report": "reports/browser-art.json",
+        "scope": "ordinary visible camp entry, merchant transactions in an explicit F2 rest fixture; explicitly configured developer roster, enemy actions, Boss damage phases, two-map scenery and real skill VFX",
+        "passed": true
+      }
+    ]
+  },
+  "build": {
+    "engine": "Cocos Creator 3.8.8",
+    "platform": "Web Desktop",
+    "exitCode": 36,
+    "result": "Finished; published to EmberDemo/build/web-desktop and loaded in real Chrome",
+    "matchedSourceFiles": 107,
+    "log": "reports/scenes-creator-final.log",
+    "sourceDigest": "0849769643bf8b2328388f7c178c20b415ce515cb3d88418e1f893d39c9a6c67"
+  },
+  "finalBoundaryFixVerification": [
+    "Added clear-state regression for slow/burn/shield/temporary attributes and revived ally gathering",
+    "Re-ran pnpm check, actual Creator build, test:scenes and test:campaign after the fix; earlier browser multiplayer/hitboxes/art runs belong to this task before this narrow cleanup"
+  ],
+  "visualReview": [
+    {
+      "path": "reports/scenes-classic-opening.png",
+      "observed": "Central ember aligns with the existing ground emblem; departure circle and F guidance visible."
+    },
+    {
+      "path": "reports/scenes-wasd-frost-rest.png",
+      "observed": "Frost rest theme, merchant, ember and departure readable; player and merchant can overlap when moved to exactly the same point."
+    },
+    {
+      "path": "reports/pixel-danger-warning-overlap-review.png",
+      "observed": "Enemy warning contours remain visible and inner safe region unfilled in this sampled frame; no GPU timing claim."
+    }
+  ],
+  "compatibility": {
+    "checkpointVersion": 4,
+    "roomProtocol": "ember-coop-6",
+    "oldCheckpointVersions": [
+      1,
+      2,
+      3
+    ],
+    "oldCheckpointPolicy": "Explicitly reject; start a new run. Update relay and clients together.",
+    "developerConfigVersion": 2
+  },
+  "notCovered": [
+    "Public internet / packet-loss tests and four-client performance",
+    "Full rewrites of historical browser recipes listed in TEST-01; these are excluded from current validation claims",
+    "Safe-scene movement saves only at stable interactions; battle recovery is level-start, not arbitrary frames",
+    "Independent NPC collision and bespoke merchant animation are not included; merchant is a non-combat interaction visual using existing HeroRig"
+  ]
+}

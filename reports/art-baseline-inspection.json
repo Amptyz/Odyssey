@@ -1,0 +1,230 @@
+{
+  "art": {
+    "loaded": true,
+    "library": {
+      "atlases": [
+        {
+          "id": "melee",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "ranged",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "stoneback",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "reedLancer",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "sunbud",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "frostling",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "shardCrab",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "rimeMoth",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "chimeSentry",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "snowHare",
+          "frames": 8,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "warden",
+          "frames": 12,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "emberRam",
+          "frames": 12,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "bellKeeper",
+          "frames": 12,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "mirrorKnight",
+          "frames": 12,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "rimeWeaver",
+          "frames": 12,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "courtyardHeart",
+          "frames": 20,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "mirrorRegent",
+          "frames": 24,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "weapons",
+          "frames": 6,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "bodies",
+          "frames": 6,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "heads",
+          "frames": 6,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "hero",
+          "frames": 6,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "environment",
+          "frames": 9,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "skills",
+          "frames": 9,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "courtyardHeart-phase2",
+          "frames": 20,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "mirrorRegent-phase2",
+          "frames": 24,
+          "loaded": true,
+          "filter": "nearest"
+        },
+        {
+          "id": "perks",
+          "frames": 20,
+          "loaded": true,
+          "filter": "nearest"
+        }
+      ],
+      "frames": 290
+    },
+    "time": 0.4333333333333333,
+    "camera": {
+      "tileWidth": 54,
+      "tileHeight": 28,
+      "zoom": 1,
+      "origin": {
+        "x": 27,
+        "y": 210
+      }
+    },
+    "environment": {
+      "visibleProps": 17,
+      "allocatedProps": 17,
+      "totalProps": 43,
+      "visibleTiles": 66
+    },
+    "units": [
+      {
+        "id": "hero",
+        "kind": "hero",
+        "atlas": "pixel-v1/hero",
+        "frame": -1,
+        "opacity": 255,
+        "pose": {
+          "state": "idle",
+          "age": 0.4333333333333333,
+          "facing": 1
+        }
+      },
+      {
+        "id": "enemy-1",
+        "kind": "melee",
+        "atlas": "pixel-v1/melee",
+        "frame": 0,
+        "poseKey": "idle",
+        "phase": 1,
+        "pose": {
+          "state": "idle"
+        }
+      },
+      {
+        "id": "enemy-2",
+        "kind": "melee",
+        "atlas": "pixel-v1/melee",
+        "frame": 0,
+        "poseKey": "idle",
+        "phase": 1,
+        "pose": {
+          "state": "idle"
+        }
+      },
+      {
+        "id": "enemy-3",
+        "kind": "ranged",
+        "atlas": "pixel-v1/ranged",
+        "frame": 0,
+        "poseKey": "idle",
+        "phase": 1,
+        "pose": {
+          "state": "idle"
+        }
+      }
+    ]
+  },
+  "errors": []
+}

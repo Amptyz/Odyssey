@@ -15,7 +15,7 @@
 - 每个玩家有6个有序通用位置，位置键slot1至slot6；`equipped[slot]` 为装备ID或空。任何武器、身体、头部物品都可占任一空位，可以同时装备6件武器、6件身体或6件头部。`category: weapon/body/head` 只供描述、外观及攻击配置使用，不限制购买或穿戴。
 - 首批**同ID本局只购1次、同ID最多穿戴1份**。不同ID即使同category也可相加属性。没有两把相同赤铜剑、叠同件价格成长、第二份残缺效果或隐藏“同类装备折扣”。若以后要求同ID复购，必须升级为itemInstanceId、重新算重复组合与唯一组，不能用重复ID数组悄悄开放。
 - 每个玩家持有独立AttributeSet。六栏属性来源为 `equipment:<slot>`（如 `equipment:slot1`），槽键slot1..slot6；它替代旧语义的 `equipment:weapon/body/head`。权威玩家归属在PlayerState/AttributeSet，不把不同玩家装备放入共享来源表。移除/重算按来源替换，不对最终结果反复加减。
-- 全部6件的modifiers生效；没穿戴的库存物品不提供任何属性、被动、普攻配置或外观。头部不能因为当前未显示其图片就失去属性。
+- 全部6件的modifiers生效；没穿戴的库存物品不提供任何属性、被动或外观。头部不能因为当前未显示其图片就失去属性。
 
 建议权威数据（字段名可按父任务实现保持一致，语义必须等价）：
 
@@ -36,17 +36,15 @@ purchaseSerial / purchaseRankById         // 可由purchaseOrder推导，不接�
 4. 库存换装免费，仅shop允许。已在其他栏的同ID拒绝重复穿戴；本稿不自动移动以免一个操作同时空掉另一栏。换装不会更新purchaseOrder，不等于再次购买。卸装可留下空位，也不修改历史购买顺序。
 5. 最大生命改变只截断超上限当前HP，不因装备/换装回血；第一关开始补满，后续阶段恢复沿现有30点。重开清所有库存、购买顺序、装备与临时状态。玩家间独立余额、库存、位置、顺序与被动CD。
 
-## 2. 最后购买、外观与普攻身份
+## 2. 最后购买与外观
 
 “最后”按**成功购买的权威顺序**，不按装备栏编号、最近点击的预览、装备动作或客户端时间。这里只在当前已装备集合中寻找最新者；卸掉最新物品时回退到仍装备的次新物品，库存不操控战场外观。
 
 **外观已确认按部位取最新：** 从当前装备里分别选购买顺序最新的weapon/body/head决定已有纸娃娃三层；同部位旧件隐藏但属性保留。没有该部位装备则显示中性基础人物对应层。购买新头盔只更新头部，身体/武器照其各自最新者。
 
-**普攻身份采用独立且确定的规则：** 当前装备的weapon中购买顺序最新者是attackProvider；若没有weapon就是unarmed。非武器最后买入不会把弓切回空手，也不会把头盔当锤子。所有其他装备依然加属性，不产生第二套普攻、不同时射箭与挥剑。商店预览明确写“将变为/保持哪种普攻”，不能仅靠外观让玩家猜。
+**2026-10-19 规则更新：装备与普攻形式完全解绑。** 默认普攻为 `slash` 近战挥砍（5格），增益 `missileAttack` 可改成 `missile` 飞弹（15格）。装备的 category、外观和购买顺序都不提供普攻身份或射程。多武器仍叠加各自属性和被动，但不附带额外挥击或弹体。未来形式继续通过增益扩展，详见 [内容指南](../CONTENT_ARCHITECTURE.md#普攻与命中体积)。
 
-只启用attackProvider的攻击profile。它提供固定世界射程，**staff/bow射程不再作为每件可累加attackRange加成**。属性解析可使用单一 `attack-profile` 来源补上 `profileRange−模板2.5`；此来源与6个equipment来源分开，切换时替换而非累计。未来明确的非装备射程增益可另外叠加，但18件没有这种增益。否则剑+杖+弓会错误地给近战11.5格扇形，这是禁止的。
-
-普攻本体均为 `1×总AD` 物理伤害，包括法杖魔法弹外观；无AP普攻系数。AD/AP/施法者生命表达式出手/发射采样；暴击资格/概率/倍率、穿透、吸血与目标双抗/护盾在命中时读取，与STAT-02一致。基础暴伤2；普通本体可暴击、触发攻击特效及合格全能吸血，方向仍为鼠标地面、允许挥空、不锁敌。
+普攻本体均为 `1×总AD` 物理伤害，包括增益转换的飞弹外观；无AP普攻系数。AD/AP/施法者生命表达式出手/发射采样；暴击资格/概率/倍率、穿透、吸血与目标双抗/护盾在命中时读取，与STAT-02一致。基础暴伤2；普通本体可暴击、触发攻击特效及合格全能吸血，方向仍为鼠标地面、允许挥空、不锁敌。
 
 ## 3. 经济、六件预算与阶段节奏
 
@@ -77,16 +75,16 @@ purchaseSerial / purchaseRankById         // 可由purchaseOrder推导，不接�
 
 ### 4.1 武器6件
 
-| 稳定ID / 中文名 | category / 金币 | modifiers数值 | 作为attackProvider时的普攻 | 被动 / 唯一组 | 外观轮廓提示 |
+| 稳定ID / 中文名 | category / 金币 | modifiers数值 | 普攻形式 | 被动 / 唯一组 | 外观轮廓提示 |
 | --- | --- | --- | --- | --- | --- |
-| `sword` 赤铜长剑 | weapon / 100 | AD+12；armor+8 | sword：射程2.5、弧0.65π、前摇.12s、窗口.12s | 无被动 | 宽剑格、赤铜直刃；现copperSword |
-| `staff` 星辉法杖 | weapon / 100 | AP+30；abilityHaste+10 | staff：射程6.5、弹速12、弹半径.16 | 无被动 | 星形大杖头、低亮蓝紫；现starStaff |
-| `bow` 猎风长弓 | weapon / 100 | AD+4；AS+0.20 | bow：射程7.5、弹速18、弹半径.10 | 无被动 | 长弧单弦；现windBow |
-| `bulwark` 壁垒重盾 | weapon / 100 | maxHealth+60；armor+22 | shield：射程2.5、弧0.4π、前摇.16s、窗口.10s | 无被动 | 窄长石盾与铜边；现towerShield |
-| `reaver` 饮烬短刃 | weapon / 100 | AD+8；omnivamp+0.06 | 复用sword时序/形状；射程2.5 | 无被动；吸血为普通属性 | 厚短刃、一道暗红槽 |
-| `runeblade` 符刻刃 | weapon / 100 | AD+6；AP+18；abilityHaste+8 | 复用sword时序/形状；射程2.5 | 符击；`equipment.spellblade` | 宽石刃、单道蓝槽；蓄能只亮一次 |
+| `sword` 赤铜长剑 | weapon / 100 | AD+12；armor+8 | 不提供；由增益决定 | 无被动 | 宽剑格、赤铜直刃；现copperSword |
+| `staff` 星辉法杖 | weapon / 100 | AP+30；abilityHaste+10 | 不提供；由增益决定 | 无被动 | 星形大杖头、低亮蓝紫；现starStaff |
+| `bow` 猎风长弓 | weapon / 100 | AD+4；AS+0.20 | 不提供；由增益决定 | 无被动 | 长弧单弦；现windBow |
+| `bulwark` 壁垒重盾 | weapon / 100 | maxHealth+60；armor+22 | 不提供；由增益决定 | 无被动 | 窄长石盾与铜边；现towerShield |
+| `reaver` 饮烬短刃 | weapon / 100 | AD+8；omnivamp+0.06 | 不提供；由增益决定 | 无被动；吸血为普通属性 | 厚短刃、一道暗红槽 |
+| `runeblade` 符刻刃 | weapon / 100 | AD+6；AP+18；abilityHaste+8 | 不提供；由增益决定 | 符击；`equipment.spellblade` | 宽石刃、单道蓝槽；蓄能只亮一次 |
 
-非attackProvider武器不提供额外射程、额外弹体、双重命中或额外挥击，仍提供表内modifiers与被动。例如先买符刻刃再买弓，弓普通命中仍可消费符击；符击属于装备者，不要求用那把刀作当前攻击。
+全部武器只提供表内属性、被动和外观。符击属于装备者，可被默认挥砍或增益飞弹消费，不要求那把刀成为显示武器。
 
 ### 4.2 身体6件
 
@@ -118,7 +116,7 @@ purchaseSerial / purchaseRankById         // 可由purchaseOrder推导，不接�
 
 - 触发：拥有者成功执行主动技能的OnSkillCast，内部CD就绪时获得5秒蓄能，层数1；再次施法刷新有效期、不排队。额外弹体、被动、DOT、拒绝施法不触发。内部CD期间不预存。
 - 下次原始直接普攻命中首个合格敌人，附加 `8 + 0.20×总AD + 0.12×AP` **魔法**伤害。AD/AP在该攻击出手采样；穿透和吸血命中读取。蓄能资格出手锁定至该攻击实例；取消/挥空释放锁定但不消耗未过期蓄能。扇形多目标按CollisionWorld稳定命中序只触发首个，不能每目标一次。
-- 范围就是attackProvider该次实际命中范围，不另搜远处目标。因此弓7.5格也能消费；表格DPS不能把它限定近战。箭被墙挡或未命中不消费。成功命中但本体已杀死目标仍消费并进CD，不对尸体补伤/吸血；免疫不消费、全盾吸收的成立命中可消费。
+- 范围就是本次普攻的实际碰撞范围，不另搜远处目标；增益飞弹也能消费符击。飞弹被墙挡或挥空不消费。有效命中若本体已杀死目标仍消费并进入CD，不对尸体补伤/吸血；免疫不消费，全盾吸收可消费。
 - 内部CD3秒，从消费时起计，跨目标共享；不吃急速或秘术冲拳。无目标生命比例、Boss同公式、无需另设Boss比例封顶。
 - Hit：`damageType:magic, delivery:proc, canCrit:false, appliesOnHit:false, proc:true, vampEligible:true`。sourceId是实际装备者、targetId为该次攻击受击者，携带攻击rootId/depth+1；伤害必须走CombatEngine。不是把基础/额外AD换名带回来。
 - 台风副弹与虚幻武器产生的OnAttackHit不能消费，避免一施法多次触发。唯一组`equipment.spellblade`最多启用一个；未来多来源时按出手采样公式取最高，平值稳定来源ID裁决，不分别拼最高基础和系数。
@@ -149,19 +147,19 @@ nova原始DPS=(72+.72AP)×(1+haste/100)/13
 
 目标30护甲/30魔抗、无抗性削减。普通物理伤害除1.3；持有sageMask时魔法伤害除1.2，其余除1.3。默认火弹/盾/冲刺/nova。全命中、无限时长、单体、无海克斯/治疗削减、攻击与施法无操作互斥；nova只计1人。符击假设每3秒都成功穿插攻击，是可解释上界。暴击为期望值，真实种子序列有短期波动。**这些是算表，不是实战测量或通关保证。**
 
-列表从左到右为购买顺序；最后一个weapon决定攻击profile，身体/头部后买不改普攻。脚本还包含裸装、1/2/3/5件曲线及6件全武器/全身体/全头部样例。
+列表从左到右为购买顺序；购买顺序只决定各部位外观。下表均无形式增益，全部默认挥砍。脚本还包含裸装、1/2/3/5件曲线及6件全武器/全身体/全头部样例。
 
 | 六件购买顺序 | 当前攻击 / 范围 | HP / AD / AP | AS / 暴击 / 急速 | 对30/30总DPS | 物理/魔法EHP |
 | --- | --- | --- | --- | ---: | --- |
-| sword,reaver,leather,duelistVest,bow,keenVisor | bow / 7.5 | 240 / 58 / 0 | 2.2 / .36 / 0 | 156.02 | 259.2 / 240 |
-| runeblade,robe,circlet,sageMask,reaver,staff | staff / 6.5 | 270 / 34 / 112 | 1.4286 / 0 / 30 | 112.47 | 270 / 270 |
-| staff,robe,circlet,sageMask,keenVisor,runeblade | sword / 2.5 | 270 / 34 / 112 | 1.4286 / .18 / 30 | 119.20 | 270 / 270 |
-| plate,helm,wardMantle,aegisCrown,sanguineWrap,bulwark | shield / 2.5 | 585 / 26 / 0 | 1.4286 / 0 / 0 | 51.10 | 889.2 / 877.5 |
-| sword,hood,keenVisor,reaver,sanguineWrap,circlet | sword / 2.5 | 285 / 63 / 20 | 1.4286 / .18 / 12 | 111.97 | 307.8 / 285 |
-| sword,plate,robe,circlet,helm,bow | bow / 7.5 | 400 / 36 / 44 | 1.7143 / 0 / 12 | 83.81 | 552 / 432 |
-| sword,staff,bulwark,reaver,runeblade,bow | bow / 7.5 | 300 / 50 / 48 | 1.7143 / 0 / 18 | 111.37 | 390 / 300 |
-| plate,robe,leather,duelistVest,wardMantle,sanguineWrap | unarmed / 2.5 | 445 / 32 / 24 | 1.9143 / .18 / 0 | 83.54 | 525.1 / 534 |
-| helm,circlet,hood,keenVisor,sageMask,aegisCrown | unarmed / 2.5 | 350 / 37 / 40 | 1.4286 / .18 / 12 | 86.25 | 392 / 455 |
+| sword,reaver,leather,duelistVest,bow,keenVisor | slash / 5 | 240 / 58 / 0 | 2.2 / .36 / 0 | 156.02 | 259.2 / 240 |
+| runeblade,robe,circlet,sageMask,reaver,staff | slash / 5 | 270 / 34 / 112 | 1.4286 / 0 / 30 | 112.47 | 270 / 270 |
+| staff,robe,circlet,sageMask,keenVisor,runeblade | slash / 5 | 270 / 34 / 112 | 1.4286 / .18 / 30 | 119.20 | 270 / 270 |
+| plate,helm,wardMantle,aegisCrown,sanguineWrap,bulwark | slash / 5 | 585 / 26 / 0 | 1.4286 / 0 / 0 | 51.10 | 889.2 / 877.5 |
+| sword,hood,keenVisor,reaver,sanguineWrap,circlet | slash / 5 | 285 / 63 / 20 | 1.4286 / .18 / 12 | 111.97 | 307.8 / 285 |
+| sword,plate,robe,circlet,helm,bow | slash / 5 | 400 / 36 / 44 | 1.7143 / 0 / 12 | 83.81 | 552 / 432 |
+| sword,staff,bulwark,reaver,runeblade,bow | slash / 5 | 300 / 50 / 48 | 1.7143 / 0 / 18 | 111.37 | 390 / 300 |
+| plate,robe,leather,duelistVest,wardMantle,sanguineWrap | slash / 5 | 445 / 32 / 24 | 1.9143 / .18 / 0 | 83.54 | 525.1 / 534 |
+| helm,circlet,hood,keenVisor,sageMask,aegisCrown | slash / 5 | 350 / 37 / 40 | 1.4286 / .18 / 12 | 86.25 | 392 / 455 |
 
 ### v0.7十件基线（历史比较）
 
@@ -177,11 +175,11 @@ v0.7的运行货架当时只有sword/staff/bow/bulwark/plate/robe/leather/helm/c
 
 ### 18件完整装备的比较说明
 
-六件全武器没有碾压输出/生存混合组合；六件身体/头部可正常玩，代价是没有远程profile。输入6件头部必须被接受，不能因为旧槽过滤而只留下最后头盔。
+六件全武器没有碾压输出/生存混合组合；六件身体/头部可正常玩，能否远程由增益决定。输入6件头部必须被接受，不能因为旧槽过滤而只留下最后头盔。
 
 阶段例：裸装44.51理论DPS、双EHP240；开局sword100为AD32/8甲、57.69DPS、物理EHP259.2；过1关买plate累计200后HP315/26甲、EHP396.9，DPS仍57.69；过2关买hood累计300后67.58DPS。五件输出sword/reaver/leather/duelist/bow为122.38，Boss前补keen六件达156.02。末件不必是武器，购买后的普攻与外观必须分别明确。
 
-全组合边界（不含海克斯）：18选6共18,564组，最高理论DPS163.07来自sword/bow/runeblade/leather/duelistVest/keenVisor，最大物理EHP889.2、最大魔法EHP877.5来自表中双抗坦克。输出枚举对购买顺序不敏感，是因为本体伤害都为物理总AD且无技能/攻击争用；**这不证明所有武器射程和操作风险相同**。固定profile/距离变化仍需实战验收，不能据此自动选择最优外观或普通攻击。
+全组合边界（不含海克斯）：18选6共18,564组，最高理论DPS163.07来自sword/bow/runeblade/leather/duelistVest/keenVisor，最大物理EHP889.2、最大魔法EHP877.5来自表中双抗坦克。输出枚举对购买顺序不敏感，是因为本体伤害都为物理总AD且无技能/攻击争用；**这不证明近战与飞弹增益的实战收益相同**。形式/距离变化仍需实战验收，不能据此自动选择最优外观或普通攻击。
 
 AP112、急速30时火弹80.56/1.23077秒，nova152.64/10秒，琥珀盾137.8/6.923秒；输出上限低于玻璃暴击弓，但多目标技能与护盾/位移周转更强。近战AD施法若换cleave/volley，用总AD63计算按明确表达式：cleave=`45+63=108`、CD=`3/1.12`；volley=`25+63=88`、CD=`1.8/1.12`。技能可替换任意QWER，不锁职业。
 
@@ -199,12 +197,12 @@ AP112、急速30时火弹80.56/1.23077秒，nova152.64/10秒，琥珀盾137.8/6.
 
 ## 8. 迁移与实现依赖（原实施计划）
 
-现10件sword/staff/bow/bulwark/plate/robe/leather/helm/circlet/hood保留ID/外观/普攻形状，按表改价与数值；AP依明确技能系数，不恢复skillPower。其他8件为新ID。购买顺序、六栏、无类型限制、统一100价是本轮显式产品设计，旧存档三槽需升级版本并明确迁移或拒绝；禁止把三槽对象静默解释成任意三栏后丢购买历史。
+现10件sword/staff/bow/bulwark/plate/robe/leather/helm/circlet/hood保留ID/外观，按表改价与数值；AP依明确技能系数，不恢复skillPower。其他8件为新ID。购买顺序、六栏、无类型限制、统一100价是本轮显式产品设计，旧存档三槽需升级版本并明确迁移或拒绝；禁止把三槽对象静默解释成任意三栏后丢购买历史。
 
-可复用：权威购买事务、库存、shop阶段命令、CollisionWorld、四种现攻击profile、统一modifiers、独立盾与有效治疗、事件链及属性解释。需要实现：
+可复用：权威购买事务、库存、shop阶段命令、CollisionWorld、统一modifiers、独立盾与有效治疗、事件链及属性解释。需要实现：
 
 1. 六栏交易/库存UI/F2/快照/恢复与购买顺序；slot不再等于category。EquipmentLoadout为slot1..slot6的Partial Record，EquipmentAppearanceLoadout为weapon/body/head三部位的Partial Record；basicAttack/appearanceLoadout接收purchaseOrder，不复制三槽统计。所有共享文档、测试页码/坐标与旧对象类型由父任务迁移。
-2. 独立attackProvider与单个attack-profile射程来源；显示外观按部位最新购买的当前装备实现。不能在GameWorld按每个新ID硬编码。
+2. 显示外观按部位最新购买的当前装备实现；普攻默认挥砍，形式由增益决定。不能在GameWorld按装备ID硬编码。
 3. 装备效果注册/撤销、符击单层锁定和CD、石息条件与来源组；不能把已装装备伪装成已领取海克斯，不能只写被动文字而不落逻辑。
 4. 8件外观与必要visualPreset映射、Creator真实导入.meta；正文只有轮廓提示，不是生成/接入完成证明。
 
@@ -213,9 +211,9 @@ AP112、急速30时火弹80.56/1.23077秒，nova152.64/10秒，琥珀盾137.8/6.
 ## 9. 实现验收要求
 
 - 18唯一ID、每category6、全部100，6通用位置接受任何类型；18选6枚举18,564组，全部总价600。同ID复购/重复穿戴、不在shop交易、余额不足、未知ID/索引均拒绝且无扣款/顺序改变。
-- 普通五关真实流程按1/2/3/5/6件推进，Boss前680−600=80；先后两笔连续购买正确。满栏替换原子性、旧件保留、库存回切、卸装、来回切不回血/刷新CD；F2满栏场景不能代替正常可获得性。
-- 6武器/6身体/6头部都保留6份不同来源；穿戴顺序不改变属性和真实购买历史。最新weapon卸掉回退次新、无weapon为空手；买头盔不改弓普攻；弓+杖+剑不会叠射程。
-- 购买顺序、外观胜出者与attackProvider跨checkpoint/房间同步一致；第二玩家不串金币/来源/外观/CD/吸血。客户端不能伪造purchaseSerial、最终AD或库存；快照深复制。
+- 原设计的逐关商店按1/2/3/5/6件推进；2026-10-19场景改造后，默认第2、4关后购物，当前最多按0/0/3/3/6件推进（见[场景指南](../SCENES.md)），Boss前680−600=80；先后两笔连续购买正确。满栏替换原子性、旧件保留、库存回切、卸装、来回切不回血/刷新CD；F2满栏场景不能代替正常可获得性。
+- 6武器/6身体/6头部都保留6份不同来源；穿戴顺序不改变属性和真实购买历史。最新weapon卸掉只让外观回退；有无武器均不改变普攻，弓+杖+剑不会叠射程。
+- 购买顺序、外观胜出者及每人由增益决定的普攻形式跨checkpoint/房间同步一致；第二玩家不串金币/来源/外观/CD/吸血。客户端不能伪造purchaseSerial、最终AD或库存；快照深复制。
 - 两被动边界包含挥空、取消、墙、扇形多目标、免疫、全盾、击杀、精确50%、致死、过期、暂停、卸装/再装；台风/虚幻武器不多消费，石息独立盾到期，无治疗反馈循环。
 - 统一属性/战斗验证含双抗0/30/100/负数、穿透不造负抗、61%暴击与种子可恢复、盾/过量吸血、来源切换和所有被动root预算。海克斯压力测试记录正常事件量，不以大量dropped作为成功。
 - 实现交付跑pnpm check、真实Creator构建，按开发指南执行content/hexes/multiplayer对应浏览器回归、六栏商店/分页与外观握点画面检查，保存本次证据；文档算表不替代这些运行结果。

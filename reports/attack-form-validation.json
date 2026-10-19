@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "date": "2026-10-19",
+  "scope": "ATK-01: default slash, perk-owned primary forms, equipment binding removed",
+  "changes": [
+    "EquipmentDefinition has no attack or attackRange fields; no equipment attack resolver or profile source",
+    "Default slash and missile forms have semantic IDs; missileAttack is a normal reward and F2 perk",
+    "Per-player range source, action signal, HUD and room view; ROOM_VERSION ember-coop-5; checkpoint v3 reconstructs perks",
+    "Six unrestricted equipment slots retain attributes, passives and per-part purchase-order cosmetics"
+  ],
+  "validation": {
+    "pnpmCheck": {
+      "status": "passed",
+      "tests": 324,
+      "files": 25,
+      "log": "reports/attack-form-check.log"
+    },
+    "toolsTypecheck": "passed after browser-script updates",
+    "creator": {
+      "version": "3.8.8",
+      "exitCode": 36,
+      "log": "reports/attack-form-creator-final.log",
+      "sourceMatchFiles": 104,
+      "missingScriptErrors": false,
+      "note": "An initial /var temporary-path build missed GameBootstrap because Cocos resolved modules under /private/var. Rebuilt with canonical project path; final build and browser runtime passed."
+    },
+    "browser": {
+      "status": "passed",
+      "checks": 90,
+      "report": "reports/browser-hitboxes.json",
+      "errors": []
+    },
+    "realRelay": "tests/platform/transport.test.ts verifies different player forms over relay, reconnect and new-host recovery; initial perk granted as an explicit host-side fixture",
+    "normalReward": "seed 6: clear real first level, enter exit, receive offered missileAttack, ChooseReward, save and resume; tests/simulation/basic-attacks.test.ts",
+    "paperBudget": "python3 docs/design/equipment-budget.py; 18564 combinations, no equipment-defined form/range"
+  },
+  "visualReview": {
+    "screenshots": [
+      "reports/attack-form-classic-slash-mirror.png",
+      "reports/attack-form-wasd-missile-mirror.png",
+      "reports/attack-form-wasd-colliders.png",
+      "reports/attack-form-perk-selection.png"
+    ],
+    "observations": [
+      "Slash pose retains grip and all six equipped items while only newest weapon is drawn",
+      "Missile release follows the same selected form despite weapon appearance; no accompanying primary swing",
+      "Perk name and full description are visible in F2; current form visible in combat HUD"
+    ]
+  },
+  "notCovered": [
+    "Public-network latency and weak-network multiplayer art remain separate tasks",
+    "No full ten-level balance campaign rerun after removing weapon range; prior paper DPS does not establish melee versus ranged practical balance",
+    "New missile perk reuses the existing volley UI icon and mist projectile presentation; no new PNG generated"
+  ],
+  "preview": "http://127.0.0.1:8080/?v=0.8&combat=perk-attacks"
+}

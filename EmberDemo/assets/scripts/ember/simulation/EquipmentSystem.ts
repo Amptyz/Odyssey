@@ -1,4 +1,4 @@
-import {equipment,EQUIPMENT_SLOTS,SHOP_CATALOG,appearanceLoadout,basicAttack,syncEquipment,statsView,type EquipmentId,type EquipmentLoadout,type EquipmentSlot} from '../content/equipment';
+import {equipment,EQUIPMENT_SLOTS,SHOP_CATALOG,appearanceLoadout,syncEquipment,statsView,type EquipmentId,type EquipmentLoadout,type EquipmentSlot} from '../content/equipment';
 import { ECONOMY } from '../content/progression';
 import {AttributeSet,PLAYER_TEMPLATE} from '../combat-core/attributes/AttributeSet';
 /** Six universal slots and unique owned IDs. GameWorld owns phase/player authorization. */
@@ -9,10 +9,9 @@ export class EquipmentSystem {
   readonly equipped:EquipmentLoadout={};
   readonly purchaseOrder:EquipmentId[]=[];
   private signature='';
-  private synchronize():void {const signature=JSON.stringify([this.equipped,this.purchaseOrder]);if(signature!==this.signature){syncEquipment(this.attributes,this.equipped,this.purchaseOrder);this.signature=signature;}}
+  private synchronize():void {const signature=JSON.stringify(this.equipped);if(signature!==this.signature){syncEquipment(this.attributes,this.equipped);this.signature=signature;}}
   get stats(){this.synchronize();return statsView(this.attributes);}
   get appearance(){return appearanceLoadout(this.equipped,this.purchaseOrder);}
-  get attack(){return basicAttack(this.equipped,this.purchaseOrder);}
   buy(id:EquipmentId,replaceSlot?:EquipmentSlot):boolean {
     if(!SHOP_CATALOG.includes(id)||this.inventory.has(id)||this.gold<equipment(id).price)return false;
     if(replaceSlot!==undefined&&!EQUIPMENT_SLOTS.includes(replaceSlot))return false;

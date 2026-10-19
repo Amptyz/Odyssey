@@ -1,3 +1,4 @@
+import {openMerchantFixture} from '../helpers/scenes';
 import { afterEach,describe,it,expect } from 'vitest';
 import { WebSocket } from 'ws';
 import { mkdtemp,rm } from 'node:fs/promises';
@@ -26,7 +27,7 @@ describe('room relay and persisted recovery',()=>{
   it('acknowledges only persisted checkpoints and permits an original teammate to open a new room after service restart',async()=>{
     const {relay,directory}=await fixture(),host=await client(relay.port);host.send(hello('create','a'));const {room}=await host.wait('welcome');
     const guest=await client(relay.port);guest.send(hello('join','b',room.code));const member=await guest.wait('welcome');
-    const w=new GameWorld();w.addPlayer(member.playerId);w.command({type:'Start'});w.command({type:'BuyEquipment',equipmentId:'bow'},member.playerId);
+    const w=new GameWorld();w.addPlayer(member.playerId);openMerchantFixture(w);w.command({type:'BuyEquipment',equipmentId:'bow'},member.playerId);
     host.send({type:'save',revision:1,checkpoint:w.savedRun!});await host.wait('saved');const saved=await guest.wait('saved');expect(saved.checkpoint.players.find(p=>p.id===member.playerId)?.equipment.slot1).toBe('bow');
     await relay.close();const next=await startRelay({port:0,directory});cleanup.push(()=>next.close());
     const recovery=await client(next.port);recovery.send(hello('recover','b',room.code));const resumed=await recovery.wait('welcome');

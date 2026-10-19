@@ -1,6 +1,6 @@
 # Project Ember · 独立任务清单
 
-创建 / 最近整理：2026-10-16。当前基线：v0.8 六格装备、18件商品与两种装备被动 + 两图十关 + 17怪物（恢复格式 v3）。
+创建：2026-10-16；最近整理：2026-10-19。当前基线：v0.8 六格装备、18件商品与两种装备被动 + 两图十关 + 17怪物 + 营地 / 休息点 / 余烬交互（房间协议 ember-coop-6，恢复格式 v4）。
 
 这是后续工作的共享入口。每项任务有独立交付物和验收条件，可以交给一个新会话持续推进；有依赖的任务先完成前置项。**三个 gpt-6.1-sol 子 agent已按新要求完成六格装备改造、17种怪物开发和两张大地图各五关；主会话负责协议、恢复、UI与验收。服务器部署继续暂缓。** 设计交付与运行时接入分开记录，不代表所有设计内容已进入游戏。
 
@@ -16,8 +16,9 @@
 
 ## 当前已具备的基础
 
-- 无固定职业；技能奖励替换 QWER 槽位，固定商店购买装备，装备决定角色外观。现有 9 个玩家技能、18 件装备、20 个增益和 2 张地图，具体以注册表为准。
+- 无固定职业；技能奖励替换 QWER 槽位，固定商店购买装备，装备决定角色外观。现有 9 个玩家技能、18 件装备、21 个增益和 2 张地图，具体以注册表为准。
 - 普攻 / 技能共用逻辑碰撞；F2 配置组合，F3 查看判定；已有美术制作 [ember-art skill](.agents/skills/ember-art/SKILL.md)。
+- “增益”对外统一称余烬。开局在出生营地领取，清场奖励与休息点按配置生成，商人需主动互动；所有活跃玩家站进集合圈后由房主按 F 出发。
 - 已有 2–4 人房主权威联机、6 位房间码、WebSocket 转发、重连、波次存档与原队友重新开房恢复。详见 [联机指南](docs/MULTIPLAYER.md)。
 - 尚无公网部署 / 公网弱网验证；房间码仅在同一中转服务中有效；没有完整客户端预测、多区房间目录、跨设备账号恢复。恢复规则仍是最近确认的阶段或波次起点，不是精确帧恢复。
 
@@ -35,12 +36,21 @@ P0：下一阶段优先完成。P1：首轮内容与体验扩展。P2：有实�
 | [x] | EQ-01 | P1 | 下一批装备与经济设计 | STAT-01 | 已完成 | equipment_design（gpt-6.1-sol）；[18 件装备设计](docs/design/EQUIPMENT_DESIGN.md)、[预算算表](docs/design/equipment-budget.py)；当前18件18564种满栏组合可复算；2026-10-16 |
 | [x] | EQ-03 | P0 | 六格通用装备栏及购买顺序外观 | EQ-01、STAT-02 | 已完成 | equipment_design（gpt-6.1-sol）+ 主会话；现10件迁移、商店/F2/恢复v3；[最终验收](reports/campaign-validation.json)；2026-10-16 |
 | [x] | EQ-02 | P1 | 下一批装备机制接入 | EQ-01、STAT-02 | 已完成 | equipment_design / attributes / monster_design（GPT‑6.1‑sol）实现、外观与审查；主会话集成；[验收报告](reports/equipment-validation.json)：263单测、142浏览器检查、两图正常通关；2026-10-16 |
+| [x] | ATK-01 | P0 | 普攻形式与装备解绑，增益切换普攻 | STAT-02、EQ-03 | 已完成 | 主会话；[验收](reports/attack-form-validation.json)：324单测、Creator构建、90浏览器检查、真实relay差异形式/恢复；2026-10-19 |
+| [x] | SCENE-01 | P0 | 营地、休息点与余烬交互 | MAP-01、ATK-01 | 已完成 | 主会话；[场景指南](docs/SCENES.md)、[验收](reports/scenes-validation.json)；336 单测、Creator 构建、265 浏览器检查与两图通关；2026-10-19 |
+| [x] | SCENE-02 | P1 | 轻量黑幕切换 | SCENE-01 | 已完成 | 主会话；[验收](reports/transition-validation.json)：336单测、Creator构建、31切换检查与15联机检查通过；2026-10-19 |
+| [x] | SCENE-03 | P1 | 统一地点名称与入场标题 | SCENE-02 | 已完成 | 主会话；[配置指南](docs/SCENES.md#地点名称与入场标题)、[验收](reports/location-validation.json)：343单测、Creator构建、28地点标题 / 36切换 / 19联机检查通过；2026-10-19 |
+| [ ] | TEST-01 | P1 | 历史浏览器配方迁移 | SCENE-01 | 待开始 | 旧自动商店 / 奖励配方需要按新交互改写；当前 scenes / multiplayer / hitboxes / art 已迁移并通过 |
 | [ ] | HEX-01 | P1 | 下一批增益与联动设计 | STAT-01 | 待开始 | — |
 | [ ] | HEX-02 | P1 | 下一批增益机制接入 | HEX-01、STAT-02 | 待开始 | — |
 | [ ] | SKL-01 | P1 | 下一批主动技能设计 | STAT-01 | 待开始 | — |
 | [ ] | SKL-02 | P1 | 下一批主动技能接入 | SKL-01、STAT-02 | 待开始 | — |
 | [x] | ART-D01 | P1 | 当前 17 怪与 18 装备视觉设计草图 | ENE-D01、EQ-01；当前有效攻击配置 | 已完成 | 主会话；[22 张设计板与草图册](art-source/design-sketches-v1/README.md)、[静态验收](art-source/design-sketches-v1/validation.json)；17 怪三视图 / 动作 / 普攻、12 专属技能、18 图标；2026-10-16；未接入游戏 |
-| [ ] | ART-01 | P1 | 下一批装备贴图与换装动作 | EQ-01；集成验收依赖 EQ-02 | 待开始 | — |
+| [x] | ART-01 | P1 | 首批18件装备PNG与换装动作接入 | EQ-01、EQ-02 | 已完成 | hero_equipment_art（gpt-6.1-sol）+ 主会话；[本轮验收](reports/art-completion-validation.json)，7组双向动作、真实施法/受击；严格像素及多人验收另列ART-04；2026-10-19 |
+| [x] | ART-02 | P1 | 怪物图集切片与关键动作修复 | ENE-01、ART-D01 | 已完成 | monster_art（gpt-6.1-sol）+ 主会话；[制作与复用清单](art-source/art-completion-v2/monsters/README.md)、真实早期strike/三帧死亡/两阶段镜Boss；2026-10-19 |
+| [x] | ART-03 | P1 | 霜镜环境与首批位图特效 | MAP-01、ART-D01 | 已完成 | environment_vfx_art（gpt-6.1-sol）+ 主会话；[103项浏览器检查及画面审阅](reports/browser-art.json)；9部件/16帧/24预算，危险边界避让；2026-10-19 |
+| [ ] | ART-04 | P1 | 像素网格 / 色板精修与多人画面验收 | ART-01、ART-02、ART-03 | 待开始 | 当前AI PNG仍有半透明边缘与超出目标色数；整数texel、四人叠加与GPU帧耗需专门验收 |
+| [ ] | ART-05 | P2 | 后续独立技能特效与怪物动作帧 | ART-02、ART-03 | 待开始 | 现雷电/治疗/雾/飞行弹体继续Graphics，部分怪物共用完整出手姿态；按动作清单逐批制作 |
 | [x] | ENE-D01 | P1 | 10 小怪 / 5 精英 / 2 Boss 的数值、技能及美术设定 | STAT-01；与 EQ-01 对齐参考构筑 | 已完成 | monster_design（gpt-6.1-sol）；[战斗设计](docs/design/MONSTER_DESIGN.md)、[美术设定](docs/design/MONSTER_ART_BRIEFS.md)；17 ID 对齐、体型 / 时间 / 经济核对；2026-10-16 |
 | [x] | ENE-01 | P1 | 全17种怪物行为、动作与接入 | STAT-02、ENE-D01 | 已完成 | monster_design（gpt-6.1-sol）；43专项测试、程序动画与两Boss实测；[最终验收](reports/campaign-validation.json)；2026-10-16 |
 | [x] | MAP-01 | P1 | 两张大地图各五关与玩家跟随镜头 | ENE-01 | 已完成 | attributes（gpt-6.1-sol）；[关卡指南](docs/LEVELS.md)、两图正常命令五关通关、跟随镜头/出口/贴柱实测；[最终验收](reports/campaign-validation.json)；2026-10-16 |
@@ -115,7 +125,7 @@ Caddy 的代理和证书配置在部署时按官方文档核对：[反向代理]
 
 ## HEX-01 · 下一批增益与联动设计
 
-- **目标 / 范围：** 基于已有 20 个增益挑选下一批互补机制，建议 6–8 个；借鉴机制后按本项目 PVE 重设计数值与描述，不重复实现已存在效果。
+- **目标 / 范围：** 基于已有 21 个增益挑选下一批互补机制，建议 6–8 个；借鉴机制后按本项目 PVE 重设计数值与描述，不重复实现已存在效果。
 - **入口 / 交付：** [海克斯说明](docs/HEX_AUGMENTS.md)、`content/perks.ts`、`statuses.ts`、`combat-core/types.ts`；拟新增 `docs/design/AUGMENT_BATCH_01.md`。
 - **验收：** 每项写清触发事件、目标、概率 / 冷却、层数、失效条件、技能兼容和移除 / 波次重置；附正常组合、无效组合、潜在循环组合。明确出手、命中、有效治疗与派生伤害的区别，以及连锁预算和每玩家状态归属。
 
@@ -139,11 +149,18 @@ Caddy 的代理和证书配置在部署时按官方文档核对：[反向代理]
 
 ## ART-01 · 下一批装备贴图与换装动作
 
-设计前置已有 [ART-D01 草图册](art-source/design-sketches-v1/README.md)。这批是设计板，不能直接当作透明图标、穿戴部件或动画图集，也不表示 ART-01 已完成。
+设计前置为 [ART-D01 草图册](art-source/design-sketches-v1/README.md)。生产资源和候选分开，2026-10-19接入记录见 [美术补齐](art-source/art-completion-v2/README.md)。本项交付可用PNG与挂点 / 动作接入；严格像素规范与多人画面另列ART-04，不以最近邻采样宣称其通过。
 
 - **目标 / 依赖：** 在EQ-02已接入的八件独立Graphics外观基础上，按 EQ-01 与 [像素遗迹规范](docs/ART_DIRECTION.md) 制作像素 PNG 及所需独立动作，先验证显示倍率、最近邻与纸娃娃像素一致性；先核对[现有表现实现](docs/design/EQUIPMENT_VISUAL_IMPLEMENTATION.md)，避免重复开发已完成的换装与挂点。
 - **入口 / 交付：** 使用 [$ember-art](.agents/skills/ember-art/SKILL.md)；`content/appearances.ts`、`animation.ts`、`render/HeroRig.ts`、`art-source/`。交付可用 PNG、锚点 / 动作数据、生成来源和 Creator 导入的 `.meta`，不只交概念图。
-- **验收：** 像素遗迹风、统一网格 / 色板、硬边像素簇、最近邻与整数显示验证；基础人物不带职业特征。左右镜像、握点、肩部、待机 / 移动 / 攻击 / 施法及混搭遮挡正确；Creator 构建后按真实战斗尺寸、多玩家同屏检查。外观不改变碰撞半径。
+- **本批验收：** 中性基础人物、低细节轮廓、本地PNG与最近邻；左右镜像、握点、肩部、待机 / 移动 / 攻击 / 施法及代表混搭正确，Creator真实战斗尺寸检查。外观不改变碰撞。原计划中的统一网格 / 限色色板 / 硬边alpha / 整数显示及多人同屏验收迁至ART-04，未完成部分不随本项勾选。
+
+## ART-02 / ART-03 · 本轮美术生产
+
+- ART-02：19套怪物 / 阶段图集审计、显式安全切片、脚底轴心、早期出手时序、三帧死亡与两阶段镜Boss补片；验收真实EnemySystem脉冲与实际Cocos动画。共用完整姿态的细项登记在monsters制作记录，独立重制转ART-05。
+- ART-03：霜图九部件与四类16帧特效、按模拟cue时间播放、24节点预算、危险边界避让；验收真实技能、暂停、过期、地图切换与正常/F3画面。
+- ART-04：以实际战斗尺寸统一逻辑像素密度、有限色板和alpha边缘，再验证整数显示、四人多效果可读性与GPU开销。不以脚本统计替代画面审阅。
+- ART-05：按制作记录中的复用动作和Graphics效果列出小批次；先定每种效果独立识别需求，再生产、接入并验证，避免所有增益都叠加装饰噪声。
 
 ## ENE-D01 · 17 种怪物的属性、技能与美术设定
 
@@ -154,7 +171,7 @@ Caddy 的代理和证书配置在部署时按官方文档核对：[反向代理]
 ## ENE-01 · 全17种怪物开发实现
 
 - **目标 / 范围：** 10小怪、5精英、2Boss全部可战斗，差异来自统一属性、动作数据、守区/唤醒、近远射程、攻频、范围与阶段。
-- **入口 / 交付：** `content/enemies.ts`、`enemy-actions.ts`、`simulation/EnemySystem.ts`、`render/MonsterVisual.ts`。当前程序绘制低细节轮廓及动作，正式PNG替换属于后续美术任务。
+- **入口 / 交付：** `content/enemies.ts`、`enemy-actions.ts`、`simulation/EnemySystem.ts`、`render/MonsterVisual.ts`。原程序轮廓保留兼容，目前17种PNG与Boss阶段图集已接入，后续精修见ART-02/04/05。
 - **验收：** 共用CollisionWorld/CombatEngine、体型分组寻路、多人选敌、延迟预警、死亡/恢复重置，17种逐个实际攻击测试，Creator与Boss画面检查。
 
 ## MAP-01 · 两张大地图各五关
@@ -171,7 +188,7 @@ Caddy 的代理和证书配置在部署时按官方文档核对：[反向代理]
 
 ## COOP-01 · 合作人数难度与死亡 / 复活规则设计
 
-- **目标 / 边界：** 交付设计，不直接改现有数值。现状是参与玩家全部死亡才失败，存活队友可继续，后续波次恢复 30 生命；尚无人数难度缩放或主动救援。
+- **目标 / 边界：** 交付设计，不直接改现有数值。现状是参与玩家全部死亡才失败，存活队友可继续；清场后倒地队友以 30% 生命复起，下一关恢复 30 生命；尚无人数难度缩放或主动救援。
 - **入口 / 交付：** `simulation/GameWorld.ts`、`RunCheckpoint.ts`、[联机指南](docs/MULTIPLAYER.md)；拟新增 `docs/design/COOP_BALANCE.md`，明确 1–4 人怪物强度、经济、倒地 / 复活和离线跳过规则。
 - **验收：** 同一波中加入 / 掉线 / 重连不造成数值刷取；永久失联和重新开房的难度与恢复语义清晰，单人可玩性保留。选定方案后再开独立实现任务。
 
@@ -225,3 +242,18 @@ Caddy 的代理和证书配置在部署时按官方文档核对：[反向代理]
 - 2026-10-16：建立 17 项独立任务；中国区部署优先；区分现有联机能力与尚未完成的公网发布 / 预测 / 多区能力。本次未开通云资源或开始执行上述任务。
 
 - 2026-10-16：完成EQ-03 / ENE-01 / MAP-01。六栏与按部位购买顺序外观、17怪和两图十关已集成；232单测、Creator production构建、正常完整通关及浏览器针对性回归通过。新增8件装备被动、完整新贴图与公网部署仍见后续任务。
+
+- 2026-10-19：拉取85bcbaf后完成本轮美术生产，ART-01/02/03交付9张新PNG、54部件/帧与修复；311单测、Creator3.8.8构建、103浏览器检查及人物/Boss截图审阅通过。原ART-01严格网格/限色/整数显示和多人画面验收明确转ART-04；完整独立动作与其他特效转ART-05，未宣称全美术完工。无新Git提交/推送或公网部署。
+
+## SCENE-01 · 营地、休息点与余烬交互
+
+- 基线：保留当前未提交美术与普攻解耦改动；不部署服务器。
+- 范围：独立场景配置、F 交互、每人余烬领取、商人购物、全员范围准备与房主出发、恢复点及指南。
+- 交付：[场景指南](docs/SCENES.md)、`content/scenes.ts`、`simulation/SceneSystem.ts`、`render/InteractionView.ts`；F2 场景入口、恢复 v4 / 协议6。
+- 验证：`pnpm check` 336 项；两图各5关正常命令通关；Creator 3.8.8 构建与场景52、双浏览器联机15、普攻碰撞92、美术106项通过。范围与边界见 [验收](reports/scenes-validation.json)。
+
+## TEST-01 · 历史浏览器配方迁移
+
+- 目标：将 `browser-smoke / browser-playthrough / browser-controls / browser-content / browser-hexes / browser-developer / browser-attributes / browser-levels / browser-equipment` 的旧开局、阶段、菜单标签配方迁移到营地交互；复用场景移动 / F 交互助手，保持普通流程与 F2 定向测试分别标注。
+- 边界：当前逻辑测试及 scenes / multiplayer / hitboxes / art 已通过。旧脚本不作为新版本证据；不要为迎合旧断言恢复自动开店或逐关奖励，也不要把 F2 fixture 改写成“正常通关”。
+- 验收：逐个运行实际 Creator 页面，保留原专项功能断言，更新报告与开发指南；无需重新实现游戏逻辑或扩展玩法。

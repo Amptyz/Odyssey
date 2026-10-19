@@ -27,15 +27,16 @@ function dodge(world:GameWorld,target:Unit):Vec2|undefined {
  return best;
 }
 for(const mapId of (Object.keys(MAPS) as MapId[]).filter(id=>!process.env.EMBER_CAMPAIGN_MAP||id===process.env.EMBER_CAMPAIGN_MAP)){
- const world=new GameWorld(1234,mapId);world.command({type:'Start'});const levels:{wave:number;time:number;hp:number;gold:number}[]=[],seen=new Set<string>(),diagnostics:unknown[]=[];let nextDecision=0,nextDiagnostic=0;
+ const world=new GameWorld(1234,mapId);world.command({type:'Start'});const levels:{wave:number;time:number;hp:number;gold:number}[]=[],seen=new Set<string>(),diagnostics:unknown[]=[];const visitedMerchants=new Set<string>();let nextDecision=0,nextDiagnostic=0;
  for(let tick=0;tick<30*900&&world.phase!=='victory'&&world.phase!=='defeat';tick++){
-  if(world.phase==='shop'){buy(world);world.command({type:'LeaveShop'});nextDecision=world.time;}
-  if(world.phase==='reward'){
+  if(world.snapshot().phase==='shop'){buy(world);world.command({type:'LeaveShop'});visitedMerchants.add(world.snapshot().scene.id);nextDecision=world.time;}
+  if(world.snapshot().phase==='reward'){
    levels.push({wave:world.wave,time:world.time,hp:world.hero.hp,gold:world.equipment.gold});const choices=world.choices;
    const guard=choices.find(c=>c.kind==='skill'&&c.skillId==='ironGuard');
    const perk=preference.map(id=>choices.find(c=>c.kind==='perk'&&c.perkId===id)).find(Boolean)??choices.find(c=>c.kind==='perk');const choice=guard??perk??choices[0]!;
    world.command({type:'ChooseReward',choiceId:choice.id});if(world.pendingSkill)world.command({type:'ConfirmSkill',slot:'E'});continue;
   }
+  if(world.phase==='camp'||world.phase==='cleared'){const s=world.snapshot(),nodes=s.scene.interactions;const target=nodes.find(n=>n.kind==='ember'&&!n.claimed)??nodes.find(n=>n.kind==='merchant'&&!visitedMerchants.has(s.scene.id))??nodes.find(n=>n.kind==='departure')!;if(distance(world.hero,target)<=target.radius*.75)world.command({type:'Interact'});else world.command({type:'MoveTo',point:target});}
   if(world.phase==='fighting'&&world.time>=nextDecision){
    nextDecision=world.time+.16;const hero=world.hero,enemies=Array.from(world.actors.values()).filter((a):a is Unit=>a.team==='enemy'&&a.alive).sort((a,b)=>distance(a,hero)-distance(b,hero)||a.id.localeCompare(b.id));const target=enemies[0];
    if(target&&world.time>=nextDiagnostic){nextDiagnostic=world.time+10;diagnostics.push({time:world.time,wave:world.wave,hero:{x:hero.x,y:hero.y,hp:hero.hp,path:hero.path.slice(0,4),velocity:hero.velocity},target:{id:target.id,kind:target.kind,x:target.x,y:target.y,hp:target.hp,path:target.path.slice(0,4)},gap:distance(hero,target),navClear:world.nav.clear(hero,target),blocker:world.collision.blocker(hero,target,.1),pose:world.enemies.snapshot().units.find(p=>p.id===target.id),warnings:world.enemies.snapshot().warnings.length});if(diagnostics.length>30)diagnostics.shift();}

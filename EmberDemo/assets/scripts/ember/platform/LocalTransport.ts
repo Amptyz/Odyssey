@@ -5,6 +5,12 @@ import { captureDeveloperConfig,cloneDeveloperConfig,parseDeveloperConfig,type D
 /** Future networking boundary: commands in, detached snapshots out. */
 export class LocalTransport implements CommandPort {
   world:GameWorld;
+  private presentedWorld?:GameWorld;private presentationVersion=0;
+  /** Local view identity only; not a simulation field or a checkpoint/protocol version. */
+  get presentationGeneration():number {
+    if(this.presentedWorld!==this.world){this.presentedWorld=this.world;this.presentationVersion++;}
+    return this.presentationVersion;
+  }
   private developer?:{open:boolean;draft:DeveloperConfig;applied?:DeveloperConfig;revision:number;notice:string};
   constructor(readonly seed=1234) { this.world=new GameWorld(seed); }
   send(command:GameCommand):void {

@@ -1,0 +1,625 @@
+{
+  "alphaThreshold": 128,
+  "note": "Transparent RGB is not visible background; fractional alpha and colour counts are measurements, not approval. Crossing counts require opaque pixels on BOTH sides of the old cut.",
+  "atlases": {
+    "melee": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "c4ea1ae5da2928ccf4ae0b66b97d39c928960acef3f3afcb62167c45b8152a21",
+      "alpha0": 1100156,
+      "alpha1to20": 50742,
+      "alpha21to127": 8920,
+      "alpha128to239": 12004,
+      "alpha240to255": 401716,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        282,
+        291,
+        293,
+        241,
+        239,
+        277,
+        289,
+        160
+      ]
+    },
+    "ranged": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "6601bd2fc222c51587d117425ad5857ae754d819d999d9bdacf2457780d0a4f9",
+      "alpha0": 1033860,
+      "alpha1to20": 79918,
+      "alpha21to127": 8411,
+      "alpha128to239": 10851,
+      "alpha240to255": 440498,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        270,
+        284,
+        271,
+        284,
+        256,
+        282,
+        247,
+        207
+      ]
+    },
+    "stoneback": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "3c594d002cad67229c0c47674521e0984859cc99d2c5bace12b96fe2315789ae",
+      "alpha0": 1030190,
+      "alpha1to20": 96053,
+      "alpha21to127": 11032,
+      "alpha128to239": 15273,
+      "alpha240to255": 420990,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        235,
+        237,
+        234,
+        257,
+        219,
+        228,
+        220,
+        164
+      ]
+    },
+    "reedLancer": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "328531366bfd18ccbf91a71065818e297811142287cb7599efcc86e21a7649b3",
+      "alpha0": 1189241,
+      "alpha1to20": 117891,
+      "alpha21to127": 14615,
+      "alpha128to239": 22519,
+      "alpha240to255": 229272,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        295,
+        300,
+        294,
+        290,
+        247,
+        286,
+        248,
+        260
+      ]
+    },
+    "sunbud": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "1a11264df75bc2c7b56cf51db8908d2037b9a4a87c18104c9fc289f9c8435358",
+      "alpha0": 1096162,
+      "alpha1to20": 112311,
+      "alpha21to127": 8550,
+      "alpha128to239": 12712,
+      "alpha240to255": 343803,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        271,
+        272,
+        267,
+        269,
+        278,
+        273,
+        225,
+        165
+      ]
+    },
+    "frostling": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "eddb01e2f800f7ec946364fc27eeba9d065a5c65b54c53827339da41723df62a",
+      "alpha0": 1054175,
+      "alpha1to20": 145656,
+      "alpha21to127": 13377,
+      "alpha128to239": 19957,
+      "alpha240to255": 340373,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        319,
+        309,
+        293,
+        259,
+        269,
+        280,
+        281,
+        159
+      ]
+    },
+    "shardCrab": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "1ee7a9fc856a50525a033db973fc91da4217f4453a4fc3dd52666525ec5bfff5",
+      "alpha0": 1017839,
+      "alpha1to20": 133289,
+      "alpha21to127": 11068,
+      "alpha128to239": 15006,
+      "alpha240to255": 396336,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        273,
+        273,
+        265,
+        297,
+        223,
+        282,
+        188,
+        153
+      ]
+    },
+    "rimeMoth": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "20f3c214d0bfaaea68a719ea9b53e3cb7afb5d44915a978bb7e5b98d70c94754",
+      "alpha0": 1104746,
+      "alpha1to20": 95402,
+      "alpha21to127": 10276,
+      "alpha128to239": 13513,
+      "alpha240to255": 349601,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        245,
+        251,
+        247,
+        277,
+        252,
+        230,
+        209,
+        130
+      ]
+    },
+    "chimeSentry": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "ce6e7503355fb3458426c80a659f3023ddf19715cabf578c78d00337c99c51c7",
+      "alpha0": 1078373,
+      "alpha1to20": 132750,
+      "alpha21to127": 16255,
+      "alpha128to239": 23909,
+      "alpha240to255": 322251,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        360,
+        349,
+        355,
+        282,
+        290,
+        342,
+        261,
+        164
+      ]
+    },
+    "snowHare": {
+      "size": [
+        1774,
+        887
+      ],
+      "sha256": "5fdb6d7bf9de1a195732f1d498e850ba58a18ef999cd0448e8774a7a27989003",
+      "alpha0": 1077270,
+      "alpha1to20": 66953,
+      "alpha21to127": 14660,
+      "alpha128to239": 16443,
+      "alpha240to255": 398212,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        288,
+        293,
+        288,
+        238,
+        278,
+        269,
+        214,
+        161
+      ]
+    },
+    "warden": {
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "3a554d8da4926317a869d5bc68718553e0f28a8e176f90ea92f7bbb2b9cd703b",
+      "alpha0": 820993,
+      "alpha1to20": 156991,
+      "alpha21to127": 17940,
+      "alpha128to239": 25611,
+      "alpha240to255": 550993,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        247,
+        247,
+        247,
+        254,
+        208,
+        242,
+        258,
+        181,
+        271,
+        204,
+        248,
+        252
+      ]
+    },
+    "emberRam": {
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "3566a92332f1c39d8e482dd08fca11b0592591ed1a2a234f28ce1cd1d1a51ec2",
+      "alpha0": 934700,
+      "alpha1to20": 177151,
+      "alpha21to127": 13571,
+      "alpha128to239": 18975,
+      "alpha240to255": 428131,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        195,
+        193,
+        192,
+        189,
+        192,
+        192,
+        181,
+        136,
+        182,
+        190,
+        185,
+        188
+      ]
+    },
+    "bellKeeper": {
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "6115278d84777220a5dabbf7177495047cdac246bded4a93c48c332093b46c2d",
+      "alpha0": 1024884,
+      "alpha1to20": 96551,
+      "alpha21to127": 12955,
+      "alpha128to239": 18944,
+      "alpha240to255": 419194,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        240,
+        234,
+        237,
+        215,
+        212,
+        219,
+        201,
+        144,
+        237,
+        218,
+        234,
+        233
+      ]
+    },
+    "mirrorKnight": {
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "174beb8aae4fbe555d4da8882d42a16b0bcef04befbe43bf57851501702c96eb",
+      "alpha0": 879220,
+      "alpha1to20": 241419,
+      "alpha21to127": 18150,
+      "alpha128to239": 26165,
+      "alpha240to255": 407574,
+      "originalCutCrossings": [
+        {
+          "row": 1,
+          "x": 362,
+          "adjacentOpaquePairs": 58
+        }
+      ],
+      "sourceFrameHeights": [
+        233,
+        233,
+        223,
+        229,
+        222,
+        205,
+        222,
+        154,
+        213,
+        196,
+        259,
+        228
+      ]
+    },
+    "rimeWeaver": {
+      "size": [
+        1448,
+        1086
+      ],
+      "sha256": "ef2f669f16063b5d5fea46db551409c5572369bb29d32f52303340b0788f9f06",
+      "alpha0": 930429,
+      "alpha1to20": 173211,
+      "alpha21to127": 22284,
+      "alpha128to239": 34315,
+      "alpha240to255": 412289,
+      "originalCutCrossings": [],
+      "sourceFrameHeights": [
+        254,
+        257,
+        254,
+        247,
+        245,
+        251,
+        242,
+        168,
+        275,
+        235,
+        235,
+        248
+      ]
+    },
+    "courtyardHeart": {
+      "size": [
+        1122,
+        1402
+      ],
+      "sha256": "e2f5eccb31e6b62d0c67458bac9b2662c5c82470f2e3d6415b286a6e5eb5b832",
+      "alpha0": 888918,
+      "alpha1to20": 152846,
+      "alpha21to127": 19118,
+      "alpha128to239": 27640,
+      "alpha240to255": 484522,
+      "originalCutCrossings": [
+        {
+          "row": 1,
+          "x": 280,
+          "adjacentOpaquePairs": 62
+        }
+      ],
+      "sourceFrameHeights": [
+        165,
+        168,
+        168,
+        190,
+        165,
+        169,
+        149,
+        114,
+        193,
+        172,
+        177,
+        211,
+        210,
+        171,
+        177,
+        209,
+        163,
+        183,
+        166,
+        163
+      ]
+    },
+    "mirrorRegent": {
+      "size": [
+        1024,
+        1536
+      ],
+      "sha256": "7053dfdfcdd78124f7491535f920397b83e7080e251de398ac1a67e0f5771e09",
+      "alpha0": 784882,
+      "alpha1to20": 254025,
+      "alpha21to127": 33048,
+      "alpha128to239": 50166,
+      "alpha240to255": 450743,
+      "originalCutCrossings": [
+        {
+          "row": 1,
+          "x": 256,
+          "adjacentOpaquePairs": 43
+        },
+        {
+          "row": 2,
+          "x": 512,
+          "adjacentOpaquePairs": 46
+        },
+        {
+          "row": 3,
+          "x": 256,
+          "adjacentOpaquePairs": 46
+        },
+        {
+          "row": 4,
+          "x": 256,
+          "adjacentOpaquePairs": 40
+        }
+      ],
+      "sourceFrameHeights": [
+        212,
+        212,
+        212,
+        197,
+        204,
+        217,
+        208,
+        146,
+        207,
+        196,
+        211,
+        235,
+        232,
+        189,
+        224,
+        207,
+        208,
+        218,
+        212,
+        198,
+        211,
+        210,
+        210,
+        210
+      ]
+    },
+    "courtyardHeart-phase2": {
+      "size": [
+        1122,
+        1402
+      ],
+      "sha256": "db7cbb8ea0b8611da489d2ca601353f5be8570df6e3ef5adba9e52a3c82eef0a",
+      "alpha0": 925126,
+      "alpha1to20": 100547,
+      "alpha21to127": 15564,
+      "alpha128to239": 19322,
+      "alpha240to255": 512485,
+      "originalCutCrossings": [
+        {
+          "row": 1,
+          "x": 280,
+          "adjacentOpaquePairs": 62
+        },
+        {
+          "row": 3,
+          "x": 817,
+          "adjacentOpaquePairs": 9
+        }
+      ],
+      "sourceFrameHeights": [
+        184,
+        183,
+        181,
+        193,
+        164,
+        170,
+        155,
+        133,
+        199,
+        179,
+        183,
+        212,
+        211,
+        176,
+        182,
+        215,
+        171,
+        189,
+        173,
+        172
+      ]
+    },
+    "mirrorRegent-phase2": {
+      "size": [
+        1024,
+        1536
+      ],
+      "sha256": "2bbf2176f963e5e71fadbaf4c9f8d08159e7e2eb092e1293630b52701f1fd983",
+      "alpha0": 815564,
+      "alpha1to20": 213206,
+      "alpha21to127": 26127,
+      "alpha128to239": 38200,
+      "alpha240to255": 479767,
+      "originalCutCrossings": [
+        {
+          "row": 1,
+          "x": 256,
+          "adjacentOpaquePairs": 44
+        },
+        {
+          "row": 2,
+          "x": 512,
+          "adjacentOpaquePairs": 46
+        },
+        {
+          "row": 3,
+          "x": 256,
+          "adjacentOpaquePairs": 51
+        },
+        {
+          "row": 4,
+          "x": 256,
+          "adjacentOpaquePairs": 43
+        }
+      ],
+      "sourceFrameHeights": [
+        214,
+        213,
+        214,
+        198,
+        205,
+        217,
+        208,
+        147,
+        208,
+        196,
+        211,
+        236,
+        233,
+        190,
+        225,
+        208,
+        209,
+        219,
+        213,
+        200,
+        212,
+        211,
+        211,
+        211
+      ]
+    }
+  },
+  "newRuntime": {
+    "courtyardHeart-phase2-death.png": {
+      "size": [
+        2172,
+        724
+      ],
+      "bbox128": [
+        57,
+        155,
+        2116,
+        628
+      ],
+      "sha256": "6d99e701d42552611bac044880582da8d4c95cea46e079c768beddd763f07e60"
+    },
+    "mirrorRegent-phase2-strike.png": {
+      "size": [
+        1254,
+        1254
+      ],
+      "bbox128": [
+        148,
+        194,
+        1227,
+        1049
+      ],
+      "sha256": "13c5b6392c50dc37ea73f6d10175c66878989bb5acb9366f5ff2bbfed7613ad5"
+    },
+    "mirrorRegent-strike.png": {
+      "size": [
+        1254,
+        1254
+      ],
+      "bbox128": [
+        149,
+        194,
+        1227,
+        1047
+      ],
+      "sha256": "47eb1f1702b6e33c719a9b74b78021c3c44ac85045f88901766983ad1f983336"
+    }
+  }
+}

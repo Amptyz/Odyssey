@@ -7,6 +7,7 @@ import type {EnemyPose,EnemySnapshot,EnemyWarning} from '../simulation/EnemySyst
 import type {HitShape} from '../combat-core/CollisionWorld';
 import {worldToScreen,type Projection} from './IsoProjection';
 import {colourForMonster} from './monster-palettes';
+import {monsterActionStep,monsterDeathFrame} from './MonsterAnimation';
 import {color,graphics,polygon,uiNode} from './Primitives';
 import type {Vec2} from '../utils/math';
 interface RenderUnit {alive:boolean;velocity:Vec2;facing:Vec2;hurtAt:number;diedAt:number}
@@ -78,14 +79,18 @@ export class MonsterVisual {
  }
  private updatePixel(unit:RenderUnit,pose:EnemyPose|undefined,time:number):void {
   this.phase=pose?.phase??1;this.atlasKey=this.phase===2&&PIXEL_ATLASES[this.kind+'-phase2']?this.kind+'-phase2':this.kind;
-  const a=PIXEL_ATLASES[this.atlasKey]!,dead=!unit.alive,moving=Math.hypot(unit.velocity.x,unit.velocity.y)>.15,hurt=unit.hurtAt>=0&&time-unit.hurtAt<.18&&!pose?.actionId;
-  this.state=dead?'death':hurt?'hurt':pose?.actionId&&pose.age>=pose.windup&&pose.strike>.05?'attack':moving&&!pose?.actionId?'walk':pose?.state??'idle';let key=dead?'death':hurt?'hurt':this.state==='walk'?(Math.floor(time*7)%2?'walkA':'walkB'):'idle';
-  if(!dead&&!hurt&&pose?.actionId&&['windup','attack','recover'].includes(pose.state)){const step=pose.state==='windup'?'windup':pose.strike>.05?'strike':'recovery';key=`${pose.actionId}:${step}`;if(!a.poses.includes(key))key=step;}
+  const deathAtlas=this.atlasKey+'-death';if(!unit.alive&&PIXEL_ATLASES[deathAtlas])this.atlasKey=deathAtlas;
+  let a=PIXEL_ATLASES[this.atlasKey]!;const dead=!unit.alive,moving=Math.hypot(unit.velocity.x,unit.velocity.y)>.15,hurt=unit.hurtAt>=0&&time-unit.hurtAt<.18&&!pose?.actionId;
+  this.state=dead?'death':hurt?'hurt':pose?.actionId&&pose.strike>.05?'attack':moving&&!pose?.actionId?'walk':pose?.state??'idle';let key=dead?'death':hurt?'hurt':this.state==='walk'?(Math.floor(time*7)%2?'walkA':'walkB'):'idle';
+  if(dead&&a.poses.includes('death0'))key='death'+monsterDeathFrame(time-unit.diedAt);
+  if(!dead&&!hurt&&pose?.actionId&&['windup','attack','recover'].includes(pose.state)){const step=monsterActionStep(pose);key=`${pose.actionId}:${step}`;if(!a.poses.includes(key))key=step;}
   if(!dead&&!hurt&&pose?.phase===2&&key==='idle'&&a.poses.includes('phase2'))key='phase2';
+  // Separate strike patches keep long arms out of neighbouring atlas cells.
+  const strikeAtlas=this.atlasKey+'-strike';if(!dead&&this.kind==='mirrorRegent'&&pose?.strike&&pose.strike>.05&&PIXEL_ATLASES[strikeAtlas]){this.atlasKey=strikeAtlas;a=PIXEL_ATLASES[strikeAtlas]!;key='strike';}
   const index=Math.max(0,a.poses.indexOf(key));this.poseKey=key;this.frame=index;const f=a.frames[index]!;this.image!.spriteFrame=this.art!.pixelFrame(this.atlasKey,index);const ui=this.image!.node.getComponent(UITransform)!;ui.setContentSize(f.rect[2]*a.scale,f.rect[3]*a.scale);ui.setAnchorPoint(...f.anchor);
   this.node.setScale(pose?.actionId?pose.facing:unit.facing.x-unit.facing.y<0?-1:1,1,1);this.image!.color=color(hurt?'#FFD8C8':'#FFFFFF');this.opacity.opacity=dead?Math.round(255*Math.max(0,1-Math.max(0,time-unit.diedAt-.35)/.55)):255;
  }
- debug(){return {kind:this.kind,atlas:this.image?'pixel-v1/'+this.atlasKey:'procedural-monster-v1',frame:this.frame,poseKey:this.poseKey,phase:this.phase,pose:{state:this.state}};}
+ debug(){return {kind:this.kind,atlas:this.image?PIXEL_ATLASES[this.atlasKey]?.resourcePath.replace(/^art\//,''):'procedural-monster-v1',frame:this.frame,poseKey:this.poseKey,phase:this.phase,pose:{state:this.state}};}
 }
 function outline(shape:HitShape):Vec2[][] {
  const ring=(r:number)=>Array.from({length:49},(_,i)=>({x:shape.center.x+Math.cos(i*Math.PI/24)*r,y:shape.center.y+Math.sin(i*Math.PI/24)*r}));

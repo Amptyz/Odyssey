@@ -16,7 +16,7 @@ try{
   await page.keyboard.press('Enter');await page.waitForTimeout(120);s=await state();check(s.phase==='shop'&&s.gold===160&&s.time===0,'normal Enter opens shop with 160 gold');
   await click(-90,-36);s=await state();check(s.equipment.slot1==='bow'&&s.appearance.weapon==='bow'&&s.gold===60&&s.stats.attackDamage===24,'normal catalog purchase equips the 100-gold bow in universal slot1');
   await click(-90,-185);check((await state()).gold===60&&Object.keys((await state()).equipment).length===1,'100-gold second item is unaffordable without mutating the build');
-  await click(-390,-237);check(!(await state()).appearance.weapon&&(await state()).stats.attackRange===2.5,'universal slot UI unequips and returns to unarmed range');
+  await click(-390,-237);check(!(await state()).appearance.weapon&&(await state()).stats.attackRange===5,'universal slot UI unequips appearance without changing default slash range');
   await click(-90,-36);s=await state();check(s.gold===60&&s.equipment.slot1==='bow'&&s.purchaseOrder.join(',')==='bow','owned item re-equips free without a second purchase rank');
   await page.screenshot({path:'reports/14-opening-shop.png'});
   await page.keyboard.press('Enter');await page.waitForTimeout(150);s=await state();check(s.phase==='fighting'&&s.hero.hp===240&&s.level?.id==='ember-1','ordinary shop starts stage1 at its route spawn');
