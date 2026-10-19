@@ -1,6 +1,6 @@
 # 整体架构
 
-本文描述当前实现，而不是未来规划。代码核对基线：v0.8 营地 / 休息点交互 + 统一属性 v1，房间协议 ember-coop-6、恢复点 v4。具体数值以源码为准；增加内容按 [内容扩展指南](CONTENT_ARCHITECTURE.md)，实施与验证按 [开发架构指南](DEVELOPMENT_GUIDE.md)。
+本文描述当前实现，而不是未来规划。代码核对基线：v0.8 营地 / 休息点交互 + 统一属性 v1，房间协议 ember-coop-7、恢复点 v4。具体数值以源码为准；增加内容按 [内容扩展指南](CONTENT_ARCHITECTURE.md)，实施与验证按 [开发架构指南](DEVELOPMENT_GUIDE.md)。
 
 统一属性规则见 [属性系统](ATTRIBUTE_SYSTEM.md)：所有单位共用，技能只读总 AD、仅全能吸血。每个 Actor 由 ActorFactory 创建并持有独立 AttributeSet；HeroStats 是面板兼容视图，不另算英雄专用公式。当前接入17种敌人、六个通用装备栏和两图各五关；18件装备均已注册，含独立装备被动模块与商店详情。
 
@@ -86,6 +86,8 @@ flowchart TD
 
 ### 单次逻辑步的顺序
 
+普通步行在模拟层通过GroundMovement补偿54×28等距投影的纵向压缩，WASD、玩家路径移动与敌人走路共用；基准移速仍由AttributeSet解析，右键加速 / 刹停使用投影距离。世界碰撞与技能距离保持世界坐标语义，渲染不二次修改移动速度；细节见[手感参数](GAME_FEEL.md)。
+
 `GameWorld.step` 依次：记录实体上一位置 / 扣减攻击计时 → 扣减技能冷却 → 战斗状态与延迟效果 tick → 玩家移动与持续普攻 → EnemySystem（敌人AI/分段预警/敌弹）→ 玩家近战挥击 → 玩家/余烬弹体碰撞 → 提示计时 → 死亡与关卡出口检查。
 
 该顺序决定同帧边界行为。修改它需要验证同时死亡、最后一个敌人死亡、持续伤害、冲刺与弹体相交；不能只观察一场胜利。参与战斗的玩家全部死亡先于波次奖励结算；个别玩家死亡后，其他人可继续。安全场景中商店与余烬为个人面板，出发时按全队位置检查。
@@ -101,10 +103,13 @@ flowchart TD
 | 已获得余烬、规则冷却、计数 | CombatEngine | perks / primed / metrics；内部计数不暴露为可变引用 |
 | 投射物、近战窗口、延迟区域 | GameWorld / CombatEngine.zones | projectiles / swings / zones |
 | 开发者草稿、已应用配置 | LocalTransport | developer 快照 |
+| 单人本地恢复点 / 文件元数据 | LocalTransport + 浏览器存储 | localSave 快照，仅用于按钮与保存反馈 |
 | 鼠标、按键、操作方式 | InputController | 输入命令；操作方式保存在浏览器本地 |
 | Node、SpriteFrame、显示缓存 | render 与 ArtLibrary | 不进入世界状态 |
 
 `WorldSnapshot` 是用于显示和检查的脱离实例的副本，不是完整存档；新加嵌套字段必须复制，不能返回 live Map/Set/Actor。`CommandPort` 当前只声明 `send`，`advance / snapshot` 是 LocalTransport 的具体能力。房间协议另外实现成员身份、输入序号、版本检查和波次恢复；没有任意帧完整反序列化、回滚或无缝主机迁移。`RunCheckpoint` 只用于稳定阶段及波次起点。
+
+单人由 LocalTransport 按世界身份 / checkpointRevision 自动写入浏览器；SaveRun 在安全阶段捕获位置，战斗仍使用本关起点。LoadRun 先验证文件 / 本地恢复点并重建 GameWorld，再替换世界，加载战斗时暂停。首页与暂停菜单提供入口，RunSaveFiles 只处理文件选择与下载；F2 测试局不写普通存档，联机白名单拒绝单人存取命令。格式及兼容范围见 [单人存档](SAVES.md)。
 
 ## 阶段与重置
 
@@ -130,7 +135,7 @@ shop/reward 是每玩家独立面板，不再是全局 Phase。WorldSnapshot.pha
 
 ### 技能与普攻
 
-技能链路为 `CastSlot → loadout[slot] → cast → executeSkill → behavior handler`。技能 ID 与槽位、按键、外观 ID 分开；玩家技能由 `hero` 标签进入奖励池。当前行为有 projectile / shield / dash / area / cone。
+普通开局的四个槽位均为显式 `null`，空槽冷却为 0、按键无操作；技能链路为 `CastSlot → loadout[slot] → cast → executeSkill → behavior handler`。技能 ID 与槽位、按键、外观 ID 分开；玩家技能由 `hero` 标签进入奖励池。当前行为有 projectile / shield / dash / area / cone。
 
 玩家普攻默认 `BASIC_ATTACKS.slash`；`PerkDefinition.basicAttack` 引用形式配置，CombatEngine.basicAttackFor(playerId) 按该玩家余烬获得顺序解析，最后一个改变形式的余烬生效。形态射程由单一 `perk:attack-form` 属性来源替换，普通余烬不会重置形式；伤害 / 间隔 / 最终射程来自统一属性。装备不参与形式选择。近战产生带前摇、生效窗口和去重集合的扇形；远程产生真正飞行的弹体。输入不提交锁定目标 ID。普攻弹体 `cause: basic`、没有 skillId；不要为了复用逻辑把它标成技能。
 
@@ -154,7 +159,7 @@ shop/reward 是每玩家独立面板，不再是全局 Phase。WorldSnapshot.pha
 
 `MAPS.waves[].level.groups → enemyPlacements → ENEMIES.template → ActorFactory → EnemySystem`。每个地图是静态大图：ember 56×44、frost 60×44，各五关；关卡配置start/exit/route/groups，同地图不同关有独立起终点与固定敌群，不能用旧全图随机刷怪替代。清场进入 cleared 并结算一次金币，配置的清场余烬在出口附近出现；活跃玩家在出口radius集合后由房主按 F 推进，最终关同样确认出口后胜利。
 
-17种单位分10小怪、5精英、2Boss，分别以actionSet引用`ENEMY_ACTION_SETS`和`ENEMY_ACTIONS`。动作含前摇/恢复、定向扇形/矩形、延迟圆/环、多段采样、非追踪弹、冲锋、独立类型/表达式；普攻cause=basic、技能cause=enemy。EnemySystem持有每单位锁定点、段索引、CD、组命中计数、Boss阶段/循环、守区与导航调度，不在GameWorld增加17个ID分支。旧EnemyBehaviors仅保留兼容入口，monster分支要求由EnemySystem调度。
+17种单位分10小怪、5精英、2Boss，分别以actionSet引用`ENEMY_ACTION_SETS`和`ENEMY_ACTIONS`。动作含前摇/恢复、定向扇形/矩形、延迟圆/环、多段采样、非追踪弹、冲锋、独立类型/表达式；普攻cause=basic、技能cause=enemy。`content/enemy-behaviors.ts` 的profile（默认actionSet同名，可用ai覆盖）配置目标、优先级规则和有限序列；`ai/EnemyDecision.ts`保存每只怪的目标记忆、规则次数、CD和序列，EnemySystem执行并持有锁定点、段索引、命中计数、Boss阶段/循环、守区及导航。不在GameWorld增加ID分支。规则、序列和Boss时间轴均经过执行门槛；支持单招/公共/组/点名CD及额外停顿。配置和时序见 [敌人行为指南](ENEMY_AI.md)。旧EnemyBehaviors仅保留兼容入口。
 
 `EnemySystem.step(dt,{time,actors,players,collision,combat,freezeAI?})`每步一次；snapshot()输出纯数据units/warnings/projectiles，reset()在关卡边界清理。AI停止开关禁止新动作和追击，已发弹体/已预约预警继续推进；全局暂停则完全不推进。敌人10格或受伤唤醒，Boss12格唤醒且出场2秒；离守点18格或目标22格后返巢，不让整张地图开局汇聚。Boss有血量阈值、两秒无伤动作转换、配置循环和分段预警；interrupt端口支持硬控打断与两次不同root的Boss破势，现有玩家只有减速，不能把受击闪色当硬控入口。
 
@@ -164,7 +169,7 @@ shop/reward 是每玩家独立面板，不再是全局 Phase。WorldSnapshot.pha
 
 - 逻辑坐标单位是地图格，时间是秒，角度 / 扇形宽度是弧度；渲染节点 angle 使用 Cocos 的角度单位。不要混用。
 - 角色位置是地面脚底中心，radius 是世界空间受击圆；图集像素和衣服大小不参与判定。
-- `IsoProjection` 提供成对投影；ArenaView按本地玩家位置生成跟随Projection，GameBootstrap让渲染与InputController共用同一镜头对象，地图不再整张缩进窗口。UI 逻辑坐标原点在中央、Y 向上；浏览器像素 Y 向下。输入还处理 CSS 缩放、设备像素比与视口，不能用固定屏幕偏移替代逆投影。
+- `IsoProjection`提供成对投影和SmoothCameraFollow；ArenaView每帧只准备一次平滑Projection，输入与渲染共用。zoom1.25同步缩放世界物件，镜头半衰期0.1秒，换场景直接定位。全局移速 / 弹速倍率均为1.5，统一入口content/tuning.ts，见 [全局速度与镜头](GAME_FEEL.md)。UI坐标原点在中央、Y向上，浏览器Y向下；输入继续处理CSS缩放、设备像素比与视口。
 - `CollisionWorld.targets` 统一做圆 / 扇形 / 胶囊 / 定向矩形 / 空心环相交、敌我 / 存活过滤、遮挡和稳定排序；`firstImpact` 做弹体连续扫掠，考虑角色相对移动，墙同时接触时优先。
 - 移动与冲刺通过 `Pathfinder.sweep`，当前是细分采样的移动扫掠；它不是弹体使用的解析连续相交算法。
 - 关卡敌群位置由配置确定，奖励使用世界 Random，暴击另用从世界 seed 派生的随机流。新增一次随机调用或改变目录枚举顺序可能改变同种子的后续结果。

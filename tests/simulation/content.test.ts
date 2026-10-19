@@ -6,10 +6,12 @@ import { validateContent } from '../../EmberDemo/assets/scripts/ember/content/va
 import { MAPS,mapDefinition,type MapId } from '../../EmberDemo/assets/scripts/ember/content/maps';
 import { SKILLS } from '../../EmberDemo/assets/scripts/ember/content/skills';
 import { HERO } from '../../EmberDemo/assets/scripts/ember/content/config';
+import {GAME_TUNING} from '../../EmberDemo/assets/scripts/ember/content/tuning';
 import { applyStatus,movementMultiplier } from '../../EmberDemo/assets/scripts/ember/combat-core/StatusSystem';
 import { Pathfinder } from '../../EmberDemo/assets/scripts/ember/ai/Pathfinder';
 import { fitMapProjection,worldToScreen,screenToWorld } from '../../EmberDemo/assets/scripts/ember/render/IsoProjection';
 import { distance } from '../../EmberDemo/assets/scripts/ember/utils/math';
+import {groundSpeedScale} from '../../EmberDemo/assets/scripts/ember/utils/GroundMovement';
 function advance(w:GameWorld,seconds:number){for(let i=0;i<Math.round(seconds*30);i++)w.advance(1/30);}
 function fixture(){const w=new GameWorld();w.loadout.Q='icebolt';openMerchantFixture(w);startCombatFixture(w);
   Object.assign(w.hero,{x:10,y:10,previous:{x:10,y:10}});
@@ -43,7 +45,7 @@ describe('extensible game content',()=>{
     const {w}=fixture();applyStatus(w.hero,{id:'slow',duration:2,power:0.5},'enemy','frostBolt');
     const s=w.snapshot();s.hero.statuses[0]!.power=0.1;
     w.command({type:'DirectInput',movement:{x:0,y:1}});advance(w,0.5);
-    expect(w.hero.y-10).toBeCloseTo(((421.25*.5)*.5+110)*.01*.5);expect(w.hero.statuses[0]?.power).toBe(0.5);
+    expect(w.hero.y-10).toBeCloseTo(((421.25*.5)*.5+110)*.01*GAME_TUNING.moveSpeedMultiplier*.5*groundSpeedScale({x:0,y:1}));expect(w.hero.statuses[0]?.power).toBe(0.5);
   });
   it('slow reduces enemy movement and pause freezes its duration',()=>{
     const a=fixture(),b=fixture();for(const item of [a,b]){item.e.windup=0;item.e.x=14;item.e.y=10;}
@@ -55,10 +57,10 @@ describe('extensible game content',()=>{
     expect(w.hero.hp).toBeLessThan(HERO.hp);expect(w.hero.statuses.some(s=>s.id==='slow'&&s.sourceId===e.id)).toBe(true);
     expect(w.combat.history.some(x=>x.damageType==='magic'&&x.sourceId===e.id&&x.targetId==='hero')).toBe(true);
   });
-  it('map switch and restart preserve map/loadout but reset combat; active map cannot switch',()=>{
-    const port=new LocalTransport();port.send({type:'SelectMap',mapId:'frost'});expect(port.world.hero.x).toBe(mapDefinition('frost').heroSpawn.x);expect(port.world.loadout.Q).toBe('fireball');
+  it('map switch and restart preserve map but start with empty skills; active map cannot switch',()=>{
+    const port=new LocalTransport();port.send({type:'SelectMap',mapId:'frost'});expect(port.world.hero.x).toBe(mapDefinition('frost').heroSpawn.x);expect(port.world.loadout.Q).toBeNull();
     openMerchantFixture(port.world);startCombatFixture(port.world);port.send({type:'SelectMap',mapId:'ember'});expect(port.world.mapId).toBe('frost');
-    port.send({type:'Restart'});expect(port.world.phase).toBe('ready');expect(port.world.mapId).toBe('frost');expect(port.world.loadout.Q).toBe('fireball');expect(port.world.hero.statuses).toHaveLength(0);
+    port.send({type:'Restart'});expect(port.world.phase).toBe('ready');expect(port.world.mapId).toBe('frost');expect(port.world.loadout.Q).toBeNull();expect(port.world.hero.statuses).toHaveLength(0);
   });
   for(const id of Object.keys(MAPS) as MapId[]){
     it(`${id}: deterministic safe spawns, data-driven wave count and reward filtering`,()=>{
@@ -79,7 +81,7 @@ describe('extensible game content',()=>{
       const map=mapDefinition(id),nav=new Pathfinder(map),camera=fitMapProjection(map);
       for(const p of [{x:0,y:0},{x:map.width,y:map.height},{x:map.width,y:0},{x:0,y:map.height},map.heroSpawn]){
         const q=worldToScreen(p,camera),back=screenToWorld(q,camera);expect(back.x).toBeCloseTo(p.x);expect(back.y).toBeCloseTo(p.y);
-        expect(camera.zoom).toBe(1);
+        expect(camera.zoom).toBe(GAME_TUNING.cameraZoom);
       }
       expect(nav.walkable({x:map.width-0.5,y:map.height-0.5})).toBe(true);expect(nav.walkable({x:map.width+1,y:map.height/2})).toBe(false);
       expect(nav.walkable({x:map.width/2,y:map.height+1})).toBe(false);

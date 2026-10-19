@@ -10,7 +10,11 @@ export type EnemyActionShape=
  |{kind:'projectile';radius:number;speed:number;range:number;spread?:readonly number[]}
  |{kind:'dash';radius:number;speed:number;length:number};
 export interface EnemyActionStep {at:number;sampleAt?:number;location?:'self'|'target';angle?:number;shape:EnemyActionShape;expression:ValueExpression;damageType:DamageType;slow?:{power:number;duration:number};maxHits?:number;active?:number}
-export interface EnemyActionDefinition {id:string;kind:'attack'|'spell';windup:number;recovery:number;cooldown:number;firstDelay:number;range:number;minimumRange?:number;edgeMargin?:number;steps:readonly EnemyActionStep[];phase2?:readonly EnemyActionStep[];phase2Duration?:number;maxHits?:number;colour:string}
+export interface EnemyCooldownPolicy {
+ start?:'start'|'impact'|'end';seconds?:number;consumeOnInterrupt?:boolean;affectedByHaste?:boolean;
+ group?:{id:string;seconds:number};targetSeconds?:number;globalSeconds?:number;
+}
+export interface EnemyActionDefinition {id:string;kind:'attack'|'spell';windup:number;recovery:number;cooldown:number;firstDelay:number;range:number;minimumRange?:number;edgeMargin?:number;steps:readonly EnemyActionStep[];phase2?:readonly EnemyActionStep[];phase2Duration?:number;maxHits?:number;colour:string;cooldownPolicy?:EnemyCooldownPolicy;recoveryMovement?:'stop'|'chase';pauseAfter?:number;pauseMovement?:'stop'|'chase'}
 const deg=(v:number)=>v*Math.PI/180;
 const sector=(radius:number,arc:number):EnemyActionShape=>({kind:'sector',radius,arc:deg(arc)});
 const rect=(length:number,width:number):EnemyActionShape=>({kind:'rectangle',length,width});
@@ -47,7 +51,7 @@ export const ENEMY_ACTIONS:Record<string,EnemyActionDefinition>={
  hearthPalm:action('hearthPalm',1,3,2.4,[step(1,sector(2.4,120),{attackDamage:1},'physical',{active:.15})]),
  regentScissor:action('regentScissor',1.1,3.4,2.6,[step(1.1,sector(2.6,100),{attackDamage:1},'physical',{active:.15})]),
  rootPlates:spell('rootPlates',1.65,.35,5,10,4,[0,.35,.7].map(t=>step(t+.95,circle(.85),{flat:12,abilityPower:.8},'magic',{sampleAt:t,location:'target'})),{maxHits:2,colour:'#8BA68A'}),
- ramLane:spell('ramLane',1.1,1.58,7,9,3,[step(1.1,{kind:'dash',radius:.48,speed:7,length:4},{flat:8,attackDamage:1.1})],{minimumRange:2,colour:'#CBA476'}),
+ ramLane:spell('ramLane',1.1,1.58,7,9,3,[step(1.1,{kind:'dash',radius:.48,speed:7,length:4},{flat:8,attackDamage:1.1})],{minimumRange:2,colour:'#CBA476',recoveryMovement:'stop',cooldownPolicy:{group:{id:'mobility',seconds:9},targetSeconds:5}}),
  bellEcho:spell('bellEcho',2,.3,6.5,12,5,[1.05,2].map(at=>step(at,circle(1.15),{flat:10,abilityPower:.7},'magic',{location:'target'})),{maxHits:2,colour:'#B7A3C7'}),
  splitEdge:spell('splitEdge',1.75,.4,5,11,4,[step(1.1,rect(5,.65),{flat:8,attackDamage:.9}),step(1.75,rect(5,.65),{flat:6,abilityPower:.8},'magic',{angle:deg(60)})],{maxHits:2,colour:'#9FBCCB'}),
  wovenRing:spell('wovenRing',1.2,.35,6,12,5,[step(1.2,{kind:'ring',radius:2,innerRadius:.9},{flat:12,abilityPower:.8},'magic',{location:'target'})],{edgeMargin:2.5,colour:'#A9D0D7'}),
@@ -70,6 +74,9 @@ export function validateEnemyActions():void {
  const positive=(n:number)=>Number.isFinite(n)&&n>0;
  for(const [id,a] of Object.entries(ENEMY_ACTIONS)){
   if(id!==a.id||!positive(a.windup)||!positive(a.recovery)||!positive(a.cooldown)||!finite(a.firstDelay)||!positive(a.range)||!a.steps.length)throw Error(`Invalid enemy action ${id}`);
+  const p=a.cooldownPolicy;
+  if(a.pauseAfter!==undefined&&!finite(a.pauseAfter)||a.recoveryMovement!==undefined&&!['stop','chase'].includes(a.recoveryMovement)||a.pauseMovement!==undefined&&!['stop','chase'].includes(a.pauseMovement))throw Error(`Invalid enemy action ${id} recovery`);
+  if(p&&(p.start!==undefined&&!['start','impact','end'].includes(p.start)||p.seconds!==undefined&&!finite(p.seconds)||p.group&&(!p.group.id.trim()||!finite(p.group.seconds))||p.targetSeconds!==undefined&&!finite(p.targetSeconds)||p.globalSeconds!==undefined&&!finite(p.globalSeconds)||p.consumeOnInterrupt!==undefined&&typeof p.consumeOnInterrupt!=='boolean'||p.affectedByHaste!==undefined&&typeof p.affectedByHaste!=='boolean'))throw Error(`Invalid enemy action ${id} cooldownPolicy`);
   for(const steps of [a.steps,a.phase2??[]])for(const s of steps){
    if(!positive(s.at)||!finite(s.sampleAt??0)||(s.sampleAt??0)>=s.at)throw Error(`Invalid enemy action ${id} timing`);
    for(const value of Object.values(s.expression))if(typeof value!=='number'||!Number.isFinite(value))throw Error(`Invalid enemy action ${id} expression`);

@@ -3,10 +3,10 @@ import { describe,it,expect } from 'vitest';
 import { LocalTransport } from '../../EmberDemo/assets/scripts/ember/platform/LocalTransport';
 import { GameWorld } from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import { captureDeveloperConfig,cloneDeveloperConfig,parseDeveloperConfig,saveDeveloperPreset,loadDeveloperPreset,type DeveloperConfig } from '../../EmberDemo/assets/scripts/ember/simulation/DeveloperConfig';
-import { DEFAULT_LOADOUT } from '../../EmberDemo/assets/scripts/ember/content/skills';
+import { DEFAULT_LOADOUT,DEVELOPER_LOADOUT } from '../../EmberDemo/assets/scripts/ember/content/skills';
 import { PERKS } from '../../EmberDemo/assets/scripts/ember/content/perks';
 function setup(change:(c:DeveloperConfig)=>void=()=>{}){
-  const p=new LocalTransport(1234);p.send({type:'DevOpen'});const c=p.snapshot().developer!.draft;change(c);p.send({type:'DevConfigure',config:c});p.send({type:'DevApply'});return p;
+  const p=new LocalTransport(1234);p.send({type:'DevOpen'});const c=p.snapshot().developer!.draft;c.loadout={...DEVELOPER_LOADOUT};change(c);p.send({type:'DevConfigure',config:c});p.send({type:'DevApply'});return p;
 }
 function run(p:LocalTransport,seconds:number){for(let i=0;i<Math.round(seconds*30);i++)p.advance(1/30);}
 describe('developer command boundary and replay',()=>{
@@ -66,7 +66,7 @@ describe('portable developer presets',()=>{
   });
   it('rejects malformed, unsupported and inconsistent imports atomically',()=>{
     const p=new LocalTransport();p.send({type:'DevOpen'});const before=p.snapshot().developer!.draft;
-    const invalid:unknown[]=['{bad',null,{...before,version:9},{...before,seed:NaN},{...before,seed:-1},{...before,seed:2**32},{...before,mapId:'missing'},{...before,wave:99},{...before,loadout:{...before.loadout,Q:'mistBolt'}},{...before,loadout:{...before.loadout,Q:'shield'}},{...before,perks:['burn','burn']},{...before,perks:['unknown']},{...before,equipment:{weapon:'helm'}},{...before,options:{...before.options,speed:99}},{...before,options:{...before.options,invincible:1}}];
+    const invalid:unknown[]=['{bad',null,{...before,version:9},{...before,seed:NaN},{...before,seed:-1},{...before,seed:2**32},{...before,mapId:'missing'},{...before,wave:99},{...before,loadout:{...before.loadout,Q:'mistBolt'}},{...before,loadout:{...before.loadout,Q:'shield',W:'shield'}},{...before,perks:['burn','burn']},{...before,perks:['unknown']},{...before,equipment:{weapon:'helm'}},{...before,options:{...before.options,speed:99}},{...before,options:{...before.options,invincible:1}}];
     for(const config of invalid){expect(()=>parseDeveloperConfig(config)).toThrow();p.send({type:'DevConfigure',config});expect(p.snapshot().developer!.draft).toEqual(before);expect(p.snapshot().developer!.notice).toBeTruthy();expect(p.world.phase).toBe('ready');}
   });
   it('three local slots save/load explicitly and handle missing/corrupt/unavailable storage',()=>{

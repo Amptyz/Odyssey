@@ -29,7 +29,7 @@
 - 场景与交互遵循 [营地与休息点](docs/SCENES.md)：Start 进入营地；商店/余烬是每人面板，不能恢复每关自动弹窗。交互按世界坐标 F 校验，全员集合后仅房主出发；首个余烬必选。
 - 每个地点遵循 `content/locations.ts` 的 `LocationDefinition`，必填 name、可选 subtitle；在 maps / scenes 中编辑，由 SceneSnapshot 和 SceneTransition 统一显示入场标题。显示名称不参与稳定 ID、存档或领取标记。
 - 无固定职业。玩家通过主动技能奖励与确定性装备购买形成构筑；装备同时决定外观。基础人物保持中性、简洁的遗迹风格。
-- 两种操作都以左键朝鼠标地面方向普攻，允许挥空；不恢复锁定、自动追击或鼠标吸附。QWER 是槽位，技能逻辑使用稳定 `SkillId`。
+- 两种操作都以左键朝鼠标地面方向普攻，允许挥空；不恢复锁定、自动追击或鼠标吸附。QWER 是槽位，普通开局 / 重开四槽均为显式 null，技能从余烬奖励获得；空槽不施法。技能逻辑使用稳定 `SkillId`。
 - 先判断能否复用已有配置和处理器。新技能 / 装备 / 敌人变种通常不需要在 `GameWorld` 加 ID 分支。
 - `simulation / combat-core / ai / content / utils` 保持不依赖 `cc`、DOM、真实时钟和全局随机数。输入和 UI 发命令，战斗状态由逻辑层修改，表现层消费快照。
 - 命中使用 `CollisionWorld` 的世界坐标查询；移动使用 `Pathfinder.sweep`。不能用贴图距离、动画回调或 Cocos 刚体另建一套伤害判定。
@@ -48,12 +48,14 @@
 | 玩家普攻形式 / 形式余烬 | `content/attacks.ts`、`content/perks.ts` → `combat-core/CombatEngine.ts`、`simulation/GameWorld.ts` |
 | 装备独立被动 / 内部冷却 | `content/equipment.ts` 的 passives → `simulation/EquipmentEffectSystem.ts`；通过 CombatEngine 实际事件触发 |
 | 全单位属性 / 公式 / 来源 | `combat-core/attributes/AttributeSet.ts`、`combat-core/ActorFactory.ts`；`content/enemies.ts` 的 template |
-| 敌人 / AI | `content/enemies.ts`、`content/enemy-actions.ts` → `simulation/EnemySystem.ts` |
+| 敌人 / AI | `content/enemies.ts`、`content/enemy-actions.ts`、`content/enemy-behaviors.ts` → `ai/EnemyDecision.ts`、`simulation/EnemySystem.ts`；[配置指南](docs/ENEMY_AI.md)、[ember-enemy-ai skill](.agents/skills/ember-enemy-ai/SKILL.md) |
+| 全局移速 / 弹速 / 镜头 | `content/tuning.ts` → `attributes/AttributeSet.ts`、弹体生成入口、`render/IsoProjection.ts` / `ArenaView.ts`；[参数指南](docs/GAME_FEEL.md) |
 | 余烬 / 新效果 / 状态 | `content/perks.ts`、`content/statuses.ts` → `combat-core/types.ts`、`EffectHandlers.ts`、`StatusSystem.ts` |
 | 地图 / 波次 / 营地与休息点 | `content/maps.ts`、`content/scenes.ts` → `simulation/LevelSystem.ts`、`simulation/SceneSystem.ts` |
 | 人物 / 装备贴图、动画 | `content/appearances.ts`、`content/animation.ts` → `render/HeroRig.ts`、`AnimatedUnit.ts` |
 | 命中 / 遮挡 / 弹体 | `combat-core/CollisionWorld.ts`、`simulation/GameWorld.ts` |
 | 联机 / 存档 / 掉线 | `platform/RoomTransport.ts`、`platform/room-protocol.ts`、`simulation/RunCheckpoint.ts`；根 `scripts/relay-server.ts` |
+| 单人存档 / 文件备份 | `platform/LocalTransport.ts`、`RunSaveStorage.ts`、`RunSaveFiles.ts` → `MainMenuLayout.ts` / `Hud.ts`；[使用与契约](docs/SAVES.md) |
 | 开发者面板 | `simulation/DeveloperConfig.ts`、`platform/LocalTransport.ts`、`render/DeveloperPanel.ts` |
 
 以上路径相对于游戏源码根目录；完整步骤与可复制示例见内容扩展指南。

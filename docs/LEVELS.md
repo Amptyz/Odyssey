@@ -61,7 +61,7 @@ waves.spawns是groups的确定汇总，用于内容校验/统计；实际布置�
 
 ## 镜头、输入与表现
 
-`IsoProjection.followProjection`将本地玩家插值后的脚底固定到设计屏幕中心(0,0)，zoom恒为1；不在地图边缘解除锁定，也不随着地图扩大缩小战斗单位。`worldToScreen`和`screenToWorld`共享同一份Projection。
+`SmoothCameraFollow`平滑跟随本地玩家插值后的脚底，默认zoom1.25、跟随半衰期0.1秒，移动中允许轻微偏离中心、停止后收敛；换场景 / 重开直接定位。角色、场景与交互物同步缩放，不按地图大小自动缩小。`worldToScreen`和`screenToWorld`共享同一份Projection；参数见 [全局速度与镜头](GAME_FEEL.md)。
 
 `GameBootstrap.draw`先调用`ArenaView.prepareCamera`，再更新输入，最后绘制ArenaView。这样鼠标地面指针与画面使用同一帧相机原点，移动镜头不会造成瞄准偏移。网络客机使用snapshot.hero，自然跟随自己的角色。
 

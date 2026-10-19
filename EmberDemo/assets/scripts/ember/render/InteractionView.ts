@@ -28,8 +28,9 @@ export class InteractionView {
     }
     return this.entries.map(e=>{
       const item=s.scene.interactions.find(n=>n.id===e.id)!,p=worldToScreen(item,camera);e.node.setPosition(Math.round(p.x),Math.round(p.y));
+      e.node.setScale(camera.zoom,camera.zoom,1);
       e.rig?.pose({state:'idle',age:s.time,facing:1});e.ring.clear();
-      const localCamera={...camera,origin:{x:camera.origin.x-p.x,y:camera.origin.y-p.y}};
+      const localCamera={...camera,zoom:1,origin:{x:0,y:0}},base=worldToScreen(item,localCamera);localCamera.origin={x:-base.x,y:-base.y};
       drawWorldShape(e.ring,{kind:'circle',center:item,radius:item.radius},localCamera,item.kind==='departure'?'#469B85':item.claimed?'#91A39855':'#C19A5955',item.kind==='departure'?3:1);
       return{node:e.node,y:p.y};
     });

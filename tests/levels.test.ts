@@ -8,6 +8,7 @@ import {Pathfinder} from '../EmberDemo/assets/scripts/ember/ai/Pathfinder';
 import {enemyPlacements,exitProgress,levelDefinition,levelSnapshot,levelSpawn} from '../EmberDemo/assets/scripts/ember/simulation/LevelSystem';
 import {DEFAULT_PROJECTION,followProjection,screenToWorld,visibleWorldBounds,worldToScreen} from '../EmberDemo/assets/scripts/ember/render/IsoProjection';
 import {distance} from '../EmberDemo/assets/scripts/ember/utils/math';
+import {GAME_TUNING} from '../EmberDemo/assets/scripts/ember/content/tuning';
 
 describe('five-level exploration maps',()=>{
  for(const mapId of Object.keys(MAPS) as (keyof typeof MAPS)[])it(`${mapId}: five traversable routes, safe deterministic groups and spacious final Boss room`,()=>{
@@ -33,7 +34,7 @@ describe('five-level exploration maps',()=>{
 describe('local-player camera contract',()=>{
  it('locks the local interpolated ground position to center at combat scale with matching inverse projection',()=>{
   const camera={...DEFAULT_PROJECTION,origin:{...DEFAULT_PROJECTION.origin}};
-  for(const hero of [{x:7,y:8},{x:42.125,y:31.875},{x:54,y:42}]){followProjection(camera,hero);expect(camera.zoom).toBe(1);expect(worldToScreen(hero,camera)).toEqual({x:0,y:0});for(const offset of [{x:2,y:-1},{x:-7,y:5}]){const target={x:hero.x+offset.x,y:hero.y+offset.y},roundtrip=screenToWorld(worldToScreen(target,camera),camera);expect(roundtrip.x).toBeCloseTo(target.x,10);expect(roundtrip.y).toBeCloseTo(target.y,10);}}
+  for(const hero of [{x:7,y:8},{x:42.125,y:31.875},{x:54,y:42}]){followProjection(camera,hero);expect(camera.zoom).toBe(GAME_TUNING.cameraZoom);expect(worldToScreen(hero,camera)).toEqual({x:0,y:0});for(const offset of [{x:2,y:-1},{x:-7,y:5}]){const target={x:hero.x+offset.x,y:hero.y+offset.y},roundtrip=screenToWorld(worldToScreen(target,camera),camera);expect(roundtrip.x).toBeCloseTo(target.x,10);expect(roundtrip.y).toBeCloseTo(target.y,10);}}
  });
  it('moves the visible world window with the selected local player rather than map size or initial hero',()=>{
   const camera={...DEFAULT_PROJECTION,origin:{...DEFAULT_PROJECTION.origin}};followProjection(camera,{x:5,y:5});const first=visibleWorldBounds(camera);followProjection(camera,{x:35,y:25});const second=visibleWorldBounds(camera);expect(second.minX-first.minX).toBeCloseTo(30);expect(second.minY-first.minY).toBeCloseTo(20);expect(second.maxX-second.minX).toBeCloseTo(first.maxX-first.minX);

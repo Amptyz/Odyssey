@@ -1,4 +1,5 @@
 import {GameWorld} from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
+import {DEVELOPER_LOADOUT} from '../../EmberDemo/assets/scripts/ember/content/skills';
 import {CAMP,JOURNEYS} from '../../EmberDemo/assets/scripts/ember/content/scenes';
 import type {LabId} from '../../EmberDemo/assets/scripts/ember/content/perks';
 import type {InteractionKind} from '../../EmberDemo/assets/scripts/ember/content/scenes';
@@ -11,6 +12,9 @@ export function openMerchantFixture(w:GameWorld,lab?:LabId):void {
  * preventing unrelated randomly offered stats from changing damage assertions.
  * Normal command-only camp/claim/embark paths are covered in scenes.test.ts. */
 export function startCombatFixture(w:GameWorld,wave=1):void {
+ // Mechanics fixtures explicitly opt into skills; ordinary Start/Restart remain empty.
+ for(const p of w.players.values())for(const slot of ['Q','W','E','R'] as const)
+  if(p.loadout[slot]===null&&!Object.values(p.loadout).includes(DEVELOPER_LOADOUT[slot]))p.loadout[slot]=DEVELOPER_LOADOUT[slot];
  if(w.phase==='ready')w.command({type:'Start'});w.wave=wave-1;
  // Only seed configured places; other boundaries depart directly from a cleared level.
  w.phase=wave===1||JOURNEYS[w.mapId].rests[w.wave]?'camp':'cleared';

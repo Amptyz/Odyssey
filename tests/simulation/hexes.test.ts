@@ -4,7 +4,7 @@ import { GameWorld } from '../../EmberDemo/assets/scripts/ember/simulation/GameW
 import { PERKS,LAB_PRESETS,type LabId } from '../../EmberDemo/assets/scripts/ember/content/perks';
 import type { PerkId } from '../../EmberDemo/assets/scripts/ember/combat-core/types';
 import { rewardChoices } from '../../EmberDemo/assets/scripts/ember/simulation/RewardSystem';
-import { DEFAULT_LOADOUT } from '../../EmberDemo/assets/scripts/ember/content/skills';
+import { DEVELOPER_LOADOUT as DEFAULT_LOADOUT } from '../../EmberDemo/assets/scripts/ember/content/skills';
 import {AttributeSet} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { Random } from '../../EmberDemo/assets/scripts/ember/utils/Random';
 function fixture(perks:PerkId[]=[],weapon?:'staff'|'bow'){

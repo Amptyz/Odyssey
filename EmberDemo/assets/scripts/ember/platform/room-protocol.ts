@@ -4,7 +4,7 @@ import type { RunCheckpoint } from '../simulation/RunCheckpoint';
 import { SKILL_SLOTS,HERO_SKILLS } from '../content/skills';
 import { SHOP_CATALOG,EQUIPMENT_SLOTS } from '../content/equipment';
 
-export const ROOM_VERSION='ember-coop-6';
+export const ROOM_VERSION='ember-coop-7';
 export const MAX_PLAYERS=4;
 export interface RoomMember {id:string;name:string;connected:boolean;active:boolean}
 export interface RoomInfo {code:string;hostId:string;members:RoomMember[];started:boolean;revision:number;hasSave:boolean;hostAvailable:boolean}

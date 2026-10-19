@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "scope": "Actual Creator build; normal mouse/keyboard reward path, page reloads, pause save/load, download, file chooser import, corruption rejection, battle checkpoint and isolated-browser file import.",
+  "checks": [
+    "a fresh browser exposes an empty single-player save slot",
+    "loading an empty slot reports the missing save without starting a run",
+    "starting a normal game creates a durable browser save",
+    "normal reward selection is saved while awaiting a slot",
+    "refresh returns to the menu with a readable save",
+    "Continue restores the exact pending reward and offer without rerolling",
+    "equipping the earned skill persists null slots and the ember claim",
+    "the pause menu saves and reports successful persistence",
+    "Export downloads a validated file containing the earned skill",
+    "Restart retains the previous save until a new game starts",
+    "a deliberately started new game has empty skills",
+    "the file chooser imports the backup into normal gameplay",
+    "a corrupt file reports failure and keeps the paused current build",
+    "a rejected file cannot overwrite the durable save",
+    "departure automatically writes the combat start checkpoint",
+    "manual battle save/load returns to the wave start and pauses for the player",
+    "battle loading retains the obtained skill and gives feedback",
+    "the player can resume the battle normally after loading",
+    "a second real refresh can continue the battle checkpoint",
+    "a separate browser can import the file and create its own durable save",
+    "single-player persistence and actual file dialogs produce no Creator browser errors"
+  ],
+  "errors": [],
+  "screenshots": [
+    "reports/local-save-continue-menu.png",
+    "reports/local-save-pause.png",
+    "reports/local-save-battle-loaded.png",
+    "reports/local-save-battle-loaded-960.png"
+  ]
+}

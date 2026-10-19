@@ -5,7 +5,7 @@ export type EnemyBehaviorId='melee'|'ranged'|'monster';
 export interface EnemyDefinition {
   name:string;template:UnitTemplate;radius:number;windup:number;recovery:number;
   behavior:EnemyBehaviorId;appearance:string;skillId?:SkillId;attackArc?:number;
-  category:'normal'|'elite'|'boss';map:'ember'|'frost';actionSet:string;keepDistance?:number;strafe?:number;
+  category:'normal'|'elite'|'boss';map:'ember'|'frost';actionSet:string;ai?:string;keepDistance?:number;strafe?:number;
   boss?:{threshold:number;loop:number;phase1:readonly {at:number;action:string}[];phase2:readonly {at:number;action:string}[]};
 }
 function define(name:string,map:EnemyDefinition['map'],category:EnemyDefinition['category'],hp:number,ad:number,ap:number,armor:number,mr:number,period:number,ms:number,range:number,radius:number,windup:number,actionSet:string,extra:Partial<EnemyDefinition>={}):EnemyDefinition {

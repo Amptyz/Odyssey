@@ -16,12 +16,13 @@ import { PixelVfxView } from './PixelVfxView';
 import { motionPose } from '../content/animation';
 import type { UnitSnapshot as Unit, WorldSnapshot } from '../simulation/GameWorld';
 import { lerp, type Vec2 } from '../utils/math';
-import { DEFAULT_PROJECTION, fitMapProjection, followProjection,screenVisible,worldToScreen, type Projection } from './IsoProjection';
+import { DEFAULT_PROJECTION, fitMapProjection, SmoothCameraFollow,screenVisible,worldToScreen, type Projection } from './IsoProjection';
 import { box,color,disk,graphics,setText,text,uiNode } from './Primitives';
 interface UnitView {node:Node;body:AnimatedUnit|MonsterVisual;bars:Graphics;ring:Graphics;kind:Unit['kind']}
 /** Nodes are retained/recycled. Only dynamic vector paths are redrawn. */
 export class ArenaView {
   readonly camera:Projection={...DEFAULT_PROJECTION,origin:{x:0,y:265}};
+  private readonly cameraFollow=new SmoothCameraFollow();private cameraKey='';private cameraTick=-1;
   private readonly objects:Node;private readonly floor:Graphics;private mapKey='';private readonly interactions:InteractionView;
   private readonly effects:Graphics;
   private readonly projectiles:Graphics;
@@ -47,10 +48,14 @@ export class ArenaView {
     this.obstacles.length=0;this.obstacles.push(...this.environment.configure(map,this.camera));
   }
 
-  prepareCamera(state:WorldSnapshot,alpha:number):void {this.configureMap(state.mapId,state.scene.kind==='camp');followProjection(this.camera,{x:lerp(state.hero.previous.x,state.hero.x,alpha),y:lerp(state.hero.previous.y,state.hero.y,alpha)});}
+  prepareCamera(state:WorldSnapshot,alpha:number,dt=0,presentationKey=''):void {
+    this.configureMap(state.mapId,state.scene.kind==='camp');
+    const key=`${presentationKey}:${state.mapId}:${state.scene.id}:${state.hero.id}`,snap=this.cameraKey!==key||state.tick<this.cameraTick;
+    this.cameraKey=key;this.cameraTick=state.tick;
+    this.cameraFollow.update(this.camera,{x:lerp(state.hero.previous.x,state.hero.x,alpha),y:lerp(state.hero.previous.y,state.hero.y,alpha)},state.paused?0:dt,snap);
+  }
 
   update(state:WorldSnapshot,alpha:number,pointer:Vec2,dt=0,debug=false):void {
-    this.prepareCamera(state,alpha);
     if(state.tick<this.lastTick)this.visualTime=state.time;this.lastTick=state.tick;
     if(!state.paused)this.visualTime=['camp','cleared','fighting'].includes(state.phase)?state.time:Math.max(this.visualTime,state.time)+Math.min(dt,.05);
     this.obstacles.length=0;this.obstacles.push(...this.environment.update(this.visualTime,this.camera));
@@ -65,6 +70,7 @@ export class ArenaView {
       if(!v){v=this.spare.pop() ?? this.makeView(u.kind);v.node.active=true;if(v.kind!==u.kind){v.kind=u.kind;v.body.node.destroy();v.body=u.kind==='hero'?new AnimatedUnit(v.node,u.kind,this.art):new MonsterVisual(v.node,u.kind,this.art);v.body.node.setSiblingIndex(1);}this.units.set(u.id,v);}
       v.node.active=true;if(v.body instanceof MonsterVisual)v.body.update(u,state.enemies?.units.find(pose=>pose.id===u.id),this.visualTime);else v.body.update(motionPose(u,this.visualTime),state.party?.find(p=>p.id===u.id)?.appearance??state.appearance);
       const p=worldToScreen({x:lerp(u.previous.x,u.x,alpha),y:lerp(u.previous.y,u.y,alpha)},this.camera);
+      v.node.setScale(this.camera.zoom,this.camera.zoom,1);
       v.node.setPosition(Math.round(p.x),Math.round(p.y));order.push({node:v.node,y:p.y});
       const bar=v.bars;bar.node.active=u.alive;bar.node.setPosition(0,v.body.height-47+4);bar.clear();box(bar,-19,47,38,5,'#354D49',2);box(bar,-18,48,36*u.hp/u.maxHp,3,u.kind==='hero'?'#95D4B5':'#DA957E',1);
       if(u.shield>0)box(bar,-18,54,36*Math.min(1,u.shield/65),3,'#A3CFE3',1);
@@ -83,7 +89,7 @@ export class ArenaView {
     const node=uiNode('Unit',this.objects);const ring=graphics('Indicators',node),body=kind==='hero'?new AnimatedUnit(node,kind,this.art):new MonsterVisual(node,kind,this.art),bars=graphics('Health',node);
     return {node,body,bars,ring,kind};
   }
-  debug(){return{time:this.visualTime,camera:{...this.camera,origin:{...this.camera.origin}},environment:this.environment.debug(),vfx:this.pixelVfx.debug(),units:Array.from(this.units,([id,v])=>({id,...v.body.debug()}))};}
+  debug(){return{time:this.visualTime,camera:{...this.camera,origin:{...this.camera.origin}},environment:this.environment.debug(),vfx:this.pixelVfx.debug(),units:Array.from(this.units,([id,v])=>({id,...v.body.debug(),worldScale:{x:v.node.scale.x,y:v.node.scale.y}}))};}
 
   private drawGround(state:WorldSnapshot,pointer:Vec2):void {
     const g=this.targeting;g.clear();
@@ -108,7 +114,7 @@ export class ArenaView {
     const g=this.effects;g.clear();let index=0,particles=0;
     for(const cue of state.cues){const p=worldToScreen(cue.at,this.camera),life=cue.ttl/cue.duration;
       if(cue.kind==='damage'||cue.kind==='heal'){
-        const label=this.numbers[index++];if(!label)continue;label.node.active=true;label.node.setPosition(p.x,p.y+62+(1-life)*25);
+        const label=this.numbers[index++];if(!label)continue;label.node.active=true;label.node.setPosition(p.x,p.y+62*this.camera.zoom+(1-life)*25);
         label.color=color(cue.kind==='heal'?'#245E4D':cue.critical?'#A65738':cue.trueDamage?'#446B87':cue.cause==='burn'?'#9D4B25':'#503F32');
         setText(label,`${cue.kind==='heal'?'+':''}${Math.round(cue.amount??0)}${cue.critical?'!':''}`);
       }else if(cue.shape){

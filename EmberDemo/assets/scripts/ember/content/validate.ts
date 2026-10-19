@@ -4,6 +4,8 @@ import {Pathfinder} from '../ai/Pathfinder';
 import {AttributeSet,validateExpression,validModifier} from '../combat-core/attributes/AttributeSet';
 import { SKILLS,skill,SKILL_SLOTS,HERO_SKILLS } from './skills';
 import {ENEMY_ACTION_SETS,ENEMY_ACTIONS,validateEnemyActions} from './enemy-actions';
+import {validateEnemyBehaviors} from './enemy-behaviors';
+import {GAME_TUNING} from './tuning';
 import { ENEMIES,enemy } from './enemies';
 import { MAPS,mapDefinition } from './maps';
 import { LAB_PRESETS,PERKS } from './perks';
@@ -23,6 +25,8 @@ function location(value:LocationDefinition|undefined,path:string):void {
 }
 /** Run at startup and in tests so missing content references fail before combat. */
 export function validateContent():void {
+  validateEnemyBehaviors();
+  for(const [key,value] of Object.entries(GAME_TUNING))positive(value,`tuning.${key}`);
   requireContent(UNIT_APPEARANCES[HERO.appearance],'hero appearance');
   for(const [id,frames] of Object.entries(ATLAS_FRAMES))for(const [index,frame] of frames.entries()){
     requireContent(frame.rect.every(Number.isFinite)&&frame.rect[0]>=0&&frame.rect[1]>=0&&frame.rect[2]>0&&frame.rect[3]>0,`art.${id}.${index}.rect`);
@@ -68,8 +72,8 @@ export function validateContent():void {
     for(const o of m.obstacles){requireContent(!obstacleIds.has(o.id),`maps.${id}.duplicate obstacle`);obstacleIds.add(o.id);positive(o.radius,`maps.${id}.obstacle radius`);
       requireContent(o.x-o.radius>=0&&o.x+o.radius<=m.width&&o.y-o.radius>=0&&o.y+o.radius<=m.height,`maps.${id}.obstacle bounds`);
       requireContent(Math.hypot(o.x-m.heroSpawn.x,o.y-m.heroSpawn.y)>o.radius+HERO.radius,`maps.${id}.blocked heroSpawn`);}
-    for(const slot of SKILL_SLOTS)requireContent(SKILLS[m.loadout[slot]]&&skill(m.loadout[slot]).tags.includes('hero'),`maps.${id}.loadout.${slot}`);
-    requireContent(new Set(Object.values(m.loadout)).size===4,`maps.${id}.duplicate skills`);
+    for(const slot of SKILL_SLOTS){const value=m.loadout[slot];requireContent(value===null||value&&SKILLS[value]&&skill(value).tags.includes('hero'),`maps.${id}.loadout.${slot}`);}
+    const equipped=Object.values(m.loadout).filter(id=>id!==null);requireContent(new Set(equipped).size===equipped.length,`maps.${id}.duplicate skills`);
     requireContent(HERO_SKILLS.length>=7,`maps.${id}.skill reward pool`);
     const journey=JOURNEYS[id],stops=Object.entries(journey.rests);
     location(journey.camp,`journeys.${id}.camp`);

@@ -6,6 +6,8 @@ import type { LabId } from '../content/perks';
 import type { EnemyKind } from '../content/enemies';
 export type DeveloperAction='recover'|'cooldowns'|'health25'|'clearEnemies'|'step';
 export type GameCommand =
+  | { type:'SaveRun' }
+  | { type:'LoadRun';data?:unknown }
   | { type:'DevOpen'|'DevClose'|'DevApply'|'DevRestart'|'DevExit'|'DevCapture' }
   | { type:'DevConfigure'; config:unknown }
   | { type:'DevNotice'; message:string }

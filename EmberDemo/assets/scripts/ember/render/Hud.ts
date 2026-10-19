@@ -1,7 +1,7 @@
 import {BASIC_ATTACKS} from '../content/attacks';
 import { Graphics, Label, Node } from 'cc';
 import type { ControlMode } from '../input/InputController';
-import { skill,SKILL_SLOTS,SKILL_DESCRIPTIONS,DEFAULT_LOADOUT,type SkillSlot } from '../content/skills';
+import { skill,skillSlotName,SKILL_SLOTS,SKILL_DESCRIPTIONS,type SkillSlot } from '../content/skills';
 import { MAPS,mapDefinition,type MapId } from '../content/maps';
 import { perk } from '../content/perks';
 import type { GameCommand } from '../platform/protocol';
@@ -18,7 +18,7 @@ export class Hud {
   private readonly battleHud:Node;
   private readonly hp:Label;private readonly wave:Label;private readonly meter:Graphics;private readonly attributes:Label;private readonly mana:Label;private readonly teammates:Label;private readonly gearHud:Node;private gearKey='';
   private readonly boonList:Label;private readonly equipmentEffects:Label;private readonly debugLabel:Label;
-  private readonly skills:{id:SkillSlot;g:Graphics;cd:Label;key:Label;name:Label;icon?:Node;skillId?:string}[]=[];
+  private readonly skills:{id:SkillSlot;g:Graphics;cd:Label;key:Label;name:Label;icon?:Node;skillId?:string|null}[]=[];
   private readonly hint:Label;private mode:ControlMode='classic';
   onControlMode?:(mode:ControlMode)=>void;
   private readonly overlay:Node;private signature='';private regions:HitRegion[]=[];
@@ -44,7 +44,7 @@ export class Hud {
     for(const [i,id] of SKILL_SLOTS.entries()){
       const x=-165+i*110,node=uiNode(`Skill ${id}`,hud,100,74);node.setPosition(x,-286);
       const g=graphics('Cooldown plate',node),key=text('Key',node,id,24,-28,3,40,40,'#E7D2A5');
-      const name=text('Skill name',node,skill(DEFAULT_LOADOUT[id]).name,12,8,-23,96,24,'#BFCFC8');
+      const name=text('Skill name',node,'空槽',12,8,-23,96,24,'#BFCFC8');
       const cd=text('Cooldown',node,'',17,18,5,58,30);this.skills.push({id,g,cd,key,name});
     }
     text('Debug toggle',hud,'F3 · DEBUG',11,552,-340,150,26,'#36585B');
@@ -76,14 +76,14 @@ export class Hud {
     setText(this.wave,s.scene.kind==='camp'?s.scene.name:s.phase==='ready'?`PROJECT EMBER  /  ${mapDefinition(s.mapId).name}`:`${s.developer?.enabled?'DEV · ':''}${mapDefinition(s.mapId).name} · ${s.wave} / ${s.totalWaves} 关 · ${s.level.exitActive?'前往出口':s.level.remainingEnemies+' 个敌人'}${s.lab?'    ·    联动实验':''}`);
     setText(this.boonList,`金币 ${s.gold}  ·  装备 ${Object.keys(s.equipment).length}/6\n普攻 · ${BASIC_ATTACKS[s.basicAttack].name}\n${s.perks.map(id=>perk(id).name).join(' · ')||'靠近余烬 · F 选择效果'}`);
     setText(this.equipmentEffects,(s.equipmentPassives??[]).map(p=>`${p.kind==='spellblade'?'符击':'石息'} · ${p.readyIn>0?`冷却 ${p.readyIn.toFixed(1)}秒`:p.lockedAttackId!==undefined?'等待普攻命中':p.armedFor>0?`蓄能 ${p.armedFor.toFixed(1)}秒`:'就绪'}`).join('\n'));
-    for(const entry of this.skills){const {id,g,cd,name}=entry,definition=skill(s.loadout[id]);setText(name,definition.name);if(entry.skillId!==s.loadout[id]){entry.icon?.destroy();entry.skillId=s.loadout[id];entry.icon=this.art.icon(g.node.parent!,s.loadout[id],31);entry.icon?.setPosition(-5,6);entry.key.node.setPosition(-34,5);entry.key.fontSize=15;cd.node.setPosition(30,7);}
-      const remaining=s.cooldowns[id],ratio=Math.min(1,remaining/(definition.cooldown*s.stats.cooldownMultiplier)),primed=s.primed&&definition.behavior.kind==='projectile';
+    for(const entry of this.skills){const {id,g,cd,name}=entry,skillId=s.loadout[id],definition=skillId?skill(skillId):undefined;setText(name,skillSlotName(skillId));if(entry.skillId!==skillId){entry.icon?.destroy();entry.skillId=skillId;entry.icon=skillId?this.art.icon(g.node.parent!,skillId,31):undefined;entry.icon?.setPosition(-5,6);entry.key.node.setPosition(skillId?-34:-28,skillId?5:3);entry.key.fontSize=skillId?15:24;cd.node.setPosition(30,7);}
+      const remaining=s.cooldowns[id],ratio=definition?Math.min(1,remaining/(definition.cooldown*s.stats.cooldownMultiplier)):0,primed=s.primed&&definition?.behavior.kind==='projectile';
       g.clear();box(g,-49,-37,98,74,'#243E43',10);box(g,-47,-35,94,70,remaining>0?'#30454B':'#3B5859',8);
       if(remaining>0)box(g,-47,-35,94,70*ratio,'#203138BB',7);
       if(primed){g.strokeColor=color('#E8C98C');g.lineWidth=2;g.roundRect(-48,-36,96,72,9);g.stroke();}
       setText(cd,remaining>0?remaining.toFixed(1):primed?'强化':'');}
     if(this.debug)setText(this.debugLabel,`FPS ${Math.round(fps)}  ·  Tick ${s.tick}\n事件 ${s.metrics.processed} / 拦截 ${s.metrics.dropped} / 深度 ${s.metrics.maxDepth}\nSeed ${s.seed}  ·  实体 ${s.units.length} / 弹体 ${s.projectiles.length+s.enemies.projectiles.length}`);
-    const signature=`${s.phase}:${s.paused}:${s.choices.map(c=>c.id).join(',')}:${s.pendingSkill}:${s.lab}:${s.mapId}:${Object.values(s.loadout).join(',')}:${s.gold}:${JSON.stringify(s.equipment)}:${s.inventory.join(',')}:${this.shopPage}:${s.developer?.open}:${s.developer?.enabled}:${s.developer?.revision}:${s.party?.find(p=>p.id===s.hero.id)?.ready}:${s.network?.blocked}:${s.network?.status}`;
+    const signature=`${s.phase}:${s.paused}:${s.choices.map(c=>c.id).join(',')}:${s.pendingSkill}:${s.lab}:${s.mapId}:${Object.values(s.loadout).join(',')}:${s.gold}:${JSON.stringify(s.equipment)}:${s.inventory.join(',')}:${this.shopPage}:${s.developer?.open}:${s.developer?.enabled}:${s.developer?.revision}:${s.party?.find(p=>p.id===s.hero.id)?.ready}:${s.network?.blocked}:${s.network?.status}:${s.localSave?.revision}`;
     if(signature!==this.signature){this.signature=signature;this.buildModal(s);}
   }
   click(point:Vec2):boolean {
@@ -129,18 +129,23 @@ export class Hud {
       text('Help',this.overlay,help+'\n红色圆环 / 射线：敌人攻击预警    F3：调试信息\n余烬可选主动技能；选择后用 1–4 确认替换槽位。',17,0,-28,1000,200,'#CDDCD0');
       this.button('继续试炼  ESC',-145,-164,250,()=>this.send({type:'TogglePause'}));this.button(s.network?'离开联机房间':s.developer?.enabled?'重测当前配置':'重新开始',145,-164,250,()=>this.send({type:'Restart'}),'#675B58');
       this.button(`查看本局余烬 · ${s.perks.length}`,0,-230,330,()=>{this.inspectPerks=true;this.perkPage=0;this.signature='';},'#3E5559');
+      if(!s.network&&!s.developer?.enabled){
+        this.button('保存进度',-145,-288,250,()=>this.send({type:'SaveRun'}));this.button('读取存档',145,-288,250,()=>this.send({type:'LoadRun'}),'#586552');
+        this.button('导入存档文件',-145,246,250,()=>window.dispatchEvent(new Event('ember-run-import')),'#445F61');this.button('导出存档文件',145,246,250,()=>window.dispatchEvent(new Event('ember-run-export')),'#445F61');
+        this.saveStatus(s);
+      }
     }else if(s.phase==='reward'&&s.pendingSkill){
       text('Skill acquired',this.overlay,`选择技能：${skill(s.pendingSkill).name}`,32,0,225,1000,60,'#EFE2C1');
-      text('Skill description',this.overlay,SKILL_DESCRIPTIONS[s.pendingSkill]+'  选择要替换的槽位。',17,0,159,1060,55,'#BED9CD');
+      text('Skill description',this.overlay,SKILL_DESCRIPTIONS[s.pendingSkill]+'  选择要装备的槽位。',17,0,159,1060,55,'#BED9CD');
       for(const [i,slot] of SKILL_SLOTS.entries()){
         const x=(i-1.5)*280,g=graphics(`Replace ${slot}`,this.overlay);box(g,x-128,-115,256,225,'#2D464C',12);
         text('Slot key',this.overlay,`${i+1} · ${this.mode==='wasd'&&slot==='W'?'空格':slot}`,22,x,85,220,45,'#AED7E2');
-        text('Old skill',this.overlay,skill(s.loadout[slot]).name,22,x,-20,220,35,'#EFE2C1');
-        this.art.icon(this.overlay,s.loadout[slot],48)?.setPosition(x,30);
-        this.button('替换此技能',x,-66,226,()=>this.send({type:'ConfirmSkill',slot}));
+        text('Old skill',this.overlay,skillSlotName(s.loadout[slot]),22,x,-20,220,35,'#EFE2C1');
+        const id=s.loadout[slot];if(id)this.art.icon(this.overlay,id,48)?.setPosition(x,30);
+        this.button(id?'替换此技能':'装备此技能',x,-66,226,()=>this.send({type:'ConfirmSkill',slot}));
       }
       this.button('返回余烬选择',0,-213,280,()=>this.send({type:'CancelSkill'}),'#445F61');
-      text('Replacement note',this.overlay,'只替换所选槽位；被动余烬保留，缺少对应技能时暂不生效。',14,0,-280,1000,35,'#A3BEB1');
+      text('Replacement note',this.overlay,'空槽可直接装备；已有技能时替换所选槽位，被动余烬保留。',14,0,-280,1000,35,'#A3BEB1');
     }else if(s.phase==='reward'){
       text('Reward eyebrow',this.overlay,`${s.scene.name}   /   每人独立选择一次`,14,0,236,700,30,'#A8C4B7');
       text('Reward title',this.overlay,'选 择 余 烬',38,0,286,850,65,'#EFE2C1');
@@ -156,12 +161,20 @@ export class Hud {
       }
       this.button('暂时离开 · Esc',470,312,270,()=>this.send({type:'CloseInteraction'}),'#445F61');
       text('Reward footer',this.overlay,'选择后返回场景；前往出发点集合，由房主确认出发。',13,0,-271,850,30,'#A5C2B5');
-      for(const [i,slot]of SKILL_SLOTS.entries()){const x=(i-1.5)*225;this.art.icon(this.overlay,s.loadout[slot],25)?.setPosition(x-65,-316);text('Reward current '+slot,this.overlay,slot+' · '+skill(s.loadout[slot]).name,12,x+9,-316,170,30,'#BEB6A8');}
+      for(const [i,slot]of SKILL_SLOTS.entries()){const x=(i-1.5)*225,id=s.loadout[slot];if(id)this.art.icon(this.overlay,id,25)?.setPosition(x-65,-316);text('Reward current '+slot,this.overlay,slot+' · '+skillSlotName(id),12,x+9,-316,170,30,'#BEB6A8');}
     }else{
       const won=s.phase==='victory';text('Result eyebrow',this.overlay,won?'TRIAL COMPLETE':'THE EMBER REMAINS',14,0,186,800,40,'#A2C6B6');
       text('Result title',this.overlay,won?'余烬长明':'火种未熄',48,0,105,800,100,'#EFE2C1');
       text('Result stats',this.overlay,`${won?`${s.totalWaves} 波试炼已通过`:'此次止步第 '+s.wave+' 波'}   ·   击杀 ${s.units.filter(u=>u.team==='hero'&&!u.alive).length?s.kills-1:s.kills}   ·   ${Math.floor(s.time)} 秒\n${s.perks.map(id=>perk(id).name).join('  /  ')||'再次尝试，寻找属于你的组合。'}`,17,0,0,940,100,'#C5D7CB');
       this.button(s.network?'返回单人首页  ↵':'再来一次  ↵',0,-130,280,()=>this.send({type:'Restart'}));
+      if(!s.network&&!s.developer?.enabled){
+        this.button('读取存档',-145,-210,250,()=>this.send({type:'LoadRun'}));this.button('导入存档文件',145,-210,250,()=>window.dispatchEvent(new Event('ember-run-import')),'#445F61');
+        this.button('导出存档文件',0,-273,280,()=>window.dispatchEvent(new Event('ember-run-export')),'#445F61');this.saveStatus(s);
+      }
     }
+  }
+  private saveStatus(s:WorldSnapshot):void {
+    text('Save status',this.overlay,s.localSave?.notice||s.localSave?.label||'暂无单人存档',12,0,-326,1180,28,'#D8C6A4');
+    text('Save rules',this.overlay,'营地与清场进度自动保存；战斗中读档从本关起点恢复。',11,0,-349,1150,22,'#A5C2B5');
   }
 }

@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-20",
+  "status": "passed",
+  "cause": "Equal world-space speed through the 54x28 isometric projection displayed vertical travel at 28/54 of horizontal travel.",
+  "behavior": [
+    "Ordinary walking preserves the previous horizontal pace and compensates projected direction for equal screen speed.",
+    "WASD, player path following and enemy ordinary movement use the same ground metric. Path acceleration and braking use projected distance.",
+    "Attributes, slows, analog input magnitude, fixed steps, release, immobility and world-space swept collision remain authoritative.",
+    "Enemy escape checks use the compensated walking reach for each sampled direction. Skill dash/charge and projectiles retain their authored world distances and speeds."
+  ],
+  "checks": {
+    "pnpm check": "32 files / 402 tests passed",
+    "Creator 3.8.8 Web Desktop": "passed; GroundMovement metadata imported by Creator",
+    "pnpm test:movement": 35,
+    "pnpm test:feel": 11,
+    "pnpm test:scenes": 52,
+    "pnpm test:multiplayer": 21
+  },
+  "measurements": {
+    "wasdEightDirectionsPixelsPerSecond": 300.697,
+    "classicEightDirectionsSampleRangePixelsPerSecond": [296.17, 298.28],
+    "classicNote": "Sample interval includes the end of ordinary acceleration. Eight directions agree within one percent; all targets reached normally.",
+    "measurementMethod": "Actual normal camp, real keyboard chords and right clicks. Both endpoints are projected through the same current camera to cancel camera follow motion."
+  },
+  "artifacts": [
+    "docs/GAME_FEEL.md",
+    "tests/movement-directions.test.ts",
+    "reports/browser-movement-directions.json",
+    "reports/browser-game-feel.json",
+    "reports/browser-scenes.json",
+    "reports/browser-multiplayer.json",
+    "reports/movement-directions-1280.png",
+    "reports/movement-directions-960.png"
+  ],
+  "limits": [
+    "worldMoveSpeed/stats.speed retain their nominal horizontal reference semantics; velocity contains the actual directional world speed.",
+    "Directional world speed changes are intentional. No new complete campaign balance or four-player load run was performed."
+  ],
+  "preview": "http://127.0.0.1:8080/"
+}

@@ -3,7 +3,7 @@ import {STAT_KEYS,type Stat} from '../combat-core/attributes/AttributeSet';
 import { EditBox,Label,Node,UITransform } from 'cc';
 import type { Vec2 } from '../utils/math';
 import { MAPS,mapDefinition,type MapId } from '../content/maps';
-import { HERO_SKILLS,SKILL_SLOTS,skill,type SkillSlot } from '../content/skills';
+import { HERO_SKILLS,SKILL_SLOTS,skill,skillSlotName,type SkillSlot } from '../content/skills';
 import { PERKS,perk } from '../content/perks';
 import { EQUIPMENT_SLOTS,SHOP_CATALOG,SLOT_NAMES,equipment } from '../content/equipment';
 import { ENEMIES,type EnemyKind } from '../content/enemies';
@@ -15,7 +15,7 @@ import { box,graphics,text,uiNode } from './Primitives';
 type Button=(title:string,x:number,y:number,width:number,action:()=>void,fill?:string)=>void;
 /** Catalog-driven tooling UI. Mutations go through the same validated command boundary as tests. */
 export class DeveloperPanel {
-  private attributeStat:Stat='attackDamage';private inspectIndex=0;private tab=0;private slot:SkillSlot='Q';private skillPage=0;private perkPage=0;private selectedPerk?:PerkId;
+  private attributeStat:Stat='attackDamage';private inspectIndex=0;private aiIndex=0;private tab=0;private slot:SkillSlot='Q';private skillPage=0;private perkPage=0;private selectedPerk?:PerkId;
   private enemyId:EnemyKind='melee';private spawnCount:1|5=1;private repro='';private reproBox?:EditBox;
   private fields:{x:number;y:number;w:number;h:number;edit:EditBox}[]=[];
   constructor(private readonly send:(command:GameCommand)=>void,private readonly invalidate:()=>void){}
@@ -30,11 +30,13 @@ export class DeveloperPanel {
     text('Developer title',root,'开发者模式 · 组合与关卡测试',29,0,312,1100,44,'#EDD39E');
     text('Developer subtitle',root,'面板打开时冻结战斗；修改配置后「应用并进入」将重新生成关卡。',14,0,275,1100,30,'#BBD1C7');
     ['关卡 / 工具','技能 / 装备','余烬','预设 / 复现','属性 / 来源'].forEach((name,i)=>button(name,(i-2)*232,237,220,()=>{this.tab=i;this.invalidate();},this.tab===i?'#6C806A':'#3C555C'));
+    button('敌人 AI',500,312,200,()=>{this.tab=5;this.invalidate();},this.tab===5?'#6C806A':'#3C555C');
     if(this.tab===0)this.level(root,s,c,button);
     if(this.tab===1)this.build(root,c,button);
     if(this.tab===2)this.perks(root,c,button);
     if(this.tab===3)this.presets(root,c,button);
     if(this.tab===4)this.attributes(root,s,c,button);
+    if(this.tab===5)this.enemyAI(root,s,button);
     text('Developer notice',root,dev.notice||'配置未自动保存。可在「预设 / 复现」保存组合，或导出文本记录 Bug 场景。',14,0,-263,1170,44,'#E6C88F');
     button('退出测试 → 普通首页',-440,-322,260,()=>this.send({type:'DevExit'}),'#685852');
     button('关闭面板 · F2 / Esc',-150,-322,270,()=>this.send({type:'DevClose'}),'#3C555C');
@@ -70,14 +72,15 @@ export class DeveloperPanel {
     text('Tool notes',root,'即时工具作用于当前关卡；清空敌人不触发击杀奖励。测试关卡清空后继续停留，可重新刷怪。\n停止 AI 不冻结已发射弹体；步进固定推进 1/30 秒。免伤、无冷却等开关在应用后生效。',14,0,-183,1140,65,'#A9C2B8');
   }
   private build(root:Node,c:DeveloperConfig,button:Button):void {
-    for(const [i,slot] of SKILL_SLOTS.entries())button(`${slot} · ${skill(c.loadout[slot]).name}`,(i-1.5)*280,165,260,()=>{this.slot=slot;this.invalidate();},slot===this.slot?'#7D8060':'#3C555C');
+    for(const [i,slot] of SKILL_SLOTS.entries())button(`${slot} · ${skillSlotName(c.loadout[slot])}`,(i-1.5)*280,165,260,()=>{this.slot=slot;this.invalidate();},slot===this.slot?'#7D8060':'#3C555C');
     const pages=Math.max(1,Math.ceil(HERO_SKILLS.length/6));this.skillPage=Math.min(this.skillPage,pages-1);
     for(const [i,id] of HERO_SKILLS.slice(this.skillPage*6,this.skillPage*6+6).entries()){
       const equipped=SKILL_SLOTS.find(slot=>c.loadout[slot]===id);
       button(`${equipped?equipped+' · ':''}${skill(id).name}`,(i%3-1)*390,93-Math.floor(i/3)*58,350,()=>{const old=c.loadout[this.slot];if(equipped)c.loadout[equipped]=old;c.loadout[this.slot]=id;this.configure(c);},equipped?'#546D68':'#3D555C');
     }
     button(`← 技能 ${this.skillPage+1}/${pages}`,-390,-31,300,()=>{this.skillPage=(this.skillPage+pages-1)%pages;this.invalidate();});
-    button('读取当前关卡与搭配',0,-31,350,()=>this.send({type:'DevCapture'}),'#4C6470');
+    button('读取当前搭配',-120,-31,220,()=>this.send({type:'DevCapture'}),'#4C6470');
+    button('清空当前技能槽',120,-31,220,()=>{c.loadout[this.slot]=null;this.configure(c);});
     button(`技能 ${this.skillPage+1}/${pages} →`,390,-31,300,()=>{this.skillPage=(this.skillPage+1)%pages;this.invalidate();});
     for(const [i,slot] of EQUIPMENT_SLOTS.entries()){
       const id=c.equipment[slot],ids=[undefined,...SHOP_CATALOG.filter(candidate=>!Object.entries(c.equipment).some(([key,value])=>key!==slot&&value===candidate))];
@@ -112,6 +115,17 @@ export class DeveloperPanel {
     text('Attribute values',root,summary,13,0,-40,1120,100,'#D0DFD1');
     const sources=info?.sources.map(source=>`${source.sourceId}: ${source.modifiers.map(m=>`${m.stat} ${m.operation} ${m.value}`).join(', ')}`).join('\n')??'';
     text('Attribute sources',root,`模板 MS ${info?.template.moveSpeed??0}；最终移速 ${unit?.movementPoints.toFixed(2)??0} 点 / ${unit?.worldMoveSpeed.toFixed(2)??0} 格/秒\n${sources||'无额外属性来源'}`,13,0,-163,1120,125,'#BBD1C7');
+  }
+  private enemyAI(root:Node,s:WorldSnapshot,button:Button):void {
+    const enemies=s.enemies.units.filter(e=>s.units.some(u=>u.id===e.id&&u.alive));
+    this.aiIndex=Math.min(this.aiIndex,Math.max(0,enemies.length-1));const unit=enemies[this.aiIndex],d=unit?.decision;
+    button('上一个敌人',-425,165,260,()=>{this.aiIndex=(this.aiIndex+enemies.length-1)%Math.max(1,enemies.length);this.invalidate();});
+    text('Enemy AI selected',root,unit?`${ENEMIES[unit.kind].name} · ${unit.id}`:'当前没有已调度的存活敌人',18,0,165,540,40,'#E9DEBE');
+    button('下一个敌人',425,165,260,()=>{this.aiIndex=(this.aiIndex+1)%Math.max(1,enemies.length);this.invalidate();});
+    text('Enemy AI decision',root,d?`配置 ${d.profile}  ·  阶段 ${unit!.phase}  ·  动作 ${unit!.actionId??'无'} / ${unit!.state}\n目标 ${d.targetId??'无'}  ·  本招目标 ${d.actionTargetId??'无'}  ·  换目标来源 ${d.targetReason}\n规则 ${d.ruleId??'无'}  ·  序列 ${d.sequence?`${d.sequence.id} / 第 ${d.sequence.step+1} 步 / 等待 ${d.sequence.waitRemaining.toFixed(2)} 秒`:'无'}\n决策 ${d.reason}  ·  额外停顿剩余 ${d.pauseRemaining.toFixed(2)} 秒`:'进入战斗或生成敌人后，至少推进一帧以初始化 AI。',17,0,63,1120,140,'#D0DFD1');
+    text('Enemy AI cooldowns',root,`冷却（秒）\n${d?.cooldowns.map(cd=>`${cd.key}: ${cd.remaining.toFixed(2)}`).join('\n')||'无正在计时的冷却'}`,15,0,-89,1120,150,'#BBD1C7');
+    text('Enemy AI help',root,'关闭 F2 推进战斗，再打开检查；也可单帧步进。\nblocked:action / global / group / target 为冷却；range / line-of-sight 为距离或遮挡。',13,-160,-199,800,46,'#A9C2B8');
+    button('AI 步进一帧',425,-192,250,()=>{if(s.developer?.enabled)this.send({type:'DevAction',action:'step'});else this.notice('先应用测试配置，再使用步进。');});
   }
   private presets(root:Node,c:DeveloperConfig,button:Button):void {
     for(let slot=1;slot<=3;slot++){

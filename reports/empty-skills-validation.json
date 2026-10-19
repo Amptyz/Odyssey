@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-20",
+  "status": "passed",
+  "behavior": [
+    "New runs, both maps, new cooperative players, restarts and all six labs start with Q/W/E/R set to null.",
+    "Empty hotkeys cannot cast; basic attacks remain available. Earned skills fill a chosen slot and leave other slots empty.",
+    "HUD, rewards, cooldown reduction and developer tools support empty slots.",
+    "Partial builds survive JSON checkpoints. Complete legacy skill builds and v6 room/v4 checkpoints remain readable; current clients use ember-coop-7."
+  ],
+  "checks": {
+    "pnpm check": "30 files / 386 tests passed",
+    "Creator 3.8.8 Web Desktop": "passed",
+    "pnpm test:empty-skills": 23,
+    "pnpm test:scenes": 52,
+    "pnpm test:multiplayer": 21
+  },
+  "evidence": [
+    "tests/empty-skills.test.ts",
+    "tests/platform/relay.test.ts",
+    "tests/platform/transport.test.ts",
+    "reports/browser-empty-skills.json",
+    "reports/browser-scenes.json",
+    "reports/browser-multiplayer.json",
+    "reports/empty-skills-classic-opening.png",
+    "reports/empty-skills-classic-equip.png",
+    "reports/empty-skills-wasd-opening.png",
+    "reports/empty-skills-wasd-equip.png"
+  ],
+  "scope": [
+    "Actual keyboard/mouse opening, earned skill equip, partial-build departure, combat, empty hotkeys and restart in both controls.",
+    "Explicit F2 assignment/clearing/exit and lab opening checked separately.",
+    "Scene and multiplayer regressions ran after the initial empty-slot build; the final build additionally removes the lab fireball grant and passed expanded empty-slot browser checks.",
+    "Unit coverage includes every reward slot, both maps, every lab, teammates, validation, JSON save and legacy room recovery."
+  ],
+  "limits": [
+    "Existing saved runs retain their skills; empty start applies to new runs.",
+    "No new campaign balance run or public network deployment."
+  ],
+  "preview": "http://127.0.0.1:8080/"
+}

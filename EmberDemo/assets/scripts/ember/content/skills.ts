@@ -28,8 +28,13 @@ export const SKILLS = {
   frostBolt: {expression:{attackDamage:1},damageType:'magic',name:'寒霜弹',cooldown:2.8,tags:['enemy','projectile','ice'],appearance:'ice',behavior:{kind:'projectile',radius:scaleAttackRange(0.18),damage:10,speed:4.5,range:scaleAttackRange(18),onHit:[{id:'slow',duration:1.4,power:0.7}]}},
 } as const satisfies Record<string,SkillDefinition>;
 export type SkillId = keyof typeof SKILLS;
-export type Loadout = Record<SkillSlot,SkillId>;
-export const DEFAULT_LOADOUT:Loadout = {Q:'fireball',W:'shield',E:'dash',R:'nova'};
+export type Loadout = Record<SkillSlot,SkillId|null>;
+/** Ordinary runs start with four explicit empty slots; this survives JSON checkpoints. */
+export const DEFAULT_LOADOUT:Loadout = {Q:null,W:null,E:null,R:null};
+/** Explicit opt-in preset for isolated mechanics tests and developer recipes. */
+export const DEVELOPER_LOADOUT:Record<SkillSlot,SkillId> = {Q:'fireball',W:'shield',E:'dash',R:'nova'};
+export function equippedSkills(loadout:Loadout):SkillId[]{return SKILL_SLOTS.flatMap(slot=>loadout[slot]?[loadout[slot]!]:[]);}
+export function skillSlotName(id:SkillId|null):string{return id?skill(id).name:'空槽';}
 export const HERO_SKILLS=(Object.keys(SKILLS) as SkillId[]).filter(id=>skill(id).tags.includes('hero'));
 export function expressionDescription(e:ValueExpression):string {
   const value=[(e.flat??0)?String(e.flat):'',e.attackDamage?`${e.attackDamage} × AD`:'',e.abilityPower?`${e.abilityPower} × AP`:'',e.sourceMaxHealth?`${e.sourceMaxHealth*100}% 自身最大生命`:'',e.sourceMissingHealth?`${e.sourceMissingHealth*100}% 自身已损生命`:'',e.targetMaxHealth?`${e.targetMaxHealth*100}% 目标最大生命`:'',e.targetCurrentHealth?`${e.targetCurrentHealth*100}% 目标当前生命`:'',e.targetMissingHealth?`${e.targetMissingHealth*100}% 目标已损生命`:''].filter(Boolean).join(' + ')||'0';

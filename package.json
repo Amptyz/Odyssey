@@ -29,7 +29,12 @@
     "test:equipment": "node --import tsx scripts/browser-equipment.ts",
     "test:scenes": "node --import tsx scripts/browser-scenes.ts",
     "test:transitions": "node scripts/browser-transitions.mjs",
-    "test:locations": "node --import tsx scripts/browser-locations.ts"
+    "test:locations": "node --import tsx scripts/browser-locations.ts",
+    "test:enemy-ai": "node --import tsx scripts/browser-enemy-ai.ts",
+    "test:feel": "node --import tsx scripts/browser-game-feel.ts",
+    "test:empty-skills": "node --import tsx scripts/browser-empty-skills.ts",
+    "test:saves": "node --import tsx scripts/browser-local-save.ts",
+    "test:movement": "node --import tsx scripts/browser-movement-directions.ts"
   },
   "devDependencies": {
     "@cocos/creator-types": "3.8.7",

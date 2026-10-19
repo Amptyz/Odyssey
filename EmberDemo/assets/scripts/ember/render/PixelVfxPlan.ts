@@ -25,9 +25,9 @@ export function planPixelVfx(cues:readonly VisualCue[],camera:Projection,warning
     if(cue.appearance&& !['shield','fire','ice','physical'].includes(cue.appearance))continue;
     const row=cue.kind==='shield'||cue.appearance==='shield'?3:cue.kind==='swing'?2:cue.appearance==='ice'?1:cue.appearance==='fire'||cue.kind==='explosion'?0:cue.kind==='quake'?2:-1;
     if(row<0)continue;
-    const base=worldToScreen(cue.at,camera),at={x:base.x,y:base.y+(row===3?26:12)};
+    const base=worldToScreen(cue.at,camera),at={x:base.x,y:base.y+(row===3?26:12)*camera.zoom};
     if(!screenVisible(at,80))continue;
-    const size=cue.kind==='shield'?80:cue.kind==='explosion'||cue.kind==='quake'?96:64;
+    const size=(cue.kind==='shield'?80:cue.kind==='explosion'||cue.kind==='quake'?96:64)*camera.zoom;
     // Bounding circle includes corner fragments and any rotated slash pose.
     if(borders.some(path=>path.some((a,i)=>nearSegment(at,a,path[(i+1)%path.length]!,size*.9))))continue;
     plans.push({cue,row,age,size,at,frame:row*4+Math.min(3,Math.floor(age/.1)),priority:row===3?3:cue.kind==='explosion'||cue.kind==='swing'?2:1});

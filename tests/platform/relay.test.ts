@@ -1,12 +1,13 @@
 import {openMerchantFixture} from '../helpers/scenes';
 import { afterEach,describe,it,expect } from 'vitest';
 import { WebSocket } from 'ws';
-import { mkdtemp,rm } from 'node:fs/promises';
+import { mkdtemp,rm,readFile,writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { startRelay } from '../../scripts/relay-server';
 import { ROOM_VERSION,type RoomServerMessage,type RoomClientMessage,validRoomCommand } from '../../EmberDemo/assets/scripts/ember/platform/room-protocol';
 import { GameWorld } from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
+import {DEVELOPER_LOADOUT} from '../../EmberDemo/assets/scripts/ember/content/skills';
 const cleanup:(()=>Promise<unknown>)[]=[];
 afterEach(async()=>{for(const f of cleanup.reverse())await f();cleanup.length=0;});
 async function fixture(){const directory=await mkdtemp(join(tmpdir(),'ember-relay-'));cleanup.push(()=>rm(directory,{recursive:true,force:true}));const relay=await startRelay({port:0,directory});cleanup.push(()=>relay.close());return{relay,directory};}
@@ -24,12 +25,13 @@ describe('room relay and persisted recovery',()=>{
     guest.send({type:'command',seq:1,command:{type:'Attack',point:{x:1,y:2}}});guest.send({type:'command',seq:2,command:{type:'DevAction',action:'recover'}});guest.send({type:'heartbeat'});await guest.wait('pong');expect(host.messages.filter(m=>m.type==='command')).toHaveLength(0);
     guest.socket.close();await new Promise(done=>setTimeout(done,20));const reconnect=await client(relay.port);reconnect.send(hello('join','b',created.room.code));expect((await reconnect.wait('welcome')).playerId).toBe(joined.playerId);
   });
-  it('acknowledges only persisted checkpoints and permits an original teammate to open a new room after service restart',async()=>{
+  it('acknowledges persisted checkpoints and recovers an existing v6 full-skill room under the new protocol',async()=>{
     const {relay,directory}=await fixture(),host=await client(relay.port);host.send(hello('create','a'));const {room}=await host.wait('welcome');
     const guest=await client(relay.port);guest.send(hello('join','b',room.code));const member=await guest.wait('welcome');
-    const w=new GameWorld();w.addPlayer(member.playerId);openMerchantFixture(w);w.command({type:'BuyEquipment',equipmentId:'bow'},member.playerId);
+    const w=new GameWorld();w.addPlayer(member.playerId);for(const p of w.players.values())p.loadout={...DEVELOPER_LOADOUT};openMerchantFixture(w);w.command({type:'BuyEquipment',equipmentId:'bow'},member.playerId);
     host.send({type:'save',revision:1,checkpoint:w.savedRun!});await host.wait('saved');const saved=await guest.wait('saved');expect(saved.checkpoint.players.find(p=>p.id===member.playerId)?.equipment.slot1).toBe('bow');
-    await relay.close();const next=await startRelay({port:0,directory});cleanup.push(()=>next.close());
+    await relay.close();const file=join(directory,room.code+'.json'),stored=JSON.parse(await readFile(file,'utf8'));stored.version='ember-coop-6';await writeFile(file,JSON.stringify(stored));
+    const next=await startRelay({port:0,directory});cleanup.push(()=>next.close());
     const recovery=await client(next.port);recovery.send(hello('recover','b',room.code));const resumed=await recovery.wait('welcome');
     expect(resumed.room.code).not.toBe(room.code);expect(resumed.room.hostId).toBe(member.playerId);expect(resumed.checkpoint).toEqual(w.savedRun);
     const stranger=await client(next.port);stranger.send(hello('recover','c',room.code));expect((await stranger.wait('error')).message).toContain('原房间成员');

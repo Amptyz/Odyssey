@@ -108,7 +108,7 @@ pnpm check
 
 | 改动 | 逻辑 / 类型 | 实际引擎与浏览器检查 |
 | --- | --- | --- |
-| 技能、范围、弹体、普攻 | pnpm check；content / hitboxes 对应机制测试 | Creator Web Desktop 构建；test:hitboxes；涉及主动技能奖励时人工验证选择与槽位确认 |
+| 技能、范围、弹体、普攻 | pnpm check；content / hitboxes 对应机制测试 | Creator Web Desktop 构建；test:hitboxes；涉及主动技能奖励时运行 test:empty-skills 验证空槽、获得与装备、施法和重开 |
 | 装备、经济、奖励 | pnpm check；progression / equipment-effects | 构建；test:scenes 的商人购买；新增商品 / 被动用 F2 定向验收；换装外观变化加 test:art |
 | 全单位属性、抗性、吸血、护盾 | pnpm check；attributes / combat / multiplayer | 构建；F2 属性与实际伤害针对性验收；跨波保存改动加 test:multiplayer |
 | 敌人、地图、导航 | pnpm check；content / world / collision | 构建；相关地图正常通关；必要时playthrough与benchmark；五关出口后才算通关 |
@@ -118,6 +118,7 @@ pnpm check
 | 贴图、动作、挂点 | pnpm check；有格式变更时核对图集 | 构建；test:art 与人工检查，含镜像、动作最大角度、换装 |
 | 开发者模式 | pnpm check；developer | 构建；test:scenes 的场景入口及新增工具定向验收；退出后普通模式不带测试效果 |
 | 联机 / 玩家状态 / 波次保存 | pnpm check；multiplayer / relay / transport 测试 | 构建；test:multiplayer；对应单人回归 |
+| 单人保存 / 读档 / 文件入口 | pnpm check；platform/local-save 测试 | 构建；test:saves；涉及技能空槽或联机隔离再跑 test:empty-skills / test:multiplayer |
 | 纯文档 / 注释 | 引用、示例类型与源码一致性；git diff --check | 通常无需重建或重跑游戏全流程 |
 
 相关浏览器脚本先查看其当前前置条件。当前 scenes / transitions / multiplayer / hitboxes / art 已适配营地流程；其他旧脚本的自动商店 / 逐关奖励配方待 [TEST-01](../todoList.md) 迁移，不能将历史通过报告当作当前验证。脚本大多固定使用 8080，在服务端设置其他 PORT 不会自动修改测试目标。它们使用本机 Chrome，构建后先运行 `pnpm play`，测试建议逐个执行，避免同时争用截图 / 报告路径。

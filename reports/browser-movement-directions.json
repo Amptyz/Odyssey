@@ -1,0 +1,192 @@
+{
+  "status": "passed",
+  "scope": "Actual Creator Web Desktop, real WASD chords and right-click movement in a normal camp. Displacements use the same current camera for both positions to cancel follow motion.",
+  "checks": [
+    "wasd/right: actual projected movement keeps the horizontal reference pace and requested direction",
+    "wasd/right: releasing the real keys stops movement",
+    "wasd/up: actual projected movement keeps the horizontal reference pace and requested direction",
+    "wasd/up: releasing the real keys stops movement",
+    "wasd/left: actual projected movement keeps the horizontal reference pace and requested direction",
+    "wasd/left: releasing the real keys stops movement",
+    "wasd/down: actual projected movement keeps the horizontal reference pace and requested direction",
+    "wasd/down: releasing the real keys stops movement",
+    "wasd/up-right: actual projected movement keeps the horizontal reference pace and requested direction",
+    "wasd/up-right: releasing the real keys stops movement",
+    "wasd/up-left: actual projected movement keeps the horizontal reference pace and requested direction",
+    "wasd/up-left: releasing the real keys stops movement",
+    "wasd/down-left: actual projected movement keeps the horizontal reference pace and requested direction",
+    "wasd/down-left: releasing the real keys stops movement",
+    "wasd/down-right: actual projected movement keeps the horizontal reference pace and requested direction",
+    "wasd/down-right: releasing the real keys stops movement",
+    "wasd: up, down, horizontal and diagonal screen speeds agree within measurement tolerance",
+    "classic/right: actual projected movement keeps the horizontal reference pace and requested direction",
+    "classic/right: right-click travel still reaches the selected world point",
+    "classic/up: actual projected movement keeps the horizontal reference pace and requested direction",
+    "classic/up: right-click travel still reaches the selected world point",
+    "classic/left: actual projected movement keeps the horizontal reference pace and requested direction",
+    "classic/left: right-click travel still reaches the selected world point",
+    "classic/down: actual projected movement keeps the horizontal reference pace and requested direction",
+    "classic/down: right-click travel still reaches the selected world point",
+    "classic/up-right: actual projected movement keeps the horizontal reference pace and requested direction",
+    "classic/up-right: right-click travel still reaches the selected world point",
+    "classic/up-left: actual projected movement keeps the horizontal reference pace and requested direction",
+    "classic/up-left: right-click travel still reaches the selected world point",
+    "classic/down-left: actual projected movement keeps the horizontal reference pace and requested direction",
+    "classic/down-left: right-click travel still reaches the selected world point",
+    "classic/down-right: actual projected movement keeps the horizontal reference pace and requested direction",
+    "classic/down-right: right-click travel still reaches the selected world point",
+    "classic: up, down, horizontal and diagonal screen speeds agree within measurement tolerance",
+    "actual eight-direction movement and camera follow have no browser errors"
+  ],
+  "samples": [
+    {
+      "mode": "wasd",
+      "direction": "right",
+      "dt": 0.3,
+      "dx": 90.20914760987407,
+      "dy": 0,
+      "pixelsPerSecond": 300.69715869958026,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "wasd",
+      "direction": "up",
+      "dt": 0.3,
+      "dx": 2.2737367544323206e-13,
+      "dy": 90.20914760987387,
+      "pixelsPerSecond": 300.6971586995796,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "wasd",
+      "direction": "left",
+      "dt": 0.3,
+      "dx": -90.20914760987404,
+      "dy": 0,
+      "pixelsPerSecond": 300.69715869958014,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "wasd",
+      "direction": "down",
+      "dt": 0.3,
+      "dx": 0,
+      "dy": -90.20914760987404,
+      "pixelsPerSecond": 300.69715869958014,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "wasd",
+      "direction": "up-right",
+      "dt": 0.3,
+      "dx": 63.78749999999974,
+      "dy": 63.787499999999966,
+      "pixelsPerSecond": 300.6971586995786,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "wasd",
+      "direction": "up-left",
+      "dt": 0.3,
+      "dx": -63.787499999999966,
+      "dy": 63.787499999999966,
+      "pixelsPerSecond": 300.6971586995792,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "wasd",
+      "direction": "down-left",
+      "dt": 0.3,
+      "dx": -63.78749999999971,
+      "dy": -63.787499999999966,
+      "pixelsPerSecond": 300.69715869957855,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "wasd",
+      "direction": "down-right",
+      "dt": 0.3,
+      "dx": 63.787499999999824,
+      "dy": -63.78749999999991,
+      "pixelsPerSecond": 300.6971586995787,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "classic",
+      "direction": "right",
+      "dt": 0.2,
+      "dx": 59.23394256486395,
+      "dy": -5.684341886080802e-14,
+      "pixelsPerSecond": 296.16971282431973,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "classic",
+      "direction": "up",
+      "dt": 0.2,
+      "dx": -2.842170943040401e-14,
+      "dy": 59.656504179888316,
+      "pixelsPerSecond": 298.2825208994416,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "classic",
+      "direction": "left",
+      "dt": 0.2,
+      "dx": -59.65650417988837,
+      "dy": 0,
+      "pixelsPerSecond": 298.28252089944186,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "classic",
+      "direction": "down",
+      "dt": 0.2,
+      "dx": 0,
+      "dy": -59.23394256486404,
+      "pixelsPerSecond": 296.1697128243202,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "classic",
+      "direction": "up-right",
+      "dt": 0.2,
+      "dx": 42.01776999605116,
+      "dy": 42.34861857869714,
+      "pixelsPerSecond": 298.28252089944147,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "classic",
+      "direction": "up-left",
+      "dt": 0.2,
+      "dx": -42.1835186474826,
+      "dy": 42.18351864748257,
+      "pixelsPerSecond": 298.2825208994411,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "classic",
+      "direction": "down-left",
+      "dt": 0.2,
+      "dx": -42.348618578697085,
+      "dy": -42.017769996051015,
+      "pixelsPerSecond": 298.2825208994407,
+      "expected": 300.6971586995793
+    },
+    {
+      "mode": "classic",
+      "direction": "down-right",
+      "dt": 0.2,
+      "dx": 42.18351864748257,
+      "dy": -42.18351864748257,
+      "pixelsPerSecond": 298.28252089944107,
+      "expected": 300.6971586995793
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "reports/movement-directions-1280.png",
+    "reports/movement-directions-960.png"
+  ]
+}

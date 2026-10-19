@@ -32,10 +32,10 @@ export class EnvironmentView {
       // Ground crests keep their authored isometric footprint; no collision changes.
       const scale=Math.min(prop.width/source[2],prop.height/source[3]);
       const width=prop.ground?prop.width:source[2]*scale,height=prop.ground?prop.height:source[3]*scale;
-      const p=worldToScreen(prop,camera),inView=screenVisible({x:p.x,y:p.y+height/2},width);
+      const p=worldToScreen(prop,camera),inView=screenVisible({x:p.x,y:p.y+height*camera.zoom/2},width*camera.zoom);
       if(!inView){if(prop.node)prop.node.active=false;continue;}
       if(!prop.node)prop.node=this.art.hasPixel(atlas)?this.art.pixelSprite(prop.ground?this.ground:this.objects,atlas,prop.frame,width,height):this.art.sprite(prop.ground?this.ground:this.objects,visual.atlas,prop.frame,width,height,`Ruins prop ${prop.frame}`);
-      const node=prop.node;node.active=true;node.setPosition(Math.round(p.x),Math.round(p.y+(prop.ground?0:height/2)));
+      const node=prop.node;node.active=true;node.setScale(camera.zoom,camera.zoom,1);node.setPosition(Math.round(p.x),Math.round(p.y+(prop.ground?0:height*camera.zoom/2)));
       if(prop.foliage)node.angle=0;
       if(prop.waterfall)node.getComponent(Sprite)!.color=color('#F2FDFF');
       if(!prop.ground)visible.push({node,y:p.y});this.visibleProps++;

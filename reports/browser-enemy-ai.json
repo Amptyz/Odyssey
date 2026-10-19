@@ -1,0 +1,1466 @@
+{
+  "status": "passed",
+  "scope": "Actual Creator Web Desktop; explicit validated F2 single-player charge/wait/retarget/unavailable-step fixture and UI inspection. Multiplayer targeting is covered by core fixtures and relay browser regression.",
+  "checks": [
+    "runs only in an explicitly applied and accepted developer fixture",
+    "Creator imports and executes the configured ram profile",
+    "F2 exposes the enemy inspector and its step control",
+    "inspector button advances exactly one fixed tick while F2 is open",
+    "actual configured sequence starts and executes its charge",
+    "charge completion enters the configured stop",
+    "actual execution starts the shared mobility cooldown",
+    "stop lasts over ten ticks and prevents movement",
+    "single-player fallback reaches the next action and handles unavailable range without an invalid hit",
+    "bounded sequence waiting eventually completes instead of deadlocking",
+    "repeated sequences obey the nine-second charge cooldown",
+    "opening F2 freezes decision clocks and sequence progress",
+    "reload returns to the ordinary menu with no developer or sequence memory",
+    "actual Creator runtime and inspector produce no page or console errors"
+  ],
+  "errors": [],
+  "screenshots": [
+    "reports/enemy-ai-inspector-1280.png",
+    "reports/enemy-ai-inspector-960.png"
+  ],
+  "samples": [
+    {
+      "time": 0.1,
+      "tick": 3,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:attack-delay",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 2.933333333333333
+          }
+        ]
+      },
+      "position": {
+        "x": 9.835,
+        "y": 8
+      }
+    },
+    {
+      "time": 0.4333333333333333,
+      "tick": 13,
+      "actionId": "ramButt",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "windup",
+        "ruleId": "basic",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramButt",
+            "remaining": 2.5
+          },
+          {
+            "key": "action:ramLane",
+            "remaining": 2.6
+          },
+          {
+            "key": "global",
+            "remaining": 0.25000000000000006
+          }
+        ]
+      },
+      "position": {
+        "x": 9.395000000000003,
+        "y": 8
+      }
+    },
+    {
+      "time": 1.1,
+      "tick": 33,
+      "actionId": "ramButt",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "executing",
+        "ruleId": "basic",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramButt",
+            "remaining": 1.833333333333333
+          },
+          {
+            "key": "action:ramLane",
+            "remaining": 1.9333333333333331
+          }
+        ]
+      },
+      "position": {
+        "x": 9.395000000000003,
+        "y": 8
+      }
+    },
+    {
+      "time": 1.2333333333333338,
+      "tick": 37,
+      "actionId": "ramButt",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "basic",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramButt",
+            "remaining": 1.6999999999999993
+          },
+          {
+            "key": "action:ramLane",
+            "remaining": 1.7999999999999994
+          }
+        ]
+      },
+      "position": {
+        "x": 9.395000000000003,
+        "y": 8
+      }
+    },
+    {
+      "time": 2.1000000000000023,
+      "tick": 63,
+      "actionId": "ramButt",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "basic",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramButt",
+            "remaining": 0.8333333333333308
+          },
+          {
+            "key": "action:ramLane",
+            "remaining": 0.9333333333333309
+          }
+        ]
+      },
+      "position": {
+        "x": 9.395000000000003,
+        "y": 8
+      }
+    },
+    {
+      "time": 2.9333333333333327,
+      "tick": 88,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "basic",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramButt",
+            "remaining": 4.440892098500626e-16
+          },
+          {
+            "key": "action:ramLane",
+            "remaining": 0.10000000000000053
+          }
+        ]
+      },
+      "position": {
+        "x": 9.395000000000003,
+        "y": 8
+      }
+    },
+    {
+      "time": 2.966666666666666,
+      "tick": 89,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "reserved-for-skill",
+        "ruleId": "basic",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 0.06666666666666732
+          }
+        ]
+      },
+      "position": {
+        "x": 9.395000000000003,
+        "y": 8
+      }
+    },
+    {
+      "time": 3.0333333333333323,
+      "tick": 91,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "windup",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 9
+          },
+          {
+            "key": "global",
+            "remaining": 0.25
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 9
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 4.999999999999999
+          }
+        ]
+      },
+      "position": {
+        "x": 9.395000000000003,
+        "y": 8
+      }
+    },
+    {
+      "time": 3.0999999999999988,
+      "tick": 93,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "windup",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 8.933333333333334
+          },
+          {
+            "key": "global",
+            "remaining": 0.18333333333333357
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 8.933333333333334
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 4.933333333333333
+          }
+        ]
+      },
+      "position": {
+        "x": 9.395000000000003,
+        "y": 8
+      }
+    },
+    {
+      "time": 4.099999999999995,
+      "tick": 123,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "windup",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 7.933333333333336
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 7.933333333333336
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 3.9333333333333362
+          }
+        ]
+      },
+      "position": {
+        "x": 9.395000000000003,
+        "y": 8
+      }
+    },
+    {
+      "time": 4.166666666666662,
+      "tick": 125,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "executing",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 7.86666666666667
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 7.86666666666667
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 3.86666666666667
+          }
+        ]
+      },
+      "position": {
+        "x": 8.928333333333338,
+        "y": 8
+      }
+    },
+    {
+      "time": 4.199999999999995,
+      "tick": 126,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 7.833333333333337
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 7.833333333333337
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 3.8333333333333366
+          }
+        ]
+      },
+      "position": {
+        "x": 8.695000000000006,
+        "y": 8
+      }
+    },
+    {
+      "time": 5.099999999999992,
+      "tick": 153,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 6.93333333333334
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 6.93333333333334
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 2.93333333333334
+          }
+        ]
+      },
+      "position": {
+        "x": 2.395000000000006,
+        "y": 8
+      }
+    },
+    {
+      "time": 5.733333333333323,
+      "tick": 172,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 1,
+          "waitRemaining": 0.6
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 6.300000000000009
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 6.300000000000009
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 2.3000000000000087
+          }
+        ]
+      },
+      "position": {
+        "x": 1.3950000000000031,
+        "y": 8
+      }
+    },
+    {
+      "time": 5.766666666666656,
+      "tick": 173,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "sequence-wait",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 1,
+          "waitRemaining": 0.5666666666666668
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 6.2666666666666755
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 6.2666666666666755
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 2.2666666666666755
+          }
+        ]
+      },
+      "position": {
+        "x": 1.3950000000000031,
+        "y": 8
+      }
+    },
+    {
+      "time": 6.333333333333321,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 3,
+          "waitRemaining": 1.5
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 5.700000000000011
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 5.700000000000011
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 1.7000000000000108
+          }
+        ]
+      }
+    },
+    {
+      "time": 6.43333333333332,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 3,
+          "waitRemaining": 1.4000000000000004
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 5.600000000000011
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 5.600000000000011
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 1.6000000000000112
+          }
+        ]
+      }
+    },
+    {
+      "time": 7.433333333333317,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 3,
+          "waitRemaining": 0.4000000000000039
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 4.600000000000015
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 4.600000000000015
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 0.6000000000000147
+          }
+        ]
+      }
+    },
+    {
+      "time": 7.833333333333315,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "sequence-wait",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 4,
+          "waitRemaining": 0.45
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 4.200000000000016
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 4.200000000000016
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 0.20000000000001616
+          }
+        ]
+      }
+    },
+    {
+      "time": 8.299999999999981,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "sequence-end",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 3.7333333333333503
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 3.7333333333333503
+          }
+        ]
+      }
+    },
+    {
+      "time": 8.333333333333314,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 3.700000000000017
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 3.700000000000017
+          }
+        ]
+      }
+    },
+    {
+      "time": 8.433333333333314,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 3.6000000000000174
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 3.6000000000000174
+          }
+        ]
+      }
+    },
+    {
+      "time": 9.43333333333331,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 2.600000000000021
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 2.600000000000021
+          }
+        ]
+      }
+    },
+    {
+      "time": 10.099999999999975,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "reserved-for-skill",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 1.9333333333333567
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 1.9333333333333567
+          }
+        ]
+      }
+    },
+    {
+      "time": 10.433333333333307,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "reserved-for-skill",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 1.6000000000000245
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 1.6000000000000245
+          }
+        ]
+      }
+    },
+    {
+      "time": 11.433333333333303,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "reserved-for-skill",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 0.6000000000000281
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 0.6000000000000281
+          }
+        ]
+      }
+    },
+    {
+      "time": 12.033333333333301,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "windup",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 9.000000000000002
+          },
+          {
+            "key": "global",
+            "remaining": 0.25
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 9.000000000000002
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 5.000000000000002
+          }
+        ]
+      }
+    },
+    {
+      "time": 12.4333333333333,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "windup",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 8.600000000000003
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 8.600000000000003
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 4.600000000000003
+          }
+        ]
+      }
+    },
+    {
+      "time": 13.16666666666663,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "executing",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 7.8666666666666725
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 7.8666666666666725
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 3.8666666666666725
+          }
+        ]
+      }
+    },
+    {
+      "time": 13.199999999999964,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 7.833333333333339
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 7.833333333333339
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 3.8333333333333393
+          }
+        ]
+      }
+    },
+    {
+      "time": 13.433333333333296,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 7.600000000000007
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 7.600000000000007
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 3.6000000000000068
+          }
+        ]
+      }
+    },
+    {
+      "time": 14.433333333333293,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 6.60000000000001
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 6.60000000000001
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 2.6000000000000103
+          }
+        ]
+      }
+    },
+    {
+      "time": 14.733333333333292,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 1,
+          "waitRemaining": 0.6
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 6.300000000000011
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 6.300000000000011
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 2.3000000000000114
+          }
+        ]
+      }
+    },
+    {
+      "time": 14.766666666666625,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "sequence-wait",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 1,
+          "waitRemaining": 0.5666666666666668
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 6.266666666666678
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 6.266666666666678
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 2.266666666666678
+          }
+        ]
+      }
+    },
+    {
+      "time": 15.33333333333329,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 3,
+          "waitRemaining": 1.5
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 5.7000000000000135
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 5.7000000000000135
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 1.7000000000000135
+          }
+        ]
+      }
+    },
+    {
+      "time": 15.43333333333329,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 3,
+          "waitRemaining": 1.4000000000000004
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 5.600000000000014
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 5.600000000000014
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 1.6000000000000139
+          }
+        ]
+      }
+    },
+    {
+      "time": 16.43333333333331,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 3,
+          "waitRemaining": 0.3999999999999808
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 4.599999999999994
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 4.599999999999994
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 0.5999999999999943
+          }
+        ]
+      }
+    },
+    {
+      "time": 16.83333333333333,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "sequence-wait",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 4,
+          "waitRemaining": 0.45
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 4.199999999999974
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 4.199999999999974
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 0.19999999999997442
+          }
+        ]
+      }
+    },
+    {
+      "time": 17.30000000000002,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "sequence-end",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 3.7333333333332845
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 3.7333333333332845
+          }
+        ]
+      }
+    },
+    {
+      "time": 17.333333333333353,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 3.6999999999999496
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 3.6999999999999496
+          }
+        ]
+      }
+    },
+    {
+      "time": 17.43333333333336,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 3.5999999999999446
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 3.5999999999999446
+          }
+        ]
+      }
+    },
+    {
+      "time": 18.433333333333408,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "blocked:range",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 2.599999999999895
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 2.599999999999895
+          }
+        ]
+      }
+    },
+    {
+      "time": 19.133333333333443,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "reserved-for-skill",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 1.89999999999986
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 1.89999999999986
+          }
+        ]
+      }
+    },
+    {
+      "time": 19.433333333333458,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "reserved-for-skill",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 1.599999999999845
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 1.599999999999845
+          }
+        ]
+      }
+    },
+    {
+      "time": 20.433333333333508,
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "reserved-for-skill",
+        "ruleId": "pressure",
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 0.5999999999997954
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 0.5999999999997954
+          }
+        ]
+      }
+    },
+    {
+      "time": 21.033333333333537,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "windup",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 9
+          },
+          {
+            "key": "global",
+            "remaining": 0.25
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 9
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 5
+          }
+        ]
+      }
+    },
+    {
+      "time": 21.433333333333557,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "windup",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 8.59999999999998
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 8.59999999999998
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 4.59999999999998
+          }
+        ]
+      }
+    },
+    {
+      "time": 22.133333333333592,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "executing",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 7.899999999999945
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 7.899999999999945
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 3.8999999999999453
+          }
+        ]
+      }
+    },
+    {
+      "time": 22.200000000000262,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 7.833333333333275
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 7.833333333333275
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 3.8333333333332753
+          }
+        ]
+      }
+    },
+    {
+      "time": 22.433333333333607,
+      "actionId": "ramLane",
+      "decision": {
+        "profile": "emberRam",
+        "targetId": "hero",
+        "actionTargetId": "hero",
+        "targetReason": "pursuit",
+        "reason": "recovery",
+        "ruleId": "pressure",
+        "sequence": {
+          "id": "pressure",
+          "step": 0,
+          "waitRemaining": 0
+        },
+        "pauseRemaining": 0,
+        "cooldowns": [
+          {
+            "key": "action:ramLane",
+            "remaining": 7.59999999999993
+          },
+          {
+            "key": "group:mobility",
+            "remaining": 7.59999999999993
+          },
+          {
+            "key": "target:ramLane:hero",
+            "remaining": 3.5999999999999304
+          }
+        ]
+      }
+    }
+  ]
+}

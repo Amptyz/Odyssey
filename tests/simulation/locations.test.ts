@@ -20,7 +20,7 @@ describe('shared location metadata',()=>{
         s.scene.name='local mutation';expect(port.snapshot().scene.name).not.toBe('local mutation');
       }
     }
-  });
+  },15000); // Constructs all 16 Creator-independent worlds; allow CPU contention in the full suite.
   it('allows renaming a location without changing claims or checkpoint identity',()=>{
     const w=new GameWorld();w.command({type:'Start'});chooseFixture(w);
     const saved=w.savedRun,before=w.snapshot().scene,location=JOURNEYS.ember.camp,original={...location};

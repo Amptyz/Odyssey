@@ -1,4 +1,5 @@
 import {chromium} from '@playwright/test';
+import {GAME_TUNING} from '../EmberDemo/assets/scripts/ember/content/tuning';
 import {writeFileSync} from 'node:fs';
 import type {WorldSnapshot} from '../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import {mapDefinition,type MapId} from '../EmberDemo/assets/scripts/ember/content/maps';
@@ -31,7 +32,7 @@ function escape(s:WorldSnapshot,target:Vec2,nav:Pathfinder):Vec2|undefined {
  for(const offset of [0,.55,-.55,1.1,-1.1,Math.PI/2,-Math.PI/2,Math.PI]){const angle=base+offset,p=nav.sweep(s.hero,{x:s.hero.x+Math.cos(angle)*3,y:s.hero.y+Math.sin(angle)*3},s.hero.radius);if(distance(p,s.hero)<1)continue;const next=-warnings.filter(w=>overlaps(w.shape,{...p,radius:s.hero.radius+.4})).length*100-bullets.filter(b=>distance(b,p)<1.6).length*40-Math.abs(distance(p,target)-desired)*3+distance(p,s.hero);if(next>score){score=next;best=p;}}
  return best;
 }
-async function followCheck(){const sample=await page.evaluate(()=>{const api=(window as any).__EMBER__,s=api.snapshot();return{hero:s.hero,screen:api.screen(s.hero.x,s.hero.y),camera:api.art().camera,pointer:api.controls().pointer};});check(sample.camera.zoom===1&&Math.hypot(sample.screen.x,sample.screen.y)<8,'Moving local player remains centered at zoom 1');return sample;}
+async function followCheck(){const sample=await page.evaluate(()=>{const api=(window as any).__EMBER__,s=api.snapshot();return{hero:s.hero,screen:api.screen(s.hero.x,s.hero.y),camera:api.art().camera,pointer:api.controls().pointer};});check(sample.camera.zoom===GAME_TUNING.cameraZoom&&Math.hypot(sample.screen.x,sample.screen.y)<100,'Moving local player stays near the center under smooth zoomed follow');return sample;}
 async function probeColumnNavigation(){
  await stop();await key('F2');await click(-464,237);let s=await state();if(s.developer!.draft.mapId!=='ember')await click(-390,165);for(let n=0;n<5&&(await state()).developer!.draft.wave!==1;n++)await click(130,165);s=await state();if(!s.developer!.draft.options.invincible)await click(-390,93);if(!s.developer!.draft.options.freezeEnemies)await click(390,93);await click(440,-322);
  s=await state();const obstacle=mapDefinition('ember').obstacles.find(o=>o.id==='entry-pillar')!,nav=new Pathfinder(mapDefinition('ember'),s.hero.radius);let reached=false;

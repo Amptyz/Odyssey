@@ -16,6 +16,8 @@
 
 ## 扩展入口速查
 
+敌人选目标、出招停顿、规则 / 连招与冷却配置见 [敌人行为指南](ENEMY_AI.md)，可调用 `$ember-enemy-ai`。行为注册表为 content/enemy-behaviors.ts；17种怪物已接入。
+
 | 内容 | 必改定义 | 关联入口 | 新机制才修改 |
 | --- | --- | --- | --- |
 | 主动技能 | skills 的 SKILLS；描述从表达式生成 | hero 标签 → HERO_SKILLS → RewardSystem；F2 自动枚举 | SkillBehavior、SkillSystem、必要的世界状态 / 判定 |
@@ -47,7 +49,7 @@ flowchart LR
 ```
 
 - `GameWorld` 负责时间、实体、移动、波次和系统调度，不再按 Q/W/E/R 分支执行技能，也不按敌人种类分支执行 AI。
-- `content/skills.ts` 中的 `fireball`、`icebolt` 等是技能 ID。Q/W/E/R 仅是槽位，输入发送 `CastSlot`，系统解析当前装备。
+- `content/skills.ts` 中的 `fireball`、`icebolt` 等是技能 ID。Q/W/E/R 仅是槽位，普通开局均为 `null`；输入发送 `CastSlot`，系统仅对已装备技能施法。`equippedSkills` 排除空槽，供奖励资格与冷却缩减使用。
 - 技能投射物保存真实 `skillId`，命中、状态来源、余烬条件和渲染颜色都沿用它。新增投射物不会被识别为旧的 Q。
 - `CombatEngine` 保留事件预算 128、链深度 6、规则去重和单次击杀保障；效果实现放在 `EffectHandlers.ts`。
 - 首批 12 个海克斯已接入统一奖励池，新增出手 / 攻击特效 / 治疗 / 受伤 / 冲刺结束事件、条件限频与叠层状态。通过 `CombatHooks` 连接弹体和技能冷却，详细配置约定与数值见 [HEX_AUGMENTS.md](HEX_AUGMENTS.md)。
@@ -57,7 +59,7 @@ flowchart LR
 ## 添加技能
 
 1. 在 `content/skills.ts` 添加唯一 ID、名字、冷却、标签、外观 ID 与行为参数。当前共用行为为 projectile / shield / dash / area / cone。投射物必须配置世界单位半径 `radius`；圆形范围配置 `radius`，扇形配置 `radius + arc`（弧度），共用碰撞查询。
-2. 添加 `hero` 标签，即自动进入技能奖励池。`SKILL_DESCRIPTIONS` 从 expression / behavior 生成；新增行为要同步扩展格式化函数，不另写容易漂移的伤害数字。敌方技能不加 hero 标签。玩家从三选一选中技能后，确认替换任意 Q/W/E/R 槽位；不可同时装备重复技能。
+2. 添加 `hero` 标签，即自动进入技能奖励池。`SKILL_DESCRIPTIONS` 从 expression / behavior 生成；新增行为要同步扩展格式化函数，不另写容易漂移的伤害数字。敌方技能不加 hero 标签。玩家从三选一选中技能后，确认装备到任意 Q/W/E/R 槽位；空槽直接装备，已有技能时替换，不可同时装备重复技能。
 3. 添加对应逻辑测试。全新机制才需要扩展 `SkillBehavior` 与 `simulation/SkillSystem.ts` 的处理函数。
 
 已接通的示例：

@@ -22,7 +22,7 @@ async function walk(page:Page,target:{x:number;y:number},mode:'classic'|'wasd'){
  }
  await page.waitForTimeout(100);
 }
-async function choose(page:Page){await button(page,'选择  1');if((await state(page)).pendingSkill)await button(page,'替换此技能');}
+async function choose(page:Page){await button(page,'选择  1');if((await state(page)).pendingSkill)await button(page,Object.values((await state(page)).loadout).some(id=>id===null)?'装备此技能':'替换此技能');}
 async function interact(page:Page,kind:string,mode:'classic'|'wasd'){
  const node=(await state(page)).scene.interactions.find(n=>n.kind===kind&&!n.claimed);if(!node)throw Error(`Missing ${kind}`);await walk(page,node,mode);await page.keyboard.press('KeyF');await page.waitForTimeout(140);
 }

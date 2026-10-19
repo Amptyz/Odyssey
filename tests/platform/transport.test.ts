@@ -22,7 +22,7 @@ it('runs two independent players through the real relay, then reconnects and rec
   place(host.ui.playerId!,initial);host.send({type:'Interact'});await until(()=>host.snapshot().phase==='reward'&&!host.snapshot().paused);
   expect(guest.snapshot().phase).toBe('camp');
   place(guest.ui.playerId!,initial);guest.send({type:'Interact'});await until(()=>guest.snapshot().phase==='reward'&&!guest.snapshot().paused);
-  for(const port of [host,guest]){port.send({type:'ChooseReward',choiceId:port.snapshot().choices.find(c=>c.kind==='perk'&&c.perkId!=='missileAttack')!.id});await until(()=>port.snapshot().phase==='camp'&&!port.snapshot().paused);}
+  for(const port of [host,guest]){port.send({type:'ChooseReward',choiceId:port.snapshot().choices.find(c=>c.kind==='skill')!.id});await until(()=>!!port.snapshot().pendingSkill&&!port.snapshot().paused);port.send({type:'ConfirmSkill',slot:'W'});await until(()=>port.snapshot().phase==='camp'&&!port.snapshot().paused);}
   // Fixture grants a known form; normal input, personal overlays, saves and recovery use the relay.
   authority.combat.addPerk('missileAttack',guest.ui.playerId);
   const depart=async()=>{const node=authority.snapshot().scene.interactions.find(n=>n.kind==='departure')!;for(const p of authority.players.values())place(p.id,node);const before=authority.phase;host.send({type:'Interact'});await until(()=>authority.phase!==before&&host.ui.saved&&!guest.snapshot().paused);};

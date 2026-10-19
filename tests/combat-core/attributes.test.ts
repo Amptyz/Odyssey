@@ -6,7 +6,7 @@ import {CombatEngine,EVENT_BUDGET} from '../../EmberDemo/assets/scripts/ember/co
 import {applyStatus,movementMultiplier} from '../../EmberDemo/assets/scripts/ember/combat-core/StatusSystem';
 import {GameWorld} from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import {parseDeveloperConfig,DEFAULT_DEV_OPTIONS} from '../../EmberDemo/assets/scripts/ember/simulation/DeveloperConfig';
-import {DEFAULT_LOADOUT,SKILLS,skillDescription,SKILL_DESCRIPTIONS,type SkillDefinition} from '../../EmberDemo/assets/scripts/ember/content/skills';
+import {DEVELOPER_LOADOUT as DEFAULT_LOADOUT,SKILLS,skillDescription,SKILL_DESCRIPTIONS,type SkillDefinition} from '../../EmberDemo/assets/scripts/ember/content/skills';
 const mod=(a:AttributeSet,modifiers:Modifier[],sourceId='test')=>a.upsert({sourceId,modifiers});
 function fixture(source:Partial<UnitTemplate['stats']>={},target:Partial<UnitTemplate['stats']>={}){
  const a=createActor('hero','hero',{x:10,y:10},{...PLAYER_TEMPLATE,stats:{...PLAYER_TEMPLATE.stats,maxHealth:1000,...source}},.3);
@@ -38,7 +38,7 @@ describe('shared attribute rule contract',()=>{
   expect(200*resistanceMultiplier(100)).toBe(100);expect(200*resistanceMultiplier(-50)).toBeCloseTo(266.6667,3);const r=effectiveResistance(100,10,.2,.3,10);expect(r).toBeCloseTo(40.4);expect(200*resistanceMultiplier(r)).toBeCloseTo(142.4501,3);expect(effectiveResistance(10,0,0,0,99)).toBe(0);expect(effectiveResistance(-50,0,0,.9,99)).toBe(-50);
  });
  it('uses soft caps consistently for all movement, including slow resistance',()=>{
-  const a=new AttributeSet(PLAYER_TEMPLATE);expect(movementSpeed(a.value)).toBeCloseTo(4.2);for(const [raw,expected] of [[10,1.15],[130,1.75],[40,1.3],[20,1.2],[500,4.8]]){mod(a,[{stat:'moveSpeed',operation:'flat',value:raw-421.25}]);expect(movementSpeed(a.value)).toBeCloseTo(expected);}
+  const a=new AttributeSet(PLAYER_TEMPLATE);expect(movementSpeed(a.value)).toBeCloseTo(6.3);for(const [raw,expected] of [[10,1.15],[130,1.75],[40,1.3],[20,1.2],[500,4.8]]){mod(a,[{stat:'moveSpeed',operation:'flat',value:raw-421.25}]);expect(movementSpeed(a.value)).toBeCloseTo(expected*1.5);}
   mod(a,[{stat:'slowResist',operation:'flat',value:.2}]);expect(movementSpeed(a.value,.5)).toBeCloseTo(movementSpeed({...a.value,moveSpeed:421.25*.6}));
  });
 });

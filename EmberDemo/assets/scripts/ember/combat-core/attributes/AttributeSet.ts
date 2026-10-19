@@ -1,7 +1,8 @@
 import {BASIC_ATTACKS,DEFAULT_BASIC_ATTACK} from '../../content/attacks';
+import {GAME_TUNING} from '../../content/tuning';
 /** Ember attribute rules v1; percentages are fractions, haste and movement are points. */
 export const ATTRIBUTE_RULE_VERSION=1;
-export const MOVE_SPEED_SCALE=.01;
+export const MOVE_SPEED_SCALE=.01*GAME_TUNING.moveSpeedMultiplier;
 export const STAT_KEYS=['maxHealth','healthRegen','maxMana','manaRegen','attackDamage','abilityPower','attackSpeed','attackRange','critChance','critDamage','armor','magicResist','armorPenFlat','armorPenPercent','magicPenFlat','magicPenPercent','abilityHaste','moveSpeed','omnivamp','healShieldPower','tenacity','slowResist'] as const;
 export type Stat=typeof STAT_KEYS[number];
 export type Attributes=Record<Stat,number>;

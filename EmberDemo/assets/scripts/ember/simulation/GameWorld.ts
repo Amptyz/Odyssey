@@ -10,16 +10,19 @@ import { CollisionWorld } from '../combat-core/CollisionWorld';
 import type { Actor, CombatCue, DamageZone, Hit, MissileEffect, PerkId, PerkDefinition, Cause } from '../combat-core/types';
 import {shapeContours,cloneShape} from '../combat-core/ShapeContours';
 import { ENEMIES, FIXED_DT, HERO, SKILLS, type EnemyKind, type SkillId } from '../content/config';
-import { skill,SKILL_SLOTS,type Loadout,type SkillSlot } from '../content/skills';
+import { skill,SKILL_SLOTS,equippedSkills,type Loadout,type SkillSlot } from '../content/skills';
 import { mapDefinition,type MapId,type MapDefinition } from '../content/maps';
 import { enemy } from '../content/enemies';
 import { applyStatus,movementMultiplier } from '../combat-core/StatusSystem';
 import { executeSkill,type ProjectileBehavior } from './SkillSystem';
 import {EnemySystem,type EnemySnapshot} from './EnemySystem';
+import {projectileSpeed} from '../content/tuning';
+import type {LocalSaveSnapshot} from '../platform/RunSaveStorage';
 import {levelSpawn,enemyPlacements,levelSnapshot,type LevelSnapshot} from './LevelSystem';
 import { LAB_PRESETS, PERKS,type LabId } from '../content/perks';
 import type { GameCommand } from '../platform/protocol';
 import { clamp, direction, distance, type Vec2 } from '../utils/math';
+import {groundSpeedScale,groundDistance} from '../utils/GroundMovement';
 import { EquipmentSystem } from './EquipmentSystem';
 import { rewardChoices,type RewardChoice } from './RewardSystem';
 import { waveGold } from '../content/progression';
@@ -52,6 +55,7 @@ export interface WorldSnapshot {
   party?:{id:string;ready:boolean;equipment:EquipmentLoadout;purchaseOrder:EquipmentId[];appearance:EquipmentAppearanceLoadout}[];
   network?:{code:string;playerId:string;hostId:string;status:string;blocked:boolean;revision:number};
   developer?:DeveloperSnapshot;
+  localSave?:LocalSaveSnapshot;
 }
 export interface PlayerState {
   id:string;active:boolean;hero:Unit;loadout:Loadout;equipment:EquipmentSystem;cooldowns:Record<SkillId,number>;
@@ -103,7 +107,7 @@ export class GameWorld {
     this.combat=new CombatEngine(this.actors,cue=>this.addCue(cue),(hit,target)=>target.team==='hero'&&this.developerOptions?.invincible?0:hit.amount,this.collision,{
       onEvent:event=>this.equipmentEffects.onEvent(event),
       random:()=>this.combatRandom.next(),attackDamage:id=>this.actors.get(id)?.attributes.value.attackDamage??0,
-      reduceCooldown:(id,seconds)=>{const p=this.players.get(id);if(p)for(const key of new Set(Object.values(p.loadout)))p.cooldowns[key]=Math.max(0,p.cooldowns[key]-seconds);},
+      reduceCooldown:(id,seconds)=>{const p=this.players.get(id);if(p)for(const key of new Set(equippedSkills(p.loadout)))p.cooldowns[key]=Math.max(0,p.cooldowns[key]-seconds);},
       projectile:(source,aim,effect,damage)=>this.shootAugment(source,aim,effect,damage),
     });
     this.equipmentEffects=new EquipmentEffectSystem(this.combat,this.actors,()=>this.time);
@@ -168,12 +172,11 @@ export class GameWorld {
       }
       return;
     }
-    if(command.type==='CastSlot'&&SKILL_SLOTS.includes(command.slot)){this.command({type:'CastSkill',skillId:p.loadout[command.slot],point:command.point},playerId);return;}
+    if(command.type==='CastSlot'&&SKILL_SLOTS.includes(command.slot)){const id=p.loadout[command.slot];if(id)this.command({type:'CastSkill',skillId:id,point:command.point},playerId);return;}
     if(command.type==='Stop'){this.stopControls(p);return;}
     if (command.type==='Start' && this.phase==='ready') {
       this.lab=command.lab ?? '';
-      if(this.lab)p.loadout.Q='fireball';
-      for(const member of this.players.values()){if(this.lab)member.loadout.Q='fireball';for(const id of this.lab?LAB_PRESETS[this.lab]:[])this.combat.addPerk(id,member.id);this.refreshStats(member);member.ready=false;}
+      for(const member of this.players.values()){for(const id of this.lab?LAB_PRESETS[this.lab]:[])this.combat.addPerk(id,member.id);this.refreshStats(member);member.ready=false;}
       this.enterCamp();this.saveBoundary();return;
     }
     if (command.type==='TogglePause' && ['camp','fighting','cleared'].includes(this.phase)) { this.paused=!this.paused; this.accumulator=0; this.stopAll(); return; }
@@ -252,7 +255,7 @@ export class GameWorld {
       zones:this.combat.zones.map(z=>({...z,from:{...z.from},to:{...z.to}})),
       swings:this.swings.map(({hitIds,...s})=>({...s,center:{...s.center},facing:{...s.facing}})),
       cues:this.cues.map(c=>({...c,at:{...c.at},to:c.to?{...c.to}:undefined,facing:c.facing?{...c.facing}:undefined,shape:c.shape?cloneShape(c.shape):undefined,contours:c.contours?.map(path=>path.map(p=>({...p})))})),mapId:this.mapId,totalWaves:this.map.waves.length,level:levelSnapshot(this.map,Math.max(1,this.wave),this.levelParticipants(),this.remainingEnemies),enemies:this.enemies.snapshot(),loadout:{...p.loadout},
-      cooldowns:Object.fromEntries(SKILL_SLOTS.map(slot=>[slot,p.cooldowns[p.loadout[slot]]])) as Record<SkillSlot,number>,
+      cooldowns:Object.fromEntries(SKILL_SLOTS.map(slot=>[slot,p.loadout[slot]?p.cooldowns[p.loadout[slot]!]:0])) as Record<SkillSlot,number>,
       perks:Array.from(this.combat.perksFor(p.id)),choices:p.choices.map(c=>({...c})),pendingSkill:p.pendingSkill,...p.equipment.snapshot(),stats:this.statsFor(p.id),destination:p.destination?{...p.destination}:undefined,
       kills:this.combat.metrics.kills,primed:this.combat.isPrimed(p.id),metrics:{...this.combat.metrics},party:Array.from(this.players.values(),member=>({id:member.id,ready:this.sceneFor(member.id).insideIds.includes(member.id),equipment:{...member.equipment.equipped},purchaseOrder:[...member.equipment.purchaseOrder],appearance:{...member.equipment.appearance}}))};
   }
@@ -268,6 +271,8 @@ export class GameWorld {
     this.checkpointRevision++;
   }
   saveLobby():void {if(this.phase==='ready')this.saveBoundary();}
+  /** Manual saves may capture safe-stage positions; combat retains its wave-start checkpoint. */
+  saveProgress():void {if(['camp','cleared','victory'].includes(this.phase))this.saveBoundary();}
   static resume(value:unknown):GameWorld {
     const c=parseRunCheckpoint(value),w=new GameWorld(c.seed,c.mapId);
     for(const saved of c.players){
@@ -396,7 +401,7 @@ export class GameWorld {
       return;
     }
     if(p.direct){
-      const {movement}=p.direct,speed=movementSpeed(h.attributes.value,movementMultiplier(h));
+      const {movement}=p.direct,speed=movementSpeed(h.attributes.value,movementMultiplier(h))*groundSpeedScale(movement);
       if(movement.x||movement.y)h.facing={...movement};
       const next=this.nav.sweep(h,{x:h.x+movement.x*speed*dt,y:h.y+movement.y*speed*dt},h.radius);
       h.velocity={x:(next.x-h.x)/dt,y:(next.y-h.y)/dt};h.x=next.x;h.y=next.y;
@@ -421,8 +426,9 @@ export class GameWorld {
     const attackId=++this.serial;this.equipmentEffects.beginAttack(h.id,attackId);
     this.combat.attack(h.id,aim,attackId);
     if(attack.kind==='projectile'){
-      this.projectiles.push({id:attackId,attackId,x:h.x,y:h.y,previous:{x:h.x,y:h.y},sourceId:h.id,vx:aim.x*attack.speed,vy:aim.y*attack.speed,
-        remaining:stats.attackRange/attack.speed,radius:attack.radius,damage:stats.attackDamage,enemy:false,cause:'basic',appearance:attack.appearance});
+      const speed=projectileSpeed(attack.speed);
+      this.projectiles.push({id:attackId,attackId,x:h.x,y:h.y,previous:{x:h.x,y:h.y},sourceId:h.id,vx:aim.x*speed,vy:aim.y*speed,
+        remaining:stats.attackRange/speed,radius:attack.radius,damage:stats.attackDamage,enemy:false,cause:'basic',appearance:attack.appearance});
     }else{
       // Cap the whole swing below the attack cadence even with future high attack-speed items.
       const scale=Math.min(1,h.attackCd/(attack.windup+attack.active));
@@ -450,7 +456,8 @@ export class GameWorld {
     const goal=unit.path[0];
     if (!goal) { unit.velocity.x*=0.65; unit.velocity.y*=0.65; return; }
     const dir=direction(unit,goal), dist=distance(unit,goal);unit.facing={...dir};
-    const braking=Math.min(speed,Math.sqrt(2*22*dist));
+    const remaining=groundDistance({x:goal.x-unit.x,y:goal.y-unit.y});
+    const braking=Math.min(speed,Math.sqrt(2*22*remaining))*groundSpeedScale(dir);
     const factor=Math.min(1,dt*14);
     unit.velocity.x+=(dir.x*braking-unit.velocity.x)*factor;
     unit.velocity.y+=(dir.y*braking-unit.velocity.y)*factor;
@@ -461,13 +468,15 @@ export class GameWorld {
     unit.x=next.x; unit.y=next.y;
   }
   private shoot(source:Actor,dir:Vec2,skillId:SkillId,b:ProjectileBehavior,damage:number,expressionMultiplier=1):void {
+    const speed=projectileSpeed(b.speed);
     this.projectiles.push({id:++this.serial,x:source.x,y:source.y,previous:{x:source.x,y:source.y},sourceId:source.id,
-      vx:dir.x*b.speed,vy:dir.y*b.speed,payload:{area:false,delivery:'spell'},targetExpression:{targetMaxHealth:skill(skillId).expression?.targetMaxHealth??0,targetCurrentHealth:skill(skillId).expression?.targetCurrentHealth??0,targetMissingHealth:skill(skillId).expression?.targetMissingHealth??0},targetExpressionMultiplier:expressionMultiplier,expressionCap:skill(skillId).expression?.cap===undefined?undefined:skill(skillId).expression!.cap!*expressionMultiplier,remaining:b.range/b.speed,radius:b.radius,damage,enemy:source.team==='enemy',cause:source.team==='enemy'?'enemy':'skill',skillId,appearance:skill(skillId).appearance,onHit:b.onHit});
+      vx:dir.x*speed,vy:dir.y*speed,payload:{area:false,delivery:'spell'},targetExpression:{targetMaxHealth:skill(skillId).expression?.targetMaxHealth??0,targetCurrentHealth:skill(skillId).expression?.targetCurrentHealth??0,targetMissingHealth:skill(skillId).expression?.targetMissingHealth??0},targetExpressionMultiplier:expressionMultiplier,expressionCap:skill(skillId).expression?.cap===undefined?undefined:skill(skillId).expression!.cap!*expressionMultiplier,remaining:b.range/speed,radius:b.radius,damage,enemy:source.team==='enemy',cause:source.team==='enemy'?'enemy':'skill',skillId,appearance:skill(skillId).appearance,onHit:b.onHit});
   }
   private shootAugment(source:Actor,dir:Vec2,effect:MissileEffect,damage:number):void {
     if(this.projectiles.length>=256)return;
+    const speed=projectileSpeed(effect.speed);
     this.projectiles.push({id:++this.serial,x:source.x,y:source.y,previous:{x:source.x,y:source.y},sourceId:source.id,
-      vx:dir.x*effect.speed,vy:dir.y*effect.speed,remaining:effect.range/effect.speed,radius:effect.radius,damage,enemy:source.team==='enemy',cause:'augment',appearance:effect.appearance,
+      vx:dir.x*speed,vy:dir.y*speed,remaining:effect.range/speed,radius:effect.radius,damage,enemy:source.team==='enemy',cause:'augment',appearance:effect.appearance,
       payload:{proc:true,appliesOnHit:effect.appliesOnHit,damageType:effect.damageType??'magic',delivery:'proc'},
       targetHpRatio:effect.targetHpRatio,hpDamageCap:effect.hpDamageCap,distanceScale:effect.distanceScale,distanceTraveled:0});
   }

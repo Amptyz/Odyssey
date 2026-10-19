@@ -25,13 +25,18 @@ export async function startRelay(options:RelayOptions={}) {
     const data:StoredRoom={version:ROOM_VERSION,code:r.code,hostId:r.hostId,members:r.members.map(({id,name,identityHash})=>({id,name,identityHash})),started:r.started,revision,checkpoint,updatedAt:Date.now()};
     const file=resolve(directory,r.code+'.json'),temp=file+'.tmp';
     const handle=await open(temp,'w',0o600);try{await handle.writeFile(JSON.stringify(data));await handle.sync();}finally{await handle.close();}
-    await rename(temp,file);const dir=await open(directory,'r');try{await dir.sync();}finally{await dir.close();}r.updatedAt=data.updatedAt;
+    await rename(temp,file);
+    // Windows cannot fsync a directory through Node's file handles. Keep file fsync and
+    // atomic replacement on every platform; POSIX additionally flushes the directory entry.
+    if(process.platform!=='win32'){const dir=await open(directory,'r');try{await dir.sync();}finally{await dir.close();}}
+    r.updatedAt=data.updatedAt;
   }
   async function load(code:unknown):Promise<Room>{
     if(typeof code!=='string'||!/^([A-Z2-9]){6}$/.test(code))throw Error('请输入 6 位房间码');
     const current=rooms.get(code);if(current)return current;
     let data:StoredRoom;try{data=JSON.parse(await readFile(resolve(directory,code+'.json'),'utf8')) as StoredRoom;}catch{throw Error('房间不存在或没有可恢复的进度');}
-    if(data.version!==ROOM_VERSION)throw Error('房间版本不同，请使用相同版本');
+    // v6 checkpoints already contain all four occupied slots; v7 additionally permits null.
+    if(data.version!==ROOM_VERSION&&data.version!=='ember-coop-6')throw Error('房间版本不同，请使用相同版本');
     const r:Room={...data,checkpoint:data.checkpoint?parseRunCheckpoint(data.checkpoint):undefined,members:data.members.map(m=>({...m,connected:false,active:true,lastSeen:0,lastSeq:0})),hostAvailable:false,saveChain:Promise.resolve()};rooms.set(code,r);return r;
   }
   function newCode():string {const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from(randomBytes(6),n=>chars[n%chars.length]).join('');}

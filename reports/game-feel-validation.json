@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-19",
+  "status": "passed",
+  "tuning": {"moveSpeedMultiplier": 1.5, "projectileSpeedMultiplier": 1.5, "cameraZoom": 1.25, "cameraFollowHalfLife": 0.1, "cameraSnapDistance": 12},
+  "checks": {"pnpm check": "29 files / 370 tests passed", "Creator 3.8.8 Web Desktop": "passed", "pnpm test:feel": 11, "pnpm test:enemy-ai": 14, "pnpm test:scenes": 52, "pnpm test:multiplayer": 21, "skill validation and new documentation links": "passed", "git diff --check": "passed"},
+  "scope": ["All ordinary unit movement uses the shared conversion at 1.5x; positive low-MS soft caps and canMove semantics retained.", "All player/enemy/augment projectiles apply one global multiplier, lifetime adjusted to retain range.", "Frame-rate independent camera follow, one shared projection per draw, scene/restart snap, world node and environment scaling without HUD zoom.", "Real held WASD and classic right-click movement, pointer alignment while moving, camera convergence, player/enemy node scale, actual enemy projectile travel.", "AI profile/sequence inspector, normal camp/rest interaction and two-browser relay recovery regressions."],
+  "artifacts": ["docs/GAME_FEEL.md", "reports/browser-game-feel.json", "reports/browser-enemy-ai.json", "reports/browser-multiplayer.json", "reports/game-feel-1280.png", "reports/game-feel-960.png"],
+  "limits": ["Dash/charge authored speed and distance retain their separate skill definitions.", "No new ten-level combat balance run or four-player stress test.", "The in-app game tab must refresh to load the rebuilt game."]
+}

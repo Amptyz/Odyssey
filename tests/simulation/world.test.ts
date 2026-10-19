@@ -5,6 +5,7 @@ import { LocalTransport } from '../../EmberDemo/assets/scripts/ember/platform/Lo
 import { HERO, SKILLS } from '../../EmberDemo/assets/scripts/ember/content/config';
 import {AttributeSet} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { distance } from '../../EmberDemo/assets/scripts/ember/utils/math';
+import {worldToScreen,DEFAULT_PROJECTION} from '../../EmberDemo/assets/scripts/ember/render/IsoProjection';
 function run(w:GameWorld,seconds:number,hz=60) { for(let i=0;i<seconds*hz;i++)w.advance(1/hz); }
 function start(seed=1234) {const w=new GameWorld(seed);openMerchantFixture(w);startCombatFixture(w);return w;}
 function freeze(e:GameWorld['hero']){e.attributes=new AttributeSet({...e.attributes.template,canMove:false,canAttack:false});return e;}
@@ -80,7 +81,7 @@ describe('fixed-step world and inputs',()=>{
   });
   it('swift and rhythm change movement and attack cadence',()=>{
     const a=sandbox(),b=sandbox();b.combat.addPerk('swift');
-    for(const w of [a,b])w.command({type:'MoveTo',point:{x:13,y:10}});run(a,0.5);run(b,0.5);expect(b.hero.x).toBeGreaterThan(a.hero.x);
+    for(const w of [a,b])w.command({type:'MoveTo',point:{x:13,y:10}});run(a,0.25);run(b,0.25);expect(b.hero.x).toBeGreaterThan(a.hero.x);
     b.combat.addPerk('rhythm');const e=b.spawnEnemy('ranged',{x:b.hero.x+1,y:b.hero.y},500);
     b.command({type:'Attack',point:e});expect(b.hero.attackCd).toBeCloseTo(HERO.attackInterval*0.85);
   });
@@ -102,7 +103,8 @@ describe('direct movement and pointer attacks',()=>{
     for(const w of [a,b])w.command({type:'DirectInput',movement:{x:1,y:1}});
     run(a,0.5,30);run(b,0.5,144);
     expect(a.snapshot()).toEqual(b.snapshot());
-    expect(distance(a.hero,{x:10,y:10})).toBeCloseTo(HERO.speed*0.5);
+    const from=worldToScreen({x:10,y:10}),to=worldToScreen(a.hero);
+    expect(Math.hypot(to.x-from.x,to.y-from.y)).toBeCloseTo(HERO.speed*0.5*DEFAULT_PROJECTION.tileWidth*DEFAULT_PROJECTION.zoom/Math.SQRT2);
     a.command({type:'DirectInput',movement:{x:0,y:0}});const p={x:a.hero.x,y:a.hero.y};run(a,0.2);expect(distance(a.hero,p)).toBe(0);
   });
   it('blocks held movement at pillars and arena edges',()=>{

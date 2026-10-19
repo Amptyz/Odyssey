@@ -1,0 +1,4 @@
+interface:
+  display_name: "余烬敌人行为配置"
+  short_description: "配置余烬试炼敌人选目标、出招停顿、连招与冷却，并验证多人行为"
+  default_prompt: "使用 $ember-enemy-ai，按现有配置接口实现并验证指定敌人的决策和出招逻辑。"

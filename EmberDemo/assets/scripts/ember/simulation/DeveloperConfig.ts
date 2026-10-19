@@ -1,7 +1,7 @@
 import {JOURNEYS} from '../content/scenes';
 import {STAT_KEYS,validModifier,type Modifier} from '../combat-core/attributes/AttributeSet';
 import { MAPS,mapDefinition,type MapId } from '../content/maps';
-import { HERO_SKILLS,SKILL_SLOTS,type Loadout } from '../content/skills';
+import { HERO_SKILLS,SKILL_SLOTS,equippedSkills,type Loadout } from '../content/skills';
 import { PERKS } from '../content/perks';
 import { EQUIPMENT_SLOTS,SHOP_CATALOG,type EquipmentId,type EquipmentLoadout } from '../content/equipment';
 import type { PerkId } from '../combat-core/types';
@@ -24,7 +24,7 @@ export function parseDeveloperConfig(input:unknown):DeveloperConfig {
   if(!Number.isInteger(c.wave)||c.wave!<1||c.wave!>mapDefinition(c.mapId).waves.length)throw Error('波次超出当前地图范围。');
   if(c.entry!==undefined&&!['combat','camp'].includes(c.entry))throw Error('测试场景无效。');
   if(c.entry==='camp'&&c.wave!==1&&!JOURNEYS[c.mapId].rests[c.wave!-1])throw Error('所选关卡前没有休息点。');
-  if(!c.loadout||!SKILL_SLOTS.every(slot=>HERO_SKILLS.includes(c.loadout![slot]))||new Set(SKILL_SLOTS.map(s=>c.loadout![s])).size!==4)throw Error('四个槽位必须是不同的玩家技能。');
+  if(!c.loadout||!SKILL_SLOTS.every(slot=>c.loadout![slot]===null||HERO_SKILLS.includes(c.loadout![slot]!))||new Set(equippedSkills(c.loadout)).size!==equippedSkills(c.loadout).length)throw Error('四个槽位需为 null 或不同的玩家技能。');
   if(!Array.isArray(c.perks)||c.perks.length>PERKS.length||new Set(c.perks).size!==c.perks.length||!c.perks.every(id=>PERKS.some(p=>p.id===id)))throw Error('余烬包含重复或不存在的内容。');
   if(!c.equipment||typeof c.equipment!=='object'||Array.isArray(c.equipment))throw Error('装备配置无效。');
   for(const [slot,id] of Object.entries(c.equipment))if(!EQUIPMENT_SLOTS.includes(slot as typeof EQUIPMENT_SLOTS[number])||!SHOP_CATALOG.includes(id as EquipmentId))throw Error('装备或装备栏不存在。');
