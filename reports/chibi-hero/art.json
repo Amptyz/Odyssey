@@ -1,0 +1,1588 @@
+{
+  "status": "passed",
+  "url": "http://127.0.0.1:8080",
+  "scope": "ordinary visible camp entry, merchant transactions in an explicit F2 rest fixture; explicitly configured developer roster, enemy actions, Boss damage phases, two-map scenery and real skill VFX",
+  "notCovered": [
+    "natural campaign rewards and replacement UI",
+    "four-player overlap",
+    "GPU frame-time performance",
+    "strict source pixel-grid compliance"
+  ],
+  "reviewRequired": [
+    "inspect danger-warning screenshot for boundary contrast and empty ring safe zone; snapshot presence alone does not prove pixel visibility"
+  ],
+  "checks": [
+    "registered atlas loads locally with nearest sampling: melee",
+    "registered atlas loads locally with nearest sampling: ranged",
+    "registered atlas loads locally with nearest sampling: stoneback",
+    "registered atlas loads locally with nearest sampling: reedLancer",
+    "registered atlas loads locally with nearest sampling: sunbud",
+    "registered atlas loads locally with nearest sampling: frostling",
+    "registered atlas loads locally with nearest sampling: shardCrab",
+    "registered atlas loads locally with nearest sampling: rimeMoth",
+    "registered atlas loads locally with nearest sampling: chimeSentry",
+    "registered atlas loads locally with nearest sampling: snowHare",
+    "registered atlas loads locally with nearest sampling: warden",
+    "registered atlas loads locally with nearest sampling: emberRam",
+    "registered atlas loads locally with nearest sampling: bellKeeper",
+    "registered atlas loads locally with nearest sampling: mirrorKnight",
+    "registered atlas loads locally with nearest sampling: rimeWeaver",
+    "registered atlas loads locally with nearest sampling: courtyardHeart",
+    "registered atlas loads locally with nearest sampling: mirrorRegent",
+    "registered atlas loads locally with nearest sampling: weapons",
+    "registered atlas loads locally with nearest sampling: bodies",
+    "registered atlas loads locally with nearest sampling: heads",
+    "registered atlas loads locally with nearest sampling: hero",
+    "registered atlas loads locally with nearest sampling: environment",
+    "registered atlas loads locally with nearest sampling: skills",
+    "registered atlas loads locally with nearest sampling: courtyardHeart-phase2",
+    "registered atlas loads locally with nearest sampling: mirrorRegent-phase2",
+    "registered atlas loads locally with nearest sampling: perks",
+    "registered atlas loads locally with nearest sampling: environment-frost-v2",
+    "registered atlas loads locally with nearest sampling: vfx-bursts-v2",
+    "registered atlas loads locally with nearest sampling: courtyardHeart-phase2-death",
+    "registered atlas loads locally with nearest sampling: mirrorRegent-strike",
+    "registered atlas loads locally with nearest sampling: mirrorRegent-phase2-strike",
+    "registered atlas loads locally with nearest sampling: hero-run",
+    "registered atlas loads locally with nearest sampling: hero-walk",
+    "registered atlas loads locally with nearest sampling: hero-melee",
+    "registered atlas loads locally with nearest sampling: hero-ranged",
+    "registered atlas loads locally with nearest sampling: hero-states",
+    "completion frost scenery and temporal VFX atlases are registered",
+    "ordinary visible main menu opens the birth camp",
+    "explicit developer configuration applied",
+    "F opens the merchant in an explicit F2 rest fixture",
+    "visible merchant purchase deducts 100 gold and equips one real item",
+    "visible unaffordable purchase leaves currency unchanged",
+    "leaving merchant returns to the rest",
+    "explicit developer configuration applied",
+    "courtyard selects its warm scene atlas",
+    "explicit developer configuration applied",
+    "actual PNG monster renderer selected: melee",
+    "actual PNG monster renderer selected: ranged",
+    "actual PNG monster renderer selected: stoneback",
+    "actual PNG monster renderer selected: reedLancer",
+    "actual PNG monster renderer selected: sunbud",
+    "actual PNG monster renderer selected: frostling",
+    "actual PNG monster renderer selected: shardCrab",
+    "actual PNG monster renderer selected: rimeMoth",
+    "actual PNG monster renderer selected: chimeSentry",
+    "actual PNG monster renderer selected: snowHare",
+    "actual PNG monster renderer selected: warden",
+    "actual PNG monster renderer selected: emberRam",
+    "actual PNG monster renderer selected: bellKeeper",
+    "actual PNG monster renderer selected: mirrorKnight",
+    "actual PNG monster renderer selected: rimeWeaver",
+    "actual PNG monster renderer selected: courtyardHeart",
+    "actual PNG monster renderer selected: mirrorRegent",
+    "explicit developer configuration applied",
+    "real enemy simulation chooses anticipation and strike frames",
+    "pause freezes enemy poses and contact anchors",
+    "explicit developer configuration applied",
+    "shield actual cast emits the expected cue and allocates a textured effect",
+    "shield selects the expected atlas row",
+    "shield advances to a later flipbook pose on simulation time",
+    "pause freezes the real shield flipbook and VFX allocation",
+    "shield effect retires after simulation cue age expires",
+    "explicit developer configuration applied",
+    "iron-guard actual cast emits the expected cue and allocates a textured effect",
+    "iron-guard selects the expected atlas row",
+    "iron-guard advances to a later flipbook pose on simulation time",
+    "iron-guard effect retires after simulation cue age expires",
+    "explicit developer configuration applied",
+    "fire actual cast emits the expected cue and allocates a textured effect",
+    "fire selects the expected atlas row",
+    "fire advances to a later flipbook pose on simulation time",
+    "fire effect retires after simulation cue age expires",
+    "explicit developer configuration applied",
+    "ice actual cast emits the expected cue and allocates a textured effect",
+    "ice selects the expected atlas row",
+    "ice advances to a later flipbook pose on simulation time",
+    "ice effect retires after simulation cue age expires",
+    "explicit developer configuration applied",
+    "slash actual cast emits the expected cue and allocates a textured effect",
+    "slash selects the expected atlas row",
+    "slash advances to a later flipbook pose on simulation time",
+    "slash effect retires after simulation cue age expires",
+    "explicit developer configuration applied",
+    "stress uses at least 24 actual skill cues, without snapshot injection",
+    "real simultaneous skill cues saturate but cannot exceed 24 textured effects",
+    "stress effects recycle after expiry",
+    "explicit developer configuration applied",
+    "ember selects its dedicated scenery atlas after map switch",
+    "map switch clears old active effects: ember",
+    "explicit developer configuration applied",
+    "frost selects its dedicated scenery atlas after map switch",
+    "map switch clears old active effects: frost",
+    "explicit developer configuration applied",
+    "real projectile damage triggers dedicated phaseII atlas: courtyardHeart",
+    "explicit developer configuration applied",
+    "phaseI mirror strike atlas is consumed by actual enemy attack poses",
+    "real projectile damage triggers dedicated phaseII atlas: mirrorRegent",
+    "phaseII mirror strike atlas is consumed by actual enemy attack poses",
+    "explicit developer configuration applied",
+    "actual Boss warnings retain authoritative contours during 20 real friendly casts",
+    "no browser runtime errors or external HTTP resources"
+  ],
+  "seen": [
+    "hero:undefined",
+    "melee:walkB",
+    "warden:idle",
+    "mirrorKnight:idle",
+    "rimeWeaver:idle",
+    "melee:walkA",
+    "melee:idle",
+    "melee:windup",
+    "warden:windup",
+    "mirrorKnight:windup",
+    "rimeWeaver:windup",
+    "melee:strike",
+    "melee:recovery",
+    "mirrorKnight:strike",
+    "warden:strike",
+    "rimeWeaver:strike",
+    "mirrorKnight:recovery",
+    "warden:recovery",
+    "rimeWeaver:recovery",
+    "warden:rootPlates:windup",
+    "mirrorKnight:splitEdge:windup",
+    "warden:rootPlates:strike",
+    "mirrorKnight:splitEdge:strike",
+    "warden:rootPlates:recovery",
+    "mirrorKnight:splitEdge:recovery",
+    "rimeWeaver:wovenRing:windup",
+    "rimeWeaver:wovenRing:strike",
+    "rimeWeaver:wovenRing:recovery",
+    "courtyardHeart:idle",
+    "courtyardHeart:hearthFurrows:windup",
+    "courtyardHeart:hearthFurrows:strike",
+    "courtyardHeart:hearthFurrows:recovery",
+    "courtyardHeart:hearthSeeds:windup",
+    "courtyardHeart:hearthSeeds:strike",
+    "courtyardHeart:hearthSeeds:recovery",
+    "courtyardHeart:hearthVent:windup",
+    "courtyardHeart:hearthVent:strike",
+    "courtyardHeart:hearthVent:recovery",
+    "courtyardHeart:phase2",
+    "mirrorRegent:idle",
+    "mirrorRegent:regentLanes:windup",
+    "mirrorRegent:strike",
+    "mirrorRegent:regentLanes:recovery",
+    "mirrorRegent:regentHalo:windup",
+    "mirrorRegent:regentHalo:recovery",
+    "mirrorRegent:regentMarks:windup",
+    "mirrorRegent:phase2"
+  ],
+  "seenAtlases": [
+    "hero-states",
+    "pixel-v1/melee",
+    "pixel-v1/warden",
+    "pixel-v1/mirrorKnight",
+    "pixel-v1/rimeWeaver",
+    "pixel-v1/courtyardHeart",
+    "pixel-v1/courtyardHeart-phase2",
+    "pixel-v1/mirrorRegent",
+    "pixel-v2/monsters/mirrorRegent-strike",
+    "pixel-v1/mirrorRegent-phase2",
+    "pixel-v2/monsters/mirrorRegent-phase2-strike"
+  ],
+  "observations": {
+    "vfx": [
+      {
+        "label": "shield",
+        "kind": "shield",
+        "appearance": "shield",
+        "expectedRow": 3,
+        "debug": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 3,
+              "frame": 12
+            }
+          ]
+        },
+        "progressed": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 3,
+              "frame": 13
+            }
+          ]
+        }
+      },
+      {
+        "label": "iron-guard",
+        "kind": "shield",
+        "appearance": "shield",
+        "expectedRow": 3,
+        "debug": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 3,
+              "frame": 12
+            }
+          ]
+        },
+        "progressed": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 3,
+              "frame": 13
+            }
+          ]
+        }
+      },
+      {
+        "label": "fire",
+        "kind": "explosion",
+        "appearance": "fire",
+        "expectedRow": 0,
+        "debug": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 0,
+              "frame": 0
+            }
+          ]
+        },
+        "progressed": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 0,
+              "frame": 1
+            }
+          ]
+        }
+      },
+      {
+        "label": "ice",
+        "kind": "explosion",
+        "appearance": "ice",
+        "expectedRow": 1,
+        "debug": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 1,
+              "frame": 4
+            }
+          ]
+        },
+        "progressed": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 1,
+              "frame": 5
+            }
+          ]
+        }
+      },
+      {
+        "label": "slash",
+        "kind": "swing",
+        "appearance": "fire",
+        "expectedRow": 2,
+        "debug": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 2,
+              "frame": 8
+            }
+          ]
+        },
+        "progressed": {
+          "atlas": "vfx-bursts-v2",
+          "active": 1,
+          "allocated": 1,
+          "limit": 24,
+          "clock": "snapshot cue age",
+          "frames": [
+            {
+              "id": 7,
+              "row": 2,
+              "frame": 9
+            }
+          ]
+        }
+      }
+    ],
+    "bosses": [
+      {
+        "id": "courtyardHeart",
+        "mapId": "ember",
+        "phase": 2
+      },
+      {
+        "id": "mirrorRegent",
+        "mapId": "frost",
+        "phase": 2
+      }
+    ],
+    "normalPurchase": {
+      "item": "sword",
+      "equipment": {
+        "slot1": "sword"
+      },
+      "gold": 60
+    },
+    "stress": {
+      "cues": 36,
+      "vfx": {
+        "atlas": "vfx-bursts-v2",
+        "active": 24,
+        "allocated": 24,
+        "limit": 24,
+        "clock": "snapshot cue age",
+        "frames": [
+          {
+            "id": 42,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 41,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 40,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 39,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 38,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 37,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 36,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 35,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 34,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 33,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 32,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 31,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 30,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 29,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 28,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 27,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 26,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 25,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 24,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 23,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 22,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 21,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 20,
+            "row": 0,
+            "frame": 0
+          },
+          {
+            "id": 19,
+            "row": 0,
+            "frame": 0
+          }
+        ]
+      }
+    },
+    "warningOverlap": {
+      "warnings": [
+        {
+          "shape": {
+            "kind": "ring",
+            "radius": 7.2,
+            "innerRadius": 3,
+            "center": {
+              "x": 11,
+              "y": 8
+            }
+          },
+          "contours": [
+            [
+              {
+                "x": 18.2,
+                "y": 8
+              },
+              {
+                "x": 18.19104983277624,
+                "y": 8.358890376757019
+              },
+              {
+                "x": 18.16422158263089,
+                "y": 8.71688849548988
+              },
+              {
+                "x": 18.119581948820926,
+                "y": 9.073104316468456
+              },
+              {
+                "x": 18.057241912509514,
+                "y": 9.426652231035662
+              },
+              {
+                "x": 17.97735646084936,
+                "y": 9.776653263370115
+              },
+              {
+                "x": 17.880124201660212,
+                "y": 10.12223725575851
+              },
+              {
+                "x": 17.76578686965854,
+                "y": 10.462545031944815
+              },
+              {
+                "x": 17.634628725466936,
+                "y": 10.796730533177803
+              },
+              {
+                "x": 17.48697584889742,
+                "y": 11.123962921646418
+              },
+              {
+                "x": 17.323195328265648,
+                "y": 11.44342864607349
+              },
+              {
+                "x": 17.14369434775152,
+                "y": 11.754333464332387
+              },
+              {
+                "x": 16.94891917507516,
+                "y": 12.055904418058079
+              },
+              {
+                "x": 16.73935405200504,
+                "y": 12.347391754343437
+              },
+              {
+                "x": 16.515519990456642,
+                "y": 12.628070789743083
+              },
+              {
+                "x": 16.27797347717475,
+                "y": 12.897243711950619
+              },
+              {
+                "x": 16.027305090219723,
+                "y": 13.154241314669973
+              },
+              {
+                "x": 15.764138030697389,
+                "y": 13.398424661367686
+              },
+              {
+                "x": 15.489126573382883,
+                "y": 13.629186673769816
+              },
+              {
+                "x": 15.202954440090487,
+                "y": 13.845953641154168
+              },
+              {
+                "x": 14.906333099833468,
+                "y": 14.048186646685554
+              },
+              {
+                "x": 14.6,
+                "y": 14.23538290724796
+              },
+              {
+                "x": 14.284716732942774,
+                "y": 14.407077023442573
+              },
+              {
+                "x": 13.961267142540404,
+                "y": 14.562842136644047
+              },
+              {
+                "x": 13.630455375438043,
+                "y": 14.702290990238271
+              },
+              {
+                "x": 13.293103881812128,
+                "y": 14.825076892403349
+              },
+              {
+                "x": 12.950051370629637,
+                "y": 14.930894578040085
+              },
+              {
+                "x": 12.602150724485464,
+                "y": 15.01948096770913
+              },
+              {
+                "x": 12.250266879201899,
+                "y": 15.090615821687898
+              },
+              {
+                "x": 11.895274673461895,
+                "y": 15.144122287521238
+              },
+              {
+                "x": 11.538056673822256,
+                "y": 15.179867339704497
+              },
+              {
+                "x": 11.179500980514126,
+                "y": 15.197762110405877
+              },
+              {
+                "x": 10.820499019485876,
+                "y": 15.197762110405877
+              },
+              {
+                "x": 10.461943326177746,
+                "y": 15.179867339704497
+              },
+              {
+                "x": 10.104725326538107,
+                "y": 15.144122287521238
+              },
+              {
+                "x": 9.749733120798101,
+                "y": 15.090615821687898
+              },
+              {
+                "x": 9.397849275514536,
+                "y": 15.01948096770913
+              },
+              {
+                "x": 9.049948629370364,
+                "y": 14.930894578040087
+              },
+              {
+                "x": 8.706896118187872,
+                "y": 14.825076892403349
+              },
+              {
+                "x": 8.369544624561957,
+                "y": 14.702290990238271
+              },
+              {
+                "x": 8.038732857459598,
+                "y": 14.562842136644047
+              },
+              {
+                "x": 7.715283267057229,
+                "y": 14.407077023442575
+              },
+              {
+                "x": 7.399999999999999,
+                "y": 14.235382907247956
+              },
+              {
+                "x": 7.093666900166532,
+                "y": 14.048186646685554
+              },
+              {
+                "x": 6.797045559909515,
+                "y": 13.845953641154168
+              },
+              {
+                "x": 6.510873426617119,
+                "y": 13.629186673769816
+              },
+              {
+                "x": 6.235861969302614,
+                "y": 13.398424661367688
+              },
+              {
+                "x": 5.972694909780276,
+                "y": 13.154241314669974
+              },
+              {
+                "x": 5.72202652282525,
+                "y": 12.897243711950619
+              },
+              {
+                "x": 5.484480009543359,
+                "y": 12.628070789743084
+              },
+              {
+                "x": 5.260645947994957,
+                "y": 12.347391754343437
+              },
+              {
+                "x": 5.0510808249248385,
+                "y": 12.05590441805808
+              },
+              {
+                "x": 4.856305652248479,
+                "y": 11.754333464332387
+              },
+              {
+                "x": 4.676804671734353,
+                "y": 11.44342864607349
+              },
+              {
+                "x": 4.513024151102583,
+                "y": 11.12396292164642
+              },
+              {
+                "x": 4.365371274533064,
+                "y": 10.7967305331778
+              },
+              {
+                "x": 4.23421313034146,
+                "y": 10.462545031944817
+              },
+              {
+                "x": 4.119875798339788,
+                "y": 10.122237255758513
+              },
+              {
+                "x": 4.022643539150639,
+                "y": 9.776653263370116
+              },
+              {
+                "x": 3.9427580874904846,
+                "y": 9.426652231035662
+              },
+              {
+                "x": 3.880418051179075,
+                "y": 9.073104316468457
+              },
+              {
+                "x": 3.8357784173691094,
+                "y": 8.716888495489881
+              },
+              {
+                "x": 3.8089501672237587,
+                "y": 8.358890376757023
+              },
+              {
+                "x": 3.8,
+                "y": 8
+              },
+              {
+                "x": 3.8089501672237587,
+                "y": 7.64110962324298
+              },
+              {
+                "x": 3.8357784173691094,
+                "y": 7.283111504510122
+              },
+              {
+                "x": 3.880418051179075,
+                "y": 6.926895683531544
+              },
+              {
+                "x": 3.9427580874904837,
+                "y": 6.573347768964339
+              },
+              {
+                "x": 4.022643539150638,
+                "y": 6.223346736629886
+              },
+              {
+                "x": 4.119875798339786,
+                "y": 5.877762744241492
+              },
+              {
+                "x": 4.234213130341459,
+                "y": 5.537454968055186
+              },
+              {
+                "x": 4.365371274533065,
+                "y": 5.2032694668221975
+              },
+              {
+                "x": 4.513024151102582,
+                "y": 4.8760370783535825
+              },
+              {
+                "x": 4.676804671734352,
+                "y": 4.556571353926511
+              },
+              {
+                "x": 4.856305652248479,
+                "y": 4.245666535667615
+              },
+              {
+                "x": 5.051080824924837,
+                "y": 3.9440955819419212
+              },
+              {
+                "x": 5.260645947994957,
+                "y": 3.6526082456565643
+              },
+              {
+                "x": 5.484480009543359,
+                "y": 3.3719292102569174
+              },
+              {
+                "x": 5.7220265228252485,
+                "y": 3.102756288049382
+              },
+              {
+                "x": 5.972694909780276,
+                "y": 2.8457586853300283
+              },
+              {
+                "x": 6.23586196930261,
+                "y": 2.6015753386323155
+              },
+              {
+                "x": 6.510873426617117,
+                "y": 2.370813326230186
+              },
+              {
+                "x": 6.797045559909508,
+                "y": 2.1540463588458367
+              },
+              {
+                "x": 7.093666900166534,
+                "y": 1.9518133533144448
+              },
+              {
+                "x": 7.400000000000002,
+                "y": 1.7646170927520402
+              },
+              {
+                "x": 7.715283267057226,
+                "y": 1.5929229765574275
+              },
+              {
+                "x": 8.038732857459596,
+                "y": 1.437157863355953
+              },
+              {
+                "x": 8.36954462456195,
+                "y": 1.2977090097617312
+              },
+              {
+                "x": 8.706896118187867,
+                "y": 1.1749231075966522
+              },
+              {
+                "x": 9.049948629370366,
+                "y": 1.0691054219599119
+              },
+              {
+                "x": 9.397849275514535,
+                "y": 0.9805190322908697
+              },
+              {
+                "x": 9.749733120798101,
+                "y": 0.9093841783121022
+              },
+              {
+                "x": 10.104725326538102,
+                "y": 0.8558777124787618
+              },
+              {
+                "x": 10.461943326177742,
+                "y": 0.8201326602955028
+              },
+              {
+                "x": 10.820499019485874,
+                "y": 0.8022378895941227
+              },
+              {
+                "x": 11.179500980514124,
+                "y": 0.8022378895941227
+              },
+              {
+                "x": 11.538056673822256,
+                "y": 0.8201326602955028
+              },
+              {
+                "x": 11.89527467346189,
+                "y": 0.85587771247876
+              },
+              {
+                "x": 12.250266879201895,
+                "y": 0.9093841783121013
+              },
+              {
+                "x": 12.602150724485462,
+                "y": 0.9805190322908697
+              },
+              {
+                "x": 12.950051370629637,
+                "y": 1.0691054219599136
+              },
+              {
+                "x": 13.29310388181213,
+                "y": 1.1749231075966513
+              },
+              {
+                "x": 13.630455375438041,
+                "y": 1.2977090097617276
+              },
+              {
+                "x": 13.9612671425404,
+                "y": 1.437157863355952
+              },
+              {
+                "x": 14.284716732942773,
+                "y": 1.5929229765574258
+              },
+              {
+                "x": 14.600000000000001,
+                "y": 1.764617092752042
+              },
+              {
+                "x": 14.90633309983347,
+                "y": 1.9518133533144466
+              },
+              {
+                "x": 15.202954440090485,
+                "y": 2.1540463588458314
+              },
+              {
+                "x": 15.48912657338288,
+                "y": 2.3708133262301843
+              },
+              {
+                "x": 15.764138030697383,
+                "y": 2.6015753386323093
+              },
+              {
+                "x": 16.027305090219727,
+                "y": 2.8457586853300283
+              },
+              {
+                "x": 16.27797347717475,
+                "y": 3.102756288049382
+              },
+              {
+                "x": 16.51551999045664,
+                "y": 3.3719292102569147
+              },
+              {
+                "x": 16.73935405200504,
+                "y": 3.6526082456565616
+              },
+              {
+                "x": 16.94891917507516,
+                "y": 3.944095581941916
+              },
+              {
+                "x": 17.14369434775152,
+                "y": 4.245666535667615
+              },
+              {
+                "x": 17.323195328265644,
+                "y": 4.556571353926506
+              },
+              {
+                "x": 17.486975848897416,
+                "y": 4.87603707835358
+              },
+              {
+                "x": 17.634628725466936,
+                "y": 5.2032694668221975
+              },
+              {
+                "x": 17.765786869658537,
+                "y": 5.5374549680551794
+              },
+              {
+                "x": 17.880124201660212,
+                "y": 5.877762744241486
+              },
+              {
+                "x": 17.97735646084936,
+                "y": 6.223346736629884
+              },
+              {
+                "x": 18.057241912509514,
+                "y": 6.573347768964337
+              },
+              {
+                "x": 18.119581948820926,
+                "y": 6.926895683531544
+              },
+              {
+                "x": 18.16422158263089,
+                "y": 7.283111504510115
+              },
+              {
+                "x": 18.19104983277624,
+                "y": 7.641109623242977
+              },
+              {
+                "x": 18.2,
+                "y": 7.999999999999998
+              }
+            ],
+            [
+              {
+                "x": 14,
+                "y": 8
+              },
+              {
+                "x": 13.996270763656767,
+                "y": 8.149537656982092
+              },
+              {
+                "x": 13.985092326096204,
+                "y": 8.29870353978745
+              },
+              {
+                "x": 13.966492478675386,
+                "y": 8.447126798528524
+              },
+              {
+                "x": 13.940517463545632,
+                "y": 8.594438429598192
+              },
+              {
+                "x": 13.907231858687233,
+                "y": 8.740272193070881
+              },
+              {
+                "x": 13.866718417358422,
+                "y": 8.884265523232713
+              },
+              {
+                "x": 13.819077862357725,
+                "y": 9.026060429977006
+              },
+              {
+                "x": 13.764428635611223,
+                "y": 9.165304388824085
+              },
+              {
+                "x": 13.702906603707257,
+                "y": 9.301651217352674
+              },
+              {
+                "x": 13.634664720110685,
+                "y": 9.434761935863955
+              },
+              {
+                "x": 13.559872644896467,
+                "y": 9.564305610138494
+              },
+              {
+                "x": 13.478716322947985,
+                "y": 9.689960174190865
+              },
+              {
+                "x": 13.391397521668768,
+                "y": 9.811413230976433
+              },
+              {
+                "x": 13.298133329356935,
+                "y": 9.928362829059617
+              },
+              {
+                "x": 13.19915561548948,
+                "y": 10.040518213312758
+              },
+              {
+                "x": 13.09471045425822,
+                "y": 10.147600547779156
+              },
+              {
+                "x": 12.98505751279058,
+                "y": 10.249343608903203
+              },
+              {
+                "x": 12.8704694055762,
+                "y": 10.34549444740409
+              },
+              {
+                "x": 12.75123101670437,
+                "y": 10.43581401714757
+              },
+              {
+                "x": 12.627638791597278,
+                "y": 10.520077769452314
+              },
+              {
+                "x": 12.5,
+                "y": 10.598076211353316
+              },
+              {
+                "x": 12.36863197205949,
+                "y": 10.669615426434405
+              },
+              {
+                "x": 12.233861309391834,
+                "y": 10.73451755693502
+              },
+              {
+                "x": 12.096023073099184,
+                "y": 10.792621245932612
+              },
+              {
+                "x": 11.955459950755053,
+                "y": 10.843782038501395
+              },
+              {
+                "x": 11.812521404429015,
+                "y": 10.887872740850035
+              },
+              {
+                "x": 11.667562801868943,
+                "y": 10.924783736545471
+              },
+              {
+                "x": 11.520944533000792,
+                "y": 10.954423259036624
+              },
+              {
+                "x": 11.373031113942456,
+                "y": 10.976717619800516
+              },
+              {
+                "x": 11.224190280759274,
+                "y": 10.99161139154354
+              },
+              {
+                "x": 11.07479207521422,
+                "y": 10.999067546002449
+              },
+              {
+                "x": 10.92520792478578,
+                "y": 10.999067546002449
+              },
+              {
+                "x": 10.775809719240728,
+                "y": 10.99161139154354
+              },
+              {
+                "x": 10.626968886057545,
+                "y": 10.976717619800516
+              },
+              {
+                "x": 10.47905546699921,
+                "y": 10.954423259036624
+              },
+              {
+                "x": 10.332437198131057,
+                "y": 10.924783736545471
+              },
+              {
+                "x": 10.187478595570985,
+                "y": 10.887872740850035
+              },
+              {
+                "x": 10.044540049244947,
+                "y": 10.843782038501395
+              },
+              {
+                "x": 9.903976926900816,
+                "y": 10.792621245932613
+              },
+              {
+                "x": 9.766138690608166,
+                "y": 10.73451755693502
+              },
+              {
+                "x": 9.631368027940512,
+                "y": 10.669615426434406
+              },
+              {
+                "x": 9.5,
+                "y": 10.598076211353316
+              },
+              {
+                "x": 9.372361208402722,
+                "y": 10.520077769452314
+              },
+              {
+                "x": 9.248768983295632,
+                "y": 10.43581401714757
+              },
+              {
+                "x": 9.1295305944238,
+                "y": 10.34549444740409
+              },
+              {
+                "x": 9.014942487209423,
+                "y": 10.249343608903203
+              },
+              {
+                "x": 8.905289545741782,
+                "y": 10.147600547779156
+              },
+              {
+                "x": 8.80084438451052,
+                "y": 10.040518213312758
+              },
+              {
+                "x": 8.701866670643067,
+                "y": 9.928362829059619
+              },
+              {
+                "x": 8.608602478331232,
+                "y": 9.811413230976433
+              },
+              {
+                "x": 8.521283677052015,
+                "y": 9.689960174190867
+              },
+              {
+                "x": 8.440127355103533,
+                "y": 9.564305610138494
+              },
+              {
+                "x": 8.365335279889313,
+                "y": 9.434761935863953
+              },
+              {
+                "x": 8.297093396292743,
+                "y": 9.301651217352674
+              },
+              {
+                "x": 8.235571364388777,
+                "y": 9.165304388824083
+              },
+              {
+                "x": 8.180922137642275,
+                "y": 9.026060429977006
+              },
+              {
+                "x": 8.133281582641578,
+                "y": 8.884265523232713
+              },
+              {
+                "x": 8.092768141312767,
+                "y": 8.740272193070881
+              },
+              {
+                "x": 8.059482536454368,
+                "y": 8.594438429598192
+              },
+              {
+                "x": 8.033507521324614,
+                "y": 8.447126798528524
+              },
+              {
+                "x": 8.014907673903796,
+                "y": 8.29870353978745
+              },
+              {
+                "x": 8.003729236343233,
+                "y": 8.149537656982092
+              },
+              {
+                "x": 8,
+                "y": 8
+              },
+              {
+                "x": 8.003729236343233,
+                "y": 7.850462343017909
+              },
+              {
+                "x": 8.014907673903796,
+                "y": 7.701296460212551
+              },
+              {
+                "x": 8.033507521324614,
+                "y": 7.552873201471477
+              },
+              {
+                "x": 8.059482536454368,
+                "y": 7.405561570401808
+              },
+              {
+                "x": 8.092768141312767,
+                "y": 7.259727806929119
+              },
+              {
+                "x": 8.133281582641578,
+                "y": 7.1157344767672885
+              },
+              {
+                "x": 8.180922137642275,
+                "y": 6.973939570022994
+              },
+              {
+                "x": 8.235571364388777,
+                "y": 6.834695611175915
+              },
+              {
+                "x": 8.297093396292743,
+                "y": 6.698348782647326
+              },
+              {
+                "x": 8.365335279889313,
+                "y": 6.565238064136047
+              },
+              {
+                "x": 8.440127355103533,
+                "y": 6.435694389861506
+              },
+              {
+                "x": 8.521283677052015,
+                "y": 6.310039825809134
+              },
+              {
+                "x": 8.608602478331232,
+                "y": 6.188586769023568
+              },
+              {
+                "x": 8.701866670643065,
+                "y": 6.071637170940383
+              },
+              {
+                "x": 8.80084438451052,
+                "y": 5.959481786687243
+              },
+              {
+                "x": 8.90528954574178,
+                "y": 5.852399452220845
+              },
+              {
+                "x": 9.01494248720942,
+                "y": 5.750656391096798
+              },
+              {
+                "x": 9.129530594423798,
+                "y": 5.654505552595911
+              },
+              {
+                "x": 9.248768983295628,
+                "y": 5.5641859828524325
+              },
+              {
+                "x": 9.372361208402722,
+                "y": 5.479922230547686
+              },
+              {
+                "x": 9.500000000000002,
+                "y": 5.401923788646684
+              },
+              {
+                "x": 9.63136802794051,
+                "y": 5.330384573565595
+              },
+              {
+                "x": 9.766138690608166,
+                "y": 5.265482443064981
+              },
+              {
+                "x": 9.903976926900812,
+                "y": 5.207378754067388
+              },
+              {
+                "x": 10.044540049244945,
+                "y": 5.156217961498605
+              },
+              {
+                "x": 10.187478595570987,
+                "y": 5.112127259149963
+              },
+              {
+                "x": 10.332437198131057,
+                "y": 5.075216263454529
+              },
+              {
+                "x": 10.47905546699921,
+                "y": 5.0455767409633765
+              },
+              {
+                "x": 10.626968886057542,
+                "y": 5.023282380199484
+              },
+              {
+                "x": 10.775809719240726,
+                "y": 5.0083886084564595
+              },
+              {
+                "x": 10.92520792478578,
+                "y": 5.000932453997551
+              },
+              {
+                "x": 11.074792075214217,
+                "y": 5.000932453997551
+              },
+              {
+                "x": 11.224190280759274,
+                "y": 5.0083886084564595
+              },
+              {
+                "x": 11.373031113942453,
+                "y": 5.0232823801994835
+              },
+              {
+                "x": 11.52094453300079,
+                "y": 5.045576740963376
+              },
+              {
+                "x": 11.667562801868943,
+                "y": 5.075216263454529
+              },
+              {
+                "x": 11.812521404429015,
+                "y": 5.112127259149964
+              },
+              {
+                "x": 11.955459950755055,
+                "y": 5.156217961498605
+              },
+              {
+                "x": 12.096023073099184,
+                "y": 5.207378754067387
+              },
+              {
+                "x": 12.233861309391834,
+                "y": 5.265482443064981
+              },
+              {
+                "x": 12.36863197205949,
+                "y": 5.330384573565594
+              },
+              {
+                "x": 12.5,
+                "y": 5.401923788646684
+              },
+              {
+                "x": 12.62763879159728,
+                "y": 5.479922230547686
+              },
+              {
+                "x": 12.751231016704368,
+                "y": 5.56418598285243
+              },
+              {
+                "x": 12.8704694055762,
+                "y": 5.654505552595911
+              },
+              {
+                "x": 12.985057512790576,
+                "y": 5.750656391096795
+              },
+              {
+                "x": 13.09471045425822,
+                "y": 5.852399452220845
+              },
+              {
+                "x": 13.19915561548948,
+                "y": 5.959481786687243
+              },
+              {
+                "x": 13.298133329356933,
+                "y": 6.071637170940381
+              },
+              {
+                "x": 13.391397521668768,
+                "y": 6.188586769023567
+              },
+              {
+                "x": 13.478716322947983,
+                "y": 6.310039825809132
+              },
+              {
+                "x": 13.559872644896467,
+                "y": 6.435694389861506
+              },
+              {
+                "x": 13.634664720110685,
+                "y": 6.565238064136045
+              },
+              {
+                "x": 13.702906603707257,
+                "y": 6.698348782647325
+              },
+              {
+                "x": 13.764428635611223,
+                "y": 6.834695611175916
+              },
+              {
+                "x": 13.819077862357725,
+                "y": 6.973939570022992
+              },
+              {
+                "x": 13.866718417358422,
+                "y": 7.115734476767286
+              },
+              {
+                "x": 13.907231858687233,
+                "y": 7.259727806929118
+              },
+              {
+                "x": 13.940517463545632,
+                "y": 7.405561570401807
+              },
+              {
+                "x": 13.966492478675386,
+                "y": 7.552873201471477
+              },
+              {
+                "x": 13.985092326096204,
+                "y": 7.701296460212548
+              },
+              {
+                "x": 13.996270763656767,
+                "y": 7.850462343017907
+              },
+              {
+                "x": 14,
+                "y": 7.999999999999999
+              }
+            ]
+          ]
+        }
+      ],
+      "vfx": {
+        "atlas": "vfx-bursts-v2",
+        "active": 0,
+        "allocated": 24,
+        "limit": 24,
+        "clock": "snapshot cue age",
+        "frames": []
+      },
+      "cues": 40
+    }
+  },
+  "screenshots": [
+    "reports/pixel-home.png",
+    "reports/pixel-shop.png",
+    "reports/pixel-shop-equipped.png",
+    "reports/pixel-roster-f3.png",
+    "reports/pixel-actions.png",
+    "reports/pixel-vfx-shield.png",
+    "reports/pixel-vfx-shield-paused.png",
+    "reports/pixel-vfx-iron-guard.png",
+    "reports/pixel-vfx-fire.png",
+    "reports/pixel-vfx-ice.png",
+    "reports/pixel-vfx-slash.png",
+    "reports/pixel-vfx-pool-stress.png",
+    "reports/pixel-ember-environment.png",
+    "reports/pixel-frost-environment.png",
+    "reports/pixel-courtyardHeart-phase1.png",
+    "reports/pixel-courtyardHeart-phase2.png",
+    "reports/pixel-mirrorRegent-strike-real-use.png",
+    "reports/pixel-mirrorRegent-phase1.png",
+    "reports/pixel-mirrorRegent-phase2-strike-real-use.png",
+    "reports/pixel-mirrorRegent-phase2.png",
+    "reports/pixel-danger-warning-overlap-review.png",
+    "reports/pixel-danger-warning-overlap-f3.png",
+    "reports/pixel-responsive.png"
+  ],
+  "errors": [],
+  "external": [],
+  "timestamp": "2026-10-20T17:09:20.970Z"
+}

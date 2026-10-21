@@ -1,4 +1,5 @@
 import {CAMP,JOURNEYS,campMap,sceneInteractions,sceneLocation} from '../content/scenes';
+import {defaultHeroPalette,isHeroPaletteId,type HeroPaletteId} from '../content/hero-palettes';
 import {inspectScene,type SceneSnapshot} from './SceneSystem';
 import {BASIC_ATTACKS,type BasicAttackId} from '../content/attacks';
 import {EquipmentEffectSystem,type EquipmentPassiveSnapshot} from './EquipmentEffectSystem';
@@ -7,6 +8,7 @@ import {AttributeSet,PLAYER_TEMPLATE,movementSpeed,cooldownMultiplier,evaluate,t
 import { Pathfinder } from '../ai/Pathfinder';
 import { CombatEngine } from '../combat-core/CombatEngine';
 import { CollisionWorld } from '../combat-core/CollisionWorld';
+import { meleeSweepShapes } from '../combat-core/MeleeSweep';
 import type { Actor, CombatCue, DamageZone, Hit, MissileEffect, PerkId, PerkDefinition, Cause } from '../combat-core/types';
 import {shapeContours,cloneShape} from '../combat-core/ShapeContours';
 import { ENEMIES, FIXED_DT, HERO, SKILLS, type EnemyKind, type SkillId } from '../content/config';
@@ -22,11 +24,10 @@ import {levelSpawn,enemyPlacements,levelSnapshot,type LevelSnapshot} from './Lev
 import { LAB_PRESETS, PERKS,type LabId } from '../content/perks';
 import type { GameCommand } from '../platform/protocol';
 import { clamp, direction, distance, type Vec2 } from '../utils/math';
-import {groundSpeedScale,groundDistance} from '../utils/GroundMovement';
 import { EquipmentSystem } from './EquipmentSystem';
 import { rewardChoices,type RewardChoice } from './RewardSystem';
 import { waveGold } from '../content/progression';
-import { type EquipmentAppearanceLoadout,type EquipmentId,type EquipmentLoadout,type HeroStats } from '../content/equipment';
+import { type EquipmentId,type EquipmentLoadout,type HeroStats } from '../content/equipment';
 import type { StatusApplication } from '../content/statuses';
 import type { ActionSignal } from '../content/animation';
 import { Random } from '../utils/Random';
@@ -41,23 +42,24 @@ export interface Unit extends Actor {
 }
 export type UnitSnapshot=Omit<Unit,'attributes'>&{attributeValues:Attributes;attributeExplanation:ReturnType<AttributeSet['explain']>;movementPoints:number;worldMoveSpeed:number};
 export interface Projectile extends Vec2 { attackId?:number; id:number; previous:Vec2; sourceId:string; vx:number; vy:number; remaining:number; radius:number; damage:number; enemy:boolean;cause:Cause;appearance:string;skillId?:SkillId;onHit?:readonly StatusApplication[];payload?:Pick<Hit,'proc'|'appliesOnHit'|'damageType'|'area'|'delivery'>;targetHpRatio?:number;hpDamageCap?:number;distanceScale?:number;distanceTraveled?:number;targetExpression?:ValueExpression;expressionCap?:number;targetExpressionMultiplier?:number }
-export interface Swing { attackId?:number;id:number;sourceId:string;center:Vec2;facing:Vec2;radius:number;arc:number;age:number;windup:number;active:number;damage:number;appearance:string}
+export interface Swing { attackId?:number;id:number;sourceId:string;center:Vec2;previousCenter?:Vec2;previousAge?:number;facing:Vec2;radius:number;arc:number;age:number;windup:number;active:number;damage:number;appearance:string}
 interface ActiveSwing extends Swing {hitIds:Set<string>}
 export interface VisualCue extends CombatCue { id:number; ttl:number; duration:number }
 export interface WorldSnapshot {
   stagePhase:StagePhase;scene:SceneSnapshot;tick:number; time:number; phase:Phase; paused:boolean; wave:number; seed:number; lab:string;
   hero:UnitSnapshot; units:UnitSnapshot[]; projectiles:Projectile[]; swings:Swing[]; cues:VisualCue[];zones:DamageZone[];
   mapId:MapId;totalWaves:number;loadout:Loadout;level:LevelSnapshot;enemies:EnemySnapshot;
-  cooldowns:Record<SkillSlot,number>; perks:PerkId[]; choices:RewardChoice[];pendingSkill?:SkillId;gold:number;inventory:EquipmentId[];equipment:EquipmentLoadout;purchaseOrder:EquipmentId[];appearance:EquipmentAppearanceLoadout;stats:HeroStats;
+  cooldowns:Record<SkillSlot,number>; perks:PerkId[]; choices:RewardChoice[];pendingSkill?:SkillId;gold:number;inventory:EquipmentId[];equipment:EquipmentLoadout;stats:HeroStats;
   basicAttack:BasicAttackId;equipmentPassives:EquipmentPassiveSnapshot[];
   destination?:Vec2; kills:number; primed:boolean;
   metrics:{processed:number;dropped:number;maxDepth:number;kills:number};
-  party?:{id:string;ready:boolean;equipment:EquipmentLoadout;purchaseOrder:EquipmentId[];appearance:EquipmentAppearanceLoadout}[];
+  party?:{id:string;ready:boolean;equipment:EquipmentLoadout;paletteId:HeroPaletteId}[];
   network?:{code:string;playerId:string;hostId:string;status:string;blocked:boolean;revision:number};
   developer?:DeveloperSnapshot;
   localSave?:LocalSaveSnapshot;
 }
 export interface PlayerState {
+  paletteId:HeroPaletteId;
   id:string;active:boolean;hero:Unit;loadout:Loadout;equipment:EquipmentSystem;cooldowns:Record<SkillId,number>;
   panel?:'shop'|'reward';interactionId?:string;claimed:string[];choices:RewardChoice[];pendingSkill?:SkillId;destination?:Vec2;ready:boolean;
   dashTime:number;dashDirection:Vec2;dashSpeed:number;dashStart?:Vec2;
@@ -120,7 +122,7 @@ export class GameWorld {
     if(this.players.has(id))return true;if(this.phase!=='ready'||this.players.size>=4||!/^([a-zA-Z0-9_-]){1,48}$/.test(id))return false;
     const at=this.nav.nearest(levelSpawn(this.map,1,this.players.size));
     const hero=this.makeUnit(id,'hero',at,HERO.hp);
-    this.players.set(id,{id,active:true,hero,loadout:{...this.map.loadout},equipment:new EquipmentSystem(hero.attributes),cooldowns:hero.skillCooldowns,choices:[],claimed:[],ready:false,dashTime:0,dashDirection:{x:0,y:0},dashSpeed:0});return true;
+    this.players.set(id,{id,paletteId:defaultHeroPalette(this.players.size),active:true,hero,loadout:{...this.map.loadout},equipment:new EquipmentSystem(hero.attributes),cooldowns:hero.skillCooldowns,choices:[],claimed:[],ready:false,dashTime:0,dashDirection:{x:0,y:0},dashSpeed:0});return true;
   }
   setPlayerActive(id:string,active:boolean):void {const p=this.players.get(id);if(!p||p.active===active)return;p.active=active;this.stopControls(p);if(!active)this.equipmentEffects.deactivate(id);if(active)this.actors.set(id,p.hero);else this.actors.delete(id);
   }
@@ -135,7 +137,7 @@ export class GameWorld {
     this.developerAttributeConfig=c;for(const player of this.players.values())this.applyDeveloperAttributes(player.hero);
     Object.assign(this.loadout,c.loadout);for(const p of c.perks)this.combat.addPerk(p);
     for(const id of Object.values(c.equipment))this.equipment.inventory.add(id);
-    Object.assign(this.equipment.equipped,c.equipment);this.equipment.purchaseOrder.push(...c.purchaseOrder);this.refreshStats();this.hero.hp=this.hero.maxHp;
+    Object.assign(this.equipment.equipped,c.equipment);this.refreshStats();this.hero.hp=this.hero.maxHp;
     this.wave=c.wave-1;if(c.entry==='camp')this.enterCamp();else this.spawnWave();
   }
   command(command:GameCommand,playerId='hero'):void {
@@ -144,6 +146,15 @@ export class GameWorld {
 
   private handleCommand(command:GameCommand,playerId:string):void {
     const p=this.players.get(playerId);if(!p||!p.active)return;
+    if(command.type==='SetHeroPalette'){
+      if(!isHeroPaletteId(command.paletteId)||p.paletteId===command.paletteId)return;
+      p.paletteId=command.paletteId;
+      // Patch only cosmetic metadata on the existing recovery boundary.
+      // Never capture mid-combat positions, damage, rewards or random state.
+      const saved=this.checkpoint?.players.find(s=>s.id===p.id);
+      if(saved){saved.paletteId=p.paletteId;this.checkpointRevision++;}
+      return;
+    }
     if(command.type==='DevAction'){
       if(!this.developerOptions)return;
       if(command.action==='recover'){
@@ -253,20 +264,20 @@ export class GameWorld {
       basicAttack:this.combat.basicAttackFor(p.id),equipmentPassives:this.equipmentEffects.snapshot(p.id),
       hero:units.find(u=>u.id===p.id)??this.unitSnapshot(p.hero),units,projectiles:this.projectiles.map(p=>({...p,previous:{...p.previous},payload:p.payload?{...p.payload}:undefined,targetExpression:p.targetExpression?{...p.targetExpression}:undefined,onHit:p.onHit?.map(s=>({...s}))})),
       zones:this.combat.zones.map(z=>({...z,from:{...z.from},to:{...z.to}})),
-      swings:this.swings.map(({hitIds,...s})=>({...s,center:{...s.center},facing:{...s.facing}})),
+      swings:this.swings.map(({hitIds,...s})=>({...s,center:{...s.center},previousCenter:s.previousCenter?{...s.previousCenter}:undefined,facing:{...s.facing}})),
       cues:this.cues.map(c=>({...c,at:{...c.at},to:c.to?{...c.to}:undefined,facing:c.facing?{...c.facing}:undefined,shape:c.shape?cloneShape(c.shape):undefined,contours:c.contours?.map(path=>path.map(p=>({...p})))})),mapId:this.mapId,totalWaves:this.map.waves.length,level:levelSnapshot(this.map,Math.max(1,this.wave),this.levelParticipants(),this.remainingEnemies),enemies:this.enemies.snapshot(),loadout:{...p.loadout},
       cooldowns:Object.fromEntries(SKILL_SLOTS.map(slot=>[slot,p.loadout[slot]?p.cooldowns[p.loadout[slot]!]:0])) as Record<SkillSlot,number>,
       perks:Array.from(this.combat.perksFor(p.id)),choices:p.choices.map(c=>({...c})),pendingSkill:p.pendingSkill,...p.equipment.snapshot(),stats:this.statsFor(p.id),destination:p.destination?{...p.destination}:undefined,
-      kills:this.combat.metrics.kills,primed:this.combat.isPrimed(p.id),metrics:{...this.combat.metrics},party:Array.from(this.players.values(),member=>({id:member.id,ready:this.sceneFor(member.id).insideIds.includes(member.id),equipment:{...member.equipment.equipped},purchaseOrder:[...member.equipment.purchaseOrder],appearance:{...member.equipment.appearance}}))};
+      kills:this.combat.metrics.kills,primed:this.combat.isPrimed(p.id),metrics:{...this.combat.metrics},party:Array.from(this.players.values(),member=>({id:member.id,ready:this.sceneFor(member.id).insideIds.includes(member.id),equipment:{...member.equipment.equipped},paletteId:member.paletteId}))};
   }
   private unitSnapshot(u:Unit):UnitSnapshot {const {attributes,...rest}=u;return detached({...rest,attributeValues:{...attributes.value},attributeExplanation:attributes.explain(),movementPoints:movementSpeed(attributes.value,movementMultiplier(u))/.01,worldMoveSpeed:movementSpeed(attributes.value,movementMultiplier(u))});}
   /** Capture only a stable stage boundary, never an arbitrary combat frame. */
   private saveBoundary():void {
     if(this.developerOptions||this.phase==='defeat')return;
-    this.checkpoint={version:4,seed:this.seed,mapId:this.mapId,wave:this.wave,phase:this.phase,time:this.time,tick:this.tickCount,
+    this.checkpoint={version:5,seed:this.seed,mapId:this.mapId,wave:this.wave,phase:this.phase,time:this.time,tick:this.tickCount,
       kills:this.combat.metrics.kills,random:this.random.save(),combatRandom:this.combatRandom.save(),spawnRandom:this.spawnRandom,serial:this.serial,spawnSerial:this.spawnSerial,
-      players:Array.from(this.players.values(),p=>({id:p.id,loadout:{...p.loadout},perks:Array.from(this.combat.perksFor(p.id)),gold:p.equipment.gold,
-        inventory:Array.from(p.equipment.inventory),equipment:{...p.equipment.equipped},purchaseOrder:[...p.equipment.purchaseOrder],attributeSources:p.hero.attributes.exportSources().filter(s=>!s.sourceId.startsWith('equipment:')&&!s.sourceId.startsWith('perk:')&&s.sourceId!=='developer'&&!s.sourceId.startsWith('temporary:')),hp:p.hero.hp,mana:p.hero.mana,position:{x:p.hero.x,y:p.hero.y},facing:{...p.hero.facing},
+      players:Array.from(this.players.values(),p=>({id:p.id,paletteId:p.paletteId,loadout:{...p.loadout},perks:Array.from(this.combat.perksFor(p.id)),gold:p.equipment.gold,
+        inventory:Array.from(p.equipment.inventory),equipment:{...p.equipment.equipped},attributeSources:p.hero.attributes.exportSources().filter(s=>!s.sourceId.startsWith('equipment:')&&!s.sourceId.startsWith('perk:')&&s.sourceId!=='developer'&&!s.sourceId.startsWith('temporary:')),hp:p.hero.hp,mana:p.hero.mana,position:{x:p.hero.x,y:p.hero.y},facing:{...p.hero.facing},
         choices:detached(p.choices),pendingSkill:p.pendingSkill,ready:p.ready,panel:p.panel,interactionId:p.interactionId,claimed:[...p.claimed]}))};
     this.checkpointRevision++;
   }
@@ -276,9 +287,9 @@ export class GameWorld {
   static resume(value:unknown):GameWorld {
     const c=parseRunCheckpoint(value),w=new GameWorld(c.seed,c.mapId);
     for(const saved of c.players){
-      w.addPlayer(saved.id);const p=w.players.get(saved.id)!;
+      w.addPlayer(saved.id);const p=w.players.get(saved.id)!;p.paletteId=saved.paletteId;
       Object.assign(p.loadout,saved.loadout);for(const id of saved.perks)w.combat.addPerk(id,p.id);
-      p.equipment.gold=saved.gold;for(const id of saved.inventory)p.equipment.inventory.add(id);Object.assign(p.equipment.equipped,saved.equipment);p.equipment.purchaseOrder.push(...saved.purchaseOrder);
+      p.equipment.gold=saved.gold;for(const id of saved.inventory)p.equipment.inventory.add(id);Object.assign(p.equipment.equipped,saved.equipment);
       for(const source of saved.attributeSources)p.hero.attributes.upsert(source);w.refreshStats(p);Object.assign(p.hero,saved.position,{previous:{...saved.position},facing:{...saved.facing},mana:Math.min(saved.mana,p.hero.attributes.value.maxMana),hp:Math.min(saved.hp,p.hero.maxHp),alive:saved.hp>0});
       p.choices=detached(saved.choices);p.pendingSkill=saved.pendingSkill;p.ready=saved.ready;p.panel=saved.panel;p.interactionId=saved.interactionId;p.claimed=[...saved.claimed];
     }
@@ -401,7 +412,7 @@ export class GameWorld {
       return;
     }
     if(p.direct){
-      const {movement}=p.direct,speed=movementSpeed(h.attributes.value,movementMultiplier(h))*groundSpeedScale(movement);
+      const {movement}=p.direct,speed=movementSpeed(h.attributes.value,movementMultiplier(h));
       if(movement.x||movement.y)h.facing={...movement};
       const next=this.nav.sweep(h,{x:h.x+movement.x*speed*dt,y:h.y+movement.y*speed*dt},h.radius);
       h.velocity={x:(next.x-h.x)/dt,y:(next.y-h.y)/dt};h.x=next.x;h.y=next.y;
@@ -440,9 +451,9 @@ export class GameWorld {
     for(let i=this.swings.length-1;i>=0;i--){
       const swing=this.swings[i]!,source=this.actors.get(swing.sourceId),before=swing.age;swing.age+=dt;
       if(!source?.alive||(this.players.get(swing.sourceId)?.dashTime??0)>0){this.equipmentEffects.endAttack(swing.sourceId,swing.id);this.swings.splice(i,1);continue;}
-      swing.center={x:source.x,y:source.y};
+      swing.previousCenter={...swing.center};swing.previousAge=before;swing.center={x:source.x,y:source.y};
       if(swing.age+1e-9>=swing.windup&&before<swing.windup+swing.active){
-        for(const target of this.collision.targets(this.actors.values(),source.team,{kind:'sector',center:swing.center,facing:swing.facing,radius:swing.radius,arc:swing.arc})){
+        for(const shape of meleeSweepShapes(swing,before,swing.age))for(const target of this.collision.targets(this.actors.values(),source.team,shape)){
           if(swing.hitIds.has(target.id))continue;swing.hitIds.add(target.id);
           this.combat.damage({sourceId:source.id,targetId:target.id,amount:swing.damage,attackId:swing.attackId,cause:'basic',damageType:'physical',area:true,delivery:'attack'});
         }
@@ -456,8 +467,7 @@ export class GameWorld {
     const goal=unit.path[0];
     if (!goal) { unit.velocity.x*=0.65; unit.velocity.y*=0.65; return; }
     const dir=direction(unit,goal), dist=distance(unit,goal);unit.facing={...dir};
-    const remaining=groundDistance({x:goal.x-unit.x,y:goal.y-unit.y});
-    const braking=Math.min(speed,Math.sqrt(2*22*remaining))*groundSpeedScale(dir);
+    const braking=Math.min(speed,Math.sqrt(2*22*dist));
     const factor=Math.min(1,dt*14);
     unit.velocity.x+=(dir.x*braking-unit.velocity.x)*factor;
     unit.velocity.y+=(dir.y*braking-unit.velocity.y)*factor;

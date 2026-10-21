@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "scope": "static concept and documentation only",
+  "dimensions": [
+    1448,
+    1086
+  ],
+  "checks": [
+    "eight labeled key states",
+    "first and last effect states empty",
+    "hollow forward crescent",
+    "four elemental comparison panels preserve base shape",
+    "source copied unchanged",
+    "current windup/active and full-sector hit behavior inspected"
+  ],
+  "linksChecked": 133,
+  "missingLinks": [],
+  "notRun": [
+    "runtime import and Cocos build",
+    "animation playback and timing",
+    "eight-direction and multiplayer rendering",
+    "strict grid/palette/alpha validation"
+  ],
+  "limitations": [
+    "concept background and labels are not runtime assets",
+    "production core thickness and exact sector extent require measurement",
+    "short bright tip is not the authoritative full-sector collision"
+  ]
+}

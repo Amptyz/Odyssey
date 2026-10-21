@@ -1,4 +1,5 @@
 import { RoomTransport } from './RoomTransport';
+import {HERO_PALETTES,HERO_PALETTE_IDS,DEFAULT_HERO_PALETTE,isHeroPaletteId} from '../content/hero-palettes';
 
 /** Browser room controls only; all gameplay still lives in the Cocos scene. */
 export class RoomPanel {
@@ -7,6 +8,7 @@ export class RoomPanel {
   private readonly create:HTMLButtonElement;private readonly join:HTMLButtonElement;private readonly begin:HTMLButtonElement;private readonly skip:HTMLButtonElement;
   private readonly timer:ReturnType<typeof setInterval>;
   private mode:'create'|'join'|'lobby'='create';private readonly memberCards:HTMLDivElement;
+  private readonly palettePanel:HTMLDivElement;private readonly paletteSelect:HTMLSelectElement;
   private readonly openRequest=(event:Event)=>{this.mode=(event as CustomEvent).detail==='join'?'join':'create';this.show(true);this.update();};
   constructor(private readonly port:RoomTransport){
     this.root=document.createElement('div');this.root.dataset.emberRoom='true';document.body.appendChild(this.root);
@@ -29,9 +31,20 @@ export class RoomPanel {
       [data-ember-room] .room-panel[data-mode=lobby] input,[data-ember-room] .room-panel[data-mode=lobby] label,[data-ember-room] .room-panel[data-mode=lobby] details{display:none}
       [data-ember-room] .room-tabs {display:flex;gap:10px;margin:20px 0}
       [data-ember-room] .primary-room {background:#a74936}
+      [data-ember-room] .palette-toggle {position:absolute;left:110px;top:8px;padding:5px 12px;font-size:13px}
+      [data-ember-room] .palette-panel {pointer-events:auto;position:absolute;left:110px;top:48px;width:290px;padding:20px;background:#24232cf5;border:1px solid #b9a47e}
+      [data-ember-room] select {width:100%;padding:10px;background:#18191f;color:#f3e9ce;font:inherit;margin:10px 0}
       @media(max-width:700px){[data-ember-room] .member-cards{grid-template-columns:repeat(2,1fr)}[data-ember-room] .member-card{min-height:110px}[data-ember-room] .room-panel{padding:20px;min-height:unset}}
     `;this.root.appendChild(style);
     const toggle=document.createElement('button');toggle.textContent='联机房间';toggle.className='room-toggle';this.root.appendChild(toggle);
+    const paletteToggle=this.button('人物配色',this.root,()=>this.showPalette(this.palettePanel.hidden));paletteToggle.className='palette-toggle';
+    this.palettePanel=document.createElement('div');this.palettePanel.className='palette-panel';this.palettePanel.hidden=true;this.root.appendChild(this.palettePanel);
+    const paletteLabel=document.createElement('label');paletteLabel.textContent='角色衣料颜色';paletteLabel.htmlFor='hero-palette';this.palettePanel.appendChild(paletteLabel);
+    this.paletteSelect=document.createElement('select');this.paletteSelect.id='hero-palette';this.palettePanel.appendChild(this.paletteSelect);
+    for(const id of HERO_PALETTE_IDS){const option=document.createElement('option');option.value=id;option.textContent=HERO_PALETTES[id].name;this.paletteSelect.appendChild(option);}
+    this.paletteSelect.onchange=()=>{const paletteId=this.paletteSelect.value;if(isHeroPaletteId(paletteId))port.send({type:'SetHeroPalette',paletteId});};
+    const paletteNote=document.createElement('small');paletteNote.textContent='配色不影响属性。联机时队友也能看到；脚下圆环跟随配色。';this.palettePanel.appendChild(paletteNote);
+    this.button('完成配色',this.palettePanel,()=>this.showPalette(false));
     this.panel=document.createElement('div');this.panel.className='room-panel';this.panel.hidden=true;this.root.appendChild(this.panel);
     this.panel.innerHTML='<h2>一起探索遗迹</h2><small>最多 4 人 · 房主运行战斗 · 波次进度自动保存</small>';
     const tabs=document.createElement('div');tabs.className='room-tabs';this.panel.appendChild(tabs);this.button('创建',tabs,()=>{this.mode='create';this.update();});this.button('加入',tabs,()=>{this.mode='join';this.update();});
@@ -59,6 +72,8 @@ export class RoomPanel {
     const note=document.createElement('small');note.textContent='掉线后自动重连。房主无法回来时，原队友可用房间码从最近保存点开新房；当前波从头开始。请保留浏览器数据以识别原角色。';this.panel.appendChild(note);
     toggle.onclick=()=>this.show(this.panel.hidden);
     for(const type of ['pointerdown','pointerup','mousedown','mouseup','keydown','keyup'])this.panel.addEventListener(type,event=>event.stopPropagation());
+    for(const type of ['pointerdown','pointerup','mousedown','mouseup','keydown','keyup'])this.palettePanel.addEventListener(type,event=>event.stopPropagation());
+    this.palettePanel.addEventListener('keydown',event=>{if(event.key==='Escape')this.showPalette(false);});
     this.panel.addEventListener('keydown',event=>{if(event.key==='Escape')this.show(false);});
     this.timer=setInterval(()=>this.update(),200);this.update();
     window.addEventListener('ember-room-open',this.openRequest);
@@ -67,10 +82,17 @@ export class RoomPanel {
     const label=document.createElement('label');label.textContent=title;const field=document.createElement('input');field.value=value;field.id=id;label.htmlFor=id;parent.appendChild(label);parent.appendChild(field);return field;
   }
   private button(title:string,parent:HTMLElement,action:()=>void):HTMLButtonElement {const button=document.createElement('button');button.textContent=title;button.onclick=action;parent.appendChild(button);return button;}
-  private show(open:boolean):void {this.panel.hidden=!open;this.port.uiOpen=open;this.port.send({type:'Stop'});if(!open)document.querySelector('canvas')?.focus();}
+  private show(open:boolean):void {this.panel.hidden=!open;this.palettePanel.hidden=true;this.port.uiOpen=open;this.port.send({type:'Stop'});if(!open)document.querySelector('canvas')?.focus();}
+  private showPalette(open:boolean):void {
+    this.palettePanel.hidden=!open;this.panel.hidden=true;this.port.uiOpen=open;this.port.send({type:'Stop'});this.update();
+    if(!open)document.querySelector('canvas')?.focus();
+  }
   private connect(action:'create'|'join'|'recover'):void {this.port.connect(action,this.endpoint.value,this.name.value,this.code.value);}
   private update():void {
     const {room,playerId,connected}=this.port.ui,host=!!room&&room.hostId===playerId;
+    const snapshot=this.port.snapshot(),palette=snapshot.party?.find(p=>p.id===snapshot.hero.id)?.paletteId??DEFAULT_HERO_PALETTE;
+    this.paletteSelect.value=palette;this.paletteSelect.disabled=!this.port.canSetPalette;
+    this.palettePanel.style.borderColor=HERO_PALETTES[palette].color;
     if(room)this.mode='lobby';this.panel.dataset.mode=this.mode;this.panel.querySelector('h2')!.textContent=this.mode==='lobby'?'组 队 等 待':this.mode==='create'?'创 建 房 间':'加 入 房 间';
     const codeVisible=this.mode==='join';this.code.style.display=codeVisible?'block':'none';(this.code.previousElementSibling as HTMLElement).style.display=codeVisible?'block':'none';this.create.style.display=this.mode==='create'?'':'none';this.join.style.display=this.mode==='join'?'':'none';
     this.create.className=this.join.className=this.begin.className='primary-room';this.memberCards.style.display=room?'grid':'none';

@@ -1,0 +1,293 @@
+{
+  "version": 3,
+  "date": "2026-10-20",
+  "tool": "built-in image_gen",
+  "model": "not exposed",
+  "seed": "not exposed",
+  "scope": "concept-and-keypose-design-only",
+  "runtimeIntegrated": false,
+  "selectedImageCount": 6,
+  "selectedPoseCells": 104,
+  "files": [
+    {
+      "file": "concept-draft.png",
+      "source": "exec-9ad7b2ca-10a5-483c-ab35-c2577042393c.png",
+      "promptKey": "concept",
+      "selected": false,
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 1837326,
+      "sha256": "835b862bc403c611d0fc8fce48ba67ae99ed28f6b8f1f8c73387da74af9ebe9d",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "../rekindled-style-studies-v2/a-concept.png"
+      ]
+    },
+    {
+      "file": "concept.png",
+      "source": "exec-973e12b6-a164-4ce2-afe3-6f278bbc634b.png",
+      "promptKey": "concept-final",
+      "selected": true,
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 1869056,
+      "sha256": "a723ab8f68cede98cc8e7e9075fb5e65e799062875d728293168ac97f7c32ccf",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "concept-draft.png"
+      ]
+    },
+    {
+      "file": "walk.png",
+      "source": "exec-c265b07e-4711-4794-b35e-6bfc4105901f.png",
+      "promptKey": "walk",
+      "selected": true,
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "bytes": 1777647,
+      "sha256": "23fd16edc057b94e8ac979a4876da3f5243de7be4efc9ffd049eae5282ec1cb0",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "concept.png",
+        "../rekindled-style-studies-v2/a-walk.png"
+      ],
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ],
+      "columns": [
+        "CONTACT L",
+        "PASS",
+        "CONTACT R"
+      ],
+      "runtimeReady": false
+    },
+    {
+      "file": "melee.png",
+      "source": "exec-cb7fd446-95c6-4a55-bb15-dfc2a6b918f2.png",
+      "promptKey": "melee",
+      "selected": true,
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "bytes": 1882305,
+      "sha256": "1b265cb834660d55df953089a86137365e6a98fc4c2574b32e520514d325428d",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "concept.png",
+        "../rekindled-style-studies-v2/a-melee.png"
+      ],
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ],
+      "columns": [
+        "COIL",
+        "CROSS",
+        "SETTLE"
+      ],
+      "runtimeReady": false
+    },
+    {
+      "file": "ranged.png",
+      "source": "exec-0cf08631-a201-4f41-a441-38206cc46dd3.png",
+      "promptKey": "ranged",
+      "selected": true,
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "bytes": 1808124,
+      "sha256": "6c14830d98c4689aaee3ea11ca0e7237be7280c69e072f345ddcd87beff4fec4",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "concept.png",
+        "../rekindled-style-studies-v2/a-ranged.png"
+      ],
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ],
+      "columns": [
+        "DRAW",
+        "RELEASE",
+        "RECOVER"
+      ],
+      "runtimeReady": false
+    },
+    {
+      "file": "run-draft.png",
+      "source": "exec-72f2f8ce-9266-4a0c-b603-5506ec33a1fe.png",
+      "promptKey": "run",
+      "selected": false,
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "bytes": 1941099,
+      "sha256": "5cd896d9c16422757d7f940e3b6db3cbf41bf7766afa20c39c6e7647ab2cba87",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "concept.png"
+      ]
+    },
+    {
+      "file": "run-draft-02.png",
+      "source": "exec-ccf1bb35-105f-4aca-95fe-342a8aaa5a70.png",
+      "promptKey": "run-final",
+      "selected": false,
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "bytes": 1957006,
+      "sha256": "9749186dbcf64377fd034bbd4dfa713799819d0d9d002d8c67828dfc7c8abdd6",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "run-draft.png"
+      ]
+    },
+    {
+      "file": "run-north.png",
+      "source": "exec-c41bd365-e246-457f-9bd8-4e2cd839630a.png",
+      "promptKey": "run-north",
+      "selected": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 1894644,
+      "sha256": "4828f9c60bfd48718e06f70ce2946f328f235244999e3d45036b86142afe3b6a",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "concept.png"
+      ],
+      "directions": [
+        "N",
+        "NE",
+        "E",
+        "SE"
+      ],
+      "columns": [
+        "CONTACT",
+        "DOWN",
+        "PUSH",
+        "FLIGHT"
+      ],
+      "runtimeReady": false
+    },
+    {
+      "file": "run-south-draft.png",
+      "source": "exec-6f8f5178-e553-4069-a46b-6ac7f872a011.png",
+      "promptKey": "run-south",
+      "selected": false,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 1935779,
+      "sha256": "1f83258e402f6f0b86c1611590e0540840f7e9a9992bc1add30f64da6af0d42c",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "concept.png"
+      ]
+    },
+    {
+      "file": "run-south.png",
+      "source": "exec-a35edbaa-d858-4b31-b943-c1229d0d3164.png",
+      "promptKey": "run-south-final",
+      "selected": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "bytes": 1961534,
+      "sha256": "56a4ab24cd0ab31890b1d806f8a86ce8ecd7633a1d45039439dbb6f36f0523da",
+      "alphaExtrema": [
+        255,
+        255
+      ],
+      "references": [
+        "run-south-draft.png"
+      ],
+      "directions": [
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ],
+      "columns": [
+        "CONTACT",
+        "DOWN",
+        "PUSH",
+        "FLIGHT"
+      ],
+      "runtimeReady": false
+    }
+  ],
+  "sourceStorage": "Original built-in tool outputs retained under the generating Codex session; source records preserve exact output basenames. All project copies are local and hash-matched.",
+  "pixelGrid": "Design study only; a uniform low-resolution source texel grid and production palette are not verified.",
+  "runningSemantics": "Four phases of one stride in each of eight directions, not a complete alternating-leg loop."
+}

@@ -1,6 +1,6 @@
 # 整体架构
 
-本文描述当前实现，而不是未来规划。代码核对基线：v0.8 营地 / 休息点交互 + 统一属性 v1，房间协议 ember-coop-7、恢复点 v4。具体数值以源码为准；增加内容按 [内容扩展指南](CONTENT_ARCHITECTURE.md)，实施与验证按 [开发架构指南](DEVELOPMENT_GUIDE.md)。
+本文描述当前实现，而不是未来规划。代码核对基线：v0.8 营地 / 休息点交互 + 统一属性 v1，房间协议 ember-coop-8、恢复点 v5（读取v4迁移），人物整身动画与装备外观解耦。具体数值以源码为准；增加内容按 [内容扩展指南](CONTENT_ARCHITECTURE.md)，实施与验证按 [开发架构指南](DEVELOPMENT_GUIDE.md)。
 
 统一属性规则见 [属性系统](ATTRIBUTE_SYSTEM.md)：所有单位共用，技能只读总 AD、仅全能吸血。每个 Actor 由 ActorFactory 创建并持有独立 AttributeSet；HeroStats 是面板兼容视图，不另算英雄专用公式。当前接入17种敌人、六个通用装备栏和两图各五关；18件装备均已注册，含独立装备被动模块与商店详情。
 
@@ -25,7 +25,7 @@
 └── reports/                     验证结果；图片 / 日志按 .gitignore 留本机
 ```
 
-`EmberDemo/build / library / temp` 和根目录 `dist-core` 是产物，不是编辑源。`UnitVisuals.ts` 是旧几何角色参考，当前人物入口为 `HeroRig`，怪物入口为 `MonsterVisual` 的 PNG 帧组，程序轮廓和旧怪物 PNG 播放器保留兼容。
+`EmberDemo/build / library / temp` 和根目录 `dist-core` 是产物，不是编辑源。人物入口为 `HeroSprite` 完整帧播放器；怪物入口为 `MonsterVisual` 的 PNG 帧组，程序轮廓和旧怪物播放器保留兼容。
 
 ## 模块职责与依赖
 
@@ -46,6 +46,7 @@
 | `combat-core/CombatEngine.ts` | 伤害、治疗、事件队列、规则条件、限频、连锁保护 | 通过 CombatHooks 请求弹体 / 冷却操作 |
 | `combat-core/EffectHandlers.ts` / `StatusSystem.ts` | 效果原语、状态施加与计时 | 不导入 GameWorld 或 Cocos |
 | `combat-core/CollisionWorld.ts` | 形状相交、遮挡、连续弹体命中 | 只使用世界坐标 / 角色体积 / 地形 |
+| `combat-core/MeleeSweep.ts` / `content/melee-motion.ts` | 普攻亮锋的相位多边形与模拟步间扫掠 | GameWorld 提交 CollisionWorld 查询；表现层采样同相位原稿，旧尾迹不参与伤害 |
 | `simulation/EnemySystem.ts` / `content/enemy-actions.ts` | 敌人守区、锁向、分段动作、Boss循环/阶段、敌弹/预警 | GameWorld一次固定步进；共用CombatEngine/CollisionWorld |
 | `simulation/LevelSystem.ts` | 每关起点、路线、固定敌群、清场后出口条件 | maps.waves[].level；GameWorld阶段推进 |
 | `ai/Pathfinder.ts` | 半格网格、移动扫掠、PathfinderPool体型分组 | 敌人使用不小于自身半径的缓存导航；旧EnemyBehaviors不调度新敌人 |
@@ -53,7 +54,7 @@
 | `render/` | 地图、角色、装备、HUD、图集、可视反馈 | 读取快照；UI 按钮回送命令 |
 | `utils/` | 向量数学与确定性 Random | 无引擎依赖 |
 
-规则层和模拟层不依赖 `cc`；`render/IsoProjection.ts` 虽放在 render 目录，也是纯函数。`content` 不是外部 JSON 数据库：它是编译期 TypeScript 注册表，部分函数负责统计 / 校验。`CombatEngine` 会读取技能和余烬配置，配置与核心之间也存在类型引用；本项目保证的是不依赖渲染引擎，尚未拆成可单独发布的包。
+规则层和模拟层不依赖 `cc`；`render/GroundProjection.ts` 虽放在 render 目录，也是纯函数。`content` 不是外部 JSON 数据库：它是编译期 TypeScript 注册表，部分函数负责统计 / 校验。`CombatEngine` 会读取技能和余烬配置，配置与核心之间也存在类型引用；本项目保证的是不依赖渲染引擎，尚未拆成可单独发布的包。
 
 ## 从输入到画面
 
@@ -73,7 +74,7 @@ flowchart TD
   W --> P[WorldSnapshot]
   L --> P
   P --> R[ArenaView / Hud]
-  R --> A[MonsterVisual / HeroRig / ArtLibrary]
+  R --> A[MonsterVisual / HeroSprite / ArtLibrary]
 ```
 
 1. `GameBootstrap.start` 校验内容并加载图集，然后创建 RoomTransport、输入与视图。未加入房间时 RoomTransport 委托 LocalTransport。
@@ -86,7 +87,7 @@ flowchart TD
 
 ### 单次逻辑步的顺序
 
-普通步行在模拟层通过GroundMovement补偿54×28等距投影的纵向压缩，WASD、玩家路径移动与敌人走路共用；基准移速仍由AttributeSet解析，右键加速 / 刹停使用投影距离。世界碰撞与技能距离保持世界坐标语义，渲染不二次修改移动速度；细节见[手感参数](GAME_FEEL.md)。
+移动、碰撞、射程、冲刺和弹速共用欧氏世界距离。AttributeSet解析真实移速，WASD、玩家路径移动与敌人步行不按方向补偿；右键刹停及AI可逃离性检查使用真实世界距离。GroundPlane只提供单位正交基，GroundProjection只提供统一缩放与平移，因此世界等速同时保证屏幕等速，圆形判定显示为圆形。细节见[战斗平面](GAME_FEEL.md)。
 
 `GameWorld.step` 依次：记录实体上一位置 / 扣减攻击计时 → 扣减技能冷却 → 战斗状态与延迟效果 tick → 玩家移动与持续普攻 → EnemySystem（敌人AI/分段预警/敌弹）→ 玩家近战挥击 → 玩家/余烬弹体碰撞 → 提示计时 → 死亡与关卡出口检查。
 
@@ -151,9 +152,9 @@ shop/reward 是每玩家独立面板，不再是全局 Phase。WorldSnapshot.pha
 
 `单位模板 + 装备 / 余烬 / 临时来源 → AttributeSet → 技能 / AI / CombatEngine`。属性按来源替换或删除，再按各属性规则解析；攻速、急速、穿透、韧性、移速有各自规则。最大生命与当前生命分开，换装不回血；HeroStats / statsView 仅把统一结果转成面板字段。技能 AD/AP 表达式与伤害类型独立。新属性必须接通定义、解析、消费、可见说明和测试。
 
-六个通用槽为slot1..slot6，每个ID仅拥有/装备一次，不限制category，可同时装备多个weapon/body/head。所有已装备条目都贡献属性；`purchaseOrder`决定每个category最后购买且仍穿戴者的显示，不影响普攻形式或射程。`EquipmentSystem.buy(id,replaceSlot?) / equip(id,slot?) / unequip(slot)`处理事务，满栏须显式选替换槽，库存保留；appearanceLoadout把六槽转换为三个显示层。
+六个通用槽为slot1..slot6，每个ID仅拥有/装备一次，不限制category。同类可并存，所有已装备条目都贡献属性与被动；category只用于物品分类。EquipmentSystem处理买入、重装和卸装，满栏须显式选替换槽，库存保留。装备不改变人物贴图、普攻形式或基础射程。
 
-装备定义的 appearance 接入 `EQUIPMENT_APPEARANCES + EQUIPMENT_SPRITES或PROCEDURAL_EQUIPMENT → HeroRig`。战斗行为与外观独立；掌心 / 肩部挂点及镜像规则见 [美术管线](ART_PIPELINE.md)。基础人物不因技能选择变成某个职业。
+装备没有appearance或purchaseOrder。UI按物品ID选择独立图标；HeroSprite只接受MotionPose，不接收装备或库存。v4存档可迁移到v5，丢弃旧外观字段并保留库存 / 六栏 / 属性；新联机协议为ember-coop-8。
 
 ### 敌人与地图
 
@@ -169,14 +170,14 @@ shop/reward 是每玩家独立面板，不再是全局 Phase。WorldSnapshot.pha
 
 - 逻辑坐标单位是地图格，时间是秒，角度 / 扇形宽度是弧度；渲染节点 angle 使用 Cocos 的角度单位。不要混用。
 - 角色位置是地面脚底中心，radius 是世界空间受击圆；图集像素和衣服大小不参与判定。
-- `IsoProjection`提供成对投影和SmoothCameraFollow；ArenaView每帧只准备一次平滑Projection，输入与渲染共用。zoom1.25同步缩放世界物件，镜头半衰期0.1秒，换场景直接定位。全局移速 / 弹速倍率均为1.5，统一入口content/tuning.ts，见 [全局速度与镜头](GAME_FEEL.md)。UI坐标原点在中央、Y向上，浏览器Y向下；输入继续处理CSS缩放、设备像素比与视口。
+- `GroundProjection`提供成对投影、统一长度换算、小地图变换和SmoothCameraFollow；ArenaView每帧只准备一次平滑Projection，输入与渲染共用。`GroundPlane`的45°单位正交基同时用于WASD与动画朝向；地面不压缩纵深。zoom1.25同步缩放世界物件，镜头半衰期0.1秒，换场景直接定位。全局移速 / 弹速倍率均为1.5，统一入口content/tuning.ts，见 [战斗平面、速度与镜头](GAME_FEEL.md)。UI坐标原点在中央、Y向上，浏览器Y向下；输入继续处理CSS缩放、设备像素比与视口。
 - `CollisionWorld.targets` 统一做圆 / 扇形 / 胶囊 / 定向矩形 / 空心环相交、敌我 / 存活过滤、遮挡和稳定排序；`firstImpact` 做弹体连续扫掠，考虑角色相对移动，墙同时接触时优先。
 - 移动与冲刺通过 `Pathfinder.sweep`，当前是细分采样的移动扫掠；它不是弹体使用的解析连续相交算法。
 - 关卡敌群位置由配置确定，奖励使用世界 Random，暴击另用从世界 seed 派生的随机流。新增一次随机调用或改变目录枚举顺序可能改变同种子的后续结果。
 
 ## 表现与资源生命周期
 
-ArtLibrary 统一加载本地 PNG，创建共享 Texture2D / SpriteFrame 并使用最近邻；原26张生产图集已接入。本次 hero / weapons / bodies / heads 四个稳定 ID 指向 pixel-v2，新增九个霜图环境部件、16帧 VFX、Boss三帧死亡与两张独立出手补片，当前注册31张。HeroRig 组合人物与18件装备；MonsterVisual 优先选17怪 PNG 并按 EnemyPose 前摇 / strike / 恢复 / 阶段选择帧，程序轮廓保留回退，采用显式安全切片和真实出手脉冲。AnimatedUnit 保留玩家桥接与旧 PNG 能力。ArenaView 按脚底屏幕 Y 排序，PixelVfxView 以 cue 年龄播放有上限的装饰翻页，危险边界与弹体核心独立绘制；Hud 按状态重建面板。
+ArtLibrary统一加载本地PNG并共享纹理 / SpriteFrame，使用最近邻。主角通过HERO_CLIPS与wholeHeroFrame选择整身帧，五绘制方向加三镜像；AnimatedUnit桥接，ArenaView提供插值后的模拟时间。装备PNG仅为UI图标。MonsterVisual按EnemyPose选择17怪的相位 / 专属 / Boss阶段帧，程序轮廓保留回退。脚底Y排序、独立VFX与危险边界不变。
 
 `content/pixel-art.ts` 是生成结果：来源为 `art-source/pixel-production-v1/production.json` 和 `art-source/art-completion-v2/manifest.json` 引用的定义片段，经 `scripts/inspect-pixel-art.py` 生成。修改来源后重新生成，再以 `--check` 检查一致性；不直接手改生成表。PNG 接入与最近邻不等于严格24色、二值 alpha 或整数源 texel 显示达标，构建和画面 QA 需单独记录。
 
@@ -192,8 +193,8 @@ ArtLibrary 统一加载本地 PNG，创建共享 Texture2D / SpriteFrame 并使�
 | 静态矩形地图、圆障碍、无角色刚体推挤 | 动态地形、房间串联、多边形、群体避让不是已有配置开关 |
 | 玩家导航与移动均为实际radius .32；敌人按体型池 | 大体型出生与路径需用同一分组，增加更大半径要扩充并验证通道 |
 | 固定敌群按配置中心/半径生成、按体型投到合法格 | 新群组要验证出生相交、路线和出口，不可静默少刷 |
-| 六个属性栏映射到weapon/body/head三个外观层；18件装备按 weapons / bodies / heads 三个 PNG 图集显示 | 新显示层或新图集仍需显式扩展，不把通用槽当六只手 |
-| HeroRig左右镜像纸娃娃，MonsterVisual为 PNG 相位帧 / 程序回退 | 八方向、独立上 / 下半身、Spine 需要新的资源和表现接入 |
+| 六个通用属性栏；装备图只用于UI | 新装备需补数值 / 被动与图标，不恢复角色外观层 |
+| HeroSprite整身序列帧，五绘制视角加三镜像；MonsterVisual为PNG相位帧 / 程序回退 | 独立移动 / 瞄准朝向、怪物八方向和Spine需独立资源与接入；没有装备换皮 |
 | content/validate.ts 覆盖主要引用与数值，不覆盖所有语义 | 标签拼错、握点错位、路径可达、触发递归等仍需专项验证 |
 
 后续可以逐步提取模拟内部职责，但新增一个同类技能或装备，不应顺带引入 ECS、联网层或重写整个 GameWorld。优先保持当前边界与现有玩法可验证。
@@ -201,3 +202,7 @@ ArtLibrary 统一加载本地 PNG，创建共享 Texture2D / SpriteFrame 并使�
 ### 装备被动扩展
 
 EquipmentEffectSystem按actorId与唯一组持有两种被动状态；装备定义提供passives，统一CombatEngine.onEvent通知已成立事件，GameWorld只接攻击实例及生命周期。蓄能和CD不进入perk集合，也不由渲染驱动。新增同类装备通常只添配置；新被动行为要扩联合类型、处理器、校验及专项，参考[装备实施指南](design/EQUIPMENT_IMPLEMENTATION.md)。
+
+## 主角配色（2026-10-21）
+
+每位PlayerState保存paletteId，经SetHeroPalette命令、party快照与v5恢复点传播。它不进入Actor属性或装备系统；战斗中修改只补写原恢复点的外观元数据。HeroSprite从ArtLibrary选用共享Material，不复制纹理；本机、房主 / 队友、菜单与商店均从对应玩家状态读取。Q版概念已定稿但新动作未生产，参见[主角配色与素材契约](HERO_COLORS.md)。

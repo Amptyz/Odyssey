@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-20",
+  "tool": "image_gen",
+  "status": "user_selected_concept_not_runtime",
+  "reference": "art-source/rekindled-hero-v3/concept.png",
+  "originalOutputName": "exec-af90523a-24da-4c41-89e2-0a0c6388bf9d.png",
+  "output": "concept.png",
+  "prompt": "concept.prompt.txt",
+  "width": 1536,
+  "height": 1024,
+  "mode": "RGB",
+  "sha256": "2758aab301c4151c589396a9f40471a5594d6dd5fb2241d4548febe08f18bc7b",
+  "sourceCopyMatches": true,
+  "visualReview": "Identity and full-body silhouettes reviewed; not an animation or strict pixel-production validation.",
+  "approvedDate": "2026-10-21",
+  "approval": "用户确认：没毛病。就用这个。"
+}

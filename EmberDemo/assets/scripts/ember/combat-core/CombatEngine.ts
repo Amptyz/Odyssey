@@ -110,7 +110,7 @@ export class CombatEngine {
     this.queue.push(event);
     if(attackHit)this.queue.push({...event,type:'OnAttackHit'});
     if(damaged)this.queue.push({...event,type:'OnDamaged',sourceId:target.id,targetId:hit.sourceId,amount:lostHp});
-    this.cue({kind:'damage',actorId:target.id,at:{x:target.x,y:target.y},amount:hit.amount,cause:hit.cause,critical,trueDamage:damageType==='true'});
+    this.cue({kind:'damage',actorId:target.id,sourceId:hit.sourceId,attackId:hit.attackId,at:{x:target.x,y:target.y},amount:hit.amount,cause:hit.cause,critical,trueDamage:damageType==='true'});
     if (target.hp<=0) {
       target.alive = false; this.metrics.kills++;
       this.queue.push({...event,type:'OnKill'});

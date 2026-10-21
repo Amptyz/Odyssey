@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-21",
+  "tool": "built-in image_gen",
+  "outputBasename": "exec-95645564-c7e7-421c-8bad-eda2eaa49f51.png",
+  "references": [
+    {
+      "file": "references/broad-sweep.png",
+      "originalAttachment": "codex-clipboard-9e97027f-b383-4b43-839c-f264ad01468c.png",
+      "role": "swept surface, changing width and layered trails",
+      "sha256": "9858aed4dfef50ac21a1ffd8724150141eb3aea468b6fa6e6cf975b38e11d3fa"
+    },
+    {
+      "file": "references/impact-silhouette.png",
+      "originalAttachment": "codex-clipboard-93db20e8-a906-4147-968a-0cc139cbb3f0.png",
+      "role": "thick white shape and short burst",
+      "sha256": "c0b4d04a5d43d2fed4feb639bcb97ed1b1026e398843f784700cbaaeeb3dd184"
+    },
+    {
+      "file": "../rekindled-chibi-v2/concept.png",
+      "role": "approved hero identity and coarse pixel style"
+    }
+  ],
+  "prompt": "concept.prompt.txt",
+  "output": "concept.png",
+  "size": [
+    1448,
+    1086
+  ],
+  "mode": "RGB",
+  "sha256": "64574a23b555ff8b09c4377cef8b462ce94b0176b838eb94749d3339f585538a",
+  "scope": "revision concept board only; not a runtime atlas",
+  "imageEdits": "none"
+}

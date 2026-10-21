@@ -6,7 +6,7 @@ import { RoomPanel } from '../platform/RoomPanel';
 import {RunSaveFiles} from '../platform/RunSaveFiles';
 import { ArenaView } from '../render/ArenaView';
 import { Hud } from '../render/Hud';
-import { worldToScreen } from '../render/IsoProjection';
+import { worldToScreen } from '../render/GroundProjection';
 import { ArtLibrary } from '../render/ArtLibrary';
 import { SceneTransition } from '../render/SceneTransition';
 import { text,uiNode } from '../render/Primitives';
@@ -48,5 +48,5 @@ export class GameBootstrap extends Component {
     this.draw(this.port.advance(dt),dt);
   }
   onDestroy():void {this.controls?.destroy();this.roomPanel?.destroy();this.saveFiles?.destroy();this.port?.destroy();this.disposeDebug?.();this.art.dispose();}
-  private draw(alpha:number,dt=0):void {const s=this.port.snapshot();this.arena.prepareCamera(s,alpha,dt,this.port.presentationKey);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer,dt,this.hud.showColliders);this.hud.update(s,this.fps);this.transition.update(s,dt,this.port.presentationKey);}
+  private draw(alpha:number,dt=0):void {const s=this.port.snapshot();this.arena.prepareCamera(s,alpha,dt,this.port.presentationKey);this.controls.update(s);this.arena.update(s,alpha,this.controls.pointer,dt,this.hud.showColliders);this.hud.update(s,this.fps,this.arena.presentationTime);this.transition.update(s,dt,this.port.presentationKey);}
 }

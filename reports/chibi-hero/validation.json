@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-21",
+  "status": "passed",
+  "runtimeArt": "art/chibi-v1",
+  "source": "art-source/chibi-runtime-v1",
+  "core": {
+    "files": 33,
+    "tests": 421
+  },
+  "creator": {
+    "version": "3.8.8",
+    "platform": "web-desktop",
+    "exitCode": 36,
+    "log": "creator-build.log"
+  },
+  "metadata": [
+    "inspect-chibi-hero.py --check",
+    "inspect-pixel-art.py --check"
+  ],
+  "browsers": {
+    "hero": {
+      "samples": 39,
+      "file": "result.json"
+    },
+    "impact": {
+      "file": "impact.json",
+      "deathColumns": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "palettes": {
+      "checks": 12,
+      "file": "palettes/solo.json"
+    },
+    "multiplayer": {
+      "checks": 25,
+      "file": "multiplayer.json"
+    },
+    "art": {
+      "checks": 111,
+      "file": "art.json"
+    }
+  },
+  "uncovered": [
+    "strict logical pixel grid / limited palette / binary alpha",
+    "final gait polish and stronger S vs SE silhouette",
+    "four-player performance and all DPRs"
+  ],
+  "gitPush": false
+}

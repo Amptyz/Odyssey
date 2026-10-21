@@ -1,21 +1,21 @@
 import {Node,Graphics,Label} from 'cc';
 import type {WorldSnapshot} from '../simulation/GameWorld';
 import {ArtLibrary} from './ArtLibrary';
-import {HeroRig} from './HeroRig';
-import {worldToScreen,type Projection} from './IsoProjection';
+import {HeroSprite} from './HeroSprite';
+import {worldToScreen,type Projection} from './GroundProjection';
 import {drawWorldShape} from './MonsterVisual';
 import {box,color,graphics,text,uiNode} from './Primitives';
 /** Reusable markers/NPCs. No interaction or readiness is decided by animation. */
 export class InteractionView {
-  private key='';private entries:{id:string;node:Node;ring:Graphics;label:Label;rig?:HeroRig}[]=[];
+  private key='';private entries:{id:string;node:Node;ring:Graphics;label:Label;rig?:HeroSprite}[]=[];
   constructor(private readonly parent:Node,private readonly art:ArtLibrary){}
   update(s:WorldSnapshot,camera:Projection):{node:Node;y:number}[]{
     const key=s.scene.id+':'+s.scene.interactions.map(n=>n.id+':'+n.claimed).join(',');
     if(key!==this.key){
       this.key=key;for(const e of this.entries)e.node.destroy();this.entries=[];
       for(const item of s.scene.interactions){
-        const node=uiNode(item.name,this.parent),ring=graphics('Interaction base',node);let rig:HeroRig|undefined;
-        if(item.kind==='merchant'){rig=new HeroRig(node,this.art);rig.equip({body:'leather',head:'hood'});const counter=graphics('Merchant counter',node);box(counter,-23,-2,46,20,'#6E5545',2);box(counter,-25,14,50,7,'#C8AD78',1);}
+        const node=uiNode(item.name,this.parent),ring=graphics('Interaction base',node);let rig:HeroSprite|undefined;
+        if(item.kind==='merchant'){rig=new HeroSprite(node,this.art);const counter=graphics('Merchant counter',node);box(counter,-23,-2,46,20,'#6E5545',2);box(counter,-25,14,50,7,'#C8AD78',1);}
         if(item.kind==='ember'){
           // A restrained, hard-edged ember above a stone plinth.
           const glyph=graphics('Ember beacon',node);box(glyph,-16,-3,32,9,'#6B7770',1);box(glyph,-12,5,24,7,'#DED5B6',1);

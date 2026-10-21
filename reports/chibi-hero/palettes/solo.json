@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "checks": [
+    "ash selected through normal UI",
+    "moss selected through normal UI",
+    "frost selected through normal UI",
+    "wine selected through normal UI",
+    "ochre selected through normal UI",
+    "violet selected through normal UI",
+    "live hero consumes palette material",
+    "palette selection does not advance a paused solo world",
+    "local palette preference survives reload",
+    "saved run restores palette",
+    "moving hero keeps its material across frame changes",
+    "no browser or shader errors"
+  ],
+  "errors": []
+}

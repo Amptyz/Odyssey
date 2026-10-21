@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "date": "2026-10-20",
+  "unitTests": 414,
+  "testFiles": 32,
+  "creator": {
+    "version": "3.8.8",
+    "exitCode": 36,
+    "log": "reports/whole-hero/creator-build.log"
+  },
+  "wholeHeroSamples": 39,
+  "impact": {
+    "hurt": true,
+    "deathColumns": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "fadeAndDelayedModal": true
+  },
+  "browserChecks": {
+    "scenes": 52,
+    "hitboxes": 94,
+    "multiplayer": 21,
+    "art": 111
+  },
+  "metadataAtlases": 36,
+  "skill": "valid",
+  "documentLinks": 344,
+  "notCovered": [
+    "four-player public-network play",
+    "GPU frame-time benchmarks",
+    "strict authored pixel grid/palette",
+    "final frame-by-frame anatomical polish"
+  ]
+}

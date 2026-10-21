@@ -1,0 +1,9377 @@
+[
+  {
+    "phase": "fighting",
+    "time": 0.1,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": -464,
+          "y": 237,
+          "width": 220,
+          "height": 46,
+          "title": "关卡 / 工具"
+        },
+        {
+          "x": -232,
+          "y": 237,
+          "width": 220,
+          "height": 46,
+          "title": "技能 / 装备"
+        },
+        {
+          "x": 0,
+          "y": 237,
+          "width": 220,
+          "height": 46,
+          "title": "余烬"
+        },
+        {
+          "x": 232,
+          "y": 237,
+          "width": 220,
+          "height": 46,
+          "title": "预设 / 复现"
+        },
+        {
+          "x": 464,
+          "y": 237,
+          "width": 220,
+          "height": 46,
+          "title": "属性 / 来源"
+        },
+        {
+          "x": 500,
+          "y": 312,
+          "width": 200,
+          "height": 46,
+          "title": "敌人 AI"
+        },
+        {
+          "x": -390,
+          "y": 165,
+          "width": 340,
+          "height": 46,
+          "title": "地图：余烬庭院"
+        },
+        {
+          "x": -120,
+          "y": 165,
+          "width": 70,
+          "height": 46,
+          "title": "−"
+        },
+        {
+          "x": 130,
+          "y": 165,
+          "width": 70,
+          "height": 46,
+          "title": "+"
+        },
+        {
+          "x": -390,
+          "y": 93,
+          "width": 340,
+          "height": 46,
+          "title": "○ 玩家免伤"
+        },
+        {
+          "x": 0,
+          "y": 93,
+          "width": 340,
+          "height": 46,
+          "title": "○ 技能无冷却"
+        },
+        {
+          "x": 390,
+          "y": 93,
+          "width": 340,
+          "height": 46,
+          "title": "○ 停止敌人 AI"
+        },
+        {
+          "x": -390,
+          "y": 31,
+          "width": 340,
+          "height": 46,
+          "title": "时间倍率：1×"
+        },
+        {
+          "x": 185,
+          "y": 31,
+          "width": 700,
+          "height": 46,
+          "title": "场景：战斗关卡"
+        },
+        {
+          "x": -440,
+          "y": -35,
+          "width": 200,
+          "height": 46,
+          "title": "满血 / 复活"
+        },
+        {
+          "x": -220,
+          "y": -35,
+          "width": 200,
+          "height": 46,
+          "title": "生命设为 25%"
+        },
+        {
+          "x": 0,
+          "y": -35,
+          "width": 200,
+          "height": 46,
+          "title": "刷新冷却"
+        },
+        {
+          "x": 220,
+          "y": -35,
+          "width": 200,
+          "height": 46,
+          "title": "清空敌人"
+        },
+        {
+          "x": 440,
+          "y": -35,
+          "width": 200,
+          "height": 46,
+          "title": "步进 1 帧"
+        },
+        {
+          "x": -290,
+          "y": -105,
+          "width": 360,
+          "height": 46,
+          "title": "生成：苔刃精灵"
+        },
+        {
+          "x": 50,
+          "y": -105,
+          "width": 240,
+          "height": 46,
+          "title": "数量：1"
+        },
+        {
+          "x": 360,
+          "y": -105,
+          "width": 280,
+          "height": 46,
+          "title": "在周围生成"
+        },
+        {
+          "x": -440,
+          "y": -322,
+          "width": 260,
+          "height": 46,
+          "title": "退出测试 → 普通首页"
+        },
+        {
+          "x": -150,
+          "y": -322,
+          "width": 270,
+          "height": 46,
+          "title": "关闭面板 · F2 / Esc"
+        },
+        {
+          "x": 145,
+          "y": -322,
+          "width": 260,
+          "height": 46,
+          "title": "重测已应用配置"
+        },
+        {
+          "x": 440,
+          "y": -322,
+          "width": 260,
+          "height": 46,
+          "title": "应用并进入关卡"
+        }
+      ]
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.13059999990463259,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.13333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.14789999997615816,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.13333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.1645,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.16666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.1825,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.16666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.19859999990463256,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.19999999999999998,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.215,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.19999999999999998,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.23139999997615812,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.2333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.24939999997615814,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.2333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.2645,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.26666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.28219999992847444,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.26666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.2988999999761581,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.3,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.31559999990463256,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.3,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.3322999999523163,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.3333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.3493999999761581,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.3333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.3651999999284744,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.36666666666666664,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.38189999997615814,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.36666666666666664,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.3980999999046326,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.39999999999999997,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.41459999990463253,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.39999999999999997,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.4311999999284744,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.4333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.44949999999999996,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.4333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.4655999999046325,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.4666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.48279999995231626,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.4666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.49809999990463255,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.49999999999999994,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.5145,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.49999999999999994,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.5322999999523162,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.5333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.549,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.5333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.5657999999523163,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.5666666666666667,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.5822999999523163,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.5666666666666667,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.5990999999046326,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.6,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.6162999999523163,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.6,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.6325,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.6333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.6493999999761582,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.6333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.6645,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.6666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.6811999999284744,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.6666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.6981999999284744,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.7,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.7156999999284744,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.7,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.7324999999999999,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.7333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.749,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.7333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.7658999999761581,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.7666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.7812999999523162,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.7666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.7991999999284743,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.7999999999999999,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.8145999999046325,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.7999999999999999,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.8326999999284743,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.8333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.8478999999761581,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.8333333333333333,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.8644999999999999,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.8666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.8831999999284743,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.8666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.8978999999761581,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.8999999999999999,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.9145,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.8999999999999999,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.9311999999284744,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.9333333333333332,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.947899999976158,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.9333333333333332,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.966,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.9666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.9811999999284744,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.9666666666666666,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 0.9977999999523162,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.9999999999999999,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.015199999928474539,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 0.9999999999999999,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.03129999995231636,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.0333333333333332,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.04819999992847446,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.0666666666666667,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.07159999990463273,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.0666666666666667,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.0812999999523164,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.0666666666666667,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.0980000000000002,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.1,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.11450000000000016,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.1,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.1328999999761583,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.1333333333333335,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.14969999992847483,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.1333333333333335,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "hurt",
+        "atlas": "hero-states",
+        "frame": 10,
+        "column": 2,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 10,
+      "opacity": 255,
+      "pose": {
+        "state": "hurt",
+        "age": 0.1643999999761584,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.166666666666667,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.1811999999284748,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.166666666666667,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.1977999999523166,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.2000000000000004,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.214599999904633,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.2000000000000004,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.2311999999284748,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.2333333333333338,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.2478999999761586,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.2333333333333338,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.2645000000000006,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.2666666666666673,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.2830000000000006,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.2666666666666673,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.2978999999761587,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.3000000000000007,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.3145000000000007,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.3000000000000007,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.3310999999046333,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.3333333333333341,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.3495000000000008,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.3333333333333341,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.364500000000001,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.3666666666666676,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.3810999999046336,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.3666666666666676,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.3977999999523172,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.400000000000001,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.4163999999761592,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.400000000000001,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.4311999999284755,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.4333333333333345,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.4478999999761593,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.4333333333333345,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.4645000000000012,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.466666666666668,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.4811999999284757,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.466666666666668,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.4978999999761593,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.5000000000000013,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.5145000000000013,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.5000000000000013,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.5313999999761594,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.5333333333333348,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.548199999928476,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.5333333333333348,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.564599999904634,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.5666666666666682,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.581199999928476,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.5666666666666682,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.5980000000000016,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.6000000000000016,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.6145999999046343,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.6000000000000016,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.631199999928476,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.633333333333335,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.6478999999761599,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.633333333333335,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.6646999999284762,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.6666666666666685,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.6811999999284764,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.6666666666666685,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.69789999997616,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.700000000000002,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.71439999997616,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.700000000000002,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.7310999999046346,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.7333333333333354,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.7477999999523184,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.7333333333333354,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.7645999999046347,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.7666666666666688,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.7811999999284767,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.7666666666666688,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.7978999999761602,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.8000000000000023,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.8160999999046348,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.8000000000000023,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.8312999999523185,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.8333333333333357,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.8478999999761605,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.8333333333333357,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.8663999999761605,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.8666666666666691,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.8812999999523188,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.8666666666666691,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.8977999999523187,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.9000000000000026,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.9145000000000025,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.9000000000000026,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.9310999999046352,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.933333333333336,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.947799999952319,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.933333333333336,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.964699999928477,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.9666666666666694,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.9815000000000027,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 1.9666666666666694,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 1.999799999952319,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.0000000000000027,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.014599999904635,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.0000000000000027,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.031299999952319,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.033333333333336,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.0488999999761606,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.033333333333336,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.0655999999046353,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.066666666666669,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.0830000000000024,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.066666666666669,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.0995000000000026,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.1000000000000023,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.115199999928477,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.1000000000000023,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.1311999999284765,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.1333333333333355,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.1477999999523183,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.1333333333333355,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.164500000000002,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.1666666666666687,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.1811999999284764,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.1666666666666687,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.1977999999523186,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.200000000000002,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.2155999999046347,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.200000000000002,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.231199999928476,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.233333333333335,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.24839999997616,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.233333333333335,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.2645000000000017,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.2666666666666684,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.2810999999046344,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.2666666666666684,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.297799999952318,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.3000000000000016,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.314599999904634,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.3000000000000016,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.3310999999046342,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.333333333333335,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.3478999999761596,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.333333333333335,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.364799999952318,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.366666666666668,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.381799999952318,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.366666666666668,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.397799999952318,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.4000000000000012,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.4145999999046337,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.4000000000000012,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.4311999999284755,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.4333333333333345,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.4478999999761593,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.4333333333333345,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.464500000000001,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.4666666666666677,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.4810999999046337,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.4666666666666677,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 8,
+        "column": 0,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 8,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.497899999976159,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.500000000000001,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.514500000000001,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.500000000000001,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.531399999976159,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.533333333333334,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.5480999999046334,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.533333333333334,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.5645000000000007,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.5666666666666673,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.581299999952317,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.5666666666666673,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.597799999952317,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.6000000000000005,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.616199999928475,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "fighting",
+    "time": 2.6000000000000005,
+    "ui": {
+      "phase": "fighting",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "idle",
+        "atlas": "hero-states",
+        "frame": 9,
+        "column": 1,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 9,
+      "opacity": 255,
+      "pose": {
+        "state": "idle",
+        "age": 2.6311999999284748,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.6500333333810175,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 11,
+        "column": 3,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 11,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.03126666669050859,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.666733333309492,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 11,
+        "column": 3,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 11,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.06673333330949127,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.683633333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 11,
+        "column": 3,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 11,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.08363333340485868,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.7001333334048594,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 11,
+        "column": 3,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 11,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.10013333340485886,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.7166333334048596,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 11,
+        "column": 3,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 11,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.11663333340485904,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.733333333333334,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 12,
+        "column": 4,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 12,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.1333333333333333,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.7500333333810176,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 12,
+        "column": 4,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 12,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.1500333333810171,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.7684333333571756,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 12,
+        "column": 4,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 12,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.16843333335717503,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.7832333333094916,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 12,
+        "column": 4,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 12,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.1832333333094911,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.7999333333571754,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 12,
+        "column": 4,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 12,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.1999333333571749,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.816633333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 12,
+        "column": 4,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 12,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.21663333340485869,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.833233333309492,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 12,
+        "column": 4,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 12,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.23323333330949136,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.8499333333571757,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 12,
+        "column": 4,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 12,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.24993333335717516,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.8666333334048595,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 13,
+        "column": 5,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 13,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.26663333340485895,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.8833333333333337,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 13,
+        "column": 5,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 13,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.2833333333333332,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.9015333333810176,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 13,
+        "column": 5,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 13,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.30153333338101707,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.9166333334048593,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 13,
+        "column": 5,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 13,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.3166333334048588,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.9333333333333336,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 13,
+        "column": 5,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 13,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.33333333333333304,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.9499333333571753,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 13,
+        "column": 5,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 13,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.3499333333571748,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.966633333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 13,
+        "column": 5,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 13,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.3666333334048586,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 2.9833333333333334,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 14,
+        "column": 6,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 14,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.38333333333333286,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.000033333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 14,
+        "column": 6,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 14,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.40003333338101665,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.018533333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 14,
+        "column": 6,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 14,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.4185333333810166,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.035133333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 14,
+        "column": 6,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 14,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.4351333334048584,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.050033333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 14,
+        "column": 6,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 14,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.4500333333810165,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.0667333333094913,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 14,
+        "column": 6,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 14,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.46673333330949074,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.084433333357175,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 14,
+        "column": 6,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 14,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.4844333333571744,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.1012333333094912,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.5012333333094907,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.117833333333333,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.5178333333333325,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.134333333333333,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.5343333333333327,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.1515333333810167,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.5515333333810162,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.168033333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.5680333333810164,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.184033333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.5840333333810164,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.200033333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.6000333333810164,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.216833333333333,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.6168333333333327,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.2333333333333334,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.6333333333333329,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.250033333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 255,
+      "pose": {
+        "state": "death",
+        "age": 0.6500333333810167,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.266633333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 247,
+      "pose": {
+        "state": "death",
+        "age": 0.6666333334048584,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.284533333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 239,
+      "pose": {
+        "state": "death",
+        "age": 0.6845333333810166,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.3013333333333335,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 231,
+      "pose": {
+        "state": "death",
+        "age": 0.7013333333333329,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.319633333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 223,
+      "pose": {
+        "state": "death",
+        "age": 0.7196333334048584,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.334633333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 216,
+      "pose": {
+        "state": "death",
+        "age": 0.7346333334048585,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.350233333309492,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 209,
+      "pose": {
+        "state": "death",
+        "age": 0.7502333333094913,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.366733333309492,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 201,
+      "pose": {
+        "state": "death",
+        "age": 0.7667333333094914,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.3841333334048596,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 193,
+      "pose": {
+        "state": "death",
+        "age": 0.784133333404859,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.400233333309492,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 185,
+      "pose": {
+        "state": "death",
+        "age": 0.8002333333094915,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.416933333357176,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 178,
+      "pose": {
+        "state": "death",
+        "age": 0.8169333333571753,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.433333333333334,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 170,
+      "pose": {
+        "state": "death",
+        "age": 0.8333333333333335,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.450033333381018,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 162,
+      "pose": {
+        "state": "death",
+        "age": 0.8500333333810173,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.4666333334048596,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 155,
+      "pose": {
+        "state": "death",
+        "age": 0.866633333404859,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.483433333357176,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 147,
+      "pose": {
+        "state": "death",
+        "age": 0.8834333333571753,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.5000333333810176,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 139,
+      "pose": {
+        "state": "death",
+        "age": 0.9000333333810171,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.5177333333094922,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 131,
+      "pose": {
+        "state": "death",
+        "age": 0.9177333333094917,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.5346333334048596,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 123,
+      "pose": {
+        "state": "death",
+        "age": 0.9346333334048591,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.5512333333094923,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 115,
+      "pose": {
+        "state": "death",
+        "age": 0.9512333333094918,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.567933333357176,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 108,
+      "pose": {
+        "state": "death",
+        "age": 0.9679333333571756,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.5833333333333344,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 100,
+      "pose": {
+        "state": "death",
+        "age": 0.9833333333333338,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.600033333381018,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 93,
+      "pose": {
+        "state": "death",
+        "age": 1.0000333333810176,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.6175333333810182,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 85,
+      "pose": {
+        "state": "death",
+        "age": 1.0175333333810177,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.6337333333094928,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 77,
+      "pose": {
+        "state": "death",
+        "age": 1.0337333333094922,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.65013333340486,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 69,
+      "pose": {
+        "state": "death",
+        "age": 1.0501333334048595,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.6667333333094927,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 62,
+      "pose": {
+        "state": "death",
+        "age": 1.0667333333094922,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.685033333381018,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 53,
+      "pose": {
+        "state": "death",
+        "age": 1.0850333333810176,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.70013333340486,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 46,
+      "pose": {
+        "state": "death",
+        "age": 1.1001333334048593,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.7167333333094925,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 39,
+      "pose": {
+        "state": "death",
+        "age": 1.116733333309492,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.7333333333333343,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 31,
+      "pose": {
+        "state": "death",
+        "age": 1.1333333333333337,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.750033333381018,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 23,
+      "pose": {
+        "state": "death",
+        "age": 1.1500333333810175,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.7668333333333344,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 15,
+      "pose": {
+        "state": "death",
+        "age": 1.1668333333333338,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.783433333357176,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": false,
+      "buttons": []
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 8,
+      "pose": {
+        "state": "death",
+        "age": 1.1834333333571756,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.800033333381018,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 0,
+      "pose": {
+        "state": "death",
+        "age": 1.2000333333810174,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.8166333334048597,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    },
+    "hero": {
+      "id": "hero",
+      "sprite": {
+        "clip": "death",
+        "atlas": "hero-states",
+        "frame": 15,
+        "column": 7,
+        "row": 1,
+        "mirror": 1,
+        "paletteId": "ash",
+        "parts": 1,
+        "sourceViews": 5,
+        "animation": "whole-body sequence frames"
+      },
+      "kind": "hero",
+      "atlas": "hero-states",
+      "frame": 15,
+      "opacity": 0,
+      "pose": {
+        "state": "death",
+        "age": 1.2166333334048591,
+        "facing": 1,
+        "direction": 1,
+        "speed": 0
+      },
+      "worldScale": {
+        "x": 1.25,
+        "y": 1.25
+      }
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.833333333333334,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.8501333334048593,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.8666333334048595,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.8833333333333337,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.900133333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.9166333334048593,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.9333333333333336,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.9509333333571752,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.966633333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 3.9833333333333334,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.000033333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.0167333333094914,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.033333333333333,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.050133333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.067333333333333,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.084133333404859,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.100033333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.116733333309491,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.133333333333333,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.150033333381017,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  },
+  {
+    "phase": "defeat",
+    "time": 4.166733333309491,
+    "ui": {
+      "phase": "defeat",
+      "overlayActive": true,
+      "buttons": [
+        {
+          "x": 470,
+          "y": 312,
+          "width": 270,
+          "height": 46,
+          "title": "开发者面板 · F2"
+        },
+        {
+          "x": 0,
+          "y": -130,
+          "width": 280,
+          "height": 46,
+          "title": "再来一次  ↵"
+        }
+      ]
+    }
+  }
+]

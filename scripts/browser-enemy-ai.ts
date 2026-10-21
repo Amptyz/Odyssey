@@ -19,7 +19,7 @@ try{
  // Charge motion uses its authored dash speed. No world objects are mutated.
  await page.evaluate(()=>{
   const api=(window as any).__EMBER__;api.send({type:'DevOpen'});const c=api.snapshot().developer.draft;
-  api.send({type:'DevConfigure',config:{...c,entry:'combat',mapId:'ember',wave:1,perks:[],equipment:{},purchaseOrder:[],
+  api.send({type:'DevConfigure',config:{...c,entry:'combat',mapId:'ember',wave:1,perks:[],equipment:{},
    attributeTarget:'enemies',attributeModifiers:[{stat:'moveSpeed',operation:'multiply',value:0}],
    options:{invincible:true,noCooldown:false,freezeEnemies:false,speed:1}}});
   api.send({type:'DevApply'});api.send({type:'DevOpen'});api.send({type:'DevAction',action:'clearEnemies'});

@@ -1,18 +1,22 @@
 # 美术生成 Prompt 模板
 
-只读取并使用当前任务涉及的类型。以下为本项目自用模板，字段需要填成具体值；不在最终调用中遗留占位符。先实际查看参考图，明确哪个提供身份、哪个提供布局，哪个只是风格。新对象没有身份图时先按 brief 生成单体基图，经技术检查后复用，不假称已有人工批准。
+只读取并使用当前任务涉及的类型。以下为本项目自用模板，字段需要填成具体值；不在最终调用中遗留占位符。先实际查看参考图，明确哪个提供身份、哪个提供布局，哪个只是风格。新对象没有身份图时先按 brief 生成单体基图，经技术检查后复用，不假称已有人工批准。世界观以 [WORLD_LORE](../../../../docs/WORLD_LORE.md) 为准，风格以 [ART_DIRECTION](../../../../docs/ART_DIRECTION.md) 为准；旧批次提示词是历史记录。
 
 ## 公共块
 
 ```text
 Use case: stylized-concept
-Asset type: [runtime sprite / modular equipment / environment prop / animation frame group]
+Asset type: [runtime sprite / item icon / environment prop / animation frame group]
 Request: [specific asset and intended gameplay role]
 Inputs: image 1 is [identity or edit target]; image 2 is [style or layout reference].
-Match the existing Project Ember three-quarter gameplay view and proportions.
-Bright living ruins in deliberate pixel art, broad readable pixel clusters,
-a shared limited palette, two or three hard-edged shades per material,
-clean stepped warm-dark outlines, restrained surface detail.
+Match the approved subject view and proportions. Upright props use a fixed
+three-quarter view; ground assets follow Ember's equal-scale ground plane.
+Dark, blood-marked fantasy after the extinction of a stolen primordial fire,
+in deliberate pixel art: clear clusters, a controlled palette and stepped tones.
+Keep medium-value environments readable, separate character silhouettes from
+the ground, use pale ash/bone, cool charcoal and concentrated warm ember accents.
+Blood (where appropriate for the subject) and charring form readable shapes,
+not a noisy coating. The base PLAYER HERO is explicitly bloodless.
 Logical canvas: [width x height source texels]; palette: [palette reference].
 Grid origin: [origin]; display: [integer design-pixel scale after sample check].
 No antialiasing, soft gradients, blur, photo textures or faux pixel filter.
@@ -37,6 +41,7 @@ Output layout: [actual requested columns, rows, ordered contents and target size
 | --- | --- |
 | idle | `Subtle breathing and weight shift. Feet planted. Small leaf or accessory motion only. Continuous loop, no wandering, turning or extra action.` |
 | walk | `One complete walk-in-place cycle. Alternate left and right strides with passing poses, modest counter-swing. Fixed implied ground plane; world movement is applied by the game.` |
+| run | `Run in place with forward lean, bent-elbow counter-swing, contact/compression, toe push-off and a clearly airborne phase. Both feet leave the fixed ground reference during flight; preserve vertical body movement. A full loop includes the opposite-leg stride too. Do not simply speed up walking or duplicate the same leg poses.` |
 | melee attack | `One attack: pull the weapon back, readable anticipation, decisive strike, follow-through and recovery toward ready. Clear pose changes, no extra attack.` |
 | ranged cast | `One cast: prepare the casting limb or implement, release gesture, then recover. The projectile is rendered separately; do not paint it into body frames.` |
 | hurt | `One brief recoil, then recover toward the ready stance. Keep the same weapon and facing. No involuntary turn or new wound decoration.` |
@@ -59,62 +64,117 @@ Background and grid: [true alpha and measured target layout].
 
 视频路线使用同样的身份与动作约束，但把网格要求替换为单个固定画布、所需时长和工具实际支持的参数；不要要求视频模型生成图集网格。视频不支持 alpha 时，明确改用与主体颜色不冲突的纯色底，并记录后续处理；树叶怪不能无脑用绿幕。接入前阅读 [动画与坐标契约](animation.md)。
 
-## 玩家部件
+## 玩家整身序列帧
 
 ```text
-Create [named paper-doll parts] matching the existing neutral Ember hero.
-Ordinary short hair, simple friendly face, plain ivory-grey short tunic,
-muted taupe trousers and charcoal soft boots. No fixed class identity.
-Match the existing torso, head and limb proportions exactly.
-One isolated part per specified cell; no complete dressed characters.
-Rounded joint ends overlap under the torso clothing; keep shoulders and palms
-compatible with the existing rig. Screen-left/right labels describe the
-unmirrored assembled character; do not include these labels in the image.
-No permanent armor, robe, hat, cape, emblem, weapon or magic aura.
+Create complete full-body animation frames of the selected CHIBI Ember hero identity.
+Large round bald head, very short stocky body, broad torso and stubby limbs.
+Use an exclusive cool violet color ramp for dyeable cloth across all frames.
+Keep skin warm ash-grey and the featureless face neutral charcoal, never using
+the cloth ramp there. One atlas supports every player palette; do not make
+separate red/blue/green character sheets. Match the selected chibi reference.
+Long-dead ash-grey human, BALD, BLOODLESS, FACELESS: bare cranium,
+uninterrupted charcoal shadow face; no eyes, nose, mouth, eyebrows, detailed
+ ears or hair. No red wounds, helmet, mask or hood. Class-neutral simple wraps,
+small dry amber chest ember, no carried weapon or purchased equipment.
+Every cell contains ONE connected head, torso and all four limbs; natural
+shoulders, elbows, knees, and coherent cloth. NO separated paper-doll parts.
+Hold [facing] through [ordered action frames]; match body scale, palette and
+pixel grid. Use [common ground origin / pivot]. Preserve airborne rise and
+collapse; do not bottom-align, recenter or resize individual poses.
+Keep full silhouettes inside cells with transparent gutters. Effects, shadows
+and gameplay movement are separate. No weapon trails or projectiles baked in.
 ```
 
-现有部件能用时不重新生成。单纯手错位先检查左右部件、肩轴、掌心与遮挡，不以重画人物代替定位问题。
+明确每行动作 / 朝向，不能用转身板充当移动循环。当前S、SE、E、NE、N五视角各8列；西侧三方向整图镜像。`HERO_CLIPS`控制播放；动作时长和空间策略见[动画契约](animation.md)。身份与动作一致性优先，返回布局必须实测；不以脚本重绘补救关节断裂。
 
-## 装备与换装
+## 主角形象概念
+
+概念稿使用独立背景与版式，可以有正背面、特写、色板和游戏尺度示意；不要直接套用运行时公共块中的透明切片 / 现有比例限制。死亡细胞取向像素、无血无发无五官已确定；比例、服饰和火痕的具体安排由 brief 指定，不恢复首版的头发、眼睛和血迹。
 
 ```text
-Create ONE isolated [weapon / body armor / headgear] for the existing Ember hero.
-Use the supplied assembled hero as a proportion and fitting reference only;
-do not paint the hero, a mannequin, skin, face, extra hands or legs into this asset.
-Express [build tendency] through [one main silhouette or material feature].
-Keep the same three-quarter perspective and low-detail shading.
-[Weapon: expose a clear physical grip at the specified position.]
-[Body: fit the current torso and cover shoulder joins without embedding limbs.]
-[Head: leave the face aperture truly transparent so the base face shows through.]
-The item must work with equipment from other build tendencies.
+Create an original pixel-art concept sheet for a nameless dead human rekindled
+by the last spark after the world's stolen fire was extinguished.
+The playable corpse is distinct from the ancient hero who originally stole fire.
+Selected direction: original Dead Cells-inspired authored pixel art.
+The hero has been dead a long time: NO blood or raw red wounds, NO hair,
+NO facial features. Bare ash-grey head, featureless dark shadow face;
+no eyes, nose, mouth, eyebrows or detailed ears; no hood or mask.
+Design details: [proportions, simple clothing, dry charring / small ember].
+Keep the complete character class-neutral; purchased equipment does not change its image.
+Use expressive poses, authored pixel clusters and clear material planes;
+dark and visceral atmosphere with readable midtones, no underexposed black fog.
+Show the SAME identity in [requested views, close-ups and scale vignette].
+No unrequested armor, weapons, class emblems, extra limbs or permanent fire halo.
+Label this as a concept, not a finished animation atlas or real gameplay capture.
 ```
 
-只保留匹配槽位的句子。设计目标可给握点草案，但实际 anchor / grip 必须在返回图上测量。盾目前占武器槽，新副手不能仅靠生成图片实现。
+使用 [已选Q版形象](../../../../art-source/rekindled-chibi-v1/README.md) 作当前身份与比例参考；旧批次只提供比较历史。方向与用户限制已确认，不把代理生成的细节记成用户逐项批准，也不把英文临时称呼当成正式设定。
+
+## 装备物品图标
+
+```text
+Create ONE isolated [item] as a readable inventory/shop icon for Ember.
+Use [build tendency] through one main silhouette and material accent.
+Same dark pixel-art palette and restrained shading as the game.
+No character, mannequin, hands, face, extra limbs, UI labels or background.
+This is an ITEM ICON, not a wearable body part: no rig fitting, joint openings,
+attachment pivots or directional character variants are needed.
+```
+
+装备不改变角色贴图；只注册商品图标，不恢复穿戴层或按购买顺序显示外观。
 
 ## 地图与环境
 
+先读 [环境视角与地面度量](../../../../docs/ART_DIRECTION.md#环境视角与地面度量)。以下按素材选择对应句子，明确是直立物件还是地面资产；不能只写“isometric”让生成器自行套用2:1扁菱形地面。地面45°旋转不代表物件俯角也必须是45°。
+
 ```text
 Create [individual environment element or requested concept view] for Ember.
-Ivory ancient stone, sage foliage, calm teal water and restrained warm accents.
+Use a fixed-view 2.5D sprite presentation over an equal-scale gameplay ground.
+Ashen medium-value ruins and traces of a lost golden age, adapted to the
+specific location brief; cool grey light, limited warm fire and dark blood accents.
+Keep traversable ground visible; deep black belongs to cavities and local shadows.
 Use broad shapes and low-contrast seams; keep walkable surfaces visually quiet.
-For props, isolate one complete reusable element per specified cell.
-For ground tiles, match the current isometric ground projection and make seams
-subtle; do not add dense grass, cracks or bright decoration to every tile.
+Upright props: show readable top and side faces from the approved three-quarter
+view. Keep consistent apparent elevation and lighting across the set.
+Preserve upright proportions and isolate one reusable element per specified cell.
+Ground assets: equal distances in all ground directions have equal screen length.
+A world-axis square appears as a rotated square with equal diagonals, not a
+flattened 2:1 diamond. Ground circles remain circles; keep seams subtle.
+No perspective convergence, distance-based shrinking, or vertically compressed map.
+Asset class and target footprint: [ground / upright; world dimensions and display size].
+Ground contact anchor and orientation: [explicit reference; already screen-oriented or not].
+Occlusion plan: [base, upright silhouette and any separately rendered overhang].
+Keep ground shadows separate from the prop PNG. State anchors and footprints
+in the accompanying specification, never as drawn marks in the production image.
 No hero, monster, UI, labels or combat effects.
 ```
 
-概念图可以有场景背景；运行时独立素材需在公共块中指定真实透明。地图装饰不隐含碰撞，独特场景布置还要接地图与渲染代码。复用现有运行时环境图作比例参考，不用复杂 AI 风格海报作为严格细节标准。
+概念图可以有场景背景；运行时独立素材需在公共块中指定真实透明。地图装饰不隐含碰撞，独特场景布置还要接地图与渲染代码。复用现有运行时环境图作比例参考，但旧图预绘的扁底座不作为新地面标准；不用复杂 AI 风格海报作为严格细节标准。不通过非等比拉伸整个场景、移动补偿或修改碰撞来迎合生成结果。
 
 ## 特效与技能贴图
 
 ```text
-Create an isolated [specific effect] matching Ember's bright pixel-ruins style.
+Create an isolated [specific effect] matching Ember's dark-fantasy pixel style.
 Show [preparation / readable core / short burst / fast decay as appropriate].
 Use [element palette plus distinct pixel shape], a short bright core, stepped trails
 and grouped fragments. Keep decoration weaker than hostile warnings.
 Logical pixel size, frames, lifetime and density: [PIXEL_VFX specification].
-Use hard-edged pixel clusters and discrete fading steps, without soft bloom.
-Keep the actual direction and core boundary clear at gameplay scale.
+Effect role: [attack / skill / non-combat decoration].
+For any attack or skill, use a clear contour matching the actual simulation
+shape at each active phase: [shape, origin, facing, radius, angle, width,
+safe gaps, movement and timing from the gameplay definition].
+Show the whole currently effective area clearly, even when the brightest
+weapon head moves within it. Do not imply a wider or smaller effective area.
+Keep internal detail and fading trails subordinate to that readable boundary;
+glow and feedback fragments must not create a false effective boundary.
+Distinguish anticipation, active effect and expired residue. Feedback without
+its own hit area stays anchored to the real event or affected unit.
+Preserve the equal-scale footprint: circles stay circular, sectors keep their
+angle. Do not squash gameplay boundaries to imitate painted perspective.
+Non-combat environment, UI and cosmetic effects are exempt from the clear
+contour / collision-matching requirement; soft glow, smoke and free contours
+are allowed when they do not obscure combat information.
 No body, weapon, enemy, map, ground shadow, UI, text or baked background.
 Avoid full-screen flashes, high-frequency flicker, dense tiny particles,
 long bright trails and persistent halos that obscure enemy warnings.

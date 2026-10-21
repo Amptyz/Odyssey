@@ -4,8 +4,10 @@ import type { EquipmentId,EquipmentSlot } from '../content/equipment';
 import type { Vec2 } from '../utils/math';
 import type { LabId } from '../content/perks';
 import type { EnemyKind } from '../content/enemies';
+import type {HeroPaletteId} from '../content/hero-palettes';
 export type DeveloperAction='recover'|'cooldowns'|'health25'|'clearEnemies'|'step';
 export type GameCommand =
+  | { type:'SetHeroPalette'; paletteId:HeroPaletteId }
   | { type:'SaveRun' }
   | { type:'LoadRun';data?:unknown }
   | { type:'DevOpen'|'DevClose'|'DevApply'|'DevRestart'|'DevExit'|'DevCapture' }

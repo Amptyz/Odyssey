@@ -1,6 +1,8 @@
 # AI 美术动画草案评估与采用方案
 
-> **后续风格修订（2026-10-16）：** 用户已确定像素遗迹风。以下是此前 v0.6 的历史评估，不代表当前风格或多人能力；其中“不采用像素吸附 / 不采用像素化标准”等结论由 [ART_DIRECTION](ART_DIRECTION.md)、[PIXEL_VFX](PIXEL_VFX.md) 和更新后的 [ember-art](../.agents/skills/ember-art/SKILL.md) 替代。旧 PNG / Graphics 尚未迁移，当前支持 2–4 人房主合作，原单人评估不能作为多人验收。
+> 2026-10-20更新：角色改为整身序列帧，装备不改变贴图；下文旧纸娃娃取舍已由[当前管线](ART_PIPELINE.md)替代。
+
+> **后续风格修订（2026-10-20）：** 用户确定保留像素，基调改为黑暗、血腥但清晰可读，故事见 [WORLD_LORE](WORLD_LORE.md)。以下是此前 v0.6 的历史评估，不代表当前风格或多人能力；其中“不采用像素吸附 / 不采用像素化标准”等结论由 [ART_DIRECTION](ART_DIRECTION.md)、[PIXEL_VFX](PIXEL_VFX.md) 和更新后的 [ember-art](../.agents/skills/ember-art/SKILL.md) 替代。旧素材尚未完成严格像素迁移，当前支持 2–4 人房主合作，原单人评估不能作为多人验收。
 
 评估日期：2026-10-16。对象为 [用户提供的草案](../CODEX_AI_ART_ANIMATION_RULES.md)，代码基线为 v0.6 的现有美术与挂点实现。
 

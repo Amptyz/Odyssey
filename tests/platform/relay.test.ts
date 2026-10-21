@@ -18,6 +18,19 @@ async function client(port:number){
 }
 const hello=(action:'create'|'join'|'recover',identity:string,code?:string):RoomClientMessage=>({type:'hello',version:ROOM_VERSION,action,identity:identity.repeat(48),name:identity,code});
 describe('room relay and persisted recovery',()=>{
+  it('allows validated lobby palettes but not combat input, binds the sender and persists color for recovery',async()=>{
+    const {relay}=await fixture(),host=await client(relay.port);host.send(hello('create','a'));const {room}=await host.wait('welcome');
+    const guest=await client(relay.port);guest.send(hello('join','b',room.code));const joined=await guest.wait('welcome');
+    guest.send({type:'command',seq:1,command:{type:'Attack',point:{x:1,y:2}}});
+    guest.send({type:'command',seq:2,command:{type:'SetHeroPalette',paletteId:'wine',playerId:'hero'} as never});
+    const received=await host.wait('command');expect(received.command.type).toBe('SetHeroPalette');expect(received.playerId).toBe(joined.playerId);
+    const w=new GameWorld();w.addPlayer(joined.playerId);w.saveLobby();w.command(received.command,received.playerId);
+    host.send({type:'save',revision:1,checkpoint:w.savedRun!});const saved=await guest.wait('saved');
+    expect(saved.checkpoint.players.find(p=>p.id===joined.playerId)?.paletteId).toBe('wine');
+    const recovery=await client(relay.port);recovery.send(hello('recover','b',room.code));const restored=await recovery.wait('welcome');
+    expect(restored.checkpoint?.players.find(p=>p.id===joined.playerId)?.paletteId).toBe('wine');
+    expect(restored.checkpoint?.players.find(p=>p.id==='hero')?.paletteId).toBe('ash');
+  });
   it('routes validated inputs to the host with stable identity and rejects duplicate input sequence numbers',async()=>{
     const {relay}=await fixture(),host=await client(relay.port);host.send(hello('create','a'));const created=await host.wait('welcome');
     const guest=await client(relay.port);guest.send(hello('join','b',created.room.code));const joined=await guest.wait('welcome');expect(joined.playerId).not.toBe('hero');
@@ -25,12 +38,12 @@ describe('room relay and persisted recovery',()=>{
     guest.send({type:'command',seq:1,command:{type:'Attack',point:{x:1,y:2}}});guest.send({type:'command',seq:2,command:{type:'DevAction',action:'recover'}});guest.send({type:'heartbeat'});await guest.wait('pong');expect(host.messages.filter(m=>m.type==='command')).toHaveLength(0);
     guest.socket.close();await new Promise(done=>setTimeout(done,20));const reconnect=await client(relay.port);reconnect.send(hello('join','b',created.room.code));expect((await reconnect.wait('welcome')).playerId).toBe(joined.playerId);
   });
-  it('acknowledges persisted checkpoints and recovers an existing v6 full-skill room under the new protocol',async()=>{
+  it.each(['ember-coop-6','ember-coop-7','ember-coop-8'])('acknowledges persisted checkpoints and recovers a stored %s room under the new protocol',async version=>{
     const {relay,directory}=await fixture(),host=await client(relay.port);host.send(hello('create','a'));const {room}=await host.wait('welcome');
     const guest=await client(relay.port);guest.send(hello('join','b',room.code));const member=await guest.wait('welcome');
     const w=new GameWorld();w.addPlayer(member.playerId);for(const p of w.players.values())p.loadout={...DEVELOPER_LOADOUT};openMerchantFixture(w);w.command({type:'BuyEquipment',equipmentId:'bow'},member.playerId);
     host.send({type:'save',revision:1,checkpoint:w.savedRun!});await host.wait('saved');const saved=await guest.wait('saved');expect(saved.checkpoint.players.find(p=>p.id===member.playerId)?.equipment.slot1).toBe('bow');
-    await relay.close();const file=join(directory,room.code+'.json'),stored=JSON.parse(await readFile(file,'utf8'));stored.version='ember-coop-6';await writeFile(file,JSON.stringify(stored));
+    await relay.close();const file=join(directory,room.code+'.json'),stored=JSON.parse(await readFile(file,'utf8'));stored.version=version;await writeFile(file,JSON.stringify(stored));
     const next=await startRelay({port:0,directory});cleanup.push(()=>next.close());
     const recovery=await client(next.port);recovery.send(hello('recover','b',room.code));const resumed=await recovery.wait('welcome');
     expect(resumed.room.code).not.toBe(room.code);expect(resumed.room.hostId).toBe(member.playerId);expect(resumed.checkpoint).toEqual(w.savedRun);

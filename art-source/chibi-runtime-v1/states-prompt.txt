@@ -1,0 +1,21 @@
+Production game sprite atlas for Project Ember. Use the supplied approved COARSE PIXEL chibi character as the identity and coarse-detail reference. Create whole connected bodies, not paper-doll parts.
+IDENTITY: large round bare bald head, very short broad squat body, short sturdy limbs, simple mitten hands and broad bare feet. Exactly the reference's stout proportions, about 2.4 heads tall. Warm ash-grey skin and bandages, dull ochre sash, dark cool-violet wrap tunic, tiny amber chest ember. Bare faceless shadow head: absolutely NO eyes, nose, mouth, ears, hair, mask, hood, helmet or blood. No weapons, armor, extra limbs, detached parts, skill effects, ground shadows or props.
+COARSE PIXELS: design each body like a roughly 40x52 logical-pixel sprite, enlarged in uniform sharp square blocks, not a detailed painting with jagged edges. Strong stepped outline, very few broad cloth folds, flat pixel clusters and 2–3 hard tones per material. NO smooth gradients, blur, texture noise, skin pores, tiny cloth tears or detailed fingers/toes. Maintain identical pixel density and body scale across ALL cells. Make the large blocky pixel look obvious at game size.
+DYE CONTRACT: cloth ALONE uses a distinct purple ramp, approximately #30243F / #4C3A66 / #695183 / #8A71A0. Skin and wraps use warm greys #84776B / #B3A18C / #D3C2A8. The shadow face and all deep outlines are NEUTRAL dark charcoal #242426 / #353538 (equal red/green, no purple or blue tint); no colored eyes. Ochre belt and amber fire remain warm. No cloth purple on the head or bare limbs.
+LAYOUT: one landscape PNG, target 1536x1024, exactly EIGHT COLUMNS by FIVE ROWS = FORTY complete full-body frames. Evenly spaced cells, no labels, no grid lines, no sheet title, NO checkerboard or background pixels: genuine transparent alpha everywhere outside the sprites. Every pose stays within its own cell with clear transparent gutters. Nominal cells 192 wide x205 high; standing body about 140–150 source pixels tall and 105–120 wide, no zoom-to-fill. Column roots regularly centered near 96+192*c, ground baseline about 184+205*r. Root stays fixed across each row: airborne rise and crouch are intentional, do not bottom-align all feet or resize every pose.
+DIRECTION ROWS, same facing through every frame, no turn during the action:
+row1 SOUTH: facing directly toward viewer/screen-bottom, symmetrical front, full shadow face and chest.
+row2 SOUTH-EAST: front-right three-quarter, facing diagonally screen-bottom-right, shadow face and chest visible.
+row3 EAST: strict right-facing profile, right edge of the head is the shadow face.
+row4 NORTH-EAST: back-right three-quarter, moving screen-top-right, mostly back of bare grey head and crossed back tunic, NO full front face or chest ember.
+row5 NORTH: straight away toward screen-top, back of grey head and back of tunic only, NO face or chest ember.
+This sheet combines IDLE, HURT and DEATH with the following EXACT columns in EVERY direction row:
+Column1 neutral idle, upright, arms down and feet planted.
+Column2 gentle breathing idle, shoulders rise just one logical pixel, same feet.
+Column3 brief HURT recoil, torso tilts back slightly and hands tense, still alive upright.
+Column4 death start, knees buckle and arms drop.
+Column5 death collapse, squatting low with torso falling toward the ground.
+Column6 one knee/hand hits ground, body tips onto side, no standing.
+Column7 body fully falls onto ground, horizontal/collapsed intact figure, all limbs attached.
+Column8 final still prone dead body, head rests on ground, compact horizontal silhouette, ember almost gone, NOT kneeling or standing; no revival or disintegration.
+Body size remains constant through collapse: the pose becomes lower and wider, do not shrink it. The resting pose lies around each cell's original ground baseline; whole silhouette inside the 192-wide cell, no neighbor overlap. No gore, bones, detached limbs, effects or shadows. All five direction rows follow this sequence. Keep camera and facing fixed; collapse is local pose movement. Same identity, scale and coarse pixel clusters as supplied running atlas.

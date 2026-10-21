@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>余烬 · 无面复燃者 · 形象与八方向动作</title>
+<style>
+ :root{color-scheme:dark;font-family:system-ui,-apple-system,"PingFang SC",sans-serif;color:#eee9e1;background:#181b20}
+ *{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;padding:32px clamp(16px,4vw,64px) 48px;max-width:1800px;margin-inline:auto}
+ header{display:flex;justify-content:space-between;gap:24px;align-items:end;border-bottom:1px solid #393d43;padding-bottom:20px}
+ .eyebrow{font-size:12px;letter-spacing:.2em;color:#e5b376}h1{font-size:clamp(24px,3vw,38px);font-weight:600;margin:9px 0}
+ p{color:#bdc0c7;line-height:1.7;margin:8px 0}.count{color:#e5b376;white-space:nowrap;font-size:14px}
+ nav,.options{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0}
+ button,select{font:inherit;font-size:14px;padding:10px 15px;color:#e0e2e7;background:#252a31;border:1px solid #464c56;border-radius:8px;cursor:pointer}
+ button[aria-pressed="true"]{background:#e5b376;border-color:#e5b376;color:#251c13}button:hover,select:hover{border-color:#e5b376}
+ button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid #ffe0a0;outline-offset:4px}
+ label{font-size:14px;color:#c8c9d0;display:flex;align-items:center;gap:8px;margin-right:14px}
+ #cards{display:grid;grid-template-columns:1fr;gap:24px;margin-top:22px;max-width:1200px;margin-inline:auto}
+ #cards.pair{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}
+ article{min-width:0;background:#22262d;border:1px solid #3b424b;border-radius:12px;overflow:hidden}
+ .card-title{padding:14px 20px;display:flex;justify-content:space-between;gap:16px;align-items:center}.card-title h2{font-size:18px;margin:0}.tag{font-size:12px;color:#e5b376}
+ .art{background:#969995;position:relative;overflow:hidden}.art img{display:block;width:100%;height:auto;image-rendering:pixelated}.art.cropped img{position:absolute;top:0;left:0}
+ .phases{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;text-align:center;padding:12px 10px;color:#e5b376;font-size:14px;gap:8px}
+ .notes{padding:10px 20px 16px;font-size:13px;line-height:1.7;color:#bdc0c7}a{color:#edc692;text-underline-offset:3px}
+ #description{min-height:27px;color:#e5c8a4;font-size:14px}footer{margin-top:28px;border-top:1px solid #393d43;padding-top:16px;font-size:13px}
+ @media(max-width:800px){#cards.pair{grid-template-columns:1fr}header{align-items:start;flex-direction:column;gap:4px}.count{white-space:normal}.tag{display:none}}
+</style>
+<header>
+ <div><div class="eyebrow">PROJECT EMBER · CHARACTER STUDY 03</div><h1>无面之身，余火未熄</h1><p>死亡细胞取向的像素表现 · 无血迹 · 无头发 · 无五官的阴影面孔</p></div>
+ <div class="count">1 套形象 · 4 类动作 · 8 方向</div>
+</header>
+<nav aria-label="查看内容">
+ <button data-action="concept" aria-pressed="true">主角形象</button>
+ <button data-action="walk" aria-pressed="false">行走</button>
+ <button data-action="run" aria-pressed="false">跑步 · 新增</button>
+ <button data-action="melee" aria-pressed="false">近战攻击</button>
+ <button data-action="ranged" aria-pressed="false">远程攻击</button>
+</nav>
+<div class="options" id="motion-options" hidden>
+ <label>方向<select id="direction"><option value="0">↑ 上 N</option><option value="1">↗ 右上 NE</option><option value="2" selected>→ 右 E</option><option value="3">↘ 右下 SE</option><option value="4">↓ 下 S</option><option value="5">↙ 左下 SW</option><option value="6">← 左 W</option><option value="7">↖ 左上 NW</option></select></label>
+ <label>视图<select id="view"><option value="row">当前方向 · 关键姿</option><option value="sheet">完整八方向设计板</option></select></label>
+</div>
+<p id="description"></p>
+<main id="cards" aria-live="polite"></main>
+<footer>
+ <p>这是形象与动作关键姿设计，尚未接入游戏。跑步展示接地、压低、蹬伸、腾空四阶段；完整循环还需对侧步态、补间与节奏制作。八方向均按屏幕方向定义。</p>
+ <p>图片保留底色与标签。透明切片、源像素网格、共同锚点、跨动作尺度和装备适配需要另行制作；局部取景仅用于浏览。概念板的小场景是生成示意。</p>
+ <p><a href="README.md">设计与审阅记录</a> · <a href="prompts.json">实际生成提示词</a> · <a href="manifest.json">资源清单</a></p>
+</footer>
+<script>
+const definitions={
+ concept:{label:"主角形象",phases:[],description:"用光头轮廓和无面阴影保留代入感；干枯尸肤、无血旧布与一点胸口余火表达复燃身份。",files:["concept"]},
+ walk:{label:"行走",phases:["接地","经过","对侧接地"],description:"较直的重心、温和摆臂；保持身体身份，左右步的完整过渡留待生产。",files:["walk"]},
+ run:{label:"跑步",phases:["01 接地","02 压低","03 蹬伸","04 腾空"],description:"前倾身体、屈肘反摆，压低后蹬地并离地；32 个关键姿分两张板，展示单次步态四阶段。",files:["run-north","run-south"]},
+ melee:{label:"近战攻击",phases:["张臂蓄力","交叉挥击","落臂回收"],description:"沿用双臂内收挥击提案；背向时交叉前臂被躯干遮挡，刀光另外制作。",files:["melee"]},
+ ranged:{label:"远程攻击",phases:["蓄势","单掌释放","回收"],description:"徒手释放的身体动作；弹体与技能效果分层，装备不决定普通攻击形式。",files:["ranged"]}
+};
+// Measured browsing windows only; these are NOT runtime sprite rectangles.
+const sheets={
+ concept:{width:1536,height:1024,rows:null,label:"完整形象设计"},
+ walk:{width:1024,height:1536,rows:[80,240,408,591,771,954,1135,1321,1510],label:"八方向行走"},
+ melee:{width:1024,height:1536,rows:[80,241,407,590,772,953,1136,1322,1510],label:"八方向近战"},
+ ranged:{width:1024,height:1536,rows:[80,240,408,588,771,954,1134,1317,1503],label:"八方向远程"},
+ "run-north":{width:1254,height:1254,rows:[91,366,639,920,1211],label:"跑步 · N / NE / E / SE"},
+ "run-south":{width:1254,height:1254,rows:[88,368,648,930,1233],label:"跑步 · S / SW / W / NW"}
+};
+let action="concept";
+const direction=document.getElementById("direction"),view=document.getElementById("view");
+function render(){
+ const def=definitions[action],motion=action!=="concept",crop=motion&&view.value==="row",row=Number(direction.value);
+ document.getElementById("motion-options").hidden=!motion;
+ document.getElementById("description").textContent=def.description;
+ const files=action==="run"&&crop?[def.files[row<4?0:1]]:def.files;
+ const cards=document.getElementById("cards");cards.replaceChildren();cards.classList.toggle("pair",files.length>1);
+ for(const file of files){
+  const sheet=sheets[file],article=document.createElement("article"),title=document.createElement("div");title.className="card-title";
+  const h=document.createElement("h2");h.textContent=crop?def.label+" · "+direction.selectedOptions[0].text:sheet.label;
+  const tag=document.createElement("span");tag.className="tag";tag.textContent="PIXEL · DESIGN STUDY";title.append(h,tag);
+  const art=document.createElement("div");art.className="art";const img=document.createElement("img");img.src=file+".png";img.alt=sheet.label+"；无血、无发、无五官的复燃主角";
+  if(crop){const r=action==="run"?row%4:row;art.classList.add("cropped");art.style.aspectRatio=sheet.width+" / "+(sheet.rows[r+1]-sheet.rows[r]);img.style.transform="translateY("+(-sheet.rows[r]/sheet.height*100)+"%)";}
+  art.append(img);article.append(title,art);
+  if(motion){const phases=document.createElement("div");phases.className="phases";for(const phase of def.phases){const s=document.createElement("span");s.textContent=phase;phases.append(s);}article.append(phases);}
+  const notes=document.createElement("div");notes.className="notes";const a=document.createElement("a");a.href=file+".png";a.target="_blank";a.rel="noopener";a.textContent="查看完整原图 ↗";notes.append(a);article.append(notes);cards.append(article);
+ }
+}
+for(const button of document.querySelectorAll("[data-action]"))button.addEventListener("click",()=>{
+ action=button.dataset.action;for(const other of document.querySelectorAll("[data-action]"))other.setAttribute("aria-pressed",String(other===button));render();
+});
+for(const select of [direction,view])select.addEventListener("change",render);
+render();
+</script>
+</html>

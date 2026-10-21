@@ -7,7 +7,7 @@
 1. [README.md](README.md)：环境、启动、当前玩法和命令。
 2. [整体架构](docs/ARCHITECTURE.md)：运行流程、状态归属、模块依赖与限制。
 3. [开发架构指南](docs/DEVELOPMENT_GUIDE.md)：改动落点、实施顺序、验证和交付。
-4. 按需阅读：[内容扩展](docs/CONTENT_ARCHITECTURE.md)、[美术风格设计](docs/ART_DIRECTION.md)、[美术管线](docs/ART_PIPELINE.md)、[海克斯](docs/HEX_AUGMENTS.md)、[开发者模式](docs/DEVELOPER_MODE.md)、[联机与恢复](docs/MULTIPLAYER.md)。
+4. 按需阅读：[内容扩展](docs/CONTENT_ARCHITECTURE.md)、[世界观](docs/WORLD_LORE.md)、[美术风格设计](docs/ART_DIRECTION.md)、[美术管线](docs/ART_PIPELINE.md)、[海克斯](docs/HEX_AUGMENTS.md)、[开发者模式](docs/DEVELOPER_MODE.md)、[联机与恢复](docs/MULTIPLAYER.md)。
 
 后续独立任务统一维护在 [todoList.md](todoList.md)。接手其中一项时核对依赖与实际代码基线，登记负责人和状态，交付后补充验证证据；清单本身不表示要求一次执行全部任务。
 
@@ -25,14 +25,16 @@
 
 ## 开发时保持的约定
 
-- 六个通用装备栏slot1–slot6不限类型；weapon/body/head仅是显示部位。各部位外观按已装备物品的purchaseOrder解析；玩家普攻默认近战挥砍，只由余烬改变形式，与装备无关，重装旧件不改变购序；保存/恢复必须携带购序。
+- 六个通用装备栏slot1–slot6不限类型；category只用于物品分类。装备只提供属性、被动与UI图标，不改变角色贴图；默认普攻近战挥砍，只由余烬改变形式。不要恢复外观层、挂点或purchaseOrder；v4存档读取时迁移至v5并丢弃旧外观字段。
 - 场景与交互遵循 [营地与休息点](docs/SCENES.md)：Start 进入营地；商店/余烬是每人面板，不能恢复每关自动弹窗。交互按世界坐标 F 校验，全员集合后仅房主出发；首个余烬必选。
 - 每个地点遵循 `content/locations.ts` 的 `LocationDefinition`，必填 name、可选 subtitle；在 maps / scenes 中编辑，由 SceneSnapshot 和 SceneTransition 统一显示入场标题。显示名称不参与稳定 ID、存档或领取标记。
-- 无固定职业。玩家通过主动技能奖励与确定性装备购买形成构筑；装备同时决定外观。基础人物保持中性、简洁的遗迹风格。
+- 无固定职业。玩家通过主动技能奖励与确定性装备购买形成构筑。主角已选[矮胖Q版](art-source/rekindled-chibi-v1/README.md)，保留死亡细胞取向像素材质，死去已久、无血迹、无头发、无五官的阴影面孔；固定整身形象，不预设职业。当前为[整身序列帧](art-source/chibi-runtime-v1/README.md)，五绘制视角加三镜像；旧十部件纸娃娃已停用；Q版完整动作已接入，细节精修见ART-08。多人独立paletteId共用图集材质调色，见[主角配色](docs/HERO_COLORS.md)，不得按配色复制动画或恢复装备换皮。
 - 两种操作都以左键朝鼠标地面方向普攻，允许挥空；不恢复锁定、自动追击或鼠标吸附。QWER 是槽位，普通开局 / 重开四槽均为显式 null，技能从余烬奖励获得；空槽不施法。技能逻辑使用稳定 `SkillId`。
 - 先判断能否复用已有配置和处理器。新技能 / 装备 / 敌人变种通常不需要在 `GameWorld` 加 ID 分支。
 - `simulation / combat-core / ai / content / utils` 保持不依赖 `cc`、DOM、真实时钟和全局随机数。输入和 UI 发命令，战斗状态由逻辑层修改，表现层消费快照。
 - 命中使用 `CollisionWorld` 的世界坐标查询；移动使用 `Pathfinder.sweep`。不能用贴图距离、动画回调或 Cocos 刚体另建一套伤害判定。
+- 默认近战按已确认的白色原稿环扫：`content/melee-motion.ts` 配置帧序与归一化亮锋轮廓，`combat-core/MeleeSweep.ts` 扫掠亮锋；内部空洞与旧尾迹不伤害，每刀每目标最多一次。不要恢复117°整块扇区判定或把地形显示遮罩当伤害范围；见[基础近战规格](docs/design/BASIC_MELEE_VFX.md)。
+- 地面采用 `utils/GroundPlane.ts` 的单位正交基和 `render/GroundProjection.ts` 的统一缩放；移动、弹速、射程、碰撞共用欧氏世界距离。不得恢复双轴压缩或按方向加速；鼠标、动画方向、小地图和范围显示共用此变换，见 [战斗平面](docs/GAME_FEEL.md)。
 - 战斗时间使用 `FIXED_DT` / `GameWorld.time`，随机使用已有 `Random`。保留暂停、重开、阶段切换与旧输入清理。
 - 伤害 / 治疗进入 `CombatEngine`；连锁效果保留 `rootId / depth / proc` 等来源信息和预算保护。不要用直接扣 HP 绕过事件链。
 - 多人逻辑必须通过 playerId 访问 `GameWorld.players`，事件规则按 sourceId 读取余烬；`world.hero / equipment / loadout` 只是初始玩家的兼容入口。恢复点不是任意战斗快照；跨波字段同步保存 / 校验 / 恢复。
@@ -44,15 +46,15 @@
 | 需求 | 首先查看 |
 | --- | --- |
 | 新技能 / 新技能行为 | `content/skills.ts` → `simulation/SkillSystem.ts` |
-| 装备 / 属性 / 外观 | `content/equipment.ts`、`simulation/EquipmentSystem.ts` |
+| 装备 / 属性 / 被动 | `content/equipment.ts`、`simulation/EquipmentSystem.ts` |
 | 玩家普攻形式 / 形式余烬 | `content/attacks.ts`、`content/perks.ts` → `combat-core/CombatEngine.ts`、`simulation/GameWorld.ts` |
 | 装备独立被动 / 内部冷却 | `content/equipment.ts` 的 passives → `simulation/EquipmentEffectSystem.ts`；通过 CombatEngine 实际事件触发 |
 | 全单位属性 / 公式 / 来源 | `combat-core/attributes/AttributeSet.ts`、`combat-core/ActorFactory.ts`；`content/enemies.ts` 的 template |
 | 敌人 / AI | `content/enemies.ts`、`content/enemy-actions.ts`、`content/enemy-behaviors.ts` → `ai/EnemyDecision.ts`、`simulation/EnemySystem.ts`；[配置指南](docs/ENEMY_AI.md)、[ember-enemy-ai skill](.agents/skills/ember-enemy-ai/SKILL.md) |
-| 全局移速 / 弹速 / 镜头 | `content/tuning.ts` → `attributes/AttributeSet.ts`、弹体生成入口、`render/IsoProjection.ts` / `ArenaView.ts`；[参数指南](docs/GAME_FEEL.md) |
+| 全局移速 / 弹速 / 镜头 | `content/tuning.ts` → `attributes/AttributeSet.ts`、弹体生成入口、`utils/GroundPlane.ts`、`render/GroundProjection.ts` / `ArenaView.ts`；[参数指南](docs/GAME_FEEL.md) |
 | 余烬 / 新效果 / 状态 | `content/perks.ts`、`content/statuses.ts` → `combat-core/types.ts`、`EffectHandlers.ts`、`StatusSystem.ts` |
 | 地图 / 波次 / 营地与休息点 | `content/maps.ts`、`content/scenes.ts` → `simulation/LevelSystem.ts`、`simulation/SceneSystem.ts` |
-| 人物 / 装备贴图、动画 | `content/appearances.ts`、`content/animation.ts` → `render/HeroRig.ts`、`AnimatedUnit.ts` |
+| 人物贴图 / 动画、物品图标 | `content/animation.ts`、`content/pixel-art.ts` → `render/HeroSprite.ts`、`AnimatedUnit.ts`、`ArtLibrary.ts` |
 | 命中 / 遮挡 / 弹体 | `combat-core/CollisionWorld.ts`、`simulation/GameWorld.ts` |
 | 联机 / 存档 / 掉线 | `platform/RoomTransport.ts`、`platform/room-protocol.ts`、`simulation/RunCheckpoint.ts`；根 `scripts/relay-server.ts` |
 | 单人存档 / 文件备份 | `platform/LocalTransport.ts`、`RunSaveStorage.ts`、`RunSaveFiles.ts` → `MainMenuLayout.ts` / `Hud.ts`；[使用与契约](docs/SAVES.md) |
@@ -63,10 +65,12 @@
 ## Cocos 资源与美术
 
 - 生成、修改、审查或接入本项目贴图 / 动画时使用 [ember-art skill](.agents/skills/ember-art/SKILL.md)（`$ember-art`）；它按需提供 Prompt、动画契约和验收流程。纯战斗数值修改不需要加载。外来动画草案的取舍见 [审阅结果](docs/ART_ANIMATION_REVIEW.md)。
-- 制作美术先读 [风格设计指南](docs/ART_DIRECTION.md)：参考图只提供氛围，后续实际美术统一为像素遗迹风，使用像素簇、共享有限色板和硬边色阶；基础人物不带职业标志，装备表达流派。旧 PNG / Graphics 未自动像素化，最近邻 / 整数显示 / 镜头像素对齐需后续实施；粒子形态、节奏和预算见 [像素特效规范](docs/PIXEL_VFX.md)。按实际战斗尺寸和多效果叠加场景验收。
+- 所有攻击 / 技能特效必须轮廓清晰，与实际生效范围、方向和时段一致；玩家、敌人、普攻与触发效果均适用。环境 / UI / 纯装饰特效不受此要求限制。以模拟判定校准美术，不反过来修改碰撞迁就贴图；详见[判定一致性](docs/PIXEL_VFX.md#攻击与技能特效的判定一致性)。
+- 制作美术先读 [世界观](docs/WORLD_LORE.md) 与 [风格设计指南](docs/ART_DIRECTION.md)：2026-10-20起保留像素表现，基调改为黑暗、血腥但清晰可读；使用像素簇、共享有限色板和硬边色阶，不能将画面整体压黑。旧明亮自然遗迹图仅作历史参考，不能覆盖新方向；基础人物不带职业标志，装备不改变角色形象。严格像素网格、整数显示和镜头像素对齐仍需后续验收；粒子形态、节奏和预算见 [像素特效规范](docs/PIXEL_VFX.md)。按实际战斗尺寸和多效果叠加场景验收。
+- 环境美术采用斜俯视物件 + 等比例地面的2.5D表现；顶面 / 侧面、独立阴影与遮挡提供立体感。制作时明确地面锚点、世界占地和分层，遵循[环境规则](docs/ART_DIRECTION.md#环境视角与地面度量)；不得压缩地面、规则范围或通过方向移速补偿适配贴图。
 - 新资源通过 Creator 导入生成 `.meta`，与资源一起提交；不要手写 UUID 或伪造 `.scene / .prefab / .meta`。移动已有资源保留其 UUID。
 - `content/art-manifest.ts` 是 `scripts/inspect-art.py` 的生成结果；调整切片时同时维护生成来源，避免下次生成覆盖手工改动。
-- 武器握点、肩部挂点与脚底锚点是表现数据；换装不改变碰撞半径。验证左右镜像、待机、攻击、移动以及衣甲遮挡；最近的手臂修复约定见美术管线。
+- 玩家每帧为一个完整身体，以共同地面锚点和固定比例播放；检查八方向、走跑、攻击、受击和死亡，不按逐帧最低像素贴底。装备图仅用于UI；角色贴图、动画和装备不改变碰撞半径。
 - 不提交 `node_modules / dist-core / library / temp / profiles / build` 等生成目录；遵守 `.gitignore`。运行时素材使用本地资源。
 
 ## 验证与交付

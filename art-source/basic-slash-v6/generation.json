@@ -1,0 +1,38 @@
+{
+  "tool": "built-in image_gen",
+  "scope": "direct reference shape-matching concept only",
+  "prompt": "concept.prompt.txt",
+  "output": "concept.png",
+  "outputBasename": "exec-83c696ee-b727-48e2-b208-199bffb98a49.png",
+  "size": [
+    1455,
+    1081
+  ],
+  "mode": "RGB",
+  "sha256": "8f10ffdc81bb2b714a64c246eaf25ca193bad284c5a166a7ac3e2f719136a117",
+  "reference": {
+    "input": "latest user image with red circle",
+    "mechanism": "num_last_images_to_include=1",
+    "localAnnotatedPath": null,
+    "unannotatedBase": "../basic-slash-v2/references/broad-sweep.png"
+  },
+  "postProcessing": "none",
+  "review": {
+    "observed": [
+      "bright broad rounded head on left",
+      "overlapping luminous sheets",
+      "curved wake becoming darker toward old end"
+    ],
+    "limitations": [
+      "smooth rendering and bloom not pixel-production ready",
+      "long bright upper arc still present",
+      "RGB composited backdrop, no real alpha validation",
+      "surrounding composition is not gameplay hit geometry"
+    ],
+    "notRun": [
+      "runtime integration",
+      "pixel grid and alpha",
+      "animation and multiplayer"
+    ]
+  }
+}

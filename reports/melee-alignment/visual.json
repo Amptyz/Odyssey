@@ -1,0 +1,1655 @@
+{
+  "errors": [],
+  "capture": {
+    "snapshot": {
+      "tick": 111,
+      "time": 3.6999999999999966,
+      "phase": "fighting",
+      "stagePhase": "fighting",
+      "scene": {
+        "id": "level:1",
+        "name": "余烬庭院·一",
+        "subtitle": "苔阶巡径",
+        "kind": "combat",
+        "hostId": "hero",
+        "interactions": [],
+        "prompt": "",
+        "requiredIds": [
+          "hero"
+        ],
+        "insideIds": [],
+        "canDepart": false
+      },
+      "paused": false,
+      "wave": 1,
+      "seed": 1234,
+      "lab": "",
+      "basicAttack": "slash",
+      "equipmentPassives": [],
+      "hero": {
+        "id": "hero",
+        "team": "hero",
+        "x": 19.962692183306892,
+        "y": 19.965562015360206,
+        "hp": 240,
+        "maxHp": 240,
+        "mana": 0,
+        "radius": 0.32,
+        "alive": true,
+        "statuses": [],
+        "shields": [],
+        "combatEffects": [],
+        "attributeEffects": [],
+        "shield": 0,
+        "shieldTime": 0,
+        "kind": "hero",
+        "skillCooldowns": {
+          "fireball": 0,
+          "shield": 0,
+          "dash": 0,
+          "nova": 0,
+          "icebolt": 0,
+          "cleave": 0,
+          "volley": 0,
+          "ironGuard": 0,
+          "frostNova": 0,
+          "mistBolt": 0,
+          "frostBolt": 0
+        },
+        "attackWindup": 0,
+        "previous": {
+          "x": 19.962692183306892,
+          "y": 19.965562015360206
+        },
+        "velocity": {
+          "x": 0,
+          "y": 0
+        },
+        "attackCd": 0.4666666666666667,
+        "path": [],
+        "repath": -3.0999999999999988,
+        "windup": 0,
+        "aim": {
+          "x": 7,
+          "y": 8
+        },
+        "facing": {
+          "x": 0.7342381825954517,
+          "y": 0.6788919584285321
+        },
+        "action": {
+          "id": 1,
+          "kind": "attack",
+          "time": 3.466666666666664,
+          "basicAttack": "slash"
+        },
+        "hurtAt": -1,
+        "diedAt": -1,
+        "attributeValues": {
+          "maxHealth": 240,
+          "healthRegen": 0,
+          "maxMana": 0,
+          "manaRegen": 0,
+          "attackDamage": 20,
+          "abilityPower": 0,
+          "attackSpeed": 1.4285714285714286,
+          "attackRange": 5,
+          "critChance": 0,
+          "critDamage": 2,
+          "armor": 0,
+          "magicResist": 0,
+          "armorPenFlat": 0,
+          "armorPenPercent": 0,
+          "magicPenFlat": 0,
+          "magicPenPercent": 0,
+          "abilityHaste": 0,
+          "moveSpeed": 421.25,
+          "omnivamp": 0,
+          "healShieldPower": 0,
+          "tenacity": 0,
+          "slowResist": 0
+        },
+        "attributeExplanation": {
+          "level": 1,
+          "template": {
+            "maxHealth": 240,
+            "attackDamage": 20,
+            "moveSpeed": 421.25,
+            "attackRange": 5
+          },
+          "sources": [],
+          "final": {
+            "maxHealth": 240,
+            "healthRegen": 0,
+            "maxMana": 0,
+            "manaRegen": 0,
+            "attackDamage": 20,
+            "abilityPower": 0,
+            "attackSpeed": 1.4285714285714286,
+            "attackRange": 5,
+            "critChance": 0,
+            "critDamage": 2,
+            "armor": 0,
+            "magicResist": 0,
+            "armorPenFlat": 0,
+            "armorPenPercent": 0,
+            "magicPenFlat": 0,
+            "magicPenPercent": 0,
+            "abilityHaste": 0,
+            "moveSpeed": 421.25,
+            "omnivamp": 0,
+            "healShieldPower": 0,
+            "tenacity": 0,
+            "slowResist": 0
+          },
+          "movement": {
+            "rawPoints": 421.25,
+            "points": 420,
+            "worldSpeed": 6.3
+          },
+          "templateParameters": {
+            "baseAttackSpeed": 1.4285714285714286,
+            "attackSpeedRatio": 1.4285714285714286,
+            "resourceKind": "none",
+            "classification": "champion",
+            "canMove": true,
+            "canAttack": true,
+            "controlImmune": false
+          }
+        },
+        "movementPoints": 630,
+        "worldMoveSpeed": 6.3
+      },
+      "units": [
+        {
+          "id": "hero",
+          "team": "hero",
+          "x": 19.962692183306892,
+          "y": 19.965562015360206,
+          "hp": 240,
+          "maxHp": 240,
+          "mana": 0,
+          "radius": 0.32,
+          "alive": true,
+          "statuses": [],
+          "shields": [],
+          "combatEffects": [],
+          "attributeEffects": [],
+          "shield": 0,
+          "shieldTime": 0,
+          "kind": "hero",
+          "skillCooldowns": {
+            "fireball": 0,
+            "shield": 0,
+            "dash": 0,
+            "nova": 0,
+            "icebolt": 0,
+            "cleave": 0,
+            "volley": 0,
+            "ironGuard": 0,
+            "frostNova": 0,
+            "mistBolt": 0,
+            "frostBolt": 0
+          },
+          "attackWindup": 0,
+          "previous": {
+            "x": 19.962692183306892,
+            "y": 19.965562015360206
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0
+          },
+          "attackCd": 0.4666666666666667,
+          "path": [],
+          "repath": -3.0999999999999988,
+          "windup": 0,
+          "aim": {
+            "x": 7,
+            "y": 8
+          },
+          "facing": {
+            "x": 0.7342381825954517,
+            "y": 0.6788919584285321
+          },
+          "action": {
+            "id": 1,
+            "kind": "attack",
+            "time": 3.466666666666664,
+            "basicAttack": "slash"
+          },
+          "hurtAt": -1,
+          "diedAt": -1,
+          "attributeValues": {
+            "maxHealth": 240,
+            "healthRegen": 0,
+            "maxMana": 0,
+            "manaRegen": 0,
+            "attackDamage": 20,
+            "abilityPower": 0,
+            "attackSpeed": 1.4285714285714286,
+            "attackRange": 5,
+            "critChance": 0,
+            "critDamage": 2,
+            "armor": 0,
+            "magicResist": 0,
+            "armorPenFlat": 0,
+            "armorPenPercent": 0,
+            "magicPenFlat": 0,
+            "magicPenPercent": 0,
+            "abilityHaste": 0,
+            "moveSpeed": 421.25,
+            "omnivamp": 0,
+            "healShieldPower": 0,
+            "tenacity": 0,
+            "slowResist": 0
+          },
+          "attributeExplanation": {
+            "level": 1,
+            "template": {
+              "maxHealth": 240,
+              "attackDamage": 20,
+              "moveSpeed": 421.25,
+              "attackRange": 5
+            },
+            "sources": [],
+            "final": {
+              "maxHealth": 240,
+              "healthRegen": 0,
+              "maxMana": 0,
+              "manaRegen": 0,
+              "attackDamage": 20,
+              "abilityPower": 0,
+              "attackSpeed": 1.4285714285714286,
+              "attackRange": 5,
+              "critChance": 0,
+              "critDamage": 2,
+              "armor": 0,
+              "magicResist": 0,
+              "armorPenFlat": 0,
+              "armorPenPercent": 0,
+              "magicPenFlat": 0,
+              "magicPenPercent": 0,
+              "abilityHaste": 0,
+              "moveSpeed": 421.25,
+              "omnivamp": 0,
+              "healShieldPower": 0,
+              "tenacity": 0,
+              "slowResist": 0
+            },
+            "movement": {
+              "rawPoints": 421.25,
+              "points": 420,
+              "worldSpeed": 6.3
+            },
+            "templateParameters": {
+              "baseAttackSpeed": 1.4285714285714286,
+              "attackSpeedRatio": 1.4285714285714286,
+              "resourceKind": "none",
+              "classification": "champion",
+              "canMove": true,
+              "canAttack": true,
+              "controlImmune": false
+            }
+          },
+          "movementPoints": 630,
+          "worldMoveSpeed": 6.3
+        },
+        {
+          "id": "enemy-1",
+          "team": "enemy",
+          "x": 18.6,
+          "y": 11,
+          "hp": 80,
+          "maxHp": 80,
+          "mana": 0,
+          "radius": 0.3,
+          "alive": true,
+          "statuses": [],
+          "shields": [],
+          "combatEffects": [],
+          "attributeEffects": [],
+          "shield": 0,
+          "shieldTime": 0,
+          "kind": "melee",
+          "skillCooldowns": {
+            "fireball": 0,
+            "shield": 0,
+            "dash": 0,
+            "nova": 0,
+            "icebolt": 0,
+            "cleave": 0,
+            "volley": 0,
+            "ironGuard": 0,
+            "frostNova": 0,
+            "mistBolt": 0,
+            "frostBolt": 0
+          },
+          "attackWindup": 0,
+          "previous": {
+            "x": 18.6,
+            "y": 11
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0
+          },
+          "attackCd": 0,
+          "path": [],
+          "repath": -3.6999999999999966,
+          "windup": 0,
+          "aim": {
+            "x": 18.6,
+            "y": 11
+          },
+          "facing": {
+            "x": 1,
+            "y": 0
+          },
+          "action": {
+            "id": 0,
+            "kind": "attack",
+            "time": 0
+          },
+          "hurtAt": -1,
+          "diedAt": -1,
+          "attributeValues": {
+            "maxHealth": 80,
+            "healthRegen": 0,
+            "maxMana": 0,
+            "manaRegen": 0,
+            "attackDamage": 12,
+            "abilityPower": 0,
+            "attackSpeed": 0.625,
+            "attackRange": 1.9,
+            "critChance": 0,
+            "critDamage": 2,
+            "armor": 5,
+            "magicResist": 0,
+            "armorPenFlat": 0,
+            "armorPenPercent": 0,
+            "magicPenFlat": 0,
+            "magicPenPercent": 0,
+            "abilityHaste": 0,
+            "moveSpeed": 312,
+            "omnivamp": 0,
+            "healShieldPower": 0,
+            "tenacity": 0,
+            "slowResist": 0
+          },
+          "attributeExplanation": {
+            "level": 1,
+            "template": {
+              "maxHealth": 80,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "armor": 5,
+              "magicResist": 0,
+              "moveSpeed": 312,
+              "attackRange": 1.9
+            },
+            "sources": [],
+            "final": {
+              "maxHealth": 80,
+              "healthRegen": 0,
+              "maxMana": 0,
+              "manaRegen": 0,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "attackSpeed": 0.625,
+              "attackRange": 1.9,
+              "critChance": 0,
+              "critDamage": 2,
+              "armor": 5,
+              "magicResist": 0,
+              "armorPenFlat": 0,
+              "armorPenPercent": 0,
+              "magicPenFlat": 0,
+              "magicPenPercent": 0,
+              "abilityHaste": 0,
+              "moveSpeed": 312,
+              "omnivamp": 0,
+              "healShieldPower": 0,
+              "tenacity": 0,
+              "slowResist": 0
+            },
+            "movement": {
+              "rawPoints": 312,
+              "points": 312,
+              "worldSpeed": 4.68
+            },
+            "templateParameters": {
+              "baseAttackSpeed": 0.625,
+              "attackSpeedRatio": 0.625,
+              "resourceKind": "none",
+              "classification": "monster",
+              "canMove": true,
+              "canAttack": true,
+              "controlImmune": false
+            }
+          },
+          "movementPoints": 467.99999999999994,
+          "worldMoveSpeed": 4.68
+        },
+        {
+          "id": "enemy-2",
+          "team": "enemy",
+          "x": 16.2,
+          "y": 12.385640646055101,
+          "hp": 80,
+          "maxHp": 80,
+          "mana": 0,
+          "radius": 0.3,
+          "alive": true,
+          "statuses": [],
+          "shields": [],
+          "combatEffects": [],
+          "attributeEffects": [],
+          "shield": 0,
+          "shieldTime": 0,
+          "kind": "melee",
+          "skillCooldowns": {
+            "fireball": 0,
+            "shield": 0,
+            "dash": 0,
+            "nova": 0,
+            "icebolt": 0,
+            "cleave": 0,
+            "volley": 0,
+            "ironGuard": 0,
+            "frostNova": 0,
+            "mistBolt": 0,
+            "frostBolt": 0
+          },
+          "attackWindup": 0,
+          "previous": {
+            "x": 16.2,
+            "y": 12.385640646055101
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0
+          },
+          "attackCd": 0,
+          "path": [],
+          "repath": -3.6999999999999966,
+          "windup": 0,
+          "aim": {
+            "x": 16.2,
+            "y": 12.385640646055101
+          },
+          "facing": {
+            "x": 1,
+            "y": 0
+          },
+          "action": {
+            "id": 0,
+            "kind": "attack",
+            "time": 0
+          },
+          "hurtAt": -1,
+          "diedAt": -1,
+          "attributeValues": {
+            "maxHealth": 80,
+            "healthRegen": 0,
+            "maxMana": 0,
+            "manaRegen": 0,
+            "attackDamage": 12,
+            "abilityPower": 0,
+            "attackSpeed": 0.625,
+            "attackRange": 1.9,
+            "critChance": 0,
+            "critDamage": 2,
+            "armor": 5,
+            "magicResist": 0,
+            "armorPenFlat": 0,
+            "armorPenPercent": 0,
+            "magicPenFlat": 0,
+            "magicPenPercent": 0,
+            "abilityHaste": 0,
+            "moveSpeed": 312,
+            "omnivamp": 0,
+            "healShieldPower": 0,
+            "tenacity": 0,
+            "slowResist": 0
+          },
+          "attributeExplanation": {
+            "level": 1,
+            "template": {
+              "maxHealth": 80,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "armor": 5,
+              "magicResist": 0,
+              "moveSpeed": 312,
+              "attackRange": 1.9
+            },
+            "sources": [],
+            "final": {
+              "maxHealth": 80,
+              "healthRegen": 0,
+              "maxMana": 0,
+              "manaRegen": 0,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "attackSpeed": 0.625,
+              "attackRange": 1.9,
+              "critChance": 0,
+              "critDamage": 2,
+              "armor": 5,
+              "magicResist": 0,
+              "armorPenFlat": 0,
+              "armorPenPercent": 0,
+              "magicPenFlat": 0,
+              "magicPenPercent": 0,
+              "abilityHaste": 0,
+              "moveSpeed": 312,
+              "omnivamp": 0,
+              "healShieldPower": 0,
+              "tenacity": 0,
+              "slowResist": 0
+            },
+            "movement": {
+              "rawPoints": 312,
+              "points": 312,
+              "worldSpeed": 4.68
+            },
+            "templateParameters": {
+              "baseAttackSpeed": 0.625,
+              "attackSpeedRatio": 0.625,
+              "resourceKind": "none",
+              "classification": "monster",
+              "canMove": true,
+              "canAttack": true,
+              "controlImmune": false
+            }
+          },
+          "movementPoints": 467.99999999999994,
+          "worldMoveSpeed": 4.68
+        },
+        {
+          "id": "enemy-3",
+          "team": "enemy",
+          "x": 16.2,
+          "y": 9.614359353944899,
+          "hp": 65,
+          "maxHp": 65,
+          "mana": 0,
+          "radius": 0.28,
+          "alive": true,
+          "statuses": [],
+          "shields": [],
+          "combatEffects": [],
+          "attributeEffects": [],
+          "shield": 0,
+          "shieldTime": 0,
+          "kind": "ranged",
+          "skillCooldowns": {
+            "fireball": 0,
+            "shield": 0,
+            "dash": 0,
+            "nova": 0,
+            "icebolt": 0,
+            "cleave": 0,
+            "volley": 0,
+            "ironGuard": 0,
+            "frostNova": 0,
+            "mistBolt": 0,
+            "frostBolt": 0
+          },
+          "attackWindup": 0,
+          "previous": {
+            "x": 16.2,
+            "y": 9.614359353944899
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0
+          },
+          "attackCd": 0,
+          "path": [],
+          "repath": -3.6999999999999966,
+          "windup": 0,
+          "aim": {
+            "x": 16.2,
+            "y": 9.614359353944899
+          },
+          "facing": {
+            "x": 1,
+            "y": 0
+          },
+          "action": {
+            "id": 0,
+            "kind": "attack",
+            "time": 0
+          },
+          "hurtAt": -1,
+          "diedAt": -1,
+          "attributeValues": {
+            "maxHealth": 65,
+            "healthRegen": 0,
+            "maxMana": 0,
+            "manaRegen": 0,
+            "attackDamage": 8,
+            "abilityPower": 18,
+            "attackSpeed": 0.3333333333333333,
+            "attackRange": 13,
+            "critChance": 0,
+            "critDamage": 2,
+            "armor": 0,
+            "magicResist": 10,
+            "armorPenFlat": 0,
+            "armorPenPercent": 0,
+            "magicPenFlat": 0,
+            "magicPenPercent": 0,
+            "abilityHaste": 0,
+            "moveSpeed": 264,
+            "omnivamp": 0,
+            "healShieldPower": 0,
+            "tenacity": 0,
+            "slowResist": 0
+          },
+          "attributeExplanation": {
+            "level": 1,
+            "template": {
+              "maxHealth": 65,
+              "attackDamage": 8,
+              "abilityPower": 18,
+              "armor": 0,
+              "magicResist": 10,
+              "moveSpeed": 264,
+              "attackRange": 13
+            },
+            "sources": [],
+            "final": {
+              "maxHealth": 65,
+              "healthRegen": 0,
+              "maxMana": 0,
+              "manaRegen": 0,
+              "attackDamage": 8,
+              "abilityPower": 18,
+              "attackSpeed": 0.3333333333333333,
+              "attackRange": 13,
+              "critChance": 0,
+              "critDamage": 2,
+              "armor": 0,
+              "magicResist": 10,
+              "armorPenFlat": 0,
+              "armorPenPercent": 0,
+              "magicPenFlat": 0,
+              "magicPenPercent": 0,
+              "abilityHaste": 0,
+              "moveSpeed": 264,
+              "omnivamp": 0,
+              "healShieldPower": 0,
+              "tenacity": 0,
+              "slowResist": 0
+            },
+            "movement": {
+              "rawPoints": 264,
+              "points": 264,
+              "worldSpeed": 3.96
+            },
+            "templateParameters": {
+              "baseAttackSpeed": 0.3333333333333333,
+              "attackSpeedRatio": 0.3333333333333333,
+              "resourceKind": "none",
+              "classification": "monster",
+              "canMove": true,
+              "canAttack": true,
+              "controlImmune": false
+            }
+          },
+          "movementPoints": 396,
+          "worldMoveSpeed": 3.96
+        },
+        {
+          "id": "enemy-4",
+          "team": "enemy",
+          "x": 39.6,
+          "y": 16,
+          "hp": 80,
+          "maxHp": 80,
+          "mana": 0,
+          "radius": 0.3,
+          "alive": true,
+          "statuses": [],
+          "shields": [],
+          "combatEffects": [],
+          "attributeEffects": [],
+          "shield": 0,
+          "shieldTime": 0,
+          "kind": "melee",
+          "skillCooldowns": {
+            "fireball": 0,
+            "shield": 0,
+            "dash": 0,
+            "nova": 0,
+            "icebolt": 0,
+            "cleave": 0,
+            "volley": 0,
+            "ironGuard": 0,
+            "frostNova": 0,
+            "mistBolt": 0,
+            "frostBolt": 0
+          },
+          "attackWindup": 0,
+          "previous": {
+            "x": 39.6,
+            "y": 16
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0
+          },
+          "attackCd": 0,
+          "path": [],
+          "repath": -3.6999999999999966,
+          "windup": 0,
+          "aim": {
+            "x": 39.6,
+            "y": 16
+          },
+          "facing": {
+            "x": 1,
+            "y": 0
+          },
+          "action": {
+            "id": 0,
+            "kind": "attack",
+            "time": 0
+          },
+          "hurtAt": -1,
+          "diedAt": -1,
+          "attributeValues": {
+            "maxHealth": 80,
+            "healthRegen": 0,
+            "maxMana": 0,
+            "manaRegen": 0,
+            "attackDamage": 12,
+            "abilityPower": 0,
+            "attackSpeed": 0.625,
+            "attackRange": 1.9,
+            "critChance": 0,
+            "critDamage": 2,
+            "armor": 5,
+            "magicResist": 0,
+            "armorPenFlat": 0,
+            "armorPenPercent": 0,
+            "magicPenFlat": 0,
+            "magicPenPercent": 0,
+            "abilityHaste": 0,
+            "moveSpeed": 312,
+            "omnivamp": 0,
+            "healShieldPower": 0,
+            "tenacity": 0,
+            "slowResist": 0
+          },
+          "attributeExplanation": {
+            "level": 1,
+            "template": {
+              "maxHealth": 80,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "armor": 5,
+              "magicResist": 0,
+              "moveSpeed": 312,
+              "attackRange": 1.9
+            },
+            "sources": [],
+            "final": {
+              "maxHealth": 80,
+              "healthRegen": 0,
+              "maxMana": 0,
+              "manaRegen": 0,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "attackSpeed": 0.625,
+              "attackRange": 1.9,
+              "critChance": 0,
+              "critDamage": 2,
+              "armor": 5,
+              "magicResist": 0,
+              "armorPenFlat": 0,
+              "armorPenPercent": 0,
+              "magicPenFlat": 0,
+              "magicPenPercent": 0,
+              "abilityHaste": 0,
+              "moveSpeed": 312,
+              "omnivamp": 0,
+              "healShieldPower": 0,
+              "tenacity": 0,
+              "slowResist": 0
+            },
+            "movement": {
+              "rawPoints": 312,
+              "points": 312,
+              "worldSpeed": 4.68
+            },
+            "templateParameters": {
+              "baseAttackSpeed": 0.625,
+              "attackSpeedRatio": 0.625,
+              "resourceKind": "none",
+              "classification": "monster",
+              "canMove": true,
+              "canAttack": true,
+              "controlImmune": false
+            }
+          },
+          "movementPoints": 467.99999999999994,
+          "worldMoveSpeed": 4.68
+        },
+        {
+          "id": "enemy-5",
+          "team": "enemy",
+          "x": 37.2,
+          "y": 17.3856406460551,
+          "hp": 80,
+          "maxHp": 80,
+          "mana": 0,
+          "radius": 0.3,
+          "alive": true,
+          "statuses": [],
+          "shields": [],
+          "combatEffects": [],
+          "attributeEffects": [],
+          "shield": 0,
+          "shieldTime": 0,
+          "kind": "melee",
+          "skillCooldowns": {
+            "fireball": 0,
+            "shield": 0,
+            "dash": 0,
+            "nova": 0,
+            "icebolt": 0,
+            "cleave": 0,
+            "volley": 0,
+            "ironGuard": 0,
+            "frostNova": 0,
+            "mistBolt": 0,
+            "frostBolt": 0
+          },
+          "attackWindup": 0,
+          "previous": {
+            "x": 37.2,
+            "y": 17.3856406460551
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0
+          },
+          "attackCd": 0,
+          "path": [],
+          "repath": -3.6999999999999966,
+          "windup": 0,
+          "aim": {
+            "x": 37.2,
+            "y": 17.3856406460551
+          },
+          "facing": {
+            "x": 1,
+            "y": 0
+          },
+          "action": {
+            "id": 0,
+            "kind": "attack",
+            "time": 0
+          },
+          "hurtAt": -1,
+          "diedAt": -1,
+          "attributeValues": {
+            "maxHealth": 80,
+            "healthRegen": 0,
+            "maxMana": 0,
+            "manaRegen": 0,
+            "attackDamage": 12,
+            "abilityPower": 0,
+            "attackSpeed": 0.625,
+            "attackRange": 1.9,
+            "critChance": 0,
+            "critDamage": 2,
+            "armor": 5,
+            "magicResist": 0,
+            "armorPenFlat": 0,
+            "armorPenPercent": 0,
+            "magicPenFlat": 0,
+            "magicPenPercent": 0,
+            "abilityHaste": 0,
+            "moveSpeed": 312,
+            "omnivamp": 0,
+            "healShieldPower": 0,
+            "tenacity": 0,
+            "slowResist": 0
+          },
+          "attributeExplanation": {
+            "level": 1,
+            "template": {
+              "maxHealth": 80,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "armor": 5,
+              "magicResist": 0,
+              "moveSpeed": 312,
+              "attackRange": 1.9
+            },
+            "sources": [],
+            "final": {
+              "maxHealth": 80,
+              "healthRegen": 0,
+              "maxMana": 0,
+              "manaRegen": 0,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "attackSpeed": 0.625,
+              "attackRange": 1.9,
+              "critChance": 0,
+              "critDamage": 2,
+              "armor": 5,
+              "magicResist": 0,
+              "armorPenFlat": 0,
+              "armorPenPercent": 0,
+              "magicPenFlat": 0,
+              "magicPenPercent": 0,
+              "abilityHaste": 0,
+              "moveSpeed": 312,
+              "omnivamp": 0,
+              "healShieldPower": 0,
+              "tenacity": 0,
+              "slowResist": 0
+            },
+            "movement": {
+              "rawPoints": 312,
+              "points": 312,
+              "worldSpeed": 4.68
+            },
+            "templateParameters": {
+              "baseAttackSpeed": 0.625,
+              "attackSpeedRatio": 0.625,
+              "resourceKind": "none",
+              "classification": "monster",
+              "canMove": true,
+              "canAttack": true,
+              "controlImmune": false
+            }
+          },
+          "movementPoints": 467.99999999999994,
+          "worldMoveSpeed": 4.68
+        },
+        {
+          "id": "enemy-6",
+          "team": "enemy",
+          "x": 37.2,
+          "y": 14.614359353944899,
+          "hp": 65,
+          "maxHp": 65,
+          "mana": 0,
+          "radius": 0.28,
+          "alive": true,
+          "statuses": [],
+          "shields": [],
+          "combatEffects": [],
+          "attributeEffects": [],
+          "shield": 0,
+          "shieldTime": 0,
+          "kind": "ranged",
+          "skillCooldowns": {
+            "fireball": 0,
+            "shield": 0,
+            "dash": 0,
+            "nova": 0,
+            "icebolt": 0,
+            "cleave": 0,
+            "volley": 0,
+            "ironGuard": 0,
+            "frostNova": 0,
+            "mistBolt": 0,
+            "frostBolt": 0
+          },
+          "attackWindup": 0,
+          "previous": {
+            "x": 37.2,
+            "y": 14.614359353944899
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0
+          },
+          "attackCd": 0,
+          "path": [],
+          "repath": -3.6999999999999966,
+          "windup": 0,
+          "aim": {
+            "x": 37.2,
+            "y": 14.614359353944899
+          },
+          "facing": {
+            "x": 1,
+            "y": 0
+          },
+          "action": {
+            "id": 0,
+            "kind": "attack",
+            "time": 0
+          },
+          "hurtAt": -1,
+          "diedAt": -1,
+          "attributeValues": {
+            "maxHealth": 65,
+            "healthRegen": 0,
+            "maxMana": 0,
+            "manaRegen": 0,
+            "attackDamage": 8,
+            "abilityPower": 18,
+            "attackSpeed": 0.3333333333333333,
+            "attackRange": 13,
+            "critChance": 0,
+            "critDamage": 2,
+            "armor": 0,
+            "magicResist": 10,
+            "armorPenFlat": 0,
+            "armorPenPercent": 0,
+            "magicPenFlat": 0,
+            "magicPenPercent": 0,
+            "abilityHaste": 0,
+            "moveSpeed": 264,
+            "omnivamp": 0,
+            "healShieldPower": 0,
+            "tenacity": 0,
+            "slowResist": 0
+          },
+          "attributeExplanation": {
+            "level": 1,
+            "template": {
+              "maxHealth": 65,
+              "attackDamage": 8,
+              "abilityPower": 18,
+              "armor": 0,
+              "magicResist": 10,
+              "moveSpeed": 264,
+              "attackRange": 13
+            },
+            "sources": [],
+            "final": {
+              "maxHealth": 65,
+              "healthRegen": 0,
+              "maxMana": 0,
+              "manaRegen": 0,
+              "attackDamage": 8,
+              "abilityPower": 18,
+              "attackSpeed": 0.3333333333333333,
+              "attackRange": 13,
+              "critChance": 0,
+              "critDamage": 2,
+              "armor": 0,
+              "magicResist": 10,
+              "armorPenFlat": 0,
+              "armorPenPercent": 0,
+              "magicPenFlat": 0,
+              "magicPenPercent": 0,
+              "abilityHaste": 0,
+              "moveSpeed": 264,
+              "omnivamp": 0,
+              "healShieldPower": 0,
+              "tenacity": 0,
+              "slowResist": 0
+            },
+            "movement": {
+              "rawPoints": 264,
+              "points": 264,
+              "worldSpeed": 3.96
+            },
+            "templateParameters": {
+              "baseAttackSpeed": 0.3333333333333333,
+              "attackSpeedRatio": 0.3333333333333333,
+              "resourceKind": "none",
+              "classification": "monster",
+              "canMove": true,
+              "canAttack": true,
+              "controlImmune": false
+            }
+          },
+          "movementPoints": 396,
+          "worldMoveSpeed": 3.96
+        },
+        {
+          "id": "enemy-8",
+          "team": "enemy",
+          "x": 22.16710251718932,
+          "y": 22.00040232355944,
+          "hp": 60.95238095238095,
+          "maxHp": 80,
+          "mana": 0,
+          "radius": 0.3,
+          "alive": true,
+          "statuses": [],
+          "shields": [],
+          "combatEffects": [],
+          "attributeEffects": [],
+          "shield": 0,
+          "shieldTime": 0,
+          "kind": "melee",
+          "skillCooldowns": {
+            "fireball": 0,
+            "shield": 0,
+            "dash": 0,
+            "nova": 0,
+            "icebolt": 0,
+            "cleave": 0,
+            "volley": 0,
+            "ironGuard": 0,
+            "frostNova": 0,
+            "mistBolt": 0,
+            "frostBolt": 0
+          },
+          "attackWindup": 0,
+          "previous": {
+            "x": 22.16710251718932,
+            "y": 22.00040232355944
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0
+          },
+          "attackCd": 0,
+          "path": [],
+          "repath": -0.2333333333333333,
+          "windup": 0,
+          "aim": {
+            "x": 22.16710251718932,
+            "y": 22.00040232355944
+          },
+          "facing": {
+            "x": 1,
+            "y": 0
+          },
+          "action": {
+            "id": 0,
+            "kind": "attack",
+            "time": 0
+          },
+          "hurtAt": 3.6666666666666634,
+          "diedAt": -1,
+          "attributeValues": {
+            "maxHealth": 80,
+            "healthRegen": 0,
+            "maxMana": 0,
+            "manaRegen": 0,
+            "attackDamage": 12,
+            "abilityPower": 0,
+            "attackSpeed": 0.625,
+            "attackRange": 1.9,
+            "critChance": 0,
+            "critDamage": 2,
+            "armor": 5,
+            "magicResist": 0,
+            "armorPenFlat": 0,
+            "armorPenPercent": 0,
+            "magicPenFlat": 0,
+            "magicPenPercent": 0,
+            "abilityHaste": 0,
+            "moveSpeed": 312,
+            "omnivamp": 0,
+            "healShieldPower": 0,
+            "tenacity": 0,
+            "slowResist": 0
+          },
+          "attributeExplanation": {
+            "level": 1,
+            "template": {
+              "maxHealth": 80,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "armor": 5,
+              "magicResist": 0,
+              "moveSpeed": 312,
+              "attackRange": 1.9
+            },
+            "sources": [],
+            "final": {
+              "maxHealth": 80,
+              "healthRegen": 0,
+              "maxMana": 0,
+              "manaRegen": 0,
+              "attackDamage": 12,
+              "abilityPower": 0,
+              "attackSpeed": 0.625,
+              "attackRange": 1.9,
+              "critChance": 0,
+              "critDamage": 2,
+              "armor": 5,
+              "magicResist": 0,
+              "armorPenFlat": 0,
+              "armorPenPercent": 0,
+              "magicPenFlat": 0,
+              "magicPenPercent": 0,
+              "abilityHaste": 0,
+              "moveSpeed": 312,
+              "omnivamp": 0,
+              "healShieldPower": 0,
+              "tenacity": 0,
+              "slowResist": 0
+            },
+            "movement": {
+              "rawPoints": 312,
+              "points": 312,
+              "worldSpeed": 4.68
+            },
+            "templateParameters": {
+              "baseAttackSpeed": 0.625,
+              "attackSpeedRatio": 0.625,
+              "resourceKind": "none",
+              "classification": "monster",
+              "canMove": true,
+              "canAttack": true,
+              "controlImmune": false
+            }
+          },
+          "movementPoints": 467.99999999999994,
+          "worldMoveSpeed": 4.68
+        }
+      ],
+      "projectiles": [],
+      "zones": [],
+      "swings": [
+        {
+          "id": 9,
+          "attackId": 9,
+          "sourceId": "hero",
+          "center": {
+            "x": 19.962692183306892,
+            "y": 19.965562015360206
+          },
+          "facing": {
+            "x": 0.7342381825954517,
+            "y": 0.6788919584285321
+          },
+          "radius": 5,
+          "arc": 5.340707511102648,
+          "age": 0.2333333333333333,
+          "windup": 0.12,
+          "active": 0.12,
+          "damage": 20,
+          "appearance": "physical",
+          "previousCenter": {
+            "x": 19.962692183306892,
+            "y": 19.965562015360206
+          },
+          "previousAge": 0.19999999999999998
+        }
+      ],
+      "cues": [
+        {
+          "kind": "damage",
+          "actorId": "enemy-8",
+          "sourceId": "hero",
+          "attackId": 9,
+          "at": {
+            "x": 22.16710251718932,
+            "y": 22.00040232355944
+          },
+          "amount": 19.047619047619047,
+          "cause": "basic",
+          "critical": false,
+          "trueDamage": false,
+          "id": 10,
+          "ttl": 0.7666666666666667,
+          "duration": 0.8
+        }
+      ],
+      "mapId": "ember",
+      "totalWaves": 5,
+      "level": {
+        "id": "ember-1",
+        "name": "余烬庭院·一",
+        "start": {
+          "x": 7,
+          "y": 8
+        },
+        "exit": {
+          "x": 48,
+          "y": 10,
+          "radius": 1.8
+        },
+        "route": [
+          {
+            "x": 7,
+            "y": 8
+          },
+          {
+            "x": 17,
+            "y": 11
+          },
+          {
+            "x": 23,
+            "y": 24
+          },
+          {
+            "x": 35,
+            "y": 24
+          },
+          {
+            "x": 43,
+            "y": 12
+          },
+          {
+            "x": 48,
+            "y": 10
+          }
+        ],
+        "remainingEnemies": 7,
+        "exitActive": false,
+        "requiredIds": [
+          "hero"
+        ],
+        "insideIds": []
+      },
+      "enemies": {
+        "units": [
+          {
+            "id": "enemy-1",
+            "kind": "melee",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true,
+            "decision": {
+              "profile": "melee",
+              "targetReason": "initial",
+              "reason": "frozen",
+              "pauseRemaining": 0,
+              "cooldowns": []
+            }
+          },
+          {
+            "id": "enemy-2",
+            "kind": "melee",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true,
+            "decision": {
+              "profile": "melee",
+              "targetReason": "initial",
+              "reason": "frozen",
+              "pauseRemaining": 0,
+              "cooldowns": []
+            }
+          },
+          {
+            "id": "enemy-3",
+            "kind": "ranged",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true,
+            "decision": {
+              "profile": "ranged",
+              "targetReason": "initial",
+              "reason": "frozen",
+              "pauseRemaining": 0,
+              "cooldowns": []
+            }
+          },
+          {
+            "id": "enemy-4",
+            "kind": "melee",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": false,
+            "decision": {
+              "profile": "melee",
+              "targetReason": "initial",
+              "reason": "sleeping",
+              "pauseRemaining": 0,
+              "cooldowns": []
+            }
+          },
+          {
+            "id": "enemy-5",
+            "kind": "melee",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": false,
+            "decision": {
+              "profile": "melee",
+              "targetReason": "initial",
+              "reason": "sleeping",
+              "pauseRemaining": 0,
+              "cooldowns": []
+            }
+          },
+          {
+            "id": "enemy-6",
+            "kind": "ranged",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": false,
+            "decision": {
+              "profile": "ranged",
+              "targetReason": "initial",
+              "reason": "sleeping",
+              "pauseRemaining": 0,
+              "cooldowns": []
+            }
+          },
+          {
+            "id": "enemy-8",
+            "kind": "melee",
+            "state": "idle",
+            "age": 0,
+            "windup": 0,
+            "duration": 0,
+            "strike": 0,
+            "phase": 1,
+            "facing": 1,
+            "awake": true,
+            "decision": {
+              "profile": "melee",
+              "targetReason": "initial",
+              "reason": "frozen",
+              "pauseRemaining": 0,
+              "cooldowns": []
+            }
+          }
+        ],
+        "warnings": [],
+        "projectiles": []
+      },
+      "loadout": {
+        "Q": null,
+        "W": null,
+        "E": null,
+        "R": null
+      },
+      "cooldowns": {
+        "Q": 0,
+        "W": 0,
+        "E": 0,
+        "R": 0
+      },
+      "perks": [],
+      "choices": [],
+      "gold": 160,
+      "inventory": [],
+      "equipment": {},
+      "stats": {
+        "maxHealth": 240,
+        "healthRegen": 0,
+        "maxMana": 0,
+        "manaRegen": 0,
+        "attackDamage": 20,
+        "abilityPower": 0,
+        "attackSpeed": 1.4285714285714286,
+        "attackRange": 5,
+        "critChance": 0,
+        "critDamage": 2,
+        "armor": 0,
+        "magicResist": 0,
+        "armorPenFlat": 0,
+        "armorPenPercent": 0,
+        "magicPenFlat": 0,
+        "magicPenPercent": 0,
+        "abilityHaste": 0,
+        "moveSpeed": 630,
+        "omnivamp": 0,
+        "healShieldPower": 0,
+        "tenacity": 0,
+        "slowResist": 0,
+        "maxHp": 240,
+        "attackInterval": 0.7,
+        "speed": 6.3,
+        "cooldownMultiplier": 1
+      },
+      "kills": 0,
+      "primed": false,
+      "metrics": {
+        "processed": 4,
+        "dropped": 0,
+        "maxDepth": 0,
+        "kills": 0
+      },
+      "party": [
+        {
+          "id": "hero",
+          "ready": false,
+          "equipment": {},
+          "paletteId": "ash"
+        }
+      ],
+      "localSave": {
+        "available": false,
+        "label": "暂无单人存档",
+        "notice": "",
+        "revision": 0,
+        "hasCheckpoint": false
+      },
+      "developer": {
+        "enabled": true,
+        "open": false,
+        "draft": {
+          "entry": "combat",
+          "version": 2,
+          "seed": 1234,
+          "mapId": "ember",
+          "wave": 1,
+          "loadout": {
+            "Q": null,
+            "W": null,
+            "E": null,
+            "R": null
+          },
+          "perks": [],
+          "equipment": {},
+          "options": {
+            "invincible": true,
+            "noCooldown": false,
+            "freezeEnemies": true,
+            "speed": 0.25
+          }
+        },
+        "revision": 3,
+        "notice": ""
+      }
+    },
+    "melee": {
+      "renderer": "approved-keyframe-sequence",
+      "texture": "art/melee-v3/keyframes-source",
+      "clock": "completed simulation interval interpolation",
+      "vertices": 152,
+      "impacts": 1,
+      "frames": [
+        {
+          "id": 9,
+          "sourceId": "hero",
+          "phase": "active",
+          "age": 0.20594999998807914,
+          "progress": 0.7162499999006595,
+          "art": {
+            "a": 5,
+            "b": 6,
+            "mix": 0.581249999503297,
+            "time": 205.94999998807913
+          },
+          "blade": {
+            "kind": "polygon",
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "points": [
+              {
+                "x": 24.18813012143301,
+                "y": 19.04793432587195
+              },
+              {
+                "x": 24.092257381057404,
+                "y": 20.057391693060413
+              },
+              {
+                "x": 23.503469372442666,
+                "y": 21.122267522204638
+              },
+              {
+                "x": 22.830324113335074,
+                "y": 21.81784379618677
+              },
+              {
+                "x": 22.118796475339792,
+                "y": 21.963152462053227
+              },
+              {
+                "x": 22.48128288148051,
+                "y": 20.91081944573516
+              },
+              {
+                "x": 23.020158916162785,
+                "y": 19.99606244385798
+              },
+              {
+                "x": 23.37960446921189,
+                "y": 18.90047451194586
+              }
+            ]
+          },
+          "center": {
+            "x": 19.962692183306892,
+            "y": 19.965562015360206
+          },
+          "facing": {
+            "x": 0.7342381825954517,
+            "y": 0.6788919584285321
+          },
+          "radius": 5,
+          "arc": 5.340707511102648
+        }
+      ]
+    }
+  }
+}

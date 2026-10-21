@@ -54,8 +54,8 @@ describe('deterministic equipment economy',()=>{
     for(let i=0;i<4;i++){w.command({type:'UnequipEquipment',slot:'slot2'});w.command({type:'EquipEquipment',equipmentId:'plate',slot:'slot2'});}
     expect(w.equipment.stats).toEqual(stats);expect(w.hero.hp).toBe(100);expect(w.equipment.inventory.size).toBe(6);
     const before=w.equipment.snapshot();w.command({type:'BuyEquipment',equipmentId:'staff'});expect(w.equipment.snapshot()).toEqual(before);
-    w.command({type:'BuyEquipment',equipmentId:'sword',replaceSlot:'slot1'});expect(w.equipment.inventory.has('bow')).toBe(true);expect(w.equipment.appearance.weapon).toBe('sword');
-    const order=[...w.equipment.purchaseOrder];w.command({type:'EquipEquipment',equipmentId:'bow',slot:'slot1'});expect(w.equipment.gold).toBe(100);expect(w.equipment.stats).toEqual(stats);expect(w.equipment.purchaseOrder).toEqual(order);expect(w.hero.hp).toBe(100);
+    w.command({type:'BuyEquipment',equipmentId:'sword',replaceSlot:'slot1'});expect(w.equipment.inventory.has('bow')).toBe(true);expect(w.equipment.equipped.slot1).toBe('sword');
+    const owned=Array.from(w.equipment.inventory);w.command({type:'EquipEquipment',equipmentId:'bow',slot:'slot1'});expect(w.equipment.gold).toBe(100);expect(w.equipment.stats).toEqual(stats);expect(Array.from(w.equipment.inventory)).toEqual(owned);expect(w.hero.hp).toBe(100);
   });
   it('awards clear gold once and blocks purchases away from a merchant',()=>{
     const w=new GameWorld();startCombatFixture(w);w.command({type:'BuyEquipment',equipmentId:'sword'});expect(w.equipment.gold).toBe(160);
@@ -69,9 +69,9 @@ describe('deterministic equipment economy',()=>{
     port.send({type:'Restart'});const next=port.snapshot();expect(next.gold).toBe(160);expect(next.inventory).toEqual([]);expect(next.equipment).toEqual({});expect(next.loadout).toEqual(DEFAULT_LOADOUT);
   });
   it('equipment changes basic damage while retaining the default melee range',()=>{
-    const {w,e}=fixture('bow');e.x=15;w.command({type:'Attack',point:e});expect(e.hp).toBe(1000);for(let i=0;i<10;i++)w.advance(1/30);expect(e.hp).toBe(976);
+    const {w,e}=fixture('bow');e.x=13;w.command({type:'Attack',point:e});expect(e.hp).toBe(1000);for(let i=0;i<10;i++)w.advance(1/30);expect(e.hp).toBe(976);
     const plain=fixture();plain.e.x=15;plain.w.command({type:'Attack',point:plain.e});expect(plain.e.hp).toBe(1000);
-    const sword=fixture('sword');sword.w.command({type:'Attack',point:sword.e});for(let i=0;i<5;i++)sword.w.advance(1/30);expect(sword.e.hp).toBe(968);
+    const sword=fixture('sword');sword.e.x=13;sword.w.command({type:'Attack',point:sword.e});for(let i=0;i<8;i++)sword.w.advance(1/30);expect(sword.e.hp).toBe(968);
   });
   it('staff scales skill hits and shields, reduces cooldowns; armor mitigates before shield absorption',()=>{
     const {w,e}=fixture('staff');w.command({type:'CastSlot',slot:'Q',point:e});for(let i=0;i<8;i++)w.advance(1/30);expect(e.hp).toBeCloseTo(1000-(38+.38*30));
@@ -88,12 +88,12 @@ describe('deterministic equipment economy',()=>{
     }
     expect(w.phase).toBe('victory');
   });
-  it('restores six slots and original purchase history through a real reward/shop checkpoint',()=>{
+  it('restores six slots and full ownership through a real reward/shop checkpoint',()=>{
     const w=shop();w.equipment.gold=800;for(const equipmentId of ['staff','bow','plate','robe','helm','circlet'] as const)w.command({type:'BuyEquipment',equipmentId});
     w.command({type:'BuyEquipment',equipmentId:'sword',replaceSlot:'slot2'});w.command({type:'EquipEquipment',equipmentId:'bow',slot:'slot2'});
     startCombatFixture(w);clear(w);const c=w.choices.find(c=>c.kind==='perk')!;w.command({type:'ChooseReward',choiceId:c.id});
     expect(w.phase).toBe('cleared');const resumed=GameWorld.resume(w.savedRun);expect(resumed.equipment.snapshot()).toEqual(w.equipment.snapshot());
-    expect(resumed.equipment.purchaseOrder).toEqual(['staff','bow','plate','robe','helm','circlet','sword']);expect(resumed.equipment.appearance).toEqual({weapon:'bow',body:'robe',head:'circlet'});
+    expect(Array.from(resumed.equipment.inventory)).toEqual(['staff','bow','plate','robe','helm','circlet','sword']);expect(resumed.equipment.equipped.slot2).toBe('bow');
   });
   it('cleave respects facing and frost area applies slow through shared skill handlers',()=>{
     const {w,e}=fixture();w.loadout.Q='cleave';const back=w.spawnEnemy('melee',{x:8.5,y:10},1000);back.attributes=new AttributeSet({...back.attributes.template,canMove:false,canAttack:false,stats:{...back.attributes.template.stats,armor:0,magicResist:0}});

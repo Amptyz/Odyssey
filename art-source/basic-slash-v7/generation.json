@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-21",
+  "tool": "built-in image_gen",
+  "scope": "neutral study and 12-state concept storyboard",
+  "outputs": [
+    {
+      "file": "white-study.png",
+      "outputBasename": "exec-673ce17c-3d90-4526-b158-18afdba27cf6.png",
+      "size": [
+        1455,
+        1081
+      ],
+      "mode": "RGB",
+      "sha256": "78db7eeb6cee6775a87dee62475ce48bad4780a691c4b1e83f7eff0498503d4f",
+      "prompt": "white.prompt.txt",
+      "references": [
+        "../basic-slash-v6/concept.png"
+      ],
+      "colorReadout": {
+        "pixelsAboveValue63": 398476,
+        "channelSpreadOver12": 0,
+        "maximumSpreadAboveValue63": 5
+      }
+    },
+    {
+      "file": "keyframes.png",
+      "outputBasename": "exec-a772f478-2a61-49d5-a5ed-c47bde87f515.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "sha256": "9d21873c18bb95ba7410b56b1a4b7ad90e5dd1323e75d07a9176b406c293c886",
+      "prompt": "keyframes.prompt.txt",
+      "references": [
+        "white-study.png"
+      ],
+      "colorReadout": {
+        "pixelsAboveValue63": 128509,
+        "channelSpreadOver12": 0,
+        "maximumSpreadAboveValue63": 7
+      }
+    }
+  ],
+  "postProcessing": "none"
+}

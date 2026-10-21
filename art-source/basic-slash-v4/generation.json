@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-21",
+  "tool": "built-in image_gen",
+  "scope": "concept board, not runtime texture",
+  "selectedOutput": "concept.png",
+  "passes": [
+    {
+      "file": "pass1.png",
+      "outputBasename": "exec-c9a101a0-bf0f-4cdc-8488-2a648c41aaf6.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "sha256": "227448e6b4deb0af0b0403a273a3cf4a7ee2539dc94eeeeaec543b71ad4f923a",
+      "prompt": "concept.prompt.txt",
+      "references": [
+        "../basic-slash-v3/concept.png",
+        "../basic-slash-v2/references/broad-sweep.png"
+      ]
+    },
+    {
+      "file": "concept.png",
+      "outputBasename": "exec-320ff6fe-ea59-416e-9bfb-152219bdec23.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "sha256": "8abe1a9506abfcd6285da2fe4f64fd352209f3f58f14b65b28cd33c39fbe3584",
+      "prompt": "refine.prompt.txt",
+      "references": [
+        "pass1.png"
+      ]
+    }
+  ],
+  "postProcessing": "none",
+  "referenceNotes": "Hades is user-requested art direction; no Hades assets extracted or imported"
+}

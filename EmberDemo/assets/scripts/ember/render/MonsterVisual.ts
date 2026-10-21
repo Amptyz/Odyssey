@@ -5,7 +5,7 @@ import {shapeContours} from '../combat-core/ShapeContours';
 import {enemy,type EnemyKind} from '../content/enemies';
 import type {EnemyPose,EnemySnapshot,EnemyWarning} from '../simulation/EnemySystem';
 import type {HitShape} from '../combat-core/CollisionWorld';
-import {worldToScreen,type Projection} from './IsoProjection';
+import {worldToScreen,type Projection} from './GroundProjection';
 import {colourForMonster} from './monster-palettes';
 import {monsterActionStep,monsterDeathFrame} from './MonsterAnimation';
 import {color,graphics,polygon,uiNode} from './Primitives';
@@ -93,6 +93,7 @@ export class MonsterVisual {
  debug(){return {kind:this.kind,atlas:this.image?PIXEL_ATLASES[this.atlasKey]?.resourcePath.replace(/^art\//,''):'procedural-monster-v1',frame:this.frame,poseKey:this.poseKey,phase:this.phase,pose:{state:this.state}};}
 }
 function outline(shape:HitShape):Vec2[][] {
+ if(shape.kind==='polygon')return[shape.points];
  const ring=(r:number)=>Array.from({length:49},(_,i)=>({x:shape.center.x+Math.cos(i*Math.PI/24)*r,y:shape.center.y+Math.sin(i*Math.PI/24)*r}));
  if(shape.kind==='circle')return [ring(shape.radius)];if(shape.kind==='ring')return [ring(shape.radius),ring(shape.innerRadius)];
  if(shape.kind==='rectangle'){const f=shape.facing,s={x:-f.y*shape.width/2,y:f.x*shape.width/2},end={x:shape.center.x+f.x*shape.length,y:shape.center.y+f.y*shape.length};return [[{x:shape.center.x+s.x,y:shape.center.y+s.y},{x:end.x+s.x,y:end.y+s.y},{x:end.x-s.x,y:end.y-s.y},{x:shape.center.x-s.x,y:shape.center.y-s.y}]];}

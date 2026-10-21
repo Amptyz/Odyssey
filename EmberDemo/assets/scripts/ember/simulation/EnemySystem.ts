@@ -2,7 +2,6 @@ import type {Actor,Hit} from '../combat-core/types';
 import {CombatEngine} from '../combat-core/CombatEngine';
 import {CollisionWorld,overlaps,type HitShape} from '../combat-core/CollisionWorld';
 import {evaluate,movementSpeed,cooldownMultiplier} from '../combat-core/attributes/AttributeSet';
-import {groundSpeedScale} from '../utils/GroundMovement';
 import {applyStatus,movementMultiplier} from '../combat-core/StatusSystem';
 import {enemy,type EnemyKind} from '../content/enemies';
 import {ENEMY_ACTIONS,ENEMY_ACTION_SETS,type EnemyActionDefinition,type EnemyActionStep} from '../content/enemy-actions';
@@ -26,7 +25,7 @@ interface State {awake:boolean;anchor:Vec2;born:number;lastHp:number;phase:1|2;t
 interface Bullet extends EnemyBulletSnapshot {team:Actor['team'];vx:number;vy:number;remaining:number;amount:number;rootId:number;delivery:'attack'|'spell';slow?:{power:number;duration:number};counts:Map<string,number>;maxHits:number}
 const point=(v:Vec2):Vec2=>({x:v.x,y:v.y});
 const rotate=(v:Vec2,a:number):Vec2=>({x:v.x*Math.cos(a)-v.y*Math.sin(a),y:v.x*Math.sin(a)+v.y*Math.cos(a)});
-export function copyHitShape(s:HitShape):HitShape {if(s.kind==='capsule')return {...s,center:point(s.center),end:point(s.end)};if(s.kind==='sector'||s.kind==='rectangle')return {...s,center:point(s.center),facing:point(s.facing)};return {...s,center:point(s.center)};}
+export function copyHitShape(s:HitShape):HitShape {if(s.kind==='polygon')return {...s,center:point(s.center),points:s.points.map(point)};if(s.kind==='capsule')return {...s,center:point(s.center),end:point(s.end)};if(s.kind==='sector'||s.kind==='rectangle')return {...s,center:point(s.center),facing:point(s.facing)};return {...s,center:point(s.center)};}
 /** Pure deterministic enemy scheduler. Owns enemy actions/projectiles; all hits use the shared combat engine. */
 export class EnemySystem {
  readonly navigation:PathfinderPool;
@@ -189,7 +188,7 @@ export class EnemySystem {
   const nav=this.navigation.forRadius(target.radius),reach=Math.max(0,delay-.35)*movementSpeed(target.attributes.value,movementMultiplier(target));
   if(!overlaps(shape,target))return true;
   for(const length of [reach*.5,reach])for(let i=0;i<16;i++){
-   const a=i*Math.PI/8,dir={x:Math.cos(a),y:Math.sin(a)},travel=length*groundSpeedScale(dir),p={x:target.x+dir.x*travel,y:target.y+dir.y*travel};
+   const a=i*Math.PI/8,dir={x:Math.cos(a),y:Math.sin(a)},p={x:target.x+dir.x*length,y:target.y+dir.y*length};
    if(nav.walkable(p)&&nav.clear(target,p)&&!overlaps(shape,{...p,radius:target.radius})&&ctx.collision.blocker(target,p,target.radius)===undefined)return true;
   }
   return false;
@@ -288,7 +287,7 @@ export class EnemySystem {
   if(this.latestTime>=(this.pathTimes.get(e.id)??0)||!e.path.length){e.path=nav.find(e,goal);this.pathTimes.set(e.id,this.latestTime+.55);}
   while(e.path.length&&distance(e,e.path[0]!)<.08)e.path.shift();const next=e.path[0];if(!next){e.velocity={x:0,y:0};return;}
   // Keep endpoints valid for the same conservative radius used by path finding.
-  const dir=direction(e,next),travel=Math.min(distance(e,next),movementSpeed(e.attributes.value,movementMultiplier(e))*groundSpeedScale(dir)*dt*scale),to=nav.sweep(e,{x:e.x+dir.x*travel,y:e.y+dir.y*travel}),dx=to.x-e.x,dy=to.y-e.y;
+  const dir=direction(e,next),travel=Math.min(distance(e,next),movementSpeed(e.attributes.value,movementMultiplier(e))*dt*scale),to=nav.sweep(e,{x:e.x+dir.x*travel,y:e.y+dir.y*travel}),dx=to.x-e.x,dy=to.y-e.y;
   e.x=to.x;e.y=to.y;e.velocity={x:dx/dt,y:dy/dt};e.facing=dir;if(Math.hypot(dx,dy)<.001)this.pathTimes.set(e.id,0);
  }
   private cancel(id:string,s:State,time=this.latestTime):void {if(s.current)s.brain.interrupted(s.current.cooldown,time);s.current=undefined;s.brain.abandon();for(let i=this.warnings.length-1;i>=0;i--)if(this.warnings[i]!.sourceId===id)this.warnings.splice(i,1);}

@@ -26,7 +26,7 @@
 | 地图 | maps 的 MAPS | 首页和 F2 自动枚举 | 导航 / 投影模型、环境布局、阶段规则 |
 | 余烬 / 海克斯 | perks 的 PERKS | RewardSystem 按技能条件过滤；F2 自动枚举 | Rule / Effect 类型、EffectHandlers、CombatHooks |
 | 状态 | statuses 的 STATUSES | 技能 onHit 或余烬 effect 引用 | StatusSystem 的行为与重置语义 |
-| 外观 / 动作 | appearances、animation、art-manifest 与真实资源 | ArtLibrary / AnimatedUnit / HeroRig / EnvironmentView | 新图集布局、全新表现方式 |
+| 外观 / 动作 | appearances、animation、art-manifest 与真实资源 | ArtLibrary / AnimatedUnit / HeroSprite / EnvironmentView | 新图集布局、全新表现方式 |
 
 注册后检查 `content/validate.ts`；新字段的语义约束需要同步加入，不能把 TypeScript 类型通过当成内容已经可玩。
 
@@ -171,7 +171,7 @@ LevelSystem是纯函数入口：levelDefinition/levelSpawn决定起点与队友�
 
 ## 装备、经济与阶段流程
 
-- `content/equipment.ts`：装备 ID、category、固定价格、属性增量、外观 ID 与独立被动；`SHOP_CATALOG` 自动枚举全部装备，不用维护 UI 商品分支。新装备使用已有属性与外观形状时只需添加配置。
+- `content/equipment.ts`：装备 ID、category、固定价格、属性增量与独立被动；`SHOP_CATALOG` 自动枚举全部装备，不用维护 UI 商品分支。新装备使用已有属性与被动处理器时只需添加配置。
 - `simulation/EquipmentSystem.ts`：金币、已购库存、装备槽与购买 / 换装 / 卸装。六个通用slot1..slot6不限制category。购买事务检查ID/重复/余额/目标栏后扣款，自动填空栏；满栏必须显式replaceSlot，替换者留库存。操作仅在本人互动打开的商人面板中接受；其他队友仍可在休息点移动。
 - `content/progression.ts`：初始160金币，每关固定收入 `100 + (wave - 1) × 20`，清场进入cleared时仅发一次；JOURNEYS配置商人休息点。当前不卖出、不退款、不跨局保存装备或货币。
 - `simulation/RewardSystem.ts`：统一 `RewardChoice` 联合类型，明确区分 perk / skill。`ChooseReward` 选余烬，技能需要 `ConfirmSkill` 确认槽位；`CancelSkill` 只撤销预选，不重新抽卡。确认后才消耗整次奖励。
@@ -181,11 +181,11 @@ LevelSystem是纯函数入口：levelDefinition/levelSpawn决定起点与队友�
 - 换装只更新生命上限并截断超出的当前生命，不回补生命，防止反复换装回血。第一波开始补满装备后的生命上限；其余波次仅恢复 30 点。
 - 新属性扩展 AttributeSet 的字段 / 合成规则及真实消费位置；装备提供来源，不直接改技能定义。新装备槽还需扩展 EQUIPMENT_SLOTS、槽名和表现层绘制顺序。
 
-### 六栏属性与显示选择
+### 六栏属性与固定人物形象
 
-EquipmentSystem的buy(id,replaceSlot?)/equip(id,slot?)/unequip(slot)事务不按category排斥同类装备；每ID仅拥有一次。purchaseOrder保留购买顺序，appearanceLoadout仅从仍穿戴条目中为weapon/body/head各取最后购买的一件；同一六栏构筑的属性不会随选择显示外观而漏算。普攻默认为近战挥砍；形式和形态基础射程由余烬决定，与购买顺序、是否持弓杖无关。所有装备价格当前统一100；默认仅第2、4关后有商人，分别累计380、680金币，因此普通流程进入1/2/3/4/5关时最多0/0/3/3/6件，最终累计860不能用于已结束Boss。休息点可在JOURNEYS中调整。18件均已注册，暴击/全能吸血/法穿/魔抗走统一modifiers；具名被动在EquipmentEffectSystem执行。新增机制参见[装备实施指南](design/EQUIPMENT_IMPLEMENTATION.md)。
+EquipmentSystem的buy(id,replaceSlot?)/equip(id,slot?)/unequip(slot)事务不按category排斥同类装备；每ID仅拥有一次。不保存外观购买顺序；装备不改变角色形象，所有六栏属性仍叠加。普攻默认为近战挥砍；形式和形态基础射程由余烬决定，与购买顺序、是否持弓杖无关。所有装备价格当前统一100；默认仅第2、4关后有商人，分别累计380、680金币，因此普通流程进入1/2/3/4/5关时最多0/0/3/3/6件，最终累计860不能用于已结束Boss。休息点可在JOURNEYS中调整。18件均已注册，暴击/全能吸血/法穿/魔抗走统一modifiers；具名被动在EquipmentEffectSystem执行。新增机制参见[装备实施指南](design/EQUIPMENT_IMPLEMENTATION.md)。
 
-### 可复制示例：复用剑外观的新武器
+### 可复制示例：新武器类物品
 
 在 EQUIPMENT 中增加条目：
 
@@ -198,23 +198,18 @@ trainingBlade: {
     { stat: 'attackDamage', operation: 'flat', value: 12 },
     { stat: 'abilityHaste', operation: 'flat', value: 10 },
   ],
-  appearance: 'copperSword',
 },
 ```
 
-这个例子沿用现有图片，保留玩家由余烬决定的普攻形式，不需要新资源。SHOP_CATALOG 和 F2 的装备选项自动更新，ShopPanel 按目录分页；属性通过装备来源进入统一解析器。若要新增普攻形式，在 BASIC_ATTACKS 注册行为，并由余烬的 basicAttack 引用其 ID，不能挂到装备上；若需要新属性，则落实解析和消费位置。
+这个例子保留玩家形象与余烬决定的普攻形式；美术只需补商品图标并在ArtLibrary.icon注册。SHOP_CATALOG 和 F2 的装备选项自动更新，ShopPanel 按目录分页；属性通过装备来源进入统一解析器。若要新增普攻形式，在 BASIC_ATTACKS 注册行为，并由余烬的 basicAttack 引用其 ID，不能挂到装备上；若需要新属性，则落实解析和消费位置。
 
 新装备优先使用 `modifiers`，可直接配置 `magicResist`、`omnivamp` 等统一字段。旧 `stats` 是现有 10 件装备的薄兼容入口；同一个属性不要同时在两处写一遍。额外攻速 / 移速通常使用 `percent`，例如 20% 写 0.2；急速 20 点使用 `flat: 20`。具名组及各操作语义按 AttributeSet 规则校验，不把所有百分比视为同一种叠加。
 
 验收固定价格购买、余额不足 / 重复购买不扣款、替换后旧装备仍在库存、免费切回 / 卸下恢复属性、来回换装不回血、不在商店时交易被拒绝，以及装备属性对实际普攻伤害的影响、换装不改变普攻形式。新增装备也要检查既有测试中对货架数量和分页坐标的假设。
 
-### 新装备外观
+### 新装备图标
 
-为新 appearance 填写 EQUIPMENT_APPEARANCES（layer / shape / 颜色），然后选择一种实际美术来源：PNG使用 EQUIPMENT_SPRITES（frame / width / height / anchorX / anchorY 或 y）；原生多边形使用 PROCEDURAL_EQUIPMENT（layer / y / polygons），由EquipmentVisuals创建。不要用假图集帧冒充程序形状。appearance.layer必须与装备category对应，不能拿slot1作为渲染层；武器 shape 仅负责外观，HeroRig 根据 action.basicAttack 选择摆臂 / 转腕，所有装备复用同一形式的动作。
-
-当前装备精灵统一读取 equipment 图集；新增独立 PNG 需要扩展这个表现契约和资源加载，不能把它当成已存在的 atlas 字段。通过 Creator 导入素材并提交 .meta 后，按 [美术管线](ART_PIPELINE.md) 更新图集生成来源。
-
-人物手臂使用 HERO_ARM_ATTACHMENTS 的真实肩关节和掌心坐标，武器以其握把 anchor 对齐掌心；不是每张图都用 `.5 / .2`。先看放大的商店预览，再看战场实际大小、左右镜像和攻击最大角度，检查衣甲遮挡与武器漂移。视觉改动不修改角色 radius。
+在 `ArtLibrary.icon` 的物品ID映射中注册图集与索引，生产PNG经Creator导入并维护生成来源。weapons / bodies / heads是现有商品图集分类，不是人物显示层。不要新增appearance、握点、纸娃娃或购序逻辑。新增图标检查商店、详情与装备栏，角色动画应保持同一图集与比例。
 
 ## 普攻与命中体积
 
@@ -222,6 +217,7 @@ trainingBlade: {
 - `HitShape` 支持circle / sector / capsule / rectangle / ring；`targets` 统一处理存活、敌我、整圆与攻击形状相交、障碍遮挡及稳定排序。扇形边缘与外圆弧都考虑目标半径，不再只检查目标中心夹角。当前范围 / 近战 / 尸爆 / 电弧搜寻都使用它。
 - `firstImpact` 对弹体上一位置到下一位置执行连续圆扫掠，并考虑目标一帧内的相对移动。角色、地图障碍和边界按最早接触排序，墙与目标同时命中时墙优先；当前弹体命中一个敌人后消失。最后不足一帧的剩余射程也会检测，避免提前消失和高速穿透。
 - `content/attacks.ts` 注册 `slash`（默认挥砍）与 `missile`（飞弹）形式。共同字段为 `name / range / appearance`，近战额外配置 `arc / windup / active`，远程配置 `speed / radius`。余烬通过 `basicAttack` 引用形式；CombatEngine 解析并维护单一形态射程来源，GameWorld 只按行为 kind 发射。伤害、攻速、最终射程读取单位统一属性；装备模块没有普攻解析 API。
+- 默认近战已改为原稿环扫：`content/melee-motion.ts` 的 `MELEE_BLADE_KEYS` 定义亮锋世界轮廓，`MeleeSweep` 按实际相位扫掠；`arc` 只描述近似尾迹幅度，不能据此恢复整扇区伤害。`MELEE_ART` 是表现层原图窗口 / 原点 / 非均匀时序；碰撞不读取图片。改变形状需同时检查相位外形、内部空洞、遮挡、步间防漏判及一次命中，见[近战规格](design/BASIC_MELEE_VFX.md)。
 - 新形式余烬最小配置：`{id:'missileAttack',name:'飞弹普攻',description:'…',color:'#ADC8E8',basicAttack:'missile',rules:[]}`。先在 `BASIC_ATTACKS` 注册语义 ID，再在 `PERKS` 引用；不要用 sword/bow 等物品 ID 命名行为。同种 melee/projectile 行为不需要新增 GameWorld ID 分支。
 - 多个改变形式的余烬按获得顺序取最后一个，普通余烬不覆盖；不能累加多个形式的 range。统一属性仍可叠加明确的额外射程修正。通过 `CombatEngine.addPerk` 授予，禁止只向 perks Set 塞 ID 而跳过属性同步。快照 `basicAttack` 和 `action.basicAttack` 分别用于 HUD、出手动作；每玩家独立发送，v3 存档仅保存余烬 ID 并在恢复时重建。新局 / 退出 F2 回到 slash。
 - 近战挥击在前摇后短暂生效，朝向在出手时固定，中心跟随角色移动；同一挥击的 `hitIds` 保证每个敌人最多命中一次，可以同时打到多个相交敌人。冲刺会取消尚未完成的挥击。近战怪物前摇时保存朝向，结束后通过同一扇形查询结算。
@@ -229,11 +225,11 @@ trainingBlade: {
 - 输入使用 screenToWorld 原始鼠标地面坐标，不再吸附敌人。弹体表现与碰撞位于同一地面平面，挥击轮廓来自实际半径 / 角度。F3 显示角色、障碍及弹体体积，缩放使用同一投影；不增加常驻复杂特效。
 - 已附着的灼烧只在首次命中时检测碰撞，后续跳伤按状态计时，不重新要求视线。护盾作用自身，冲刺用已有移动扫掠。当前没有角色之间的刚体推挤、复杂多边形地形、穿透弹或高度层碰撞。
 
-## 贴图、动画与装备外观
+## 贴图、动画与物品图标
 
-`content/appearances.ts` 使用稳定外观 ID：`UNIT_SPRITES` 配置图集、比例、色调和动作片段；`EQUIPMENT_SPRITES` 配置装备帧、尺寸和挂点，`PROCEDURAL_EQUIPMENT`配置原生多边形与挂层；`ENVIRONMENT_APPEARANCES` 配置地图素材角色与水色。`content/art-manifest.ts` 保存真实像素区域，和 Cocos `.meta` 独立。启动检查引用，测试验证区域没有越过 PNG 边界。
+`content/appearances.ts` 提供单位与环境的稳定外观ID；玩家动画由animation.ts的HERO_CLIPS与wholeHeroFrame定义，图集来源生成pixel-art.ts。装备没有外观字段，UI按物品ID找图标。启动检查内容引用，测试验证切片边界。
 
-`ArtLibrary` 预加载本地透明 PNG 并共享 Texture2D / SpriteFrame；`MonsterVisual`用独立程序图形绘制17怪，按EnemyPose相位驱动。`AnimatedUnit`保留旧图集能力与玩家桥接。`HeroRig` 使用六个中性身体部件及三个装备层，战场和商店共用；换装仅重建变化的装备组合，不更改角色实体。
+`ArtLibrary`预加载共享透明PNG；`HeroSprite`每次显示一个完整人物帧，不分肢体、不接收装备配置。五绘制方向加三镜像覆盖八方向，战场与菜单共用。`wholeHeroFrame`为纯表现函数，不能从帧序反推移速或伤害。`MonsterVisual`按EnemyPose驱动17怪PNG，程序图形回退；AnimatedUnit保留玩家桥接与旧怪物兼容。
 
 `GameWorld` 快照包含 `facing / action / hurtAt / diedAt`，`motionPose` 将其转换为 idle / walk / attack / cast / hurt / death。伤害、攻击间隔及冷却仍由固定步进控制，动画不回调游戏规则。暂停冻结表现时间；战斗结束时允许死亡动画播完。死亡视图短暂保留并淡出，不再参与碰撞和选择。
 
@@ -241,7 +237,7 @@ trainingBlade: {
 
 当前两个地图共用遗迹素材，霜镜回廊使用冷色地板与水色；环境布局为按地图尺寸适配的模板。地图障碍沿用碰撞配置，植物及瀑布主要在通行边界外。全新关卡布局可以扩展 `EnvironmentView`，不影响导航定义。旧UnitVisuals保留作参考；运行玩家/装备/环境PNG与17怪正式程序美术并用。
 
-角色、装备、怪物、地图与特效的设计标准见 [美术风格设计指南](ART_DIRECTION.md)；资源制作规范、帧序、换装挂点、素材来源与当前限制见 [美术管线](ART_PIPELINE.md)。
+角色、装备、怪物、地图与特效的设计标准见 [美术风格设计指南](ART_DIRECTION.md)；资源制作规范、帧序、整身锚点、素材来源与当前限制见 [美术管线](ART_PIPELINE.md)。
 
 ## 验证
 

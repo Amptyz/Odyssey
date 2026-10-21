@@ -36,7 +36,7 @@ export async function startRelay(options:RelayOptions={}) {
     const current=rooms.get(code);if(current)return current;
     let data:StoredRoom;try{data=JSON.parse(await readFile(resolve(directory,code+'.json'),'utf8')) as StoredRoom;}catch{throw Error('房间不存在或没有可恢复的进度');}
     // v6 checkpoints already contain all four occupied slots; v7 additionally permits null.
-    if(data.version!==ROOM_VERSION&&data.version!=='ember-coop-6')throw Error('房间版本不同，请使用相同版本');
+    if(![ROOM_VERSION,'ember-coop-6','ember-coop-7','ember-coop-8'].includes(data.version))throw Error('房间版本不同，请使用相同版本');
     const r:Room={...data,checkpoint:data.checkpoint?parseRunCheckpoint(data.checkpoint):undefined,members:data.members.map(m=>({...m,connected:false,active:true,lastSeen:0,lastSeq:0})),hostAvailable:false,saveChain:Promise.resolve()};rooms.set(code,r);return r;
   }
   function newCode():string {const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from(randomBytes(6),n=>chars[n%chars.length]).join('');}
@@ -74,8 +74,11 @@ export async function startRelay(options:RelayOptions={}) {
     if(msg.type==='heartbeat'){if(member.id===r.hostId&&typeof msg.available==='boolean'&&r.hostAvailable!==msg.available){r.hostAvailable=msg.available;announce(r);}send(socket,{type:'pong'});return;}
     if(msg.type==='leave'){unbind(socket);socket.close();return;}
     if(msg.type==='command'){
-      if(!r.started||!member.active||!host.connected||!r.hostAvailable||r.members.some(m=>m.active&&!m.connected))return;
       if(!Number.isSafeInteger(msg.seq)||msg.seq<=member.lastSeq||!validRoomCommand(msg.command))return;
+      if(!member.active||!host.connected||!r.hostAvailable)return;
+      // Cosmetic input also works in the lobby and while a teammate reconnects.
+      // Sender identity always comes from the authenticated socket binding.
+      if(msg.command.type!=='SetHeroPalette'&&(!r.started||r.members.some(m=>m.active&&!m.connected)))return;
       member.lastSeq=msg.seq;send(host.socket,{type:'command',playerId:member.id,seq:msg.seq,command:msg.command});return;
     }
     if(member.id!==r.hostId)throw Error('此操作需要房主');

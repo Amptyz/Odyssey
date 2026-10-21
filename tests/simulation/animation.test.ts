@@ -1,7 +1,7 @@
 import {openMerchantFixture,startCombatFixture} from '../helpers/scenes';
 import { describe,it,expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { animationFrame,motionPose } from '../../EmberDemo/assets/scripts/ember/content/animation';
+import { animationFrame,motionPose,wholeHeroFrame } from '../../EmberDemo/assets/scripts/ember/content/animation';
 import { ATLAS_FRAMES } from '../../EmberDemo/assets/scripts/ember/content/art-manifest';
 import { GameWorld } from '../../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 
@@ -18,7 +18,7 @@ describe('presentation signals and imported art',()=>{
     expect(motionPose(u,0).state).toBe('idle');u.velocity={x:1,y:0};expect(motionPose(u,1).state).toBe('walk');
     u.action={id:1,kind:'cast',time:1};expect(motionPose(u,1.1).state).toBe('cast');
     u.hurtAt=1.05;expect(motionPose(u,1.1).state).toBe('hurt');
-    u.alive=false;u.diedAt=1.1;u.facing={x:0,y:1};expect(motionPose(u,1.4)).toEqual({state:'death',age:expect.closeTo(.3),facing:-1});
+    u.alive=false;u.diedAt=1.1;u.facing={x:0,y:1};expect(motionPose(u,1.4)).toMatchObject({state:'death',age:expect.closeTo(.3),facing:-1});
   });
   it('emits cast/hit/death signals at simulation time without affecting damage or pause',()=>{
     const w=new GameWorld();openMerchantFixture(w);startCombatFixture(w);
@@ -40,5 +40,30 @@ describe('presentation signals and imported art',()=>{
       for(const {rect:[x,y,w,h],pivot:[px,py]} of frames){expect(x+w).toBeLessThanOrEqual(width);expect(y+h).toBeLessThanOrEqual(height);expect(px).toBeGreaterThanOrEqual(0);expect(px).toBeLessThanOrEqual(w);expect(py).toBe(h);}
       expect(JSON.parse(readFileSync(file+'.meta','utf8')).uuid).toBeTruthy();
     }
+  });
+});
+
+describe('whole-body hero sequence frames',()=>{
+  it('selects all eight directions using five complete figures and whole-image mirroring',()=>{
+    const w=new GameWorld(),rows=new Set<number>();
+    for(let direction=0;direction<8;direction++){
+      const a=direction*Math.PI/4,x=Math.sin(a),sum=Math.cos(a);w.hero.facing={x:(sum+x)/2,y:(sum-x)/2};
+      const pose=motionPose(w.hero,1),frame=wholeHeroFrame(pose);
+      expect(pose.direction).toBe(direction);expect(frame.mirror).toBe(direction<=4?1:-1);rows.add(frame.row);
+      expect(Math.floor(frame.frame/8)).toBe(frame.row);
+    }
+    expect(rows.size).toBe(5);
+  });
+  it('plays eight distinct run frames at 20 FPS and uses a separate walk clip',()=>{
+    const sample=(age:number,speed=7)=>wholeHeroFrame({state:'walk',age,facing:1,direction:2,speed});
+    expect(new Set(Array.from({length:8},(_,i)=>sample((i+.1)/20).frame)).size).toBe(8);
+    expect(sample(.4)).toEqual(sample(0));expect(sample(0).atlas).toBe('hero-run');expect(sample(0,4).atlas).toBe('hero-walk');
+    expect(sample(.101)).toEqual(sample(.109)); // No artificial skeletal interpolation between authored frames.
+  });
+  it('chooses melee or missile animation only from the action, and clamps death at its last frame',()=>{
+    const sample=(basicAttack:'slash'|'missile')=>wholeHeroFrame({state:'attack',age:.2,facing:-1,direction:5,basicAttack});
+    expect(sample('slash')).toMatchObject({atlas:'hero-melee',row:3,mirror:-1});expect(sample('missile').atlas).toBe('hero-ranged');
+    expect(wholeHeroFrame({state:'cast',age:.2,facing:1}).atlas).toBe('hero-ranged');
+    expect(wholeHeroFrame({state:'death',age:99,facing:1,direction:4}).frame).toBe(39);
   });
 });

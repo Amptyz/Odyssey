@@ -1,6 +1,6 @@
 import {chromium} from '@playwright/test';
 import {writeFileSync} from 'node:fs';
-import {screenToWorld,type Projection} from '../EmberDemo/assets/scripts/ember/render/IsoProjection';
+import {screenToWorld,type Projection} from '../EmberDemo/assets/scripts/ember/render/GroundProjection';
 import type {WorldSnapshot} from '../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 const browser=await chromium.launch({channel:'chrome',headless:true}),page=await browser.newPage({viewport:{width:1280,height:720}});
 const checks:string[]=[],errors:string[]=[],samples:unknown[]=[],screenshots:string[]=[];let status='failed',failure:string|undefined;
@@ -24,7 +24,8 @@ async function sample(ticks:number){
  const a=await state();await ticksFrom(a.tick,ticks);
  return page.evaluate(a=>{
   const api=(window as any).__EMBER__,b=api.snapshot(),p=api.screen(a.hero.x,a.hero.y),q=api.screen(b.hero.x,b.hero.y),camera=api.art().camera;
-  return{dt:b.time-a.time,dx:q.x-p.x,dy:q.y-p.y,pixelsPerSecond:Math.hypot(q.x-p.x,q.y-p.y)/(b.time-a.time),expected:a.hero.worldMoveSpeed*camera.tileWidth*camera.zoom/Math.SQRT2};
+  return{dt:b.time-a.time,dx:q.x-p.x,dy:q.y-p.y,pixelsPerSecond:Math.hypot(q.x-p.x,q.y-p.y)/(b.time-a.time),expected:a.hero.worldMoveSpeed*camera.pixelsPerUnit*camera.zoom,
+   worldPerSecond:Math.hypot(b.hero.x-a.hero.x,b.hero.y-a.hero.y)/(b.time-a.time),expectedWorld:a.hero.worldMoveSpeed};
  },a);
 }
 page.on('pageerror',e=>errors.push(e.message));page.on('console',e=>{if(e.type()==='error')errors.push(e.text());});
@@ -42,7 +43,8 @@ try{
    }
    const s=await sample(mode==='wasd'?9:6);samples.push({mode,direction:d.name,...s});rates.push(s.pixelsPerSecond);
    const length=Math.hypot(s.dx,s.dy);
-   check(Math.abs(s.pixelsPerSecond/s.expected-1)<(mode==='wasd'?.005:.035)&&Math.hypot(s.dx/length-d.x,s.dy/length-d.y)<.01,`${mode}/${d.name}: actual projected movement keeps the horizontal reference pace and requested direction`);
+   check(Math.abs(s.pixelsPerSecond/s.expected-1)<(mode==='wasd'?.005:.035)&&Math.hypot(s.dx/length-d.x,s.dy/length-d.y)<.01,`${mode}/${d.name}: actual projected movement keeps uniform pace and requested direction`);
+   check(Math.abs(s.worldPerSecond/s.expectedWorld-1)<(mode==='wasd'?.005:.035),`${mode}/${d.name}: world speed matches the attribute without directional acceleration`);
    if(mode==='wasd'){
     for(const key of d.keys)await page.keyboard.up(key);await page.waitForTimeout(120);const stopped=(await state()).hero;await page.waitForTimeout(120);const after=(await state()).hero;
     check(Math.hypot(after.x-stopped.x,after.y-stopped.y)<1e-8,`${mode}/${d.name}: releasing the real keys stops movement`);
@@ -56,5 +58,5 @@ try{
  for(const width of [1280,960]){await page.setViewportSize({width,height:width===1280?720:640});await page.waitForTimeout(300);const path=`reports/movement-directions-${width}.png`;await page.screenshot({path});screenshots.push(path);}
  check(errors.length===0,'actual eight-direction movement and camera follow have no browser errors');status='passed';
 }catch(error){failure=String(error);await page.screenshot({path:'reports/movement-directions-failure.png'}).catch(()=>{});throw error;}
-finally{writeFileSync('reports/browser-movement-directions.json',JSON.stringify({status,failure,scope:'Actual Creator Web Desktop, real WASD chords and right-click movement in a normal camp. Displacements use the same current camera for both positions to cancel follow motion.',checks,samples,errors,screenshots},null,2)+'\n');await browser.close();}
+finally{writeFileSync('reports/browser-movement-directions.json',JSON.stringify({status,failure,scope:'Actual Creator Web Desktop, real WASD chords and right-click movement in a normal camp. Both Euclidean world speed and projected speed measured; displacements use the same current camera for both positions to cancel follow motion.',checks,samples,errors,screenshots},null,2)+'\n');await browser.close();}
 console.log(`Passed ${checks.length} directional movement browser checks`);

@@ -22,10 +22,10 @@ describe('augment-owned primary attack forms',()=>{
       if(missile)w.combat.addPerk('missileAttack');
       for(const id of weapons){w.command({type:'BuyEquipment',equipmentId:id});expect(w.snapshot().basicAttack).toBe(missile?'missile':'slash');}
       expect(Object.keys(w.equipment.equipped)).toHaveLength(6);expect(w.stats.attackDamage).toBe(50);
-      const range=w.stats.attackRange,order=[...w.equipment.purchaseOrder];
+      const range=w.stats.attackRange,owned=Array.from(w.equipment.inventory);
       for(const slot of Object.keys(w.equipment.equipped) as (keyof typeof w.equipment.equipped)[]){
         const id=w.equipment.equipped[slot]!;w.command({type:'UnequipEquipment',slot});w.command({type:'EquipEquipment',equipmentId:id,slot});
-        expect(w.stats.attackRange).toBe(range);expect(w.equipment.purchaseOrder).toEqual(order);
+        expect(w.stats.attackRange).toBe(range);expect(Array.from(w.equipment.inventory)).toEqual(owned);
       }
       expect(w.hero.attributes.exportSources().filter(s=>s.sourceId.startsWith('equipment:')).every(s=>s.modifiers.every(m=>m.stat!=='attackRange'))).toBe(true);
     }
@@ -60,7 +60,7 @@ describe('augment-owned primary attack forms',()=>{
     restored.command({type:'ChooseReward',choiceId:'perk:missileAttack'});expect(restored.stats.attackRange).toBe(15);
     start(restored);restored.command({type:'Attack',point:{x:restored.hero.x+5,y:restored.hero.y}});expect(restored.projectiles.some(p=>p.cause==='basic')).toBe(true);
   });
-  it('isolates teammates and reconstructs each form from perks in version-4 saves',()=>{
+  it('isolates teammates and reconstructs each form from perks in version-5 saves',()=>{
     const w=new GameWorld();w.addPlayer('p2');openMerchantFixture(w);
     w.command({type:'BuyEquipment',equipmentId:'bow'});w.command({type:'BuyEquipment',equipmentId:'sword'},'p2');w.combat.addPerk('missileAttack','p2');start(w);
     const restored=GameWorld.resume(w.savedRun);expect(restored.snapshot().basicAttack).toBe('slash');expect(restored.snapshot('p2').basicAttack).toBe('missile');

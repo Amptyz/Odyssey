@@ -3,6 +3,7 @@ import type { Actor } from './types';
 
 export interface Circle extends Vec2 { radius:number }
 export type HitShape =
+  | {kind:'polygon';center:Vec2;points:Vec2[]}
   | {kind:'circle';center:Vec2;radius:number}
   | {kind:'sector';center:Vec2;radius:number;facing:Vec2;arc:number}
   | {kind:'capsule';center:Vec2;end:Vec2;radius:number}
@@ -18,6 +19,15 @@ function segmentDistanceSquared(p:Vec2,a:Vec2,b:Vec2):number {
 }
 /** Full body/shape intersection, including sector edges and the rounded outer arc. */
 export function overlaps(shape:HitShape,body:Circle):boolean {
+  if(shape.kind==='polygon'){
+    let inside=false;
+    for(let i=0,j=shape.points.length-1;i<shape.points.length;j=i++){
+      const a=shape.points[j]!,b=shape.points[i]!;
+      if(segmentDistanceSquared(body,a,b)<=body.radius**2+EPS)return true;
+      if((a.y>body.y)!==(b.y>body.y)&&body.x<(b.x-a.x)*(body.y-a.y)/(b.y-a.y)+a.x)inside=!inside;
+    }
+    return inside;
+  }
   if(shape.kind==='circle')return squared(shape.center,body)<=(shape.radius+body.radius)**2+EPS;
   if(shape.kind==='ring'){const d=Math.sqrt(squared(shape.center,body));return d<=shape.radius+body.radius+EPS&&d+body.radius>=shape.innerRadius-EPS;}
   if(shape.kind==='rectangle'){const dx=body.x-shape.center.x,dy=body.y-shape.center.y,n=Math.hypot(shape.facing.x,shape.facing.y)||1,fx=shape.facing.x/n,fy=shape.facing.y/n;const along=dx*fx+dy*fy,side=-dx*fy+dy*fx;const x=Math.max(0,Math.min(shape.length,along)),y=Math.max(-shape.width/2,Math.min(shape.width/2,side));return (along-x)**2+(side-y)**2<=body.radius**2+EPS;}

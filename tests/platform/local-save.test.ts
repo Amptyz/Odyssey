@@ -41,10 +41,10 @@ describe('single-player durable saves',()=>{
   f.p.send({type:'LoadRun'});const s=f.p.snapshot();expect(s.phase).toBe('fighting');expect(s.paused).toBe(true);expect(s.time).toBe(start.time);expect(s.gold).toBe(start.players[0]!.gold);
   expect(s.hero.x).toBe(start.players[0]!.position.x);expect(s.units.filter(u=>u.team==='enemy').map(u=>u.id)).toEqual(enemies);expect(f.p.world.players.get('hero')!.direct).toBeUndefined();expect(s.loadout.E).toBe(start.players[0]!.loadout.E);
  });
- it('retains equipment, purchase order and safe-stage position, without duplicating currency',()=>{
+ it('retains equipment ownership and safe-stage position, without duplicating currency',()=>{
   const f=fixture();openMerchantFixture(f.p.world);f.p.send({type:'BuyEquipment',equipmentId:'bow'});f.p.send({type:'LeaveShop'});
   Object.assign(f.p.world.hero,{x:11,y:10,previous:{x:11,y:10}});f.p.send({type:'SaveRun'});
-  const r=new LocalTransport(7,f.storage);r.send({type:'LoadRun'});const s=r.snapshot();expect(s.equipment.slot1).toBe('bow');expect(s.purchaseOrder).toEqual(['bow']);expect(s.gold).toBe(60);expect(s.hero.x).toBe(11);expect(s.hero.y).toBe(10);
+  const r=new LocalTransport(7,f.storage);r.send({type:'LoadRun'});const s=r.snapshot();expect(s.equipment.slot1).toBe('bow');expect(s.inventory).toEqual(['bow']);expect(s.gold).toBe(60);expect(s.hero.x).toBe(11);expect(s.hero.y).toBe(10);
   r.send({type:'BuyEquipment',equipmentId:'bow'});expect(r.snapshot().gold).toBe(60);
  });
  it('keeps the saved run when returning to the menu and blocks loading into an unpaused run',()=>{

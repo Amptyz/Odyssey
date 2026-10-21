@@ -26,7 +26,7 @@ rg -n 'CastSlot|executeSkill|firstImpact|OnAttackHit' EmberDemo/assets/scripts/e
 | 需求形态 | 应修改的位置 | 不应采取的做法 |
 | --- | --- | --- |
 | 火弹变成低伤害高速冰弹 | skills 定义、描述、必要的已有外观引用 | 在 GameWorld 中判断某个新技能 ID |
-| 新武器外观和属性 | equipment 定义，可复用 appearance；不配置普攻形式 | 购买时直接给角色字段反复累加属性 |
+| 新装备图标和属性 | equipment 定义与UI图标；不配置人物外观或普攻形式 | 购买时直接给角色字段反复累加属性 |
 | 新远程怪物使用已有弹道 | enemies模板、enemy-actions动作集、level.groups、MonsterVisual | 复制敌人更新循环或塞进玩家SkillId |
 | 已有事件加减速 / 爆炸 / 冷却效果 | perks 条件与 effect 配置 | 在每个技能命中点分别写联动判断 |
 | 穿透弹、召唤、击退、新动作原语 | 先扩展联合类型、EnemySystem/对应处理器、CollisionWorld及状态，再加内容 | 写一个配置字段但没有消费逻辑 |
@@ -51,7 +51,7 @@ rg -n 'CastSlot|executeSkill|firstImpact|OnAttackHit' EmberDemo/assets/scripts/e
 - 技能按 `SkillSystem` 的穷尽 handlers 实现；新增能力通过 SkillContext 注入。需要长生命周期的弹体 / 实体状态再由模拟层持有。
 - 效果按 `EffectHandlers` 实现，复用 CombatEngine、CollisionWorld 和 CombatHooks。派生伤害保留来源、根事件与深度，明确是否允许攻击特效和属性放大。
 - 敌人新内容优先放入ENEMY_ACTIONS/ENEMY_ACTION_SETS，EnemySystem统一调度。新增原语同时接分段状态、碰撞、预警与清理；当前17怪都不调用旧ENEMY_BEHAVIORS.monster（它会明确报错）。移动按PathfinderPool体型网格，寻路时间用EnemySystem.pathTimes，不重复扣GameWorld.repath。
-- 新属性走 `attributes/AttributeSet.ts 定义与叠加规则 → 来源配置 → 实际行为 / CombatEngine 消费 → 快照与面板 → 数值与隔离测试`。使用已有属性的装备只新增来源配置，不给 GameWorld 加装备 ID 分支；装备为六个通用slot1..slot6，category只决定三个外观层，禁止恢复装备attack/attackRange配置或根据外观选择普攻。新显示层才需要扩HeroRig；不能把六个属性栏直接映射成六层武器。变更仍需检查ShopPanel/DeveloperPanel、配置解析、purchaseOrder和测试。
+- 新属性走 `AttributeSet → 来源配置 → 实际消费 → 快照 / 面板 → 测试`。装备使用六个通用栏，category仅分类；新增物品提供数值 / 被动及UI图标，不得恢复外观挂层、purchaseOrder或装备决定普攻的逻辑。检查ShopPanel / DeveloperPanel、恢复与多人隔离。
 - 不新增无需求的网络框架、资源编辑器或通用插件系统。若局部模型已经无法表达需求，应明确实现所需能力，而不是隐藏为一次性 ID 特判。
 
 ### 3. 接通获得入口和表现
@@ -91,7 +91,8 @@ rg -n 'CastSlot|executeSkill|firstImpact|OnAttackHit' EmberDemo/assets/scripts/e
 | `tests/simulation/world.test.ts` | 固定步进、五关出口阶段、导航、输入与确定性 |
 | `tests/monster-system.test.ts` | 17种出手、分段采样/去重、敌弹/冻结、守区、Boss阶段/破势、体型导航 |
 | `tests/levels.test.ts` | 固定起终点/群组、路线可达、多人出口 |
-| `tests/simulation/projection.test.ts` | 投影、逆投影、矩形地图缩放 |
+| `tests/simulation/projection.test.ts` | 等比例投影 / 逆投影、长度与角度不变、圆形范围、小地图方向与边界 |
+| `tests/movement-directions.test.ts` / `tests/game-feel.test.ts` | 八方向世界 / 屏幕双重等速、危险圈逃离、恢复与双玩家、真实弹体 / 冲刺、镜头跟随 |
 | `tests/simulation/animation.test.ts` | 动作信号、优先级、图集边界 / 元数据 |
 | `tests/simulation/developer.test.ts` | 开发模式隔离、配置校验、存储、跳波 / 重测 |
 
@@ -109,13 +110,13 @@ pnpm check
 | 改动 | 逻辑 / 类型 | 实际引擎与浏览器检查 |
 | --- | --- | --- |
 | 技能、范围、弹体、普攻 | pnpm check；content / hitboxes 对应机制测试 | Creator Web Desktop 构建；test:hitboxes；涉及主动技能奖励时运行 test:empty-skills 验证空槽、获得与装备、施法和重开 |
-| 装备、经济、奖励 | pnpm check；progression / equipment-effects | 构建；test:scenes 的商人购买；新增商品 / 被动用 F2 定向验收；换装外观变化加 test:art |
+| 装备、经济、奖励 | pnpm check；progression / equipment-effects | 构建；test:scenes 商人购买；新增商品 / 被动定向验收；确认角色图集不随装备变化 |
 | 全单位属性、抗性、吸血、护盾 | pnpm check；attributes / combat / multiplayer | 构建；F2 属性与实际伤害针对性验收；跨波保存改动加 test:multiplayer |
 | 敌人、地图、导航 | pnpm check；content / world / collision | 构建；相关地图正常通关；必要时playthrough与benchmark；五关出口后才算通关 |
 | 余烬、状态、触发系统 | pnpm check；两层 hexes / combat | 构建；test:scenes 领取路径与 F2 效果定向验收；涉及弹体或普攻再加 test:hitboxes |
 | 操作方式、输入坐标、HUD 交互 | pnpm check；projection / world | 构建；test:scenes / test:hitboxes；针对改动检查缩放、失焦、暂停、松键 |
 | 营地、休息点、集合与清场 | pnpm check；scenes / progression / transport | 构建；test:scenes / test:multiplayer；切换表现加 test:transitions；地点名称 / 标题加 test:locations；改变旅程顺序、休息点或奖励配置再跑 test:campaign |
-| 贴图、动作、挂点 | pnpm check；有格式变更时核对图集 | 构建；test:art 与人工检查，含镜像、动作最大角度、换装 |
+| 贴图、动作、挂点 | pnpm check；有格式变更时核对图集 | 构建；test:art 与人工检查，含八方向、动作首尾、固定地面基准、装备形象不变 |
 | 开发者模式 | pnpm check；developer | 构建；test:scenes 的场景入口及新增工具定向验收；退出后普通模式不带测试效果 |
 | 联机 / 玩家状态 / 波次保存 | pnpm check；multiplayer / relay / transport 测试 | 构建；test:multiplayer；对应单人回归 |
 | 单人保存 / 读档 / 文件入口 | pnpm check；platform/local-save 测试 | 构建；test:saves；涉及技能空槽或联机隔离再跑 test:empty-skills / test:multiplayer |
@@ -146,7 +147,7 @@ pnpm test:scenes
 - **重命名 ID**：会影响地图 / 技能引用、奖励、测试、开发者预设文本。v1 导入会拒绝不存在的 ID；如果需要兼容旧配置，要明确迁移策略或升级版本，不静默映射成别的内容。
 - **新配置字段**：同步 parse / clone / capture / 应用 / 默认值 / UI / 导出导入 / 测试；只有界面上有值但世界未消费不算完成。
 - **扩大敌人体积**：实测窄路、边界、出生和攻击扇形。玩家导航与移动都用实际半径.32；敌人移动和冲锋必须使用PathfinderPool.forRadius的同一保守半径，不能把Boss放进玩家网格。
-- **装备栏/外观层或图集**：六个属性栏与三个显示层分离；检查purchaseOrder、appearanceLoadout、余烬决定的basicAttack及其独立射程、固定equipment图集与资源枚举。新资源遵循美术管线。
+- **装备栏/物品图标或图集**：六栏仅提供属性 / 被动，检查商品图标与恢复；人物整身图集经HeroSprite消费，不再接入外观层或purchaseOrder。
 - **改动画**：攻击前摇和伤害窗口属于模拟；若修改手感要同时考虑判定与预警。纯摆臂变化不自动改变碰撞。
 
 ## 本轮扩展约束
@@ -183,3 +184,7 @@ pnpm test:scenes
 接通正常入口和开发者模式，按变更范围完成测试、Creator 构建及画面验证，
 更新相关文档，交付实际结果与未验证部分。提交 / 推送范围以本次明确要求为准。
 ```
+
+## 扩展人物配色
+
+在content/hero-palettes.ts增加稳定ID、名称、UI色和cloth目标色。UI由注册表枚举，HeroSprite使用共享材质，不复制动画PNG。使用SetHeroPalette经玩家身份同步，不能让UI直接改World.players；读取旧存档需补默认，不能保存任意战斗帧。新Q版源图预留专用衣料色阶，旧图色域串色限制见[配色指南](HERO_COLORS.md)。验证入口为tests/hero-palettes.test.ts、tests/platform/relay.test.ts、scripts/browser-hero-palettes.mjs与test:multiplayer。

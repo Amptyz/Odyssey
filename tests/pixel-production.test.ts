@@ -5,7 +5,7 @@ import {ENEMIES} from '../EmberDemo/assets/scripts/ember/content/enemies';
 import {ENEMY_ACTION_SETS} from '../EmberDemo/assets/scripts/ember/content/enemy-actions';
 import {shapeContours,cloneShape} from '../EmberDemo/assets/scripts/ember/combat-core/ShapeContours';
 import {CollisionWorld,type HitShape} from '../EmberDemo/assets/scripts/ember/combat-core/CollisionWorld';
-import {worldToScreen,DEFAULT_PROJECTION} from '../EmberDemo/assets/scripts/ember/render/IsoProjection';
+import {worldToScreen,DEFAULT_PROJECTION} from '../EmberDemo/assets/scripts/ember/render/GroundProjection';
 import {GameWorld} from '../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 describe('production pixel assets and authoritative visual geometry',()=>{
  it('covers every enemy and dedicated skill gestures, with separate complete boss phase sheets',()=>{

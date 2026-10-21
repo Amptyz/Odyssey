@@ -1,0 +1,15 @@
+{
+  "tool": "image_gen",
+  "date": "2026-10-20",
+  "transparent_background": true,
+  "sourceFiles": {
+    "run": "exec-cd711e50-a5bc-4939-aafd-8aee9d631db8.png",
+    "walk": "exec-e9265995-06ed-4d91-87d3-83af9008c9ce.png",
+    "melee": "exec-cd8b8eea-7392-4eeb-95e6-339de887bde8.png",
+    "ranged": "exec-a4ef3ef7-3e25-431c-bfdf-e657346e9e4d.png",
+    "states": "exec-1de36764-9059-4b8a-95d3-84744a57425a.png"
+  },
+  "identity": "art-source/rekindled-hero-v3/concept.png",
+  "layout": "8 columns, 5 source facings; 8 runtime directions via horizontal mirrors",
+  "processing": "PNG pixels unchanged; slicing metadata only"
+}

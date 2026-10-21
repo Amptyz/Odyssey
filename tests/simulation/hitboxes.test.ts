@@ -14,8 +14,8 @@ function freeze(e:GameWorld['hero']){e.attributes=new AttributeSet({...e.attribu
 function spawn(w:GameWorld,x:number,y:number){const e=freeze(w.spawnEnemy('melee',{x,y},1000));Object.assign(e,{x,y,previous:{x,y}});return e;}
 function run(w:GameWorld,seconds:number){for(let i=0;i<Math.round(seconds*30);i++)w.advance(1/30);}
 describe('directional basic attacks and skill hitboxes',()=>{
-  it('reaches twice the former sword distance and still excludes bodies beyond the new edge',()=>{
-    const w=fixture('sword'),inside=spawn(w,14.8,10),outside=spawn(w,15.6,10);
+  it('keeps the authored sweep within reach and excludes bodies beyond the outer limit',()=>{
+    const w=fixture('sword'),inside=spawn(w,13.4,10),outside=spawn(w,15.6,10);
     w.command({type:'Attack',point:{x:20,y:10}});run(w,.3);
     expect(inside.hp).toBeCloseTo(1000-32/1.05);expect(outside.hp).toBe(1000);
     expect(w.hero.radius).toBe(.32);
@@ -33,7 +33,7 @@ describe('directional basic attacks and skill hitboxes',()=>{
     expect(inside.hp).toBeCloseTo(1000-24/1.05);expect(outside.hp).toBe(1000);
   });
   it('melee has a windup, hits all intersecting bodies once, and can miss behind the swing',()=>{
-    const w=fixture('sword'),a=spawn(w,11.4,10),b=spawn(w,11.2,10.6),back=spawn(w,8.5,10);
+    const w=fixture('sword'),a=spawn(w,13,10),b=spawn(w,13.2,10.1),back=spawn(w,8.5,10);
     w.command({type:'Attack',point:{x:15,y:10}});expect(a.hp).toBe(1000);expect(w.snapshot().swings).toHaveLength(1);
     run(w,.1);expect(a.hp).toBe(1000);run(w,.2);
     expect(a.hp).toBeCloseTo(1000-w.stats.attackDamage/1.05);expect(b.hp).toBeCloseTo(1000-w.stats.attackDamage/1.05);expect(back.hp).toBe(1000);

@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-21",
+  "tool": "built-in image_gen",
+  "reference": "art-source/rekindled-chibi-v2/concept.png",
+  "outputs": [
+    {
+      "name": "run",
+      "toolOutputBasename": "exec-6ac3cf8f-8868-4f16-8fef-04948e4f3358.png",
+      "source": "run.png",
+      "runtime": "EmberDemo/assets/resources/art/chibi-v1/run.png",
+      "sha256": "efe40ae6be78eb0251fd2c646c157c54e672a64b3b33dcf6439033416b791904",
+      "prompt": "run-prompt.txt",
+      "revisionPrompt": "run-revision-prompt.txt",
+      "references": [
+        "art-source/rekindled-chibi-v2/concept.png"
+      ],
+      "revisionReference": "exec-131ad9c6-374f-462f-bc24-432b1592b147.png"
+    },
+    {
+      "name": "walk",
+      "toolOutputBasename": "exec-3a277b49-07e7-419f-a3ca-2d3b8912130f.png",
+      "source": "walk.png",
+      "runtime": "EmberDemo/assets/resources/art/chibi-v1/walk.png",
+      "sha256": "620997e20e947154f1f32eea7cf9e5fbd52d7ad1afa2a32e6851b8b28406121a",
+      "prompt": "walk-prompt.txt",
+      "revisionPrompt": null,
+      "references": [
+        "art-source/rekindled-chibi-v2/concept.png",
+        "art-source/chibi-runtime-v1/run.png"
+      ],
+      "referenceVersion": "run.png initial candidate (see initialRunCandidate and initialRunSha256), before run-revision"
+    },
+    {
+      "name": "states",
+      "toolOutputBasename": "exec-4514fc57-b50f-49ee-9290-f1a959640947.png",
+      "source": "states.png",
+      "runtime": "EmberDemo/assets/resources/art/chibi-v1/states.png",
+      "sha256": "b8f861fe156585af715d06be10b74dbe5605f955c7af50c85182e8c2c3149a62",
+      "prompt": "states-prompt.txt",
+      "revisionPrompt": null,
+      "references": [
+        "art-source/rekindled-chibi-v2/concept.png",
+        "art-source/chibi-runtime-v1/run.png"
+      ],
+      "referenceVersion": "run.png initial candidate (see initialRunCandidate and initialRunSha256), before run-revision"
+    },
+    {
+      "name": "melee",
+      "toolOutputBasename": "exec-291726ed-3cb5-4296-95e2-2052f3fe48ab.png",
+      "source": "melee.png",
+      "runtime": "EmberDemo/assets/resources/art/chibi-v1/melee.png",
+      "sha256": "55f60e49bd7b00aff3d2ec5acc9f3fa6068ba252b01504cf676269adeb825343",
+      "prompt": "melee-prompt.txt",
+      "revisionPrompt": null,
+      "references": [
+        "art-source/rekindled-chibi-v2/concept.png",
+        "art-source/chibi-runtime-v1/states.png"
+      ]
+    },
+    {
+      "name": "ranged",
+      "toolOutputBasename": "exec-aa303e01-b940-4b73-b588-eac1106ddddd.png",
+      "source": "ranged.png",
+      "runtime": "EmberDemo/assets/resources/art/chibi-v1/ranged.png",
+      "sha256": "1240a0e91f0ff898ee8ab7e4d9aad94fe03f48536fb1d64fbc509a13d5e12697",
+      "prompt": "ranged-prompt.txt",
+      "revisionPrompt": null,
+      "references": [
+        "art-source/rekindled-chibi-v2/concept.png",
+        "art-source/chibi-runtime-v1/states.png"
+      ]
+    }
+  ],
+  "initialRunCandidate": "exec-131ad9c6-374f-462f-bc24-432b1592b147.png",
+  "pixelEdits": "None; copied original RGBA outputs unchanged. Metadata-only slicing.",
+  "initialRunSha256": "8bdf0fb3a8dca18deb3046f2c3d8716f6a148be126b9fe778fb1e56dce71df63"
+}

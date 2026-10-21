@@ -47,7 +47,7 @@ describe('hex simulation, hitboxes and progression',()=>{
     const miss=fixture(['missileAttack','mysticPunch'],'bow');miss.cooldowns.shield=5;miss.command({type:'Attack',point:{x:15,y:10}});run(miss,.2);expect(miss.cooldowns.shield).toBeCloseTo(4.8);
   });
   it('heavy hitter is not multiplied by staff skill power',()=>{
-    const w=fixture(['heavyHitter'],'staff'),e=spawn(w,12,10);w.command({type:'Attack',point:e});run(w,.2);expect(e.hp).toBeCloseTo(972.8);
+    const w=fixture(['heavyHitter'],'staff'),e=spawn(w,13,10);w.command({type:'Attack',point:e});run(w,.2);expect(e.hp).toBeCloseTo(972.8);
   });
   it('light-em-up fires on the fourth actual directional release; held input and pause stay consistent',()=>{
     const w=fixture(['lightEmUp']);w.command({type:'AttackInput',point:{x:15,y:10}});run(w,2.3);

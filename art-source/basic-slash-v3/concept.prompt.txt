@@ -1,0 +1,23 @@
+Edit the FIRST supplied image, the Project Ember "BASIC SLASH" concept board. The second and third supplied images are supporting references for the CLEAN, UNBROKEN silhouette of a powerful slash. Keep the first board's layout, typography style, dark slate backdrop, squat bald faceless pixel character, large neutral study, three elemental studies, and 8 labeled keyframe panels. Preserve the broad, powerful slash mass. Make one decisive art correction: remarkably CLEAN EDGES and radically LESS DEBRIS.
+
+The current effect is too ragged, with sawtooth spikes, hairy edges, splintered ribbons and isolated particles outside it. Replace ALL those effect shapes with clean continuous scythe-like swept surfaces. Each main slash should read as one confident curved blade: thick belly, smooth flowing outer contour, crisp sharp boundary, two elegant pointed ends. Inside it use only 2-3 broad clearly separated hard-tone bands. Keep at most ONE subordinate thin continuous trailing ribbon, with a deliberate clean gap. No tiny internal stripes. No noisy texture.
+
+CRITICAL SILHOUETTE QUALITY:
+Draw long controlled arcs with consistent curvature, cleanly rasterized into a fine coherent pixel contour. Pixel art does NOT mean random serrations or adding giant stairsteps. The hero retains its existing coarse pixel style, but the VFX silhouette should look visually flowing and polished at viewing size, like the clear contour in the supplied reference. Keep a sharp, solid edge without soft blur or glow haze. No feathering, brush bristles, saw teeth, torn paper, serrated icicles, random dither, speckles, floating squares, spark clouds or oversized pixel notches. No protrusions along the outside of the main curve. All brightest pixels should belong to the continuous main blade, never floating beyond it. Preserve the inner open space and variable thickness so it still feels fast and powerful, not a flat equal-width icon or thin circle.
+
+Large neutral peak: ivory-white broad core, solid cool-grey middle band, dark slate back band, one slim clean grey echo. REMOVE the starburst at its right edge for this edge-focused study. There must be NO particles or slivers outside the neutral silhouette.
+Fire/frost/dark: keep the SAME clean silhouette. Fire cream/orange/rust, frost white/cyan/blue, dark pale lavender/violet/charcoal. Express the element using clean color bands INSIDE the shape. REMOVE ALL external fire sparks, icy splinters and dark shards. Do not replace them with small decorative marks. These studies intentionally show the clean reusable base; particles and contact bursts are separate layers and are not displayed here.
+Keep each top study fully inside its allocated panel with generous empty space around it.
+
+Eight lower frames retain the labels and times:
+01 LOAD / 0ms: character only, zero effect.
+02 COIL / 80ms: character and a very short DIM starting wedge, no full bright arc.
+03 RELEASE / 120ms: a single coherent short broad clean blade sweeping out.
+04 PEAK / 160ms: full broad clean crescent and ONE restrained echo ribbon.
+05 FOLLOW / 200ms: clean tapered lower leading blade, old tail smoothly shortens, no tears or debris.
+06 TAPER / 240ms: bright blade gone, only two thin low-contrast intact curved ribbon segments, no shards.
+07 FADE / 300ms: one very short dark grey ribbon segment, almost gone.
+08 CLEAR / 360ms: character only, zero effect.
+Keep origin and reach visually consistent between active poses; do not expand an energy ring.
+Change subtitle to "CLEAN EDGE REVISION". Change footer to "CLEAN SILHOUETTE / SHARED BASE / SEPARATE IMPACT".
+The result must clearly correct the overly jagged v2 design, with strikingly calm negative space around bold crisp blades. Do not lose force by making the blade thin or transparent. Do not blur or smooth the whole board; preserve the character's pixel detail and crisp typography. No new objects, no watermark.

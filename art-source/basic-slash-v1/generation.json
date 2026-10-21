@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-21",
+  "tool": "built-in image_gen",
+  "outputBasename": "exec-072f2895-c9d0-46dc-89d0-b284ca00e560.png",
+  "reference": "art-source/rekindled-chibi-v2/concept.png",
+  "referenceRole": "coarse pixel density and game style only; no character in output",
+  "prompt": "concept.prompt.txt",
+  "output": "concept.png",
+  "size": [
+    1448,
+    1086
+  ],
+  "mode": "RGB",
+  "sha256": "619f98e18360f86fd09a320f1cccc9dfcbecda8131f68ac2536b4092c029d4b5",
+  "scope": "concept storyboard only, not runtime atlas",
+  "imageEdits": "none"
+}

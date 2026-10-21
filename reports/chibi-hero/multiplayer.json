@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "scope": "Normal two-browser room-code flow: movable camp, independent ember UI, range and host departure, input synchronization, reconnect and new-host recovery. Equipment transactions separately covered by relay unit integration and browser-scenes.",
+  "checks": [
+    "room code assigns the guest a distinct player",
+    "both players independently change palette before room start and receive each other’s selection",
+    "player hero renders location title: 余烬庭院",
+    "player p55cb4fb8cd9a renders location title: 余烬庭院",
+    "two heroes use independent palette materials in the same Cocos scene",
+    "host reward overlay does not open on the guest",
+    "guest keeps moving while host is selecting an ember",
+    "closing host choices does not close guest choices",
+    "host cannot depart while the guest is outside the range",
+    "guest cannot launch the party even when all are ready",
+    "host F launches all gathered players",
+    "player hero renders location title: 余烬庭院·一",
+    "player p55cb4fb8cd9a renders location title: 余烬庭院·一",
+    "guest receives the host-authored enemy decision profiles",
+    "replicated enemy targets refer to actual party players",
+    "guest movement remains synchronized in combat",
+    "guest skill cooldown is independent",
+    "disconnect pauses the authoritative world",
+    "reconnect retains this player and chosen ember",
+    "reconnect keeps the guest palette",
+    "guest recovers the saved level as new host",
+    "recovery keeps committed gold and ember without duplicate grants",
+    "recovery clears stale combat cooldowns and input",
+    "new-host recovery retains both player palettes",
+    "two Creator clients and relay have no page errors"
+  ],
+  "errors": []
+}

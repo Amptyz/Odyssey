@@ -2,7 +2,7 @@ import type { VisualCue } from '../simulation/GameWorld';
 import type { Vec2 } from '../utils/math';
 import type { HitShape } from '../combat-core/CollisionWorld';
 import { shapeContours } from '../combat-core/ShapeContours';
-import { screenVisible, worldToScreen, type Projection } from './IsoProjection';
+import { screenVisible, worldToScreen, type Projection } from './GroundProjection';
 
 export const PIXEL_VFX_LIMIT=24;
 export interface PixelVfxPlan {cue:VisualCue;frame:number;row:number;age:number;size:number;at:Vec2;priority:number}

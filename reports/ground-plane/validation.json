@@ -1,0 +1,287 @@
+{
+  "task": "FEEL-03: equal-scale Euclidean combat plane",
+  "completedAt": "2026-10-20T12:43:13.913333+00:00",
+  "status": "passed",
+  "implementation": [
+    "Retain map, actor, collision and checkpoint world coordinates; remove directional speed compensation from players, enemy walking and escape feasibility.",
+    "GroundPlane unit orthogonal basis and GroundProjection single scalar; same inverse for mouse input, hero facing, minimap and shape rendering.",
+    "Ground circle/ring radii, exits and F3 contours use the actual world geometry including camera zoom; upright artwork retains proportions.",
+    "RunCheckpoint v4 unchanged; existing coordinates resume under the new movement rules."
+  ],
+  "checks": [
+    {
+      "command": "pnpm check",
+      "result": "passed",
+      "files": 32,
+      "tests": 412,
+      "log": "check.log"
+    },
+    {
+      "command": "Creator 3.8.8 --project EmberDemo --build platform=web-desktop;buildPath=project://build;outputName=web-desktop",
+      "result": "passed",
+      "successExitCode": 36,
+      "log": "creator-build.log"
+    },
+    {
+      "command": "pnpm test:movement",
+      "result": "passed",
+      "checks": 51,
+      "report": "../browser-movement-directions.json"
+    },
+    {
+      "command": "pnpm test:feel",
+      "result": "passed",
+      "checks": 11,
+      "report": "../browser-game-feel.json"
+    },
+    {
+      "command": "pnpm test:hitboxes",
+      "result": "passed",
+      "checks": 94,
+      "report": "../browser-hitboxes.json"
+    },
+    {
+      "command": "pnpm test:scenes",
+      "result": "passed",
+      "checks": 52,
+      "report": "../browser-scenes.json"
+    },
+    {
+      "command": "pnpm test:multiplayer",
+      "result": "passed",
+      "checks": 21,
+      "report": "../browser-multiplayer.json"
+    },
+    {
+      "command": "node scripts/browser-rekindled.mjs",
+      "result": "passed",
+      "sampleGroups": 39,
+      "scope": "8 run, 8 walk, 8 melee, 8 ranged directions; 6 equipment combinations; 90 render-frame timing samples and pause freeze",
+      "report": "../rekindled/result.json"
+    },
+    {
+      "command": "pnpm typecheck:tools",
+      "result": "passed",
+      "log": "tools.log"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "movementSamples": [
+    {
+      "mode": "wasd",
+      "direction": "right",
+      "dt": 0.3,
+      "dx": 90.20914760987404,
+      "dy": 0,
+      "pixelsPerSecond": 300.69715869958014,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.3000000000000185,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "wasd",
+      "direction": "up",
+      "dt": 0.36666666666666664,
+      "dx": 0,
+      "dy": 110.25562485651278,
+      "pixelsPerSecond": 300.6971586995803,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.3000000000000185,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "wasd",
+      "direction": "left",
+      "dt": 0.3,
+      "dx": -90.20914760987407,
+      "dy": 0,
+      "pixelsPerSecond": 300.69715869958026,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.3000000000000185,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "wasd",
+      "direction": "down",
+      "dt": 0.29999999999999993,
+      "dx": 0,
+      "dy": -90.2091476098741,
+      "pixelsPerSecond": 300.69715869958037,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.300000000000019,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "wasd",
+      "direction": "up-right",
+      "dt": 0.3,
+      "dx": 63.78750000000025,
+      "dy": 63.78750000000025,
+      "pixelsPerSecond": 300.69715869958054,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.300000000000026,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "wasd",
+      "direction": "up-left",
+      "dt": 0.3,
+      "dx": -63.787499999999994,
+      "dy": 63.78749999999991,
+      "pixelsPerSecond": 300.6971586995791,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.299999999999999,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "wasd",
+      "direction": "down-left",
+      "dt": 0.3,
+      "dx": -63.78750000000028,
+      "dy": -63.78750000000025,
+      "pixelsPerSecond": 300.69715869958054,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.300000000000026,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "wasd",
+      "direction": "down-right",
+      "dt": 0.3,
+      "dx": 63.78750000000022,
+      "dy": -63.78750000000025,
+      "pixelsPerSecond": 300.6971586995805,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.300000000000023,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "classic",
+      "direction": "right",
+      "dt": 0.2,
+      "dx": 59.65650417988813,
+      "dy": -2.2737367544323206e-13,
+      "pixelsPerSecond": 298.2825208994406,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.2494101699974065,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "classic",
+      "direction": "up",
+      "dt": 0.2,
+      "dx": -1.1368683772161603e-13,
+      "dy": 59.6565041798882,
+      "pixelsPerSecond": 298.282520899441,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.249410169997414,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "classic",
+      "direction": "left",
+      "dt": 0.2,
+      "dx": -59.656504179888316,
+      "dy": 0,
+      "pixelsPerSecond": 298.2825208994416,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.249410169997429,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "classic",
+      "direction": "down",
+      "dt": 0.2,
+      "dx": 5.684341886080802e-14,
+      "dy": -59.65650417988809,
+      "pixelsPerSecond": 298.28252089944044,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.249410169997403,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "classic",
+      "direction": "up-right",
+      "dt": 0.2,
+      "dx": 42.017769996051044,
+      "dy": 42.34861857869714,
+      "pixelsPerSecond": 298.28252089944107,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.249410169997415,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "classic",
+      "direction": "up-left",
+      "dt": 0.2,
+      "dx": -41.88472246402989,
+      "dy": 41.88472246402989,
+      "pixelsPerSecond": 296.1697128243206,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.2051440687451676,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "classic",
+      "direction": "down-left",
+      "dt": 0.2,
+      "dx": -42.34861857869706,
+      "dy": -42.01776999605113,
+      "pixelsPerSecond": 298.282520899441,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.249410169997415,
+      "expectedWorld": 6.3
+    },
+    {
+      "mode": "classic",
+      "direction": "down-right",
+      "dt": 0.2,
+      "dx": 41.88472246402978,
+      "dy": -41.88472246402978,
+      "pixelsPerSecond": 296.1697128243198,
+      "expected": 300.6971586995793,
+      "worldPerSecond": 6.205144068745154,
+      "expectedWorld": 6.3
+    }
+  ],
+  "manualInspection": {
+    "result": "passed",
+    "scope": "Loaded the existing local camp save in IAB; actual down/right input, camera following, interaction prompt and F3 toggle. Inspected 1280x720 and 960x640 browser screenshots, frost rest, colliders, and new directional hero.",
+    "screenshots": [
+      "manual-camp.png",
+      "camp-1280.png",
+      "battle-1280.png",
+      "battle-960.png",
+      "frost-rest.png",
+      "colliders.png"
+    ]
+  },
+  "testFixtureCorrections": [
+    "First full check overlapped Creator build and had one test timeout; ran after build and all 412 passed. Fixed new restore fixture to add party member before Start; moved VFX fixture to a truly visible point under expanded vertical scale.",
+    "Old browser fixtures clicked an off-screen departure and aimed at a distant off-screen enemy. Use bounded visible right-click steps in camps and an explicitly spawned nearby frozen F2 enemy for pointer assertions; no production ranges, content or tolerances were weakened.",
+    "Arena screenshots now wait until the actual transition and title finish; black transition captures were discarded and hitbox regression rerun successfully."
+  ],
+  "metadata": {
+    "newGroundPlaneMeta": "Generated by Creator import",
+    "groundProjectionUuid": "c87e83bc-4439-4914-a5e7-7a539f497302 (preserved from IsoProjection)"
+  },
+  "builtMainSha256": "a8f13ce6d0e25450a10bf298657616cf3ee9be01bd03beae05b2252c79727444",
+  "sourceSha256": {
+    "EmberDemo/assets/scripts/ember/utils/GroundPlane.ts": "ae7888af235135f70fb8be2eeda563e42397d9724d2d1928f27889cea37d1fe6",
+    "EmberDemo/assets/scripts/ember/render/GroundProjection.ts": "54931fbbd517a942646a1c7ecba16b442ca9d7027041a105affe1d77fc0faae8",
+    "EmberDemo/assets/scripts/ember/input/InputController.ts": "ac4453b42bb7d76df2c1877368674d1b0aebab711c75ed20a5db5f425a32c8c9",
+    "EmberDemo/assets/scripts/ember/simulation/GameWorld.ts": "1fdabe116ae7a6f07852e669ceffdbc4e087f158ac739adbebf17df517c40ceb",
+    "EmberDemo/assets/scripts/ember/simulation/EnemySystem.ts": "ffabc1a0118df15694b46a5923fd572a0126e6c7cbc500f4df0912007b64bf97",
+    "EmberDemo/assets/scripts/ember/content/animation.ts": "9d0759df69ef66fc68d10ab622e08f9181fc90823bdf733da13e7e8f986c8e73",
+    "EmberDemo/assets/scripts/ember/content/tuning.ts": "d6413ceec0be770e942259270c29f2686ed6e2058823f41365407f0f74ef0c70"
+  },
+  "limitations": [
+    "Existing upright/ground PNGs retain their authored artwork; pre-painted old slanted surfaces still need an art pass.",
+    "No full ten-stage difficulty rebalance, four-client load or public-network latency test.",
+    "New and old clients must not be mixed; this is checkpoint compatibility, not old-battle deterministic replay."
+  ],
+  "git": "No commit or push in this task."
+}

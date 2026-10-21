@@ -43,6 +43,11 @@
     "registered atlas loads locally with nearest sampling: courtyardHeart-phase2-death",
     "registered atlas loads locally with nearest sampling: mirrorRegent-strike",
     "registered atlas loads locally with nearest sampling: mirrorRegent-phase2-strike",
+    "registered atlas loads locally with nearest sampling: hero-run",
+    "registered atlas loads locally with nearest sampling: hero-walk",
+    "registered atlas loads locally with nearest sampling: hero-melee",
+    "registered atlas loads locally with nearest sampling: hero-ranged",
+    "registered atlas loads locally with nearest sampling: hero-states",
     "completion frost scenery and temporal VFX atlases are registered",
     "ordinary visible main menu opens the birth camp",
     "explicit developer configuration applied",
@@ -136,8 +141,8 @@
     "mirrorKnight:strike",
     "warden:strike",
     "rimeWeaver:strike",
-    "mirrorKnight:recovery",
     "warden:recovery",
+    "mirrorKnight:recovery",
     "rimeWeaver:recovery",
     "warden:rootPlates:windup",
     "mirrorKnight:splitEdge:windup",
@@ -169,7 +174,7 @@
     "mirrorRegent:phase2"
   ],
   "seenAtlases": [
-    "pixel-v2/hero",
+    "hero-states",
     "pixel-v1/melee",
     "pixel-v1/warden",
     "pixel-v1/mirrorKnight",
@@ -1579,5 +1584,5 @@
   ],
   "errors": [],
   "external": [],
-  "timestamp": "2026-10-19T09:07:09.072Z"
+  "timestamp": "2026-10-21T08:04:07.095Z"
 }

@@ -1,0 +1,283 @@
+{
+  "date": "2026-10-20",
+  "baseline": "8a54f4c",
+  "tool": "image_gen",
+  "mode": "built_in",
+  "model_version": null,
+  "seed": null,
+  "scope": "concepts_and_gameplay_view_keyframe_designs",
+  "final_selected_boards": 8,
+  "selected_action_boards": 6,
+  "selected_key_pose_cells": 144,
+  "retained_process_boards": 6,
+  "direction_order": [
+    "N",
+    "NE",
+    "E",
+    "SE",
+    "S",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "runtime_integrated": false,
+  "production_animation_approved": false,
+  "alpha_ready": false,
+  "frames_are_complete_loop": false,
+  "review_limitations": [
+    "Opaque boards include presentation labels; no alpha-ready individual sprite export.",
+    "Body proportions, anchors, phase continuity and equipment have not passed production fitting.",
+    "Ranged handedness and shoulder rotation need directional refinement.",
+    "A pixel grid and palette are not technically validated.",
+    "Gallery row bounds are display crops, not sprite slicing contracts."
+  ],
+  "assets": [
+    {
+      "file": "a-concept-draft.png",
+      "prompt_key": "a-concept",
+      "selected": false,
+      "references": [
+        "../rekindled-hero-v1/concept-01.png"
+      ],
+      "generated_original_basename": "exec-227b086d-dcbf-470e-b0d0-e00ee769e26a.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2098220,
+      "sha256": "1d47c358243bd567c2e5f04cef038298120e0f14c27e63458c69daf84574c57d",
+      "identical_to_generated_original": true,
+      "kind": "concept"
+    },
+    {
+      "file": "a-concept.png",
+      "prompt_key": "a-concept-refined",
+      "selected": true,
+      "references": [
+        "a-concept-draft.png"
+      ],
+      "generated_original_basename": "exec-cfce0a09-6632-4a29-86fb-f7350675dab4.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1732443,
+      "sha256": "1f9f8517751c04da197338ea3f199a4da4279140614076da602ddaa8a035113a",
+      "identical_to_generated_original": true,
+      "kind": "concept"
+    },
+    {
+      "file": "b-concept.png",
+      "prompt_key": "b-concept",
+      "selected": true,
+      "references": [
+        "../rekindled-hero-v1/concept-01.png"
+      ],
+      "generated_original_basename": "exec-fb694801-e936-4db7-baf2-007da1b2ef7d.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 2451910,
+      "sha256": "22540a993063a2ab23833c7093ba0e281cd7db20bd77bbf3d76f6c1731971287",
+      "identical_to_generated_original": true,
+      "kind": "concept"
+    },
+    {
+      "file": "a-walk.png",
+      "prompt_key": "a-walk",
+      "selected": true,
+      "references": [
+        "a-concept.png"
+      ],
+      "generated_original_basename": "exec-1f1bbd97-326b-4e8e-bba7-240fa4b09368.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1748568,
+      "sha256": "671082593673cbb0638832993ac249071ca00437b67cfc5864b4101c6fbb0d47",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "b-walk-draft.png",
+      "prompt_key": "b-walk",
+      "selected": false,
+      "references": [
+        "b-concept.png"
+      ],
+      "generated_original_basename": "exec-1536d9ef-a375-456e-b413-3c7e8e15922b.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1717532,
+      "sha256": "ab84c14f278913ee66b76471ea506df5667cb3f8f5d036cbfb610ba219fbb1c3",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "b-walk.png",
+      "prompt_key": "b-walk-fix",
+      "selected": true,
+      "references": [
+        "b-walk-draft.png"
+      ],
+      "generated_original_basename": "exec-4db3a536-f5a2-4f17-8a09-8b155a5b9dfd.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1747519,
+      "sha256": "8953c606b0ef4095cdad541e45deb0e09228788488cc3d58573e7b0eb204e106",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "a-melee-draft.png",
+      "prompt_key": "a-melee",
+      "selected": false,
+      "references": [
+        "a-concept.png",
+        "a-walk.png"
+      ],
+      "generated_original_basename": "exec-0198c82c-1438-4748-9a81-43e1333e2c8c.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1891401,
+      "sha256": "2e94abf389a950ace72526848827a29df27c4a7d0446988ce6755aaf769aa828",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "b-melee-draft.png",
+      "prompt_key": "b-melee",
+      "selected": false,
+      "references": [
+        "b-concept.png"
+      ],
+      "generated_original_basename": "exec-9e7a3e96-ed02-44be-b3b8-9838cd247202.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1859452,
+      "sha256": "aeced61cc0404568888b752e6cb4c998fc5f3adf67bb7a20beedca42b74d6cbf",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "b-melee-draft-02.png",
+      "prompt_key": "b-melee-fix",
+      "selected": false,
+      "references": [
+        "b-melee-draft.png"
+      ],
+      "generated_original_basename": "exec-0097a42a-d170-43a6-8473-95f26206b502.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1829526,
+      "sha256": "51ae686116c7a7ff9c13a84d4ed0cb93cbcbd30f7b97f0104464e51fd9ffc90f",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "a-melee-draft-02.png",
+      "prompt_key": "a-melee-final",
+      "selected": false,
+      "references": [
+        "a-concept.png",
+        "a-walk.png"
+      ],
+      "generated_original_basename": "exec-3555fc1c-7749-43db-8c4c-a5388935bb5a.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1955539,
+      "sha256": "4c6b31cf0238367398fdb4b451357069b39c9b4a98b5d56adcbc24ee969e9d79",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "b-melee.png",
+      "prompt_key": "b-melee-final",
+      "selected": true,
+      "references": [
+        "b-concept.png",
+        "b-walk.png"
+      ],
+      "generated_original_basename": "exec-2ad4f690-4531-4676-9a75-e377a934e849.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1911153,
+      "sha256": "5d90964db055aaeb14503d2e5555459a132c85f21437aa5df9aee7973dc100ff",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "a-melee.png",
+      "prompt_key": "a-melee-occlusion-fix",
+      "selected": true,
+      "references": [
+        "a-melee-draft-02.png"
+      ],
+      "generated_original_basename": "exec-21c2d34e-239c-4488-bf3e-fad8b465e03a.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1969846,
+      "sha256": "09fdc93254c39d77c120c013df7174c74c7ae5fca6356e6ab1f57730987dbd81",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "a-ranged.png",
+      "prompt_key": "a-ranged",
+      "selected": true,
+      "references": [
+        "a-concept.png",
+        "a-walk.png"
+      ],
+      "generated_original_basename": "exec-307abdb7-8d19-4e41-be86-229d1567f31d.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1805258,
+      "sha256": "62f1f7d289d865a23ee0d958c863fc7f98c0a54eded0d5d795a653e101c6c299",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    },
+    {
+      "file": "b-ranged.png",
+      "prompt_key": "b-ranged",
+      "selected": true,
+      "references": [
+        "b-concept.png"
+      ],
+      "generated_original_basename": "exec-1780a196-35b1-4710-852f-baf9ebac467e.png",
+      "width": 1024,
+      "height": 1536,
+      "bytes": 1839703,
+      "sha256": "1edfe2b5b9f487c465bc788d472fa3bb0827ee85c534071413b502f4ac6f72ae",
+      "identical_to_generated_original": true,
+      "kind": "directional_keyframe_board",
+      "direction_rows": 8,
+      "pose_columns": 3,
+      "visually_reviewed": true
+    }
+  ]
+}

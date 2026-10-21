@@ -10,6 +10,7 @@
     "classic normal purchase: default swing remains melee even with ranged-looking equipment",
     "classic normal purchase: animation follows the form, not the equipment",
     "classic: releasing left mouse stops repeated fire",
+    "explicit F2 test world applied",
     "classic: pointer does not snap to enemy center",
     "classic: right-click enemy moves without auto-attack",
     "new form perk is selectable through the paginated F2 UI",
@@ -24,7 +25,7 @@
     "classic six weapons: form matches owned augment",
     "classic six weapons: default swing remains melee even with ranged-looking equipment",
     "classic six weapons: animation follows the form, not the equipment",
-    "classic: six weapon attributes coexist; newest only supplies appearance",
+    "classic: six weapon attributes coexist; all retain the same hero image",
     "classic six weapons mirrored: form matches owned augment",
     "classic six weapons mirrored: default swing remains melee even with ranged-looking equipment",
     "classic six weapons mirrored: animation follows the form, not the equipment",
@@ -34,7 +35,7 @@
     "classic six weapons: directional physical body keeps basic identity",
     "classic six weapons: missile replaces slash instead of adding a second primary attack",
     "classic six weapons: animation follows the form, not the equipment",
-    "classic: six weapon attributes coexist; newest only supplies appearance",
+    "classic: six weapon attributes coexist; all retain the same hero image",
     "classic six weapons mirrored: form matches owned augment",
     "classic six weapons mirrored: directional physical body keeps basic identity",
     "classic six weapons mirrored: missile replaces slash instead of adding a second primary attack",
@@ -55,6 +56,7 @@
     "wasd normal purchase: default swing remains melee even with ranged-looking equipment",
     "wasd normal purchase: animation follows the form, not the equipment",
     "wasd: releasing left mouse stops repeated fire",
+    "explicit F2 test world applied",
     "wasd: pointer does not snap to enemy center",
     "new form perk is selectable through the paginated F2 UI",
     "explicit F2 test world applied",
@@ -70,7 +72,7 @@
     "wasd six weapons: form matches owned augment",
     "wasd six weapons: default swing remains melee even with ranged-looking equipment",
     "wasd six weapons: animation follows the form, not the equipment",
-    "wasd: six weapon attributes coexist; newest only supplies appearance",
+    "wasd: six weapon attributes coexist; all retain the same hero image",
     "wasd six weapons mirrored: form matches owned augment",
     "wasd six weapons mirrored: default swing remains melee even with ranged-looking equipment",
     "wasd six weapons mirrored: animation follows the form, not the equipment",
@@ -80,7 +82,7 @@
     "wasd six weapons: directional physical body keeps basic identity",
     "wasd six weapons: missile replaces slash instead of adding a second primary attack",
     "wasd six weapons: animation follows the form, not the equipment",
-    "wasd: six weapon attributes coexist; newest only supplies appearance",
+    "wasd: six weapon attributes coexist; all retain the same hero image",
     "wasd six weapons mirrored: form matches owned augment",
     "wasd six weapons mirrored: directional physical body keeps basic identity",
     "wasd six weapons mirrored: missile replaces slash instead of adding a second primary attack",
@@ -96,5 +98,5 @@
     "no browser runtime errors"
   ],
   "errors": [],
-  "timestamp": "2026-10-19T09:02:47.461Z"
+  "timestamp": "2026-10-21T09:20:12.888Z"
 }

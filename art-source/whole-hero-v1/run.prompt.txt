@@ -1,0 +1,11 @@
+Use case: stylized-concept. Production transparent sprite atlas for Project Ember, NOT a concept poster and NOT separated paper-doll parts.
+Reference image is identity only: the same bald, bloodless, faceless long-dead ash-grey human in a short tattered charcoal-purple wrap tunic, dull ochre sash, ragged dark trousers, pale forearm and shin wraps, bare feet, tiny dry amber chest ember. No eyes, nose, mouth, ears, hair, hood, helmet, armor, carried weapon or red wounds. Simplify tiny texture into strong coherent pixel clusters. Original Dead Cells-inspired pixel-art identity, readable at about 70 pixels tall in game.
+Draw the entire connected character in EVERY cell, with natural connected shoulder, elbow, hips and knees, clothing wrapping around the body, NO detachable joints, no independent limbs.
+Output: one wide PNG, TRUE TRANSPARENT alpha outside the sprites. Precisely 8 columns and 5 rows, equal cells, no labels, guides, grid lines, shadows, background, effects or watermark. Only 40 complete figures. Requested canvas 1536x1024. Leave generous transparent gutters in every cell and never cross a cell border.
+Each ROW is one facing held consistently across all 8 frames:
+row 1: SOUTH facing the viewer, seeing face and chest;
+row 2: SOUTH-EAST facing down-right, three-quarter front;
+row 3: EAST facing right, side profile;
+row 4: NORTH-EAST facing up-right, three-quarter back;
+row 5: NORTH facing away, seeing back of head and back of tunic, no chest ember on the back.
+Each row is an 8-frame RUN-IN-PLACE loop, not a turnaround. Columns: left contact, left compression, left push-off, airborne transition, right contact, right compression, right push-off, airborne transition. Opposite arm swings, bent elbows, leg folds and tunic follow-through, clear changing silhouettes. Fixed feet-ground reference near 88% cell height and body center at 50% cell width; head around 15% cell height when standing. Preserve identical anatomical size across all directions and frames; airborne frames may rise above the common ground, do not move entire character across the cell. Each whole figure should fit within about 70% of cell width and 76% of cell height. Cohesive anatomy and confident pixel clusters take priority over small cloth details. No blur, soft shading, antialiasing, extra limbs or duplicated torsos.

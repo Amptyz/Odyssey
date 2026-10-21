@@ -6,7 +6,7 @@ import {MAPS,mapDefinition} from '../EmberDemo/assets/scripts/ember/content/maps
 import {enemy} from '../EmberDemo/assets/scripts/ember/content/enemies';
 import {Pathfinder} from '../EmberDemo/assets/scripts/ember/ai/Pathfinder';
 import {enemyPlacements,exitProgress,levelDefinition,levelSnapshot,levelSpawn} from '../EmberDemo/assets/scripts/ember/simulation/LevelSystem';
-import {DEFAULT_PROJECTION,followProjection,screenToWorld,visibleWorldBounds,worldToScreen} from '../EmberDemo/assets/scripts/ember/render/IsoProjection';
+import {DEFAULT_PROJECTION,followProjection,screenToWorld,visibleWorldBounds,worldToScreen} from '../EmberDemo/assets/scripts/ember/render/GroundProjection';
 import {distance} from '../EmberDemo/assets/scripts/ember/utils/math';
 import {GAME_TUNING} from '../EmberDemo/assets/scripts/ember/content/tuning';
 

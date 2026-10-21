@@ -58,7 +58,7 @@ raw < 220：0.5 × raw + 110
 
 玩家模板 rawMS使用421.25，软阈值后420点；全局提速后基础速度从4.2变为6.3格/秒。普通面板snapshot.stats.moveSpeed仍为420点，stats.speed为6.3。单位attributeValues.moveSpeed及解释final.moveSpeed为来源合成的raw值；attributeExplanation.movement提供rawPoints/points/worldSpeed，unit.movementPoints/worldMoveSpeed额外包含当下减速。F2将原始项标为rawMoveSpeed。
 
-普通移动在消费该基准后按等距投影方向补偿，让上下与横向的屏幕速度一致。`stats.speed / worldSpeed / worldMoveSpeed`保留为横向基准；实际方向速度由单位velocity表示。该补偿不写回AttributeSet，不重复叠加到装备或减速属性。实现与数值见[速度与镜头](GAME_FEEL.md)。
+`stats.speed / worldSpeed / worldMoveSpeed`表示真实世界格/秒；无遮挡、满输入、匀速时，各方向的velocity长度都等于该值。地面采用等比例投影，不再按方向补偿移速，镜头缩放不参与属性公式。模拟输入幅度、减速、起步 / 刹停和碰撞仍会降低实际速度。实现与数值见[战斗平面、速度与镜头](GAME_FEEL.md)。
 
 皮衣+10%与兜帽+5%先相加为rawMS×1.15，再经软阈值和全局1.5倍率，得到7.05825格/秒。MS为零不代表不可移动；固定单位用canMove:false。统一参数见 [全局速度与镜头](GAME_FEEL.md)。
 

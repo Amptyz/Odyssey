@@ -1,0 +1,13 @@
+Make a precise lighting correction to this supplied Ember concept board. Preserve the composition, character, text, detailed INTERNAL swept streaks, sharp clean silhouette and translucent appearance. This is NOT a style restart. The important remaining error is that too much of the outer arc is equally white. Make the weapon-position highlight unmistakably LOCAL.
+
+For the large upper-left study and its detail inset:
+Put ONE compact brilliant white blade-shaped hotspot at the advancing lower-right end of the sweep. It occupies only about 10-15% of the total curved motion path. A short slanted bright cutting plane is the current strike position. Immediately behind this spot use pale cool silver, then progressively duller blue-grey, then transparent near-background old trail. The upper and upper-left old tail must be dark and visibly see-through. Remove the long continuous white border along old portions of the curve. Keep the rich overlapping internal streamlines, but older internal streaks MUST also darken and fade. No white highlights at the oldest tips. Keep a broad substantial wake, not a skinny streak. No floating particles.
+
+For lower panels, keep exact labels:
+03 RELEASE / 120ms: the ONLY brilliant white hotspot is at UPPER-RIGHT, with a short dimmer wake behind.
+04 CUT / 160ms: the ONLY brilliant white hotspot has traveled to RIGHT-MIDDLE. Its old upper-right trail is now clearly dark and transparent.
+05 FOLLOW / 200ms: the ONLY brilliant white hotspot has traveled to LOWER-RIGHT. Its old upper and middle trail is dark and transparent. Do NOT light up the full rim.
+06 WAKE / 240ms: no white anywhere, only grey-blue low-opacity trailing flow.
+07 FADE / 300ms: almost gone, show background through it.
+01 and 08 have no effect. 02 only a tiny very dim trace.
+Every panel must visibly show the relationship: CURRENT EDGE brightest -> RECENT WAKE medium -> OLD WAKE transparent and dark. Use luminance AND opacity change along the curve. Crisp outside contours and translucent INSIDE, not foggy bloom. Preserve the elegant interior detail and sharp negative-space channels from this supplied image. No added objects, no new text, no different hero, no dots or jagged outside, no equally bright full crescent.

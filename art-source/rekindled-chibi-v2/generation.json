@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-21",
+  "tool": "image_gen",
+  "status": "coarse_pixel_revision_not_runtime",
+  "reference": "art-source/rekindled-chibi-v1/concept.png",
+  "originalOutputName": "exec-9c9488d3-ea2d-4e1a-9054-eb275480cdf7.png",
+  "output": "concept.png",
+  "prompt": "concept.prompt.txt",
+  "width": 1536,
+  "height": 1024,
+  "mode": "RGB",
+  "sha256": "4f3a81e5863aff0a64765efa80e9540ca921dc23cdf97a8587fb3a90be4b754d",
+  "sourceCopyMatches": true,
+  "visualReview": "Coarser clusters and simplified texture reviewed against v1. Strict logical-grid, palette and recoloring mask not production-validated."
+}

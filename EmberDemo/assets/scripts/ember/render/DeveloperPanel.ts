@@ -84,7 +84,7 @@ export class DeveloperPanel {
     button(`技能 ${this.skillPage+1}/${pages} →`,390,-31,300,()=>{this.skillPage=(this.skillPage+1)%pages;this.invalidate();});
     for(const [i,slot] of EQUIPMENT_SLOTS.entries()){
       const id=c.equipment[slot],ids=[undefined,...SHOP_CATALOG.filter(candidate=>!Object.entries(c.equipment).some(([key,value])=>key!==slot&&value===candidate))];
-      button(`${SLOT_NAMES[slot]}：${id?equipment(id).name:'空'}`,(i%3-1)*390,-96-Math.floor(i/3)*55,350,()=>{const next=ids[(ids.indexOf(id)+1)%ids.length];if(next){c.equipment[slot]=next;if(!c.purchaseOrder.includes(next))c.purchaseOrder.push(next);}else delete c.equipment[slot];this.configure(c);});
+      button(`${SLOT_NAMES[slot]}：${id?equipment(id).name:'空'}`,(i%3-1)*390,-96-Math.floor(i/3)*55,350,()=>{const next=ids[(ids.indexOf(id)+1)%ids.length];if(next){c.equipment[slot]=next;}else delete c.equipment[slot];this.configure(c);});
     }
     text('Build notes',root,`先选 Q/W/E/R 槽，再点击技能；已选技能会交换。六个装备栏不限类型，同一物品不重复。\n点击装备栏循环选择；外观按部位显示最后加入购买顺序的当前装备。`,14,0,-202,1150,45,'#BBD1C7');
   }

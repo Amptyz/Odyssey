@@ -1,0 +1,25 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "art-source/basic-slash-v7/white-study.png",
+  "selected_source": "/Users/didi/.codex/generated_images/01a13ec6-0569-7cc2-a73f-0dbbbe519526/exec-9da14593-47f5-4abf-a97a-78a1a37c09e2.png",
+  "runtime": "EmberDemo/assets/resources/art/melee-v2/white-flow.png",
+  "size": [
+    2172,
+    724
+  ],
+  "mode": "RGBA",
+  "sha256": "6f731b57c5aa18cc7afb1753027e89504f55154aeb9781dc5d233120d6b990a0",
+  "alpha": {
+    "zero": 1064498,
+    "partial": 508005,
+    "opaque": 25
+  },
+  "processing": "Source copied unchanged; UV window, polar mapping and opacity are Cocos runtime material operations. No offline repaint or alpha extraction.",
+  "uv_window": [
+    0.01,
+    0.2,
+    0.995,
+    0.76
+  ],
+  "review": "Agent inspected generated texture and actual Creator screenshots. User has not approved this runtime revision."
+}

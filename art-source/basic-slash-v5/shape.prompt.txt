@@ -1,0 +1,26 @@
+Create a NEW neutral melee VFX SHAPE-CORRECTION study on a charcoal slate background. No reference image: start fresh rather than reproducing a crescent. This is an asymmetric curved sword-motion wake for a pixel action game. The essential requirement is a BROAD TERMINAL END and a progressively THIN OLD TAIL. One edge of the effect is a wide cutoff, not a point.
+
+GEOMETRY — follow this explicitly:
+The large upper study has a thin OLD starting point at approximately 20% of its panel width, 20% of its panel height. The trail curves clockwise through the upper-right of its panel and descends toward the lower-right. It is a curved ribbon with width increasing as it approaches the newest end.
+The CURRENT terminal end has TWO DISTINCT endpoints: the OUTER edge ends near 83% panel width / 78% panel height, and the INNER edge ends near 55% panel width / 65% panel height. CONNECT THESE TWO ENDPOINTS WITH A WIDE, SHARP, SLANTED LUMINOUS CUT FACE. The width across this terminal face is the MAXIMUM width of the entire ribbon.
+Do not let inner and outer edges meet at the new end. They must stop FAR APART, joined by a broad diagonal cutting face. This is the most important feature.
+From this broad end, following the curve BACKWARD, the two edges gradually approach each other and meet only at the very thin oldest starting point. Width profile from new to old: 100%, 75%, 45%, 20%, 0%. Never widest at the middle.
+There must be NO continuation below or behind the broad cut face, NO thin lower-left extension after the current end, NO pointed bright nose, NO crescent with two sharp ends, NO fat middle with a narrowing front. Do not draw a banana, boomerang, lens, pointed comet, arrowhead, or surrounding aura.
+Think a curved ribbon whose NEW END IS CUT OFF BROADLY on a slant while its OLD END dwindles to one fine point. This is a broad swept cutting plane, NOT a thick outline around a hollow crescent.
+
+LIGHTING AND INTERNAL DETAIL:
+The wide current terminal face is bright ivory-white and solid. Just behind it, silver-white flow extends a short distance along the ribbon, then becomes muted blue-grey and transparent as it approaches the old tail. BOTH brightness and alpha decay toward the thin old tail. Interior rich elegant Hades-like motion detail: unequal lengths of flowing fine tapered striations, overlapping translucent folds, negative-space channels, subtle angular highlights. These details must all follow the curved flow and remain INSIDE the ribbon. Near the newest end they spread apart across its FULL WIDTH instead of converging to a point. Crisp clean outer silhouette; fine controlled raster edges suitable for a pixel game; no serrated fringe, no sawteeth, no external particles or fog, no flat three-stripe bands. Keep it visually powerful.
+
+COMPOSITION:
+Landscape concept board about 1600x1100.
+Small heading "EMBER / WIDE-END SWING".
+Upper 58%: one BIG isolated beautiful effect, no character. Give it enough room to show the broad terminal cut face. A fine understated callout at the old thin tail says "OLD / THIN + FAINT"; a separate fine callout pointing to the full terminal cutting face says "NOW / WIDEST + BRIGHTEST". Callouts are outside the effect.
+Lower 37%: eight small equal panels arranged in two rows of four. Same central origin in each. Labels 01 LOAD, 02 COIL, 03 RELEASE, 04 CUT, 05 FOLLOW, 06 WAKE, 07 FADE, 08 CLEAR.
+01 and 08 empty. 02 nearly invisible tiny preparation trace.
+03 current broad end upper-right with short thin wake.
+04 current broad end right-center, older curved wake tapers upwards.
+05 current broad end lower-right, older longer curved wake tapers back upwards and left.
+Every active frame MUST have a visible broad terminating cross-section; never converge to a pointed new end.
+06 no white cap, low opacity old wake shrinks.
+07 almost invisible.
+No hero or weapon object is needed: this board deliberately isolates the effect's CORRECT shape. Do not add elemental variants, decorative symbols or extra diagrams. Spend the detail on the beautiful internal light structure and the unmistakably widest CURRENT END.

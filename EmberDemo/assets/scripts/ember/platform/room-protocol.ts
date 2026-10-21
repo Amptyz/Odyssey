@@ -3,12 +3,13 @@ import type { WorldSnapshot } from '../simulation/GameWorld';
 import type { RunCheckpoint } from '../simulation/RunCheckpoint';
 import { SKILL_SLOTS,HERO_SKILLS } from '../content/skills';
 import { SHOP_CATALOG,EQUIPMENT_SLOTS } from '../content/equipment';
+import {isHeroPaletteId} from '../content/hero-palettes';
 
-export const ROOM_VERSION='ember-coop-7';
+export const ROOM_VERSION='ember-coop-9';
 export const MAX_PLAYERS=4;
 export interface RoomMember {id:string;name:string;connected:boolean;active:boolean}
 export interface RoomInfo {code:string;hostId:string;members:RoomMember[];started:boolean;revision:number;hasSave:boolean;hostAvailable:boolean}
-export type PlayerView=Pick<WorldSnapshot,'phase'|'scene'|'hero'|'loadout'|'cooldowns'|'perks'|'choices'|'pendingSkill'|'gold'|'inventory'|'equipment'|'purchaseOrder'|'appearance'|'stats'|'destination'|'primed'|'equipmentPassives'|'basicAttack'>;
+export type PlayerView=Pick<WorldSnapshot,'phase'|'scene'|'hero'|'loadout'|'cooldowns'|'perks'|'choices'|'pendingSkill'|'gold'|'inventory'|'equipment'|'stats'|'destination'|'primed'|'equipmentPassives'|'basicAttack'>;
 export type RoomClientMessage=
   | {type:'hello';version:string;action:'create'|'join'|'recover';identity:string;name:string;code?:string;checkpoint?:RunCheckpoint}
   | {type:'command';seq:number;command:GameCommand}
@@ -29,6 +30,7 @@ export function validRoomCommand(value:unknown):value is GameCommand {
   const c=value as GameCommand;if(!c||typeof c!=='object')return false;
   const point=(v:unknown):boolean=>{const p=v as {x:number;y:number};return !!p&&Number.isFinite(p.x)&&Number.isFinite(p.y)&&Math.abs(p.x)<10000&&Math.abs(p.y)<10000;};
   switch(c.type){
+    case 'SetHeroPalette':return isHeroPaletteId(c.paletteId);
     case 'Interact':case 'CloseInteraction':case 'Stop':case 'LeaveShop':case 'CancelSkill':return true;
     case 'MoveTo':case 'Attack':return point(c.point);
     case 'DirectInput':return point(c.movement)&&Math.hypot(c.movement.x,c.movement.y)<=1.001;

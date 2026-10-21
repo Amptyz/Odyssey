@@ -4,7 +4,8 @@ import {AttributeSet,PLAYER_TEMPLATE,movementSpeed} from '../EmberDemo/assets/sc
 import {ENEMIES} from '../EmberDemo/assets/scripts/ember/content/enemies';
 import {SKILLS} from '../EmberDemo/assets/scripts/ember/content/skills';
 import {GameWorld} from '../EmberDemo/assets/scripts/ember/simulation/GameWorld';
-import {DEFAULT_PROJECTION,SmoothCameraFollow,worldToScreen,screenToWorld,visibleWorldBounds} from '../EmberDemo/assets/scripts/ember/render/IsoProjection';
+import {DEFAULT_PROJECTION,SmoothCameraFollow,worldToScreen,screenToWorld,visibleWorldBounds,worldLengthToScreen} from '../EmberDemo/assets/scripts/ember/render/GroundProjection';
+import {viewToWorldVector} from '../EmberDemo/assets/scripts/ember/utils/GroundPlane';
 import {startCombatFixture} from './helpers/scenes';
 const camera=()=>({...DEFAULT_PROJECTION,origin:{x:0,y:0}});
 function world(){const w=new GameWorld();startCombatFixture(w);for(const [id,a]of w.actors)if(a.team==='enemy')w.actors.delete(id);Object.assign(w.hero,{x:20,y:20,previous:{x:20,y:20}});return w;}
@@ -27,6 +28,26 @@ describe('global combat pace',()=>{
   for(let i=0;i<60&&!w.enemies.snapshot().projectiles.length;i++)w.advance(1/30);
   const before=w.enemies.snapshot().projectiles[0]!;expect(before).toBeDefined();w.advance(1/30);const after=w.enemies.snapshot().projectiles[0]!;
   expect(Math.hypot(after.x-before.x,after.y-before.y)).toBeCloseTo(9/30);
+ });
+ it('keeps actual missile flight and skill dash length isotropic in world and screen space',()=>{
+  const start={x:18,y:12},c=camera(),origin=worldToScreen(start,c);
+  for(let angle=0;angle<Math.PI*2;angle+=Math.PI/4){
+   const dir=viewToWorldVector({x:Math.cos(angle),y:Math.sin(angle)}),target={x:start.x+dir.x*10,y:start.y+dir.y*10};
+   const w=world(),sentinel=w.spawnEnemy('ranged',{x:3,y:3});
+   sentinel.attributes=new AttributeSet({...sentinel.attributes.template,canMove:false,canAttack:false});
+   Object.assign(w.hero,start,{previous:{...start}});w.combat.addPerk('missileAttack');w.command({type:'Attack',point:target});
+   const bullet=w.projectiles[0]!;expect(bullet).toBeDefined();
+   expect(Math.hypot(bullet.vx,bullet.vy)).toBeCloseTo(27);
+   expect(bullet.remaining*27).toBeCloseTo(w.stats.attackRange);
+   for(let i=0;i<3;i++)w.advance(1/30);
+   expect(w.projectiles).toContain(bullet);expect(Math.hypot(bullet.x-start.x,bullet.y-start.y)).toBeCloseTo(2.7);
+   expect(Math.hypot(worldToScreen(bullet,c).x-origin.x,worldToScreen(bullet,c).y-origin.y)).toBeCloseTo(worldLengthToScreen(2.7,c));
+   w.command({type:'CastSkill',skillId:'dash',point:target});
+   for(let i=0;i<6;i++)w.advance(1/30);
+   const dash=SKILLS.dash.behavior;if(dash.kind!=='dash')throw Error('Expected dash fixture');
+   expect(Math.hypot(w.hero.x-start.x,w.hero.y-start.y)).toBeCloseTo(dash.distance);
+   const end=worldToScreen(w.hero,c);expect(Math.hypot(end.x-origin.x,end.y-origin.y)).toBeCloseTo(worldLengthToScreen(dash.distance,c));
+  }
  });
 });
 describe('smooth zoomed camera',()=>{

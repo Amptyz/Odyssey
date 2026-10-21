@@ -10,7 +10,7 @@ import { ENEMIES,enemy } from './enemies';
 import { MAPS,mapDefinition } from './maps';
 import { LAB_PRESETS,PERKS } from './perks';
 import { STATUSES } from './statuses';
-import { EFFECT_APPEARANCES,UNIT_APPEARANCES,EQUIPMENT_APPEARANCES,EQUIPMENT_SPRITES,PROCEDURAL_EQUIPMENT,UNIT_SPRITES,ENVIRONMENT_APPEARANCES } from './appearances';
+import { EFFECT_APPEARANCES,UNIT_APPEARANCES,UNIT_SPRITES,ENVIRONMENT_APPEARANCES } from './appearances';
 import { ATLAS_FRAMES } from './art-manifest';
 import { EQUIPMENT,SHOP_CATALOG,EQUIPMENT_CATEGORIES,equipment } from './equipment';
 import { BASIC_ATTACKS } from './attacks';
@@ -97,11 +97,7 @@ export function validateContent():void {
   }
   requireContent(SHOP_CATALOG.length===Object.keys(EQUIPMENT).length&&new Set(SHOP_CATALOG).size===SHOP_CATALOG.length,'shop catalog');
   for(const id of SHOP_CATALOG){const e=equipment(id);requireContent(EQUIPMENT_CATEGORIES.includes(e.category),`equipment.${id}.category`);positive(e.price,`equipment.${id}.price`);requireContent(Number.isInteger(e.price),`equipment.${id}.integer price`);
-    requireContent(EQUIPMENT_APPEARANCES[e.appearance]?.layer===e.category,`equipment.${id}.appearance layer`);
     requireContent((e.modifiers??[]).every(validModifier),`equipment.${id}.modifiers`);
-    const sprite=EQUIPMENT_SPRITES[e.appearance],procedural=PROCEDURAL_EQUIPMENT[e.appearance];
-    requireContent(procedural?.layer===e.category||sprite&&ATLAS_FRAMES.equipment[sprite.frame],`equipment.${id}.sprite or procedural`);
-    if(sprite){positive(sprite.width,`equipment.${id}.sprite width`);positive(sprite.height,`equipment.${id}.sprite height`);}
     const groups=new Set<string>();for(const passive of e.passives??[]){requireContent(!groups.has(passive.group)&&passive.group.startsWith('equipment.'),`equipment.${id}.passive group`);groups.add(passive.group);validateExpression(passive.expression);positive(passive.cooldown,`equipment.${id}.passive cooldown`);if(passive.kind==='spellblade')positive(passive.armDuration,`equipment.${id}.arm duration`);else{positive(passive.duration,`equipment.${id}.shield duration`);requireContent(passive.healthBelow>0&&passive.healthBelow<1,`equipment.${id}.shield threshold`);}}
     for(const [key,value] of Object.entries(e.stats))requireContent(Number.isFinite(value)&&value>=0,`equipment.${id}.stats.${key}`);}
   for(const [key,value] of Object.entries(ECONOMY))requireContent(Number.isInteger(value)&&value>=0,`economy.${key}`);

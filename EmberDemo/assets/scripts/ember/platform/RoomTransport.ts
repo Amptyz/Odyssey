@@ -42,7 +42,7 @@ export class RoomTransport implements CommandPort {
       if(typeof location!=='undefined'&&location.protocol==='https:'&&url.protocol!=='wss:')throw Error('HTTPS 页面需要 wss:// 中转地址');
       if(action!=='create'&&!/^[A-Z2-9]{6}$/.test(code.trim().toUpperCase()))throw Error('请输入 6 位房间码');
       this.leave();this.closed=false;this.fault='';this.saved=undefined;this.ui.saved=false;this.ui.endpoint=url.href;this.ui.name=name.slice(0,16)||'旅人';this.ui.code=code.trim().toUpperCase();
-      const initial=new GameWorld(this.local.seed,this.local.snapshot().mapId);initial.saveLobby();
+      const initial=new GameWorld(this.local.seed,this.local.snapshot().mapId);initial.command({type:'SetHeroPalette',paletteId:this.local.paletteId});initial.saveLobby();
       this.request={type:'hello',version:ROOM_VERSION,action,identity:this.identity,name:this.ui.name,code:this.ui.code,checkpoint:action==='create'?initial.savedRun:undefined};
       try{localStorage.setItem('ember.room.endpoint',url.href);localStorage.setItem('ember.room.name',this.ui.name);}catch{/* The connection still works without storage. */}
       this.open();this.lastPump=performance.now();this.timer=setInterval(()=>this.pump(),33);
@@ -82,7 +82,10 @@ export class RoomTransport implements CommandPort {
       this.ui.room=message.room;this.syncMembers();return;
     }
     if(message.type==='begin'&&this.isHost&&this.world){if(this.world.phase==='ready')this.world.command({type:'Start'},this.ui.playerId);this.flushSave();return;}
-    if(message.type==='command'&&this.isHost){this.remoteInputAt.set(message.playerId,performance.now());if(this.queued.length<128)this.queued.push({playerId:message.playerId,command:message.command});return;}
+    if(message.type==='command'&&this.isHost){
+      if(message.command.type==='SetHeroPalette'){if(validRoomCommand(message.command))this.world?.command(message.command,message.playerId);return;}
+      this.remoteInputAt.set(message.playerId,performance.now());if(this.queued.length<128)this.queued.push({playerId:message.playerId,command:message.command});return;
+    }
     if(message.type==='frame'&&!this.isHost){
       this.awaitingFrame=false;this.previous=this.remote;this.remote=message.snapshot;this.remoteReceived=performance.now();return;
     }
@@ -106,8 +109,15 @@ export class RoomTransport implements CommandPort {
   }
   begin():void {if(this.isHost&&!this.pendingSave)this.write({type:'begin'});}
   skipOffline():void {if(this.isHost)this.write({type:'skipOffline'});}
+  get canSetPalette():boolean {return !this.request||!!(this.ui.connected&&this.ui.room?.hostAvailable);}
   send(command:GameCommand):void {
     if(!this.ui.room&&!this.request){this.local.send(command);return;}
+    if(command.type==='SetHeroPalette'){
+      if(!validRoomCommand(command)||!this.canSetPalette)return;
+      if(this.isHost)this.world?.command(command,this.ui.playerId);
+      else this.write({type:'command',seq:++this.seq,command});
+      return;
+    }
     if(command.type==='Restart'){this.leave();return;}
     if(command.type==='TogglePause'){this.menuOpen=!this.menuOpen;if(this.menuOpen)this.send({type:'Stop'});return;}
     if(this.uiOpen&&command.type!=='Stop')return;
@@ -143,8 +153,8 @@ export class RoomTransport implements CommandPort {
       this.lastFrame=now;const base=this.world.snapshot(this.ui.playerId),views:Record<string,PlayerView>={};
       for(const member of this.ui.room!.members){
         if(!this.world.players.has(member.id))continue;const s=this.world.snapshot(member.id);
-        const {phase,scene,hero,loadout,cooldowns,perks,choices,pendingSkill,gold,inventory,equipment,purchaseOrder,appearance,stats,destination,primed,equipmentPassives,basicAttack}=s;
-        views[member.id]={phase,scene,hero,loadout,cooldowns,perks,choices,pendingSkill,gold,inventory,equipment,purchaseOrder,appearance,stats,destination,primed,equipmentPassives,basicAttack};
+        const {phase,scene,hero,loadout,cooldowns,perks,choices,pendingSkill,gold,inventory,equipment,stats,destination,primed,equipmentPassives,basicAttack}=s;
+        views[member.id]={phase,scene,hero,loadout,cooldowns,perks,choices,pendingSkill,gold,inventory,equipment,stats,destination,primed,equipmentPassives,basicAttack};
       }
       // Navigation paths are simulation internals, not required by remote renderers.
       for(const u of base.units)u.path=[];

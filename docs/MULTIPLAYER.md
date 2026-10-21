@@ -64,7 +64,7 @@ ESC 打开自己的操作设置，不能暂停全队。房间断线 / 房主切�
 
 CombatEngine 仍是一个共享事件引擎，状态计时每个 tick 只推进一次。伤害属性按 sourceId / targetId 查对应玩家；规则计数、去重包括来源玩家，不把一个玩家的装备或海克斯用于全队。敌人选择最近的存活参与玩家，命中仍走同一个 CollisionWorld。第一版没有人数动态难度、队友复活交互或战利品分配系统。
 
-当前协议为 `ember-coop-7`，`RunCheckpoint.version` 为 `4`。每名玩家保存六个通用装备栏和purchaseOrder，按购买顺序重建外观，按各自余烬重建普攻形式。每名玩家各自持有 AttributeSet；恢复点保存当前法力和额外永久属性来源，装备 / 余烬按 ID 重建后再加入永久来源。导入禁止伪装为 equipment:/perk:/temporary:/developer 的来源；不保存解析后的最终 AD/AP，避免恢复时重复加成。旧 v1/v2/v3 恢复点明确拒绝，没有静默迁移。v6房间的v4恢复点可继续加载；原技能保留，新局每位玩家独立从四个null槽位开始，未装备槽位的冷却快照为0。
+当前协议为 `ember-coop-9`，`RunCheckpoint.version` 为 `5`。每名玩家保存六栏、库存、金币与独立AttributeSet来源；不保存装备外观或购买顺序；各玩家保存独立paletteId，旧存档缺省按席位补色。配色在大厅和局内经SetHeroPalette同步，不能指定其他玩家；战斗中只修改已有恢复点的配色元数据。详见[主角配色](HERO_COLORS.md)。v4存档经parseRunCheckpoint迁移为v5，旧外观字段被丢弃，装备与余烬继续按ID重建，永久属性来源加入一次；v1/v2/v3仍拒绝。外部来源不能伪装equipment:/perk:/temporary:/developer。新局四个技能槽为null；旧存档技能保留。双方客户端与中转需使用相同房间协议。
 
 `WorldSnapshot` 仍然不是任意时刻的可恢复存档。`RunCheckpoint` 只在稳定阶段 / 波次起点生成，包含生成敌人前后的随机状态、实体编号，以及各玩家构筑与阶段确认；不要把战斗中途快照伪装成波次存档。新增影响跨波进度的字段必须同步保存、校验、恢复和测试。修改不兼容协议或内容时提升 `ROOM_VERSION` / 存档版本，禁止静默接受旧客户端。
 

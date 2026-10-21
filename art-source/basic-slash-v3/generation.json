@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-21",
+  "tool": "built-in image_gen",
+  "operation": "edit",
+  "outputBasename": "exec-a95e528c-5773-42a3-b2c5-916875d2f449.png",
+  "references": [
+    {
+      "file": "../basic-slash-v2/concept.png",
+      "role": "edit target; preserve layout, character and broad slash"
+    },
+    {
+      "file": "../basic-slash-v2/references/broad-sweep.png",
+      "role": "continuous sharp outer contour"
+    },
+    {
+      "file": "../basic-slash-v2/references/impact-silhouette.png",
+      "role": "solid impactful silhouette"
+    }
+  ],
+  "prompt": "concept.prompt.txt",
+  "output": "concept.png",
+  "size": [
+    1448,
+    1086
+  ],
+  "mode": "RGB",
+  "sha256": "2bccf7b281a50a18911c0bc15ece407d14550109719e20c5040fcfa7022f042f",
+  "postProcessing": "none",
+  "scope": "concept board only"
+}

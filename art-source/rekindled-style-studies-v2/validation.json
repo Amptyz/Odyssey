@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-20",
+  "scope": "concept_and_static_keyframe_design",
+  "png_source_hashes_checked": 14,
+  "selected_boards": 8,
+  "key_pose_cells_visually_reviewed": 144,
+  "js_syntax": "passed",
+  "git_diff_check": "passed",
+  "browser_gallery_checks": [
+    "Concept A/B visible",
+    "Melee S row side-by-side visible",
+    "Melee N selected",
+    "Ranged E A-only visible",
+    "Walk full-sheet A/B visible",
+    "Style, direction and sheet/row controls verified"
+  ],
+  "browser_screenshot": "preview.png",
+  "runtime_tests_run": false,
+  "cocos_build_run": false,
+  "production_ready": false,
+  "known_limits": [
+    "Opaque boards include presentation labels; no alpha-ready individual sprite export.",
+    "Body proportions, anchors, phase continuity and equipment have not passed production fitting.",
+    "Ranged handedness and shoulder rotation need directional refinement.",
+    "A pixel grid and palette are not technically validated.",
+    "Gallery row bounds are display crops, not sprite slicing contracts."
+  ],
+  "local_link_targets_checked": 181,
+  "missing_local_targets": []
+}

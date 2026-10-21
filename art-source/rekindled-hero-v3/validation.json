@@ -1,0 +1,195 @@
+{
+  "date": "2026-10-20",
+  "scope": "static design artifacts and documentation; no runtime integration",
+  "selectedSheets": 6,
+  "selectedPoseCells": 104,
+  "runningPoseCells": 32,
+  "fileChecks": [
+    {
+      "file": "concept-draft.png",
+      "selected": false,
+      "size": [
+        1536,
+        1024
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "concept.png",
+      "selected": true,
+      "size": [
+        1536,
+        1024
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "walk.png",
+      "selected": true,
+      "size": [
+        1024,
+        1536
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "melee.png",
+      "selected": true,
+      "size": [
+        1024,
+        1536
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "ranged.png",
+      "selected": true,
+      "size": [
+        1024,
+        1536
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "run-draft.png",
+      "selected": false,
+      "size": [
+        1024,
+        1536
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "run-draft-02.png",
+      "selected": false,
+      "size": [
+        1024,
+        1536
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "run-north.png",
+      "selected": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "run-south-draft.png",
+      "selected": false,
+      "size": [
+        1254,
+        1254
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "file": "run-south.png",
+      "selected": true,
+      "size": [
+        1254,
+        1254
+      ],
+      "copyHashMatches": true,
+      "pngReadable": true,
+      "alphaExtrema": [
+        255,
+        255
+      ]
+    }
+  ],
+  "manualVisualReview": [
+    "Selected six boards share bald, featureless shadow-face, bloodless identity.",
+    "Old detailed ears removed from concept.",
+    "Eight screen-relative directions covered; N/back and S/front separated.",
+    "Melee back-view forearms remain occluded by torso.",
+    "Run north/south sheets display distinct compression and airborne phases.",
+    "South run draft had six misdirected cells; corrected to the left in selected version."
+  ],
+  "browser": {
+    "url": "http://127.0.0.1:8083/",
+    "viewport": [
+      693,
+      853
+    ],
+    "checked": [
+      "concept initial state",
+      "walk tab",
+      "melee tab",
+      "ranged tab",
+      "run east cropped row and image",
+      "run west cropped row and image",
+      "full run view references both boards",
+      "return to run east and retain tab"
+    ],
+    "screenshot": "preview.png",
+    "all32DirectionActionCombinationsTested": false
+  },
+  "checks": {
+    "galleryJavaScriptSyntax": "PASS (node vm.Script)",
+    "skillStructure": "PASS (skill-creator quick_validate.py via uv/PyYAML)",
+    "gitDiffWhitespace": "PASS",
+    "localMarkdownLinks": {
+      "status": "PASS",
+      "files": 13,
+      "targets": 250
+    }
+  },
+  "limitations": [
+    "Boards are opaque with labels, grids and ground shadows.",
+    "Run four poses are phase studies, not complete alternating-leg loops; opposite stride and in-betweens still required.",
+    "Some side-facing torso rotations are excessive; walk leg alternation and ranged hand-side continuity need production refinement.",
+    "No transparent sprites, low-resolution source-grid/palette validation, shared pivots, equipment fitting, runtime animation, Cocos build or gameplay tests."
+  ],
+  "runtimeChanged": false,
+  "gitCommitted": false,
+  "gitPushed": false
+}

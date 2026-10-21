@@ -1,0 +1,32 @@
+Create a NEW art-direction board for Project Ember's basic melee slash. The user rejected the previous board as flat and simplistic. Make a substantial artistic correction, inspired by the rich, directional sword-swing trails of Hades: the weapon's CURRENT position is the brightest point, and the motion trail BEHIND that position loses BOTH luminosity AND opacity with age. This physical relationship is the entire point of this revision.
+
+REFERENCE ROLES:
+Reference 1 is the previous Ember board. Preserve ONLY its squat bald faceless pixel hero identity, basic dark slate presentation and timing labels. Do NOT preserve its opaque concentric crescent/color-band effect. That effect is the rejected design. Redraw the VFX completely.
+Reference 2 is the user's gameplay reference for compelling swept motion, crisp boundaries and a strong local white-hot highlight. Do not copy its characters, watermark, runes, purple palette or full-circle shape.
+
+DESIRED ART:
+A beautifully designed, dynamic, richly layered moving slash with a concentrated luminous leading blade and a substantial translucent wake. Strong Hades-like animation art direction, adapted to a pixel game: precise sharp contours, intentional angular light accents inside, sculpted speed lines, clear head-to-tail flow. The character remains coarse pixel art; the EFFECT can use finer controlled pixels and rich tonal/alpha variation so it reads cleanly, not chunky sawtoothed. This is not a three-color UI crescent or logo.
+Neutral silver/ivory with desaturated steel-blue/cool violet shadows. No default fire, no rainbow, no smoke fog, no external particle confetti.
+
+CRITICAL LIGHT AND TRAIL STRUCTURE:
+At the advancing end, show a short blade-shaped slanted flash, 100% opaque warm white at its sharp cutting edge. This blade-shaped FLASH represents the instant position of the striking edge; it is part of the VFX, not a new purchased weapon or costume.
+Only the newest approximately 10-15% of the sweep is near-white. Behind it the swept surface stretches through luminous pale steel at roughly 70% opacity, then muted blue-grey at 35%, then a delicate 10% transparent tail, then completely disappears. Darkening and alpha fading happen ALONG THE TRAVEL PATH, never just across concentric rings. At a glance the viewer must know where the moving blade is NOW and where it WAS.
+Use a broad curved wake with complex intentional INTERNAL structure: 5-7 unequal curved tapered streaks of differing lengths, delicate overlapping translucent sheets, a few angular internal highlight cuts, transparent negative-space channels, and a subtle narrow reflection rim strongest only near the advancing blade. All internal streaks follow the same sweep. Several subtle shorter glints live near the head only. Rich details are INSIDE the wake, no loose chunks outside it.
+The older tail lets the underlying ground clearly show through; it must NOT just be an opaque dark-colored stripe. Do not outline the entire arc with a continuous white rim. Do not fill the whole crescent with white. No uniformly bright full semicircle, no 3 flat parallel colored bands, no concentric rainbow stripes. No uniformly filled sector.
+Clean overall silhouette with smoothly controlled curvature and pointed tapering ends. No ragged outside, fringe, spikes, jagged brush bristles, scattered pixels, sparks or detached shard clouds. Crisp boundary does not mean all pixels must be opaque. Do not use blur, bloom clouds or fuzzy edges to fake translucency. Keep the body of the effect visually substantial so force is not lost.
+
+BOARD COMPOSITION:
+Landscape about 1600 x 1200, title "EMBER / MOVING BLADE" and subtitle "BRIGHT HEAD - TRANSLUCENT WAKE".
+Top 45%: one large hero-and-slash peak study occupying the left two thirds; right one third an enlarged crop-style detail of the SLASH INTERIOR without a character, labeled "LIGHT + FLOW". No elemental variants this time; focus all space on one excellent neutral effect. The hero is planted left of the arc; the forward slash is to the right, sweeping from upper-right toward lower-right around it. The brightest leading edge is now at the lower-right, the older tail curves up and back and is much dimmer. A few subtle ground seams behind the top studies make the tail transparency legible, with no perspective grid or boundary circle. Maintain a visible hero head and feet. Fixed forward reach; not an expanding ring.
+Bottom 50%: eight equally sized keyframes in two rows of four, same hero, scale, origin and camera. Clean tiny labels:
+"01 LOAD / 0ms": character only.
+"02 COIL / 80ms": character compressed, near-zero dim starting trace.
+"03 RELEASE / 120ms": concentrated bright blade upper-right, short newly formed wake behind toward the top; most of future arc absent.
+"04 CUT / 160ms": brightest leading blade on right-middle, older upper-right trail now dim and see-through, rich interior streamlines following the turn.
+"05 FOLLOW / 200ms": brightest blade at lower-right, old top and middle portions much dimmer and more transparent; the actual head has MOVED, not merely the whole crescent faded equally.
+"06 WAKE / 240ms": no white leading blade, only a modest translucent receding ribbon, dark and calm.
+"07 FADE / 300ms": barely visible very short old wake.
+"08 CLEAR / 360ms": character only.
+Vary the full connected hero pose to match windup, release and recovery; no disassembled body. No hair, eyes, mouth, blood or permanent added equipment.
+
+Typography is secondary. Spend the visual detail budget on the asymmetric lighting, the overlapping INTERNAL flow, and the progression of the traveling bright blade. Keep all studies unclipped. This must feel like a premium action-game slash frozen in motion, not a tidy symbol repeated in eight boxes.

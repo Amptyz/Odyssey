@@ -9,9 +9,8 @@ import { HERO } from '../../EmberDemo/assets/scripts/ember/content/config';
 import {GAME_TUNING} from '../../EmberDemo/assets/scripts/ember/content/tuning';
 import { applyStatus,movementMultiplier } from '../../EmberDemo/assets/scripts/ember/combat-core/StatusSystem';
 import { Pathfinder } from '../../EmberDemo/assets/scripts/ember/ai/Pathfinder';
-import { fitMapProjection,worldToScreen,screenToWorld } from '../../EmberDemo/assets/scripts/ember/render/IsoProjection';
+import { fitMapProjection,worldToScreen,screenToWorld } from '../../EmberDemo/assets/scripts/ember/render/GroundProjection';
 import { distance } from '../../EmberDemo/assets/scripts/ember/utils/math';
-import {groundSpeedScale} from '../../EmberDemo/assets/scripts/ember/utils/GroundMovement';
 function advance(w:GameWorld,seconds:number){for(let i=0;i<Math.round(seconds*30);i++)w.advance(1/30);}
 function fixture(){const w=new GameWorld();w.loadout.Q='icebolt';openMerchantFixture(w);startCombatFixture(w);
   Object.assign(w.hero,{x:10,y:10,previous:{x:10,y:10}});
@@ -45,7 +44,7 @@ describe('extensible game content',()=>{
     const {w}=fixture();applyStatus(w.hero,{id:'slow',duration:2,power:0.5},'enemy','frostBolt');
     const s=w.snapshot();s.hero.statuses[0]!.power=0.1;
     w.command({type:'DirectInput',movement:{x:0,y:1}});advance(w,0.5);
-    expect(w.hero.y-10).toBeCloseTo(((421.25*.5)*.5+110)*.01*GAME_TUNING.moveSpeedMultiplier*.5*groundSpeedScale({x:0,y:1}));expect(w.hero.statuses[0]?.power).toBe(0.5);
+    expect(w.hero.y-10).toBeCloseTo(((421.25*.5)*.5+110)*.01*GAME_TUNING.moveSpeedMultiplier*.5);expect(w.hero.statuses[0]?.power).toBe(0.5);
   });
   it('slow reduces enemy movement and pause freezes its duration',()=>{
     const a=fixture(),b=fixture();for(const item of [a,b]){item.e.windup=0;item.e.x=14;item.e.y=10;}

@@ -1,14 +1,14 @@
 import {chromium,type Page} from '@playwright/test';
 import {writeFileSync} from 'node:fs';
 import type {WorldSnapshot} from '../EmberDemo/assets/scripts/ember/simulation/GameWorld';
+import {walkCampWithRightClick} from './browser-navigation';
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const checks:string[]=[],errors:string[]=[];
 const check=(ok:unknown,message:string)=>{if(!ok)throw Error(message);checks.push(message);};
 async function state(page:Page):Promise<WorldSnapshot>{return page.evaluate(()=>(window as any).__EMBER__.snapshot());}
-async function screen(page:Page,x:number,y:number){const p=await page.evaluate(p=>(window as any).__EMBER__.screen(p.x,p.y),{x,y});const b=(await page.locator('canvas').boundingBox())!;return{x:b.x+b.width/2+p.x*b.width/1280,y:b.y+b.height/2-p.y*b.height/720};}
 async function button(page:Page,title:string,index=0){const entries=await page.evaluate(()=>(window as any).__EMBER__.ui().buttons);const item=entries.filter((b:any)=>b.title?.includes(title))[index];if(!item)throw Error(`Missing button ${title}`);const b=(await page.locator('canvas').boundingBox())!;await page.mouse.click(b.x+b.width/2+item.x*b.width/1280,b.y+b.height/2-item.y*b.height/720);await page.waitForTimeout(110);}
 async function walk(page:Page,target:{x:number;y:number},mode:'classic'|'wasd'){
- if(mode==='classic'){const p=await screen(page,target.x,target.y);await page.mouse.click(p.x,p.y,{button:'right'});await page.waitForFunction(at=>{const h=(window as any).__EMBER__.snapshot().hero;return Math.hypot(h.x-at.x,h.y-at.y)<.3;},target,{timeout:18000});}
+ if(mode==='classic'){await walkCampWithRightClick(page,target);}
  else{
   const held=new Set<string>();let reached=false;
   for(let i=0;i<180;i++){
@@ -45,7 +45,7 @@ try{
   // Explicit F2 fixtures: rest presentation/transactions, not evidence of a normal full campaign.
   for(const mapId of ['ember','frost'] as const){
    await page.keyboard.press('F2');await page.waitForTimeout(120);const draft=(await state(page)).developer!.draft;
-   await page.evaluate(config=>(window as any).__EMBER__.send({type:'DevConfigure',config}),{...draft,mapId,entry:'camp',wave:3,perks:[],equipment:{},purchaseOrder:[],options:{invincible:false,noCooldown:false,freezeEnemies:false,speed:1}});
+   await page.evaluate(config=>(window as any).__EMBER__.send({type:'DevConfigure',config}),{...draft,mapId,entry:'camp',wave:3,perks:[],equipment:{},options:{invincible:false,noCooldown:false,freezeEnemies:false,speed:1}});
    await page.waitForTimeout(120);await button(page,'应用并进入关卡');s=await state(page);
    check(s.developer?.enabled&&s.phase==='camp'&&s.wave===2,`${mode}/${mapId}: F2 enters the configured rest fixture`);
    check(s.scene.interactions.map(n=>n.kind).join(',')==='ember,merchant,departure',`${mode}/${mapId}: rest contains merchant and optional ember`);
@@ -53,7 +53,7 @@ try{
    await page.screenshot({path:`reports/scenes-${mode}-${mapId}-merchant.png`});
    await button(page,'100 金');const buttons=await page.evaluate(()=>(window as any).__EMBER__.ui().buttons);const purchase=buttons.find((b:any)=>b.title?.startsWith('购买'));
    if(!purchase)throw Error('Purchase action unavailable');await button(page,purchase.title);
-   s=await state(page);check(s.gold===60&&s.inventory.length===1&&s.appearance.weapon==='sword',`${mode}/${mapId}: normal purchase changes inventory, gold and appearance`);
+   s=await state(page);check(s.gold===60&&s.inventory.length===1&&s.equipment.slot1==='sword',`${mode}/${mapId}: normal purchase changes inventory, gold and equipment`);
    await page.keyboard.press('Enter');await page.waitForTimeout(120);check((await state(page)).phase==='camp'&&(await state(page)).wave===2,`${mode}/${mapId}: leaving shop returns to rest without advancing`);
    await page.screenshot({path:`reports/scenes-${mode}-${mapId}-rest.png`});
    await interact(page,'ember',mode);await choose(page);await interact(page,'departure',mode);

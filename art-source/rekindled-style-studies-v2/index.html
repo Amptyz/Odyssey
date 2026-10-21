@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>余烬 · 主角双风格与八方向动作</title>
+<style>
+  :root{color-scheme:dark;font-family:system-ui,-apple-system,"PingFang SC",sans-serif;color:#eee9e1;background:#17191e}
+  *{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;padding:32px clamp(16px,4vw,64px) 48px;max-width:1800px;margin-inline:auto}
+  header{display:flex;justify-content:space-between;gap:24px;align-items:end;border-bottom:1px solid #353941;padding-bottom:24px}
+  .eyebrow{font-size:12px;letter-spacing:.2em;color:#e4ad73}h1{font-size:clamp(24px,3vw,38px);font-weight:600;margin:9px 0}
+  p{color:#bcbcc5;line-height:1.7;margin:8px 0}.count{color:#e4ad73;white-space:nowrap;font-size:14px}
+  nav,.options{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0}
+  button,select{font:inherit;font-size:14px;padding:10px 15px;color:#dddfe7;background:#24272e;border:1px solid #444852;border-radius:8px;cursor:pointer}
+  button[aria-pressed="true"]{background:#e4ad73;border-color:#e4ad73;color:#231c17}button:hover,select:hover{border-color:#e4ad73}
+  button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid #ffd39c;outline-offset:4px}
+  label{font-size:14px;color:#c4c5cf;display:flex;align-items:center;gap:8px;margin-right:14px}
+  #cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:22px}#cards.single{grid-template-columns:1fr;max-width:1200px;margin-inline:auto}
+  article{min-width:0;background:#20232a;border:1px solid #383d46;border-radius:12px;overflow:hidden}
+  .card-title{padding:16px 20px;display:flex;justify-content:space-between;gap:16px;align-items:center}.card-title h2{font-size:19px;margin:0}.tag{font-size:12px;color:#dfb78b}
+  .art{background:#95958e;position:relative;overflow:hidden}.art img{display:block;width:100%;height:auto}.art.pixel img{image-rendering:pixelated}.art.cropped img{position:absolute;top:0;left:0}
+  .card-notes{padding:14px 20px;font-size:13px;color:#bcbcc5;line-height:1.65}.phases{display:flex;justify-content:space-around;padding:10px 20px;font-size:13px;color:#dfb78b;border-top:1px solid #353941}
+  a{color:#e8bb8c;text-underline-offset:3px}footer{margin-top:28px;border-top:1px solid #353941;padding-top:18px;font-size:13px}
+  #direction-note{color:#dfb78b;font-size:14px;min-height:20px}
+  @media(max-width:800px){#cards{grid-template-columns:1fr}header{align-items:start;flex-direction:column;gap:0}.count{margin-top:8px}.card-title h2{font-size:17px}}
+</style>
+<header>
+  <div><div class="eyebrow">PROJECT EMBER · ART STUDY 02</div><h1>死者复燃，余火未熄</h1><p>两种画法，同一主角。比较游戏视角中的轮廓、朝向与动作阶段。</p></div>
+  <div class="count">2 套概念 · 8 方向 · 144 个动作格</div>
+</header>
+<nav aria-label="查看内容">
+  <button data-action="concept" aria-pressed="true">概念设计</button>
+  <button data-action="walk" aria-pressed="false">移动</button>
+  <button data-action="melee" aria-pressed="false">近战攻击</button>
+  <button data-action="ranged" aria-pressed="false">远程攻击</button>
+</nav>
+<div class="options">
+  <label>风格<select id="style"><option value="both">A / B 并排</option><option value="a">A · 像素</option><option value="b">B · 硬边手绘</option></select></label>
+  <label id="direction-control" hidden>方向<select id="direction"><option value="0">↑ 上 N</option><option value="1">↗ 右上 NE</option><option value="2">→ 右 E</option><option value="3">↘ 右下 SE</option><option value="4" selected>↓ 下 S</option><option value="5">↙ 左下 SW</option><option value="6">← 左 W</option><option value="7">↖ 左上 NW</option></select></label>
+  <label id="view-control" hidden>视图<select id="view"><option value="row">当前方向 · 三个关键姿</option><option value="sheet">完整八方向设计板</option></select></label>
+</div>
+<p id="direction-note"></p>
+<main id="cards" aria-live="polite"></main>
+<footer>
+  <p>这是动作设计参考。3 个关键姿尚未补间；图片保留底色与标签，透明切片、统一锚点、手侧精修和装备适配仍需生产。局部取景用于浏览，不是引擎切片数据。概念中的场景为生成示意。</p>
+  <p><a href="README.md">完整设计与审阅记录</a> · <a href="prompts.json">实际生成提示词</a> · <a href="manifest.json">文件清单</a></p>
+</footer>
+<script>
+const styles={
+ a:{name:"A · 死亡细胞取向",tag:"PIXEL / 像素",text:"紧凑轮廓、冷蓝紫阴影、少量橙色余火；保留可见像素簇。"},
+ b:{name:"B · 哈迪斯取向",tag:"INK / 硬边手绘",text:"修长体态、墨线轮廓、骨白与酒红分面；作为画法比较候选。"}
+};
+const phases={walk:["接地","经过","对侧接地"],melee:["张臂蓄力","交叉挥击","落臂回收"],ranged:["蓄势","单掌释放","回收"]};
+const bounds={
+ "a-walk":[82,242,409,592,771,954,1137,1323,1510],
+ "a-melee":[80,242,407,589,771,955,1137,1323,1510],
+ "a-ranged":[81,241,408,590,770,953,1137,1323,1502],
+ "b-walk":[65,228,394,567,746,938,1126,1315,1520],
+ "b-melee":[64,227,394,568,747,935,1125,1313,1520],
+ "b-ranged":[64,235,407,593,776,965,1147,1328,1520]
+};
+let action="concept";
+const styleSelect=document.getElementById("style");
+const direction=document.getElementById("direction");
+const view=document.getElementById("view");
+function render(){
+ const motion=action!=="concept", row=Number(direction.value);
+ document.getElementById("direction-control").hidden=!motion;
+ document.getElementById("view-control").hidden=!motion;
+ document.getElementById("direction-note").textContent=motion?"方向按屏幕定义；N 为背面，S 为正面。每行从左至右查看动作阶段。":"两套沿用复燃死者的共同身份；没有固定职业装备，具体造型尚未定稿。";
+ const keys=styleSelect.value==="both"?["a","b"]:[styleSelect.value];
+ const cards=document.getElementById("cards");cards.replaceChildren();cards.classList.toggle("single",keys.length===1);
+ for(const key of keys){
+   const style=styles[key], id=key+"-"+action, file=id+".png";
+   const article=document.createElement("article");
+   const title=document.createElement("div");title.className="card-title";
+   const h=document.createElement("h2");h.textContent=style.name;
+   const tag=document.createElement("span");tag.className="tag";tag.textContent=style.tag;
+   title.append(h,tag);
+   const art=document.createElement("div");art.className="art";art.classList.toggle("pixel",key==="a");
+   const img=document.createElement("img");img.src=file;img.alt=style.name+" · "+(motion?document.querySelector('[data-action="'+action+'"]').textContent+"，八方向三关键姿":"主角概念");
+   if(motion&&view.value==="row"){
+     const b=bounds[id];art.classList.add("cropped");art.style.aspectRatio="1024 / "+(b[row+1]-b[row]);
+     img.style.transform="translateY("+(-b[row]/1536*100)+"%)";
+   }
+   art.append(img);article.append(title,art);
+   if(motion){
+     const labels=document.createElement("div");labels.className="phases";
+     for(const p of phases[action]){const span=document.createElement("span");span.textContent=p;labels.append(span);}
+     article.append(labels);
+   }
+   const notes=document.createElement("div");notes.className="card-notes";notes.textContent=style.text+" ";
+   const link=document.createElement("a");link.href=file;link.target="_blank";link.rel="noopener";link.textContent="查看原图 ↗";notes.append(link);article.append(notes);cards.append(article);
+ }
+}
+for(const button of document.querySelectorAll("[data-action]"))button.addEventListener("click",()=>{
+ action=button.dataset.action;
+ for(const other of document.querySelectorAll("[data-action]"))other.setAttribute("aria-pressed",String(other===button));
+ render();
+});
+for(const select of [styleSelect,direction,view])select.addEventListener("change",render);
+render();
+</script>
+</html>

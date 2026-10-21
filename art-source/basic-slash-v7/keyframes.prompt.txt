@@ -1,0 +1,27 @@
+Create a TWELVE-KEYFRAME animation design board for the supplied approved NEUTRAL WHITE melee slash. Preserve its distinctive thick, bluntly rounded, luminous head, slightly staggered overlapping bright sheets, rich inner flow and fading curved wake. This is the SAME attack through time, not twelve design variations.
+
+Palette: strictly white, silver, neutral grey and charcoal only. NO pink, purple, blue, yellow or any chromatic color, including the glow and labels.
+The current moving head is the thickest and brightest area, with a full rounded oblique nose matching the reference. Never a needle point, pointed crescent, squared-off plank or flat cut face. All previously visited parts of the path become thinner, darker and more translucent. New head advances; trail stays behind it. Clean silhouette, no outside particles, no runes, no new objects.
+
+Layout: landscape board, about 1800 x 1350, FOUR columns by THREE rows, twelve equal large panels, read left to right and then down. Small heading "EMBER / WHITE MELEE - KEYFRAMES". Each panel has one small exact label at upper-left. Background neutral charcoal, subtle thin grey dividers. No hero, weapon object, large explanatory diagrams or elemental comparisons. Keep identical local origin, radius, camera and frame scale in every panel. No zooming or growing the radius to fake movement.
+
+ANIMATION PATH — VERY IMPORTANT:
+The head sweeps counterclockwise: LOWER-RIGHT -> RIGHT -> UPPER-RIGHT -> TOP -> UPPER-LEFT. The final upper-left head and the curving wake behind it should closely match the provided reference. The wake is created only along the path ALREADY traveled. Do not stamp the complete reference into every cell and change its brightness; HEAD POSITION MUST BE DIFFERENT in frames 03, 04, 05, 06 and 07. These five bright poses are the point of the board.
+Within each panel treat local canvas center as the same swing origin. Approximate head positions relative to that panel: frame03 at (76%,70%), frame04 at (83%,48%), frame05 at (73%,27%), frame06 at (50%,18%), frame07 at (26%,29%). Adjust slightly for clean framing while preserving this evident travel order and shared radius.
+Keep a margin around each whole effect. A thick luminous rounded head occupies real area at its CURRENT position; older outer rims must not remain equally white.
+
+FRAME LABELS AND CONTENT:
+01 REST / 0ms: empty panel, no effect.
+02 WINDUP / 80ms: barely visible small dim preparation trace at lower-right, no full arc.
+03 RELEASE / 120ms: one short rounded WHITE striking head at LOWER-RIGHT, small dimmer newly formed trailing ribbon toward bottom-center. Most of future path absent.
+04 SWEEP / 144ms: head has moved UP to the RIGHT side. Broad fresh white head at right; thinner dim wake curves back down behind it. Do not leave a second white head below.
+05 DRIVE / 168ms: head at UPPER-RIGHT, wake follows downward along the right side and fades toward its oldest lower end.
+06 PEAK / 192ms: head at TOP-CENTER moving toward the left; broad white face with the reference's overlapping sheet structure, longer wake curves behind through upper-right and right. Old bottom trail is much darker.
+07 FOLLOW / 216ms: head reaches UPPER-LEFT. This is the reference-like full stroke, rounded head brightest at upper-left, trailing flow wraps behind across top/right/down, thinning and fading toward old lower-left. No pointed nose.
+08 RELEASE END / 240ms: bright head shuts off at its final position, remaining wake is clearly less luminous, no new bright shape.
+09 AFTERFLOW / 270ms: translucent grey ribbon remnants in the SAME traveled path, no fresh emission, no rotation continuing.
+10 FADE / 300ms: only a couple of extremely faint curved layers remain, not white.
+11 LAST TRACE / 330ms: one almost invisible thin grey trace in the old wake region.
+12 CLEAR / 360ms: completely empty panel again.
+
+Frames 03 through 07 must show five unmistakably different moving-head positions. It is not a pulsing aura, expanding shockwave, static crescent or projectile flying in a straight line. Frames 08-11 show dissipating age, not another attack. This is a design storyboard, not a uniformly timed sprite atlas. Preserve the requested polished powerful effect shape exactly; do not stylize it back into jagged pixel shards.

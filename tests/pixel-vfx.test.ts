@@ -2,7 +2,7 @@ import {openMerchantFixture,startCombatFixture} from './helpers/scenes';
 import { describe,it,expect } from 'vitest';
 import { GameWorld,type VisualCue } from '../EmberDemo/assets/scripts/ember/simulation/GameWorld';
 import { planPixelVfx,PIXEL_VFX_LIMIT } from '../EmberDemo/assets/scripts/ember/render/PixelVfxPlan';
-import { DEFAULT_PROJECTION,worldToScreen } from '../EmberDemo/assets/scripts/ember/render/IsoProjection';
+import { DEFAULT_PROJECTION,worldToScreen } from '../EmberDemo/assets/scripts/ember/render/GroundProjection';
 import type { HitShape } from '../EmberDemo/assets/scripts/ember/combat-core/CollisionWorld';
 import { LocalTransport } from '../EmberDemo/assets/scripts/ember/platform/LocalTransport';
 
@@ -45,6 +45,7 @@ describe('decorative VFX scheduling under actual gameplay and danger geometry',(
     const nearInner=Array.from({length:20},(_,id)=>cue(id,{at:{x:2,y:0}}));
     expect(planPixelVfx(nearInner,camera)).toHaveLength(20);
     expect(planPixelVfx(nearInner,camera,[{shape}])).toEqual([]);
-    const far=cue(99,{at:{x:-9,y:-9}});expect(planPixelVfx([far],camera,[{shape}]).map(p=>p.cue.id)).toEqual([99]);
+    // Outside the danger border but still inside the uncompressed viewport.
+    const far=cue(99,{at:{x:-6,y:6}});expect(planPixelVfx([far],camera,[{shape}]).map(p=>p.cue.id)).toEqual([99]);
   });
 });

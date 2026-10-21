@@ -2,7 +2,7 @@ import { Node, Sprite, UITransform } from 'cc';
 import type { WorldSnapshot } from '../simulation/GameWorld';
 import { PIXEL_ATLASES } from '../content/pixel-art';
 import { ArtLibrary } from './ArtLibrary';
-import { worldToScreen, type Projection } from './IsoProjection';
+import { worldToScreen, type Projection } from './GroundProjection';
 import { planPixelVfx, PIXEL_VFX_LIMIT } from './PixelVfxPlan';
 import { color } from './Primitives';
 

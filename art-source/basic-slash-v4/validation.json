@@ -1,0 +1,27 @@
+{
+  "status": "static-review-complete-with-production-limitations",
+  "scope": "static concept and documentation",
+  "checks": [
+    "second pass narrows white highlight compared to first pass",
+    "older upper wake visibly darker than current bright front",
+    "interior contains overlapping directional flow and negative-space channels",
+    "no exterior particle cloud",
+    "eight states retained; first and last no effect",
+    "both generator outputs copied unchanged"
+  ],
+  "notRun": [
+    "actual RGBA transparency production",
+    "runtime phase and animation playback",
+    "Cocos build and integration",
+    "combat/multiplayer readability and performance",
+    "strict pixel grid and palette checks"
+  ],
+  "limitations": [
+    "concept image is opaque RGB; apparent translucency is composited",
+    "angle, anchor and radius not measured against simulation",
+    "head highlight timing and width require in-game calibration",
+    "fine raster edges and small glow remain; judge at actual gameplay size"
+  ],
+  "linksChecked": 149,
+  "missingLinks": []
+}

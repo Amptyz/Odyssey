@@ -1,5 +1,7 @@
 # EQ-02：18件装备与独立被动实施记录
 
+> 2026-10-20更新：装备改变角色贴图的方案已取消；本文中的纸娃娃、外观部位、挂点、purchaseOrder与方向装备补图内容仅为历史记录，不可据此恢复。装备数值 / 被动保留，当前人物为[整身帧组](../ART_PIPELINE.md)。
+
 日期：2026-10-16。依据：[六栏装备设计v2](EQUIPMENT_DESIGN.md)、[统一属性契约](../ATTRIBUTE_SYSTEM.md)、[属性实施](../ATTRIBUTE_IMPLEMENTATION.md)。本文记录本次实际逻辑；Creator、浏览器及外观的最终结果见[整体验收](../../reports/equipment-validation.json)，不将纸面DPS当作实测。
 
 ## 完成范围

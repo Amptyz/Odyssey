@@ -1,3 +1,4 @@
+import {HERO_DEATH_FADE} from '../content/animation';
 import {BASIC_ATTACKS} from '../content/attacks';
 import { Graphics, Label, Node } from 'cc';
 import type { ControlMode } from '../input/InputController';
@@ -21,7 +22,7 @@ export class Hud {
   private readonly skills:{id:SkillSlot;g:Graphics;cd:Label;key:Label;name:Label;icon?:Node;skillId?:string|null}[]=[];
   private readonly hint:Label;private mode:ControlMode='classic';
   onControlMode?:(mode:ControlMode)=>void;
-  private readonly overlay:Node;private signature='';private regions:HitRegion[]=[];
+  private readonly overlay:Node;private deathPresentation=false;private signature='';private regions:HitRegion[]=[];
   private shopPage=0;private shopItem?:EquipmentId;private debug=false;private state?:WorldSnapshot;private inspectPerks=false;private perkPage=0;
   private readonly developerPanel:DeveloperPanel;private readonly developerBadge:Label;
   constructor(root:Node,private readonly send:(c:GameCommand)=>void,private readonly art:ArtLibrary) {
@@ -63,8 +64,11 @@ export class Hud {
   }
   toggleDebug():void {this.debug=!this.debug;this.debugLabel.node.active=this.debug;}
   get showColliders():boolean{return this.debug;}
-  inspectUI(){return{phase:this.state?.phase,buttons:this.regions.map(({x,y,width,height,title})=>({x,y,width,height,title}))};}
-  update(s:WorldSnapshot,fps:number):void {
+  inspectUI(){return{phase:this.state?.phase,overlayActive:this.overlay.active,buttons:this.regions.map(({x,y,width,height,title})=>({x,y,width,height,title}))};}
+  update(s:WorldSnapshot,fps:number,presentationTime=s.time):void {
+    // Let the final full-body collapse finish before the opaque result panel covers it.
+    const lastDeath=Math.max(...s.units.filter(u=>u.kind==='hero').map(u=>u.diedAt));
+    this.deathPresentation=s.phase==='defeat'&&presentationTime-lastDeath<HERO_DEATH_FADE.lifetime&&!s.network?.blocked&&!s.developer?.open;
     this.battleHud.active=['camp','cleared','fighting'].includes(s.phase)&&!s.paused;
     if(s.phase!=='shop')this.shopItem=undefined;
     this.state=s;setText(this.hp,`生命 ${Math.ceil(s.hero.hp)} / ${s.hero.maxHp}    护盾 ${Math.ceil(s.hero.shield)}`);
@@ -83,7 +87,7 @@ export class Hud {
       if(primed){g.strokeColor=color('#E8C98C');g.lineWidth=2;g.roundRect(-48,-36,96,72,9);g.stroke();}
       setText(cd,remaining>0?remaining.toFixed(1):primed?'强化':'');}
     if(this.debug)setText(this.debugLabel,`FPS ${Math.round(fps)}  ·  Tick ${s.tick}\n事件 ${s.metrics.processed} / 拦截 ${s.metrics.dropped} / 深度 ${s.metrics.maxDepth}\nSeed ${s.seed}  ·  实体 ${s.units.length} / 弹体 ${s.projectiles.length+s.enemies.projectiles.length}`);
-    const signature=`${s.phase}:${s.paused}:${s.choices.map(c=>c.id).join(',')}:${s.pendingSkill}:${s.lab}:${s.mapId}:${Object.values(s.loadout).join(',')}:${s.gold}:${JSON.stringify(s.equipment)}:${s.inventory.join(',')}:${this.shopPage}:${s.developer?.open}:${s.developer?.enabled}:${s.developer?.revision}:${s.party?.find(p=>p.id===s.hero.id)?.ready}:${s.network?.blocked}:${s.network?.status}:${s.localSave?.revision}`;
+    const signature=`${s.party?.find(p=>p.id===s.hero.id)?.paletteId}:${this.deathPresentation}:${s.phase}:${s.paused}:${s.choices.map(c=>c.id).join(',')}:${s.pendingSkill}:${s.lab}:${s.mapId}:${Object.values(s.loadout).join(',')}:${s.gold}:${JSON.stringify(s.equipment)}:${s.inventory.join(',')}:${this.shopPage}:${s.developer?.open}:${s.developer?.enabled}:${s.developer?.revision}:${s.party?.find(p=>p.id===s.hero.id)?.ready}:${s.network?.blocked}:${s.network?.status}:${s.localSave?.revision}`;
     if(signature!==this.signature){this.signature=signature;this.buildModal(s);}
   }
   click(point:Vec2):boolean {
@@ -100,7 +104,7 @@ export class Hud {
   }
   private buildModal(s:WorldSnapshot):void {
     for(const child of [...this.overlay.children])child.destroy();this.overlay.removeAllChildren();this.regions=[];
-    this.overlay.active=!!s.developer?.open||!['camp','cleared','fighting'].includes(s.phase)||s.paused||!!s.network?.blocked;if(!this.overlay.active)return;
+    this.overlay.active=!this.deathPresentation&&(!!s.developer?.open||!['camp','cleared','fighting'].includes(s.phase)||s.paused||!!s.network?.blocked);if(!this.overlay.active)return;
     const veil=graphics('Veil',this.overlay);box(veil,-640,-360,1280,720,'#10242CEB',0);
     if(s.network?.blocked){text('Network waiting',this.overlay,s.network.status,23,0,40,1100,150,'#EFE2C1');text('Network hint',this.overlay,'打开左上角「联机房间」查看队友、重连或恢复进度。',17,0,-70,1000,60,'#B5CFC4');return;}
 

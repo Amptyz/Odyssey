@@ -1,0 +1,70 @@
+// Sprite vertex/texture plumbing follows Cocos Creator's builtin-sprite effect.
+// Copyright (c) 2017-2020 Xiamen Yaji Software Co., Ltd.
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: palette-vs:vert
+      frag: palette-fs:frag
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:
+        cullMode: none
+      properties:
+        alphaThreshold: { value: 0.5 }
+        clothColor: { value: [0.48, 0.44, 0.57, 0.0] }
+}%
+CCProgram palette-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #if USE_LOCAL
+    #include <builtin/uniforms/cc-local>
+  #endif
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+  out vec4 color;
+  out vec2 uv0;
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1.0);
+    #if USE_LOCAL
+      pos = cc_matWorld * pos;
+    #endif
+    uv0 = a_texCoord;
+    color = a_color;
+    return cc_matViewProj * pos;
+  }
+}%
+CCProgram palette-fs %{
+  precision highp float;
+  #include <builtin/internal/embedded-alpha>
+  #include <builtin/internal/alpha-test>
+  in vec4 color;
+  in vec2 uv0;
+  uniform Palette { vec4 clothColor; };
+  #pragma builtin(local)
+  layout(set = 2, binding = 12) uniform sampler2D cc_spriteTexture;
+  vec4 frag () {
+    vec4 o = CCSampleWithAlphaSeparated(cc_spriteTexture, uv0);
+    float light = dot(o.rgb, vec3(0.2126, 0.7152, 0.0722));
+    // Chibi atlas: cool violet cloth ramp. Warm skin, sash and fire are excluded.
+    // Deep facial/outline shadows stay unchanged. This is a color-domain mask,
+    // not a semantic per-pixel mask; new art must preserve material separation.
+    float cloth = smoothstep(0.012, 0.055, o.b-o.g)
+      * smoothstep(-0.012, 0.025, o.b-o.r)
+      * smoothstep(0.17, 0.30, light)
+      * (1.0-smoothstep(0.55, 0.70, light));
+    float targetLight = max(0.01, dot(clothColor.rgb, vec3(0.2126, 0.7152, 0.0722)));
+    vec3 dyed = clamp(clothColor.rgb * light / targetLight, 0.0, 1.0);
+    o.rgb = mix(o.rgb, dyed, cloth * clothColor.a);
+    o *= color;
+    ALPHA_TEST(o);
+    return o;
+  }
+}%

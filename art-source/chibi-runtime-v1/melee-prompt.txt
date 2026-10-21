@@ -1,0 +1,21 @@
+Production game sprite atlas for Project Ember. Use the supplied approved COARSE PIXEL chibi character as the identity and coarse-detail reference. Create whole connected bodies, not paper-doll parts.
+IDENTITY: large round bare bald head, very short broad squat body, short sturdy limbs, simple mitten hands and broad bare feet. Exactly the reference's stout proportions, about 2.4 heads tall. Warm ash-grey skin and bandages, dull ochre sash, dark cool-violet wrap tunic, tiny amber chest ember. Bare faceless shadow head: absolutely NO eyes, nose, mouth, ears, hair, mask, hood, helmet or blood. No weapons, armor, extra limbs, detached parts, skill effects, ground shadows or props.
+COARSE PIXELS: design each body like a roughly 40x52 logical-pixel sprite, enlarged in uniform sharp square blocks, not a detailed painting with jagged edges. Strong stepped outline, very few broad cloth folds, flat pixel clusters and 2–3 hard tones per material. NO smooth gradients, blur, texture noise, skin pores, tiny cloth tears or detailed fingers/toes. Maintain identical pixel density and body scale across ALL cells. Make the large blocky pixel look obvious at game size.
+DYE CONTRACT: cloth ALONE uses a distinct purple ramp, approximately #30243F / #4C3A66 / #695183 / #8A71A0. Skin and wraps use warm greys #84776B / #B3A18C / #D3C2A8. The shadow face and all deep outlines are NEUTRAL dark charcoal #242426 / #353538 (equal red/green, no purple or blue tint); no colored eyes. Ochre belt and amber fire remain warm. No cloth purple on the head or bare limbs.
+LAYOUT: one landscape PNG, target 1536x1024, exactly EIGHT COLUMNS by FIVE ROWS = FORTY complete full-body frames. Evenly spaced cells, no labels, no grid lines, no sheet title, NO checkerboard or background pixels: genuine transparent alpha everywhere outside the sprites. Every pose stays within its own cell with clear transparent gutters. Nominal cells 192 wide x205 high; standing body about 140–150 source pixels tall and 105–120 wide, no zoom-to-fill. Column roots regularly centered near 96+192*c, ground baseline about 184+205*r. Root stays fixed across each row: airborne rise and crouch are intentional, do not bottom-align all feet or resize every pose.
+DIRECTION ROWS, same facing through every frame, no turn during the action:
+row1 SOUTH: facing directly toward viewer/screen-bottom, symmetrical front, full shadow face and chest.
+row2 SOUTH-EAST: front-right three-quarter, facing diagonally screen-bottom-right, shadow face and chest visible.
+row3 EAST: strict right-facing profile, right edge of the head is the shadow face.
+row4 NORTH-EAST: back-right three-quarter, moving screen-top-right, mostly back of bare grey head and crossed back tunic, NO full front face or chest ember.
+row5 NORTH: straight away toward screen-top, back of grey head and back of tunic only, NO face or chest ember.
+ACTION: a complete 8-frame MELEE sweep animation, empty-handed; the game adds its own separate slash VFX. No weapon or trail in this sheet. Both mittens are attached to short arms and shoulders at all times. Keep whole connected body from states reference, not floating hands.
+Columns1 ready: grounded feet, one hand slightly forward;
+2 windup: short arm drawn back, torso rotates away from facing;
+3 deeper windup: knees bent, opposite arm balances;
+4 STRIKE: arm sweeps across and forward toward the row's facing, torso turns with it, visibly extended but still short arm;
+5 follow-through: arm reaches opposite side, body leans into strike;
+6 recovery: torso returns, arm lowers;
+7 settles into ready;
+8 neutral rest matching idle.
+Distinct poses and a clear broad action arc, do not repeat identical poses. Source feet/root remains fixed; upper body twists, don't translate whole character sideways. Sprite still fits inside its cell. The S row strike projects toward the viewer, SE toward lower-right, E to right, NE upper-right, N away. Preserve exact coarse pixel density and stout proportions of image2. No severed body parts, no gloves disconnected from shoulders.

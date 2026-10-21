@@ -12,7 +12,7 @@ export function browserRunStorage():RunStorage|undefined {
   if(typeof window==='undefined'&&typeof localStorage==='undefined')return undefined;
   return{getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
 }
-/** Accept our file envelope, a raw v4 checkpoint, or an existing single-player room backup. */
+/** Accept our file envelope, a raw v4/v5 checkpoint, or an existing single-player room backup. */
 export function parseSoloRun(input:unknown):StoredSoloRun {
   if(typeof input==='string'&&input.length>MAX_SAVE_BYTES)throw Error('存档文件超过 2 MB。');
   let value:unknown=input;

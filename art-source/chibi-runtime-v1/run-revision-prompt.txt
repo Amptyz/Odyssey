@@ -1,0 +1,11 @@
+Edit target: the attached 8-column by 5-row chibi RUN atlas. Preserve its exact character identity, 1536x1024 layout, transparent alpha background, all clothing colors, neutral dark shadow face, coarse pixel style, five facing rows, and source body size. No text or effects.
+Make only a targeted running-motion correction. The current second half repeats the same leading foot, and the side view barely pumps its arms. Replace the leg and arm poses to create a true complete left-right running gait:
+column1 LEFT leg forward contact / RIGHT leg back, RIGHT arm forward / LEFT arm back.
+column2 LEFT supporting leg compressed, right foot lifting past.
+column3 LEFT leg pushing back, RIGHT knee coming forward.
+column4 RIGHT knee forward airborne flight, both feet clear of common ground baseline.
+column5 RIGHT leg forward contact / LEFT leg back, LEFT arm forward / RIGHT arm back: the OPPOSITE of column1, keep head and clothes facing unchanged.
+column6 RIGHT support compression, LEFT foot lifting past.
+column7 RIGHT leg pushing back, LEFT knee coming forward.
+column8 LEFT knee forward airborne flight.
+Show clearly separate short chunky legs and strong short bent-arm counter-swings, torso leaning in the running direction. Preserve head size and keep whole connected body. Do not mirror the whole body to swap the legs, and don't swap clothing or direction. In SOUTH row face straight toward viewer, not diagonal, featureless shadow center of round bare head. SE diagonal, E right profile, NE rear right, N full rear. Correct the motion in all five rows. Keep root centers fixed and real vertical bounce; do not bottom-align airborne poses. Exact 40 poses.

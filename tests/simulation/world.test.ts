@@ -5,7 +5,7 @@ import { LocalTransport } from '../../EmberDemo/assets/scripts/ember/platform/Lo
 import { HERO, SKILLS } from '../../EmberDemo/assets/scripts/ember/content/config';
 import {AttributeSet} from '../../EmberDemo/assets/scripts/ember/combat-core/attributes/AttributeSet';
 import { distance } from '../../EmberDemo/assets/scripts/ember/utils/math';
-import {worldToScreen,DEFAULT_PROJECTION} from '../../EmberDemo/assets/scripts/ember/render/IsoProjection';
+import {worldToScreen,DEFAULT_PROJECTION} from '../../EmberDemo/assets/scripts/ember/render/GroundProjection';
 function run(w:GameWorld,seconds:number,hz=60) { for(let i=0;i<seconds*hz;i++)w.advance(1/hz); }
 function start(seed=1234) {const w=new GameWorld(seed);openMerchantFixture(w);startCombatFixture(w);return w;}
 function freeze(e:GameWorld['hero']){e.attributes=new AttributeSet({...e.attributes.template,canMove:false,canAttack:false});return e;}
@@ -104,7 +104,7 @@ describe('direct movement and pointer attacks',()=>{
     run(a,0.5,30);run(b,0.5,144);
     expect(a.snapshot()).toEqual(b.snapshot());
     const from=worldToScreen({x:10,y:10}),to=worldToScreen(a.hero);
-    expect(Math.hypot(to.x-from.x,to.y-from.y)).toBeCloseTo(HERO.speed*0.5*DEFAULT_PROJECTION.tileWidth*DEFAULT_PROJECTION.zoom/Math.SQRT2);
+    expect(Math.hypot(to.x-from.x,to.y-from.y)).toBeCloseTo(HERO.speed*0.5*DEFAULT_PROJECTION.pixelsPerUnit*DEFAULT_PROJECTION.zoom);
     a.command({type:'DirectInput',movement:{x:0,y:0}});const p={x:a.hero.x,y:a.hero.y};run(a,0.2);expect(distance(a.hero,p)).toBe(0);
   });
   it('blocks held movement at pillars and arena edges',()=>{
@@ -115,14 +115,14 @@ describe('direct movement and pointer attacks',()=>{
     }
   });
   it('attacks toward the pointer with normal range/cadence, without auto-chasing',()=>{
-    const w=sandbox(),front=w.spawnEnemy('melee',{x:11.5,y:10},500),back=w.spawnEnemy('melee',{x:8.5,y:10},500);
+    const w=sandbox(),front=w.spawnEnemy('melee',{x:13,y:10},500),back=w.spawnEnemy('melee',{x:7,y:10},500);
     freeze(front);freeze(back);
     w.command({type:'Attack',point:front});w.command({type:'Attack',point:front});
-    expect(front.hp).toBe(500);run(w,0.1);expect(front.hp).toBe(500);run(w,1/30);expect(front.hp).toBe(500-HERO.attackDamage/1.05);expect(back.hp).toBe(500);
+    expect(front.hp).toBe(500);run(w,0.1);expect(front.hp).toBe(500);run(w,4/30);expect(front.hp).toBe(500-HERO.attackDamage/1.05);expect(back.hp).toBe(500);
     w.command({type:'AttackInput',point:front});run(w,0.8);
     expect(front.hp).toBe(500-HERO.attackDamage*2/1.05);expect(distance(w.hero,{x:10,y:10})).toBe(0);
     w.command({type:'AttackInput'});run(w,1);expect(front.hp).toBe(500-HERO.attackDamage*2/1.05);
-    w.command({type:'Attack',point:back});run(w,.15);expect(back.hp).toBe(500-HERO.attackDamage/1.05);
+    w.command({type:'Attack',point:back});run(w,.25);expect(back.hp).toBe(500-HERO.attackDamage/1.05);
   });
   it('does not hit out of range or through obstacles',()=>{
     const w=sandbox(),far=w.spawnEnemy('melee',{x:10+HERO.attackRange+1,y:10},500);

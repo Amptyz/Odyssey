@@ -1,0 +1,32 @@
+{
+  "status": "static-review-complete-with-production-limitations",
+  "scope": "concept and documentation only",
+  "dimensions": [
+    1448,
+    1086
+  ],
+  "checks": [
+    "thicker variable-width slash surface and staggered trailing bands visible",
+    "neutral, fire, frost and dark studies present",
+    "eight labeled key states; first and last contain no slash",
+    "hit burst shown separately in large neutral study; timeline shows a miss",
+    "source copied byte-for-byte unchanged",
+    "source references and exact generation prompt saved"
+  ],
+  "linksChecked": 141,
+  "missingLinks": [],
+  "notRun": [
+    "Cocos import/build and actual gameplay",
+    "animation timing, hit reactions and audio",
+    "eight-direction, high-speed, multiplayer and performance checks",
+    "strict pixel grid, palette and alpha validation"
+  ],
+  "limitations": [
+    "concept anchors, angle and radius are not measured against gameplay",
+    "element studies use analogous shapes; production must share exact base frames",
+    "frame 02 needs a darker shorter windup wedge",
+    "frames 06/07 require lower fragment brightness during production",
+    "hero poses are scale illustrations, not new approved animation",
+    "concept has edge color mixing and an opaque labeled background"
+  ]
+}

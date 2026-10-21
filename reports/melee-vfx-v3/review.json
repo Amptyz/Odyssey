@@ -1,0 +1,355 @@
+{
+  "errors": [],
+  "record": [
+    {
+      "name": "direction-reference-phase-0.02",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 8,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.1349083333214125,
+            "progress": 0.12423611101177087,
+            "art": {
+              "a": 2,
+              "b": 3,
+              "mix": 0.6211805550588542,
+              "time": 134.9083333214125
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": -0.7071067811865476,
+              "y": -0.7071067811865476
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-reference-phase-0.2",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 8,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.14755833332737295,
+            "progress": 0.22965277772810794,
+            "art": {
+              "a": 3,
+              "b": 4,
+              "mix": 0.14826388864054016,
+              "time": 147.55833332737296
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": -0.7071067811865476,
+              "y": -0.7071067811865476
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-reference-phase-0.4",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 8,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.16833333333333342,
+            "progress": 0.4027777777777785,
+            "art": {
+              "a": 4,
+              "b": 5,
+              "mix": 0.013888888888892836,
+              "time": 168.33333333333343
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": -0.7071067811865476,
+              "y": -0.7071067811865476
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-reference-phase-0.6",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 8,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.19328333332141248,
+            "progress": 0.6106944443451041,
+            "art": {
+              "a": 5,
+              "b": 6,
+              "mix": 0.0534722217255208,
+              "time": 193.2833333214125
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": -0.7071067811865476,
+              "y": -0.7071067811865476
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-reference-phase-0.8",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 8,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.2183333333333334,
+            "progress": 0.8194444444444451,
+            "art": {
+              "a": 6,
+              "b": 7,
+              "mix": 0.09722222222222617,
+              "time": 218.33333333333343
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": -0.7071067811865476,
+              "y": -0.7071067811865476
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-rotated-phase-0.02",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 9,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.13490833332141253,
+            "progress": 0.1242361110117711,
+            "art": {
+              "a": 2,
+              "b": 3,
+              "mix": 0.6211805550588553,
+              "time": 134.90833332141253
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": 1,
+              "y": 0
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-rotated-phase-0.2",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 9,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.151683333327373,
+            "progress": 0.2640277777281083,
+            "art": {
+              "a": 3,
+              "b": 4,
+              "mix": 0.32013888864054135,
+              "time": 151.683333327373
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": 1,
+              "y": 0
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-rotated-phase-0.4",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 9,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.16828333332141251,
+            "progress": 0.402361111011771,
+            "art": {
+              "a": 4,
+              "b": 5,
+              "mix": 0.011805555058855314,
+              "time": 168.28333332141253
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": 1,
+              "y": 0
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-rotated-phase-0.6",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 9,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.1975333333214125,
+            "progress": 0.646111111011771,
+            "art": {
+              "a": 5,
+              "b": 6,
+              "mix": 0.23055555505885414,
+              "time": 197.5333333214125
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": 1,
+              "y": 0
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    },
+    {
+      "name": "direction-rotated-phase-0.8",
+      "melee": {
+        "renderer": "approved-keyframe-sequence",
+        "texture": "art/melee-v3/keyframes-source",
+        "clock": "snapshot phase + sub-tick interpolation",
+        "vertices": 152,
+        "impacts": 0,
+        "frames": [
+          {
+            "id": 9,
+            "sourceId": "hero",
+            "phase": "active",
+            "age": 0.21830833332737298,
+            "progress": 0.8192361110614416,
+            "art": {
+              "a": 6,
+              "b": 7,
+              "mix": 0.096180555307208,
+              "time": 218.308333327373
+            },
+            "center": {
+              "x": 19.962692183306892,
+              "y": 19.965562015360206
+            },
+            "facing": {
+              "x": 1,
+              "y": 0
+            },
+            "radius": 5,
+            "arc": 5.340707511102648
+          }
+        ]
+      }
+    }
+  ]
+}

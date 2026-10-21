@@ -34,7 +34,11 @@
     "test:feel": "node --import tsx scripts/browser-game-feel.ts",
     "test:empty-skills": "node --import tsx scripts/browser-empty-skills.ts",
     "test:saves": "node --import tsx scripts/browser-local-save.ts",
-    "test:movement": "node --import tsx scripts/browser-movement-directions.ts"
+    "test:movement": "node --import tsx scripts/browser-movement-directions.ts",
+    "test:hero": "node scripts/browser-whole-hero.mjs && node scripts/browser-hero-impact.mjs",
+    "test:melee": "node --import tsx scripts/browser-melee-vfx.mjs",
+    "test:melee-alignment": "node --import tsx scripts/browser-melee-alignment.mjs",
+    "test:palettes": "node scripts/browser-hero-palettes.mjs"
   },
   "devDependencies": {
     "@cocos/creator-types": "3.8.7",

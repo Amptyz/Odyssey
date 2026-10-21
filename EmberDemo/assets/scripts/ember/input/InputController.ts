@@ -2,7 +2,8 @@ import { EventKeyboard, EventMouse, game, Input, input, KeyCode, Node, UITransfo
 import type { CommandPort } from '../platform/protocol';
 import type { WorldSnapshot } from '../simulation/GameWorld';
 import type { Vec2 } from '../utils/math';
-import { screenToWorld,type Projection } from '../render/IsoProjection';
+import {viewToWorldVector} from '../utils/GroundPlane';
+import { screenToWorld,type Projection } from '../render/GroundProjection';
 import type { Hud } from '../render/Hud';
 import type { SkillSlot } from '../content/config';
 export type ControlMode='classic'|'wasd';
@@ -30,8 +31,8 @@ export class InputController {
     if(this.mode!=='wasd')return;
     const x=Number(this.held.has(KeyCode.KEY_D))-Number(this.held.has(KeyCode.KEY_A));
     const y=Number(this.held.has(KeyCode.KEY_W))-Number(this.held.has(KeyCode.KEY_S));
-    // WASD follows screen directions, not the tilted world-grid axes.
-    const v=screenToWorld({x:this.camera.origin.x+x,y:this.camera.origin.y+y},this.camera);
+    // Direction is a unit-preserving rotation, independent of camera pan/zoom.
+    const v=viewToWorldVector({x,y});
     const length=Math.hypot(v.x,v.y);
     this.port.send({type:'DirectInput',movement:length?{x:v.x/length,y:v.y/length}:{x:0,y:0}});
   }

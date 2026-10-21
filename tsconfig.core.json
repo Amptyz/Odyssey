@@ -4,5 +4,5 @@
     "noUncheckedIndexedAccess": true, "esModuleInterop": true, "skipLibCheck": true,
     "outDir": "dist-core", "declaration": true, "lib": ["ES2020", "DOM"]
   },
-  "include": ["EmberDemo/assets/scripts/ember/combat-core/**/*.ts", "EmberDemo/assets/scripts/ember/simulation/**/*.ts", "EmberDemo/assets/scripts/ember/ai/**/*.ts", "EmberDemo/assets/scripts/ember/content/**/*.ts", "EmberDemo/assets/scripts/ember/platform/**/*.ts", "EmberDemo/assets/scripts/ember/utils/**/*.ts", "EmberDemo/assets/scripts/ember/render/IsoProjection.ts"]
+  "include": ["EmberDemo/assets/scripts/ember/combat-core/**/*.ts", "EmberDemo/assets/scripts/ember/simulation/**/*.ts", "EmberDemo/assets/scripts/ember/ai/**/*.ts", "EmberDemo/assets/scripts/ember/content/**/*.ts", "EmberDemo/assets/scripts/ember/platform/**/*.ts", "EmberDemo/assets/scripts/ember/utils/**/*.ts", "EmberDemo/assets/scripts/ember/render/GroundProjection.ts"]
 }

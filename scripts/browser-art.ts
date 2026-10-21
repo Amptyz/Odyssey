@@ -20,7 +20,7 @@ try{
   await page.goto('http://127.0.0.1:8080/?debug=1&seed=1234');await page.waitForFunction(()=>!!(window as any).__EMBER__?.art);
   check((await collect()).loaded,'local art library loads without external assets');
   await page.keyboard.press('Enter');await page.waitForTimeout(120);await page.screenshot({path:'reports/19-neutral-art.png'});
-  await click(-90,-36);check((await state()).appearance.weapon==='bow'&&(await state()).gold===60,'ordinary catalog purchase equips the current100-gold bow');
+  await click(-90,-36);check((await state()).equipment.slot1==='bow'&&(await state()).gold===60,'ordinary catalog purchase equips the current100-gold bow');
   await page.screenshot({path:'reports/21-equipped-art.png'});
   await page.keyboard.press('Enter');await page.waitForTimeout(120);await collect();await page.screenshot({path:'reports/20-living-ruins.png'});
   let s=await state();const move=await point(s.hero.x+3,s.hero.y+2);await page.mouse.click(move.x,move.y,{button:'right'});await page.waitForTimeout(120);await collect();
@@ -30,8 +30,8 @@ try{
   // Six-layer ownership and enemy animation QA use an explicitly labelled developer world.
   // This replaces the obsolete three-wave natural bot; ordinary five-stage completion is covered by levels.
   await page.keyboard.press('F2');await page.waitForTimeout(100);s=await state();const draft=s.developer!.draft;
-  await command({type:'DevConfigure',config:{...draft,wave:1,equipment:{slot1:'sword',slot2:'bow',slot3:'staff',slot4:'plate',slot5:'hood',slot6:'robe'},purchaseOrder:['sword','bow','plate','hood','staff','robe'],options:{invincible:true,noCooldown:true,freezeEnemies:false,speed:1}}});
-  await click(440,-322);s=await state();check(s.developer?.enabled&&Object.keys(s.equipment).length===6&&s.appearance.weapon==='staff'&&s.appearance.body==='robe'&&s.appearance.head==='hood','explicit six-slot test world renders latest owned piece per body part');
+  await command({type:'DevConfigure',config:{...draft,wave:1,equipment:{slot1:'sword',slot2:'bow',slot3:'staff',slot4:'plate',slot5:'hood',slot6:'robe'},options:{invincible:true,noCooldown:true,freezeEnemies:false,speed:1}}});
+  await click(440,-322);s=await state();check(s.developer?.enabled&&Object.keys(s.equipment).length===6,'explicit six-slot test world retains every equipped item');
   await page.screenshot({path:'reports/22-six-slot-art.png'});await page.keyboard.press('F2');await page.waitForTimeout(100);await command({type:'DevSpawn',enemyId:'warden',count:1});check((await state()).units.some(u=>u.kind==='warden'),'validated open-panel spawn creates the guardian test unit');await page.keyboard.press('F2');await page.waitForTimeout(100);
   await page.screenshot({path:'reports/22-guardian-procedural-art.png'});
   let wardenSeen=false,movingEnemySeen=false,hurtEnemySeen=false;const deadline=Date.now()+22000;

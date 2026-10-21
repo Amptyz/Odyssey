@@ -3,6 +3,7 @@ import type {Vec2} from '../utils/math';
 /** Presentation geometry in WORLD coordinates. Uses the same blocker query as targets(). */
 export function shapeContours(shape:HitShape,collision?:Pick<CollisionWorld,'blocker'>):Vec2[][] {
  const clip=(p:Vec2)=>{const t=collision?.blocker(shape.center,p)??1;return{x:shape.center.x+(p.x-shape.center.x)*t,y:shape.center.y+(p.y-shape.center.y)*t};};
+ if(shape.kind==='polygon')return[shape.points.map(clip)];
  if(shape.kind==='circle'||shape.kind==='sector'||shape.kind==='ring'){
   const start=shape.kind==='sector'?Math.atan2(shape.facing.y,shape.facing.x)-shape.arc/2:0,arc=shape.kind==='sector'?shape.arc:Math.PI*2,n=Math.max(24,Math.ceil(arc*24));
   const rays=Array.from({length:n+1},(_,i)=>{const a=start+arc*i/n;return{a,p:clip({x:shape.center.x+Math.cos(a)*shape.radius,y:shape.center.y+Math.sin(a)*shape.radius})};});
@@ -19,4 +20,4 @@ export function shapeContours(shape:HitShape,collision?:Pick<CollisionWorld,'blo
  }else{const angle=Math.atan2(shape.end.y-shape.center.y,shape.end.x-shape.center.x);for(const [c,start]of[[shape.end,angle-Math.PI/2],[shape.center,angle+Math.PI/2]]as const)for(let i=0;i<=24;i++){const a=start+Math.PI*i/24;boundary.push({x:c.x+Math.cos(a)*shape.radius,y:c.y+Math.sin(a)*shape.radius});}}
  return[boundary.map(clip)];
 }
-export function cloneShape(shape:HitShape):HitShape {return shape.kind==='capsule'?{...shape,center:{...shape.center},end:{...shape.end}}:shape.kind==='rectangle'||shape.kind==='sector'?{...shape,center:{...shape.center},facing:{...shape.facing}}:{...shape,center:{...shape.center}};}
+export function cloneShape(shape:HitShape):HitShape {return shape.kind==='polygon'?{...shape,center:{...shape.center},points:shape.points.map(p=>({...p}))}:shape.kind==='capsule'?{...shape,center:{...shape.center},end:{...shape.end}}:shape.kind==='rectangle'||shape.kind==='sector'?{...shape,center:{...shape.center},facing:{...shape.facing}}:{...shape,center:{...shape.center}};}

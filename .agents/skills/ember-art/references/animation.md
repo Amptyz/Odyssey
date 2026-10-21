@@ -8,19 +8,19 @@
 
 | 文件 | 实际职责与限制 |
 | --- | --- |
-| `content/animation.ts` | `AnimationClips` 每种状态只有 frames / fps / loop，均匀播放；无逐帧时长、方向表、事件数组 |
+| `content/animation.ts` | 旧 `AnimationClips` 为 frames / fps / loop 均匀播放；主角 `motionPose` 计算投影方向与速度，`wholeHeroFrame` / `HERO_CLIPS`选择完整帧与八方向镜像 |
 | `render/MonsterVisual.ts` | 当前17怪 PNG，相位 / 专属帧 / 阶段图集，固定来源比例与归一化 anchor；程序回退 |
 | `render/AnimatedUnit.ts` | 人物桥接与旧怪物序列帧；旧路径底边锚点、死亡 0.9 秒内淡出 |
-| `render/HeroRig.ts` | 玩家六部件的程序动作和装备挂点，不是整人序列帧或 Spine |
+| `render/HeroSprite.ts` | 玩家完整帧组，五绘制方向加三镜像；HERO_CLIPS / wholeHeroFrame选择，无分部件骨架或装备叠层 |
 | `render/ArtLibrary.ts` | 按生成 TS 的 resourcePath 加载生产图集，另保留 living-ruins 兼容；不直接读取任意制作 JSON |
 | `scripts/inspect-pixel-art.py`（仓库根目录） | 从 production.json 与 art-completion-v2/manifest.json 引用片段生成 pixel-art.ts，支持显式 rect / anchor；--check 检查一致性，不改 PNG |
 | `scripts/inspect-art.py` | 旧兼容 art-manifest.ts 生成器，不改 PNG |
 
 旧兼容怪物图集为 4×4：idle 0–3 / walk 4–7 / attack 8–11 / hurt 12 / death 13–15；cast 复用 attack。FPS 分别为 4 / 9 / 9 / 8 / 4，cast 为 7；仅 idle / walk 循环。不是固定的行业规格，改变布局需要同步生成器和配置。
 
-玩家普攻动作由 `ActionSignal.basicAttack` / `MotionPose.basicAttack` 决定；默认挥砍，飞弹增益改为释放动作。装备 shape、category、购买顺序仅用于外观和挂点，不得决定挥砍 / 射击。
+玩家普攻动作由ActionSignal.basicAttack / MotionPose.basicAttack决定，默认近战帧，飞弹余烬使用远程帧；装备category只用于物品分类，不参与人物图像、动画或普攻选择。
 
-`motionPose` 还有状态时间窗口：受击约 0.18 秒、出手后的 attack / cast 约 0.45 秒；windup 期间将 attack age 固定为 0.08 秒。仅增加帧数并不能让动作播完，例如 12 帧 / 12 FPS 需要约 1 秒的播放时间。新长动作要检查状态选择、受击打断、死亡淡出和战斗前摇的映射；不要只改 FPS，也不要为配合美术擅自改变伤害时刻。当前 cast 的名义剪辑时长也长于出手显示窗口，验收时需观察末帧是否真正出现。
+`motionPose`状态窗口：受击 .18秒，attack / cast .45秒；敌人windup固定attack age .08秒。玩家近战 / 远程 / cast为8帧18 FPS（最后一帧从 .389秒可见）；死亡5帧8 FPS，从 .65秒后淡出。增加帧数需核对播放窗口与打断，不能为美术改变伤害时刻。
 
 ## 生成时锁定什么
 
@@ -30,11 +30,15 @@
 
 循环检查首尾姿态和节奏；只有末帧确实重复首帧且造成停顿时才删除。攻击恢复到待机是合理的，不能将 one-shot 误解为“不许回到准备姿势”；它表示只播放一次。死亡不恢复站立。已存在的武器和面部特征要保留，“不新增眼睛 / 武器”不等于删除原有设计。
 
+用户重设计要求优先于旧身份保留：当前新主角已明确无血、无发、无五官，旧图中的发型、眼睛和染血衣物不能带入新动画。八方向要检查整个人的朝向，不只看头；尤其同一行的后半段不得突然转向。
+
+跑步与行走分开设计，完整循环含左右腿交替、接地 / 压低 / 蹬伸 / 腾空。当前HERO_CLIPS：walk8帧12 FPS、run8帧20 FPS；同一时刻选择确定帧，不进行关节旋转或位图模糊插值。ArenaView使用插值后的模拟时钟，暂停冻结；空中帧不得按最低像素贴底。详见art-source/chibi-runtime-v1/。
+
 ## 像素帧对齐
 
 遵循 [源像素网格标准](../../../../docs/ART_DIRECTION.md#源像素网格与显示目标)。同一对象跨动作共用逻辑网格原点、身体尺度、色板与足底基准；源坐标和切片偏移使用整数 texel，不逐帧重采样、缩放或用平滑插值补间。像素簇随姿势有目的地变化，逐帧叠看脚、武器握点与轮廓，排除无意跳动和单像素闪烁。
 
-可用较少而清楚的关键帧；帧数 / FPS 按真实模拟阶段配合，像素风不表示降低玩法更新频率。视频中间帧常带模糊与子像素，需重制 / 检查网格后才能作为候选，不能直接抽帧标成像素成品。纸娃娃保持肩位置，新 PNG 必须实测局部 anchor / grip；当前肢体角度已量化15度，仍需检查旋转像素密度。禁止为画面对齐修改肩轴契约或世界移动。
+可用较少而清楚的关键帧；帧数 / FPS与模拟显示窗口配合。每帧是完整人物，肢体与衣服在图内自然连接。视频插帧的模糊与子像素必须检查；不要恢复纸娃娃关节、旋转部件或通过动画产生实际位移。
 
 ## 两种空间策略不可混用
 
@@ -52,7 +56,7 @@ AnimatedUnit 只消费 pivot X，将 Cocos anchor Y 固定设为 0；每帧图�
 
 当前 MonsterVisual PNG 路径已支持显式 rect / 归一化 anchor 与固定 scale，可表达裁切后的空间基准；旧 AnimatedUnit 仍有贴底限制。视频或整体跳跃来源仍需逐项实现并验证：保存完整固定帧画布及共同 pivot，或保存裁切后的原画布尺寸、偏移与共同 pivot 并在渲染中恢复。生成器也要能够保留这些数据；不能再让默认裁边覆盖它们。改动仅针对需要的新模式，保留旧素材的兼容性。
 
-纸娃娃的 `anchor / grip` 使用图片左下角为原点的归一化坐标。与图集左上角像素 pivot 转换时写清原点、单位和裁切偏移；不要把草案 `[0.5,1.0]` 当作所有系统通用的“脚底”。
+玩家整身PixelFrame.anchor从裁切图左下角计，rect从源图左上角计；两者通过原始画布和共同地面基准换算。脚底基准与每帧最低不透明像素不同，禁止逐帧贴底使腾空消失。
 
 ## 位图姿势帧路线
 

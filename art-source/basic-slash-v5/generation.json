@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-21",
+  "tool": "built-in image_gen",
+  "scope": "width-profile concept study",
+  "selectedOutput": "concept.png",
+  "passes": [
+    {
+      "file": "rejected-pass.png",
+      "outputBasename": "exec-6c496ddc-12df-4812-802d-9d884c2ddf9a.png",
+      "prompt": "revision.prompt.txt",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGB",
+      "sha256": "2469b0989d07bec445cc3404b323ade03019c53b356ece075e63c74a5421fcef",
+      "status": "rejected: still reads as a two-ended crescent",
+      "references": [
+        "../basic-slash-v4/concept.png"
+      ]
+    },
+    {
+      "file": "concept.png",
+      "outputBasename": "exec-7cc1220f-1756-43c2-85ab-8f602bcdc8b0.png",
+      "prompt": "shape.prompt.txt",
+      "size": [
+        1513,
+        1039
+      ],
+      "mode": "RGB",
+      "sha256": "6b3542a1ea808a69ece5a630f13b6c253b1b03977ce49b1b6bad0c74d6eaf682",
+      "status": "selected for width-profile study only",
+      "references": []
+    }
+  ],
+  "postProcessing": "none"
+}

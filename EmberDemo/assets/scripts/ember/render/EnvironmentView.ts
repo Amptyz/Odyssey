@@ -2,7 +2,7 @@ import { Graphics,Node,Sprite } from 'cc';
 import type { MapDefinition } from '../content/maps';
 import { ENVIRONMENT_APPEARANCES } from '../content/appearances';
 import { PIXEL_ATLASES } from '../content/pixel-art';
-import { screenVisible,visibleWorldBounds,worldToScreen,type Projection } from './IsoProjection';
+import { screenVisible,visibleWorldBounds,worldToScreen,type Projection } from './GroundProjection';
 import { ArtLibrary } from './ArtLibrary';
 import { color,polygon } from './Primitives';
 interface Prop {frame:number;x:number;y:number;width:number;height:number;ground:boolean;foliage?:boolean;waterfall?:boolean;node?:Node}
@@ -14,7 +14,7 @@ export class EnvironmentView {
     for(const prop of this.props)prop.node?.destroy();this.props=[];this.map=map;this.lastOrigin={x:NaN,y:NaN};
     const f=ENVIRONMENT_APPEARANCES[map.environment]!.frames;
     const add=(frame:number,x:number,y:number,width:number,height:number,ground=false,extra:Partial<Prop>={})=>this.props.push({frame,x,y,width,height,ground,...extra});
-    const crestLocations:{x:number;y:number}[]=[];for(const start of map.groundEmblems??map.waves.map(wave=>wave.level?.start)){if(start&&start.x<map.width&&start.y<map.height&&crestLocations.every(at=>Math.hypot(at.x-start.x,at.y-start.y)>=4)){add(f.crest,start.x,start.y,130,67,true);crestLocations.push(start);}}
+    const crestLocations:{x:number;y:number}[]=[];for(const start of map.groundEmblems??map.waves.map(wave=>wave.level?.start)){if(start&&start.x<map.width&&start.y<map.height&&crestLocations.every(at=>Math.hypot(at.x-start.x,at.y-start.y)>=4)){add(f.crest,start.x,start.y,130,130,true);crestLocations.push(start);}}
     for(const obstacle of map.obstacles)add(obstacle.height>40?f.pillar:f.rubble,obstacle.x,obstacle.y,Math.max(43,obstacle.radius*65),Math.max(33,obstacle.height));
     for(let x=4;x<map.width;x+=8){add(f.shrub,x,-.8,53,42,false,{foliage:true});add(f.foliage,x,map.height+.8,57,46,false,{foliage:true});}
     for(let y=5;y<map.height;y+=8){add(f.foliage,-.8,y,57,46,false,{foliage:true});add(f.shrub,map.width+.8,y,53,42,false,{foliage:true});}
@@ -29,7 +29,8 @@ export class EnvironmentView {
       const atlas=map.environment==='frostRuins'&&this.art.hasPixel('environment-frost-v2')?'environment-frost-v2':'environment';
       const source=this.art.hasPixel(atlas)?PIXEL_ATLASES[atlas]!.frames[prop.frame]!.rect:this.art.region(visual.atlas,prop.frame).rect;
       // Upright props contain within their scene box without squashing ice pillars.
-      // Ground crests keep their authored isometric footprint; no collision changes.
+      // Ground-only decals expand their old compressed footprint into the square
+      // ground basis. Upright sprites retain their original body proportions.
       const scale=Math.min(prop.width/source[2],prop.height/source[3]);
       const width=prop.ground?prop.width:source[2]*scale,height=prop.ground?prop.height:source[3]*scale;
       const p=worldToScreen(prop,camera),inView=screenVisible({x:p.x,y:p.y+height*camera.zoom/2},width*camera.zoom);

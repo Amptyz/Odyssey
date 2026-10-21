@@ -1,4 +1,5 @@
-import { ImageAsset, Rect, Size, SpriteFrame, Texture2D, resources, Sprite, UITransform, Node } from 'cc';
+import { ImageAsset, Rect, Size, SpriteFrame, Texture2D, resources, Sprite, UITransform, Node,EffectAsset,Material,Vec4 } from 'cc';
+import {HERO_PALETTES,type HeroPaletteId} from '../content/hero-palettes';
 import { ATLAS_FRAMES,type AtlasId,type ArtFrame } from '../content/art-manifest';
 import { uiNode } from './Primitives';
 import { PIXEL_ATLASES } from '../content/pixel-art';
@@ -9,7 +10,25 @@ export class ArtLibrary {
   loaded=false;
   private readonly pixelFrames=new Map<string,SpriteFrame>();
   private readonly pixelTextures:Texture2D[]=[];
+  private readonly palettes=new Map<HeroPaletteId,Material>();
+  meleeFrame!:SpriteFrame;
+  private meleeEffect!:EffectAsset;
+  private readonly meleeMaterials:Material[]=[];
   async load():Promise<void>{
+    const [meleeEffect,meleeImage]=await Promise.all([
+      new Promise<EffectAsset>((resolve,reject)=>resources.load('effects/melee-keyframes',EffectAsset,(error,asset)=>error?reject(error):resolve(asset))),
+      new Promise<ImageAsset>((resolve,reject)=>resources.load('art/melee-v3/keyframes-source',ImageAsset,(error,asset)=>error?reject(error):resolve(asset))),
+    ]);
+    this.meleeEffect=meleeEffect;
+    const flowTexture=new Texture2D();flowTexture.image=meleeImage;
+    // Light flow is continuous coverage, not the character's pixel palette.
+    flowTexture.setFilters(Texture2D.Filter.LINEAR,Texture2D.Filter.LINEAR);this.pixelTextures.push(flowTexture);
+    this.meleeFrame=new SpriteFrame();this.meleeFrame.texture=flowTexture;this.meleeFrame.packable=false;
+    const effect=await new Promise<EffectAsset>((resolve,reject)=>resources.load('effects/hero-palette',EffectAsset,(error,asset)=>error?reject(error):resolve(asset)));
+    for(const [id,palette] of Object.entries(HERO_PALETTES)){
+      const material=new Material();material.initialize({effectAsset:effect,defines:{USE_TEXTURE:true}});
+      material.setProperty('clothColor',new Vec4(...palette.cloth));this.palettes.set(id as HeroPaletteId,material);
+    }
     await Promise.all((Object.keys(ATLAS_FRAMES) as AtlasId[]).map(id=>new Promise<void>((resolve,reject)=>{
       resources.load(`art/living-ruins/${id}`,ImageAsset,(error,image)=>{
         if(error){reject(error);return;}
@@ -33,6 +52,8 @@ export class ArtLibrary {
   region(atlas:AtlasId,index:number):ArtFrame{return ATLAS_FRAMES[atlas][index]!;}
   pixelFrame(id:string,index:number):SpriteFrame {const frame=this.pixelFrames.get(`${id}:${index}`);if(!frame)throw new Error(`Missing pixel frame ${id}:${index}`);return frame;}
   hasPixel(id:string):boolean{return!!PIXEL_ATLASES[id];}
+  heroMaterial(id:HeroPaletteId):Material {return this.palettes.get(id)!;}
+  meleeMaterial():Material {const material=new Material();material.initialize({effectAsset:this.meleeEffect,defines:{USE_TEXTURE:true}});this.meleeMaterials.push(material);return material;}
   debug(){return{atlases:Object.entries(PIXEL_ATLASES).map(([id,a])=>({id,path:a.resourcePath,frames:a.frames.length,loaded:a.frames.every((_,i)=>this.pixelFrames.has(`${id}:${i}`)),filter:'nearest'})),frames:this.pixelFrames.size};}
   icon(parent:Node,id:string,size=40):Node|undefined {
     // The form perk reuses the existing volley icon; it is not the skill-triggered magicMissile perk.
@@ -49,5 +70,5 @@ export class ArtLibrary {
     const sprite=node.addComponent(Sprite);sprite.spriteFrame=this.frame(atlas,index);sprite.sizeMode=Sprite.SizeMode.CUSTOM;
     node.getComponent(UITransform)!.setContentSize(width,height??width*frame.rect[3]/frame.rect[2]);return node;
   }
-  dispose():void{for(const f of Array.from(this.frames.values()).concat(Array.from(this.pixelFrames.values())))f.destroy();for(const t of Array.from(this.textures.values()).concat(this.pixelTextures))t.destroy();this.frames.clear();this.pixelFrames.clear();this.textures.clear();this.pixelTextures.length=0;this.loaded=false;}
+  dispose():void{this.meleeFrame?.destroy();for(const m of this.meleeMaterials)m.destroy();this.meleeMaterials.length=0;for(const f of Array.from(this.frames.values()).concat(Array.from(this.pixelFrames.values())))f.destroy();for(const t of Array.from(this.textures.values()).concat(this.pixelTextures))t.destroy();for(const m of this.palettes.values())m.destroy();this.palettes.clear();this.frames.clear();this.pixelFrames.clear();this.textures.clear();this.pixelTextures.length=0;this.loaded=false;}
 }

@@ -1,0 +1,31 @@
+Create a polished game VFX art-direction and animation-keyframe board for Project Ember. This is a revised CONCEPT BOARD, not a production sprite atlas. The user found the previous slash far too thin and weak. Make this design emphatically forceful and satisfying, with the big broad swept light surface and explosive directional energy of the first two supplied reference images, translated into deliberately CHUNKY PIXEL ART.
+
+REFERENCE ROLES:
+Image 1 (pink 3D crescent) is a reference ONLY for the mass, changing width, layered sweep, tapered motion and high-contrast power of the attack. Do not copy its humanoid, purple-only palette, runes, soft bloom, watermark or full surrounding circle.
+Image 2 (small white/orange swing) is a reference ONLY for the boldly thick white silhouette and sharp instant impact.
+Image 3 is the approved player identity and pixel density: squat round chibi, bald dry pale head, faceless dark shadow front, short thick limbs, muted ash-purple torn cloth, ochre waist tie and tiny amber chest ember. Whole connected body, no hair, blood, face features, class accessories, equipment swaps or new weapon. Preserve this identity. Show active weight transfer and a planted compact striking pose.
+
+COMPOSITION:
+Landscape board around 1600 x 1200, clean dark slate-grey background, enough midtone contrast to see all forms; discrete subtle dividers and small clean readable labels.
+Header: "EMBER / BASIC SLASH" and "IMPACT REVISION".
+Upper 43 percent: large dramatic NEUTRAL peak-strike study on the left, three smaller equally clear studies to the right labeled FIRE, FROST, DARK. Every study includes the same little hero to establish scale. Neutral is the main focus. The slash is appreciably larger than the short hero, but shows in front/right of the actor, never obscuring its entire head and body. Ground unobtrusive with no perspective grid, no circular ground ring. Neutral large study includes one separate small sharp white contact burst at its forward edge, clearly distinguishable from the continuous slash.
+Lower 53 percent: eight equal animation-keyframe panels, four columns by two rows. Identical camera, scale and planted ground anchor for a RIGHT-facing attack in every panel. Clear labels only: "01 LOAD / 0ms", "02 COIL / 80ms", "03 RELEASE / 120ms", "04 PEAK / 160ms", "05 FOLLOW / 200ms", "06 BREAK / 240ms", "07 SETTLE / 300ms", "08 CLEAR / 360ms". Keep the small hero present in EVERY panel, with changes in pose corresponding to the attack. Do not accidentally draw a ghost arc in the first or last panel. These eight poses are the NEUTRAL version, and all show a miss without the contact burst. A small footer may read "SHARED SLASH + ELEMENT PARTICLES + CONTACT BURST".
+
+SLASH SHAPE, critically important:
+A big dynamic curved BLADE-SHAPED SURFACE, never a thin outlined crescent, thin ring, equal-width stroke, static crescent icon, smoke puff, aura, dome or ellipse. A single one-sided forward sweep spanning roughly 117 degrees from upper-right to lower-right, open toward the player on the left. It has a broad wedge-shaped moving leading belly, a razor-pointed advancing tip and a LONG tapering tail, with dramatic variation of thickness. The widest bright surface is around one-third of the hero height, then tears into smaller offset ribbons. Build it with a very bright ivory-white core surface, pale cool grey middle mass, darker blue-grey offset trailing bands, and a few deep slate contrast pixels. The neutral is essentially achromatic; it is NOT already a fire or lightning skill. Interior has open negative space. Two irregular secondary echo ribbons separated by dark gaps reinforce angular velocity; their offset and delayed breakup show actual motion. A few straight tangential slash streaks and grouped sharp shards, not random confetti. High brightness is LOCAL and BRIEF; do not dim the whole image to fake contrast.
+
+KEYFRAME PROGRESSION:
+01: body winds up, no effect.
+02: lowered compressed body, drawing arm back, only a tiny dim grey starting wedge, no full arc.
+03: explosive forward release, bright broad upper-right wedge appears with a fast stretched tail; a faint incomplete base curve suggests the forward footprint.
+04: maximum crisp thick sweeping surface and two staggered tapered trails at the front/right, visibly asymmetrical, leading tip now toward the middle/lower-right. This is the power frame, strong visual mass, body follows through with feet planted.
+05: bright leading tip reaches lower-right, broad upper tail breaks away into visibly separate patches, vigorous descending motion; same fixed outer radius.
+06: NO intact bright blade. Four to eight angular grey fragments fly along the sweep direction, actor recovers.
+07: two fading grey fragment clusters, body settles.
+08: zero effect, standing recovered pose.
+
+ELEMENT STUDIES:
+Use the same exact peak slash silhouette and shared pixel scale for neutral, fire, frost and dark. FIRE: white-hot cream leading surface, orange and rust inner layers, jagged short tongues and several rising square embers. FROST: cold white front, cyan and deep blue inner bands, a few large directional angular splinters. DARK: pale lavender-white cut edge, violet and charcoal swept interior, small inward-breaking jagged pieces; maintain a strong readable edge rather than an invisible black cloud. Keep these variations visually just as powerful. Color and particle character change, not overall reach or attack form.
+
+PIXEL EXECUTION:
+Large clearly visible square clusters, jagged stair-step contours, intentional thick pixel shapes, limited hard tone steps, no antialiased illustration edges, no airbrush bloom, no smooth vector strokes, no painterly blur or tiny high-resolution texture. Treat the board artwork as large nearest-neighbor enlarged low-resolution sprites, while typography can stay neat. Strong silhouette and negative-space rhythm matter more than noise. Use 4-5 principal effect tones per variant. No photographic assets, no watermark or copied reference markings. This should feel like a high-quality impactful pixel-action-game attack study, not a restrained UI icon sheet.

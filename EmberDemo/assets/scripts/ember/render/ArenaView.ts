@@ -1,3 +1,5 @@
+import { meleeSweepShapes } from '../combat-core/MeleeSweep';
+import {FIXED_DT} from '../content/config';
 import {campMap} from '../content/scenes';
 import {InteractionView} from './InteractionView';
 import { Graphics, Label, Node } from 'cc';
@@ -13,11 +15,13 @@ import { AnimatedUnit } from './AnimatedUnit';
 import {LevelGuidanceView} from './LevelGuidanceView';
 import { EnvironmentView } from './EnvironmentView';
 import { PixelVfxView } from './PixelVfxView';
-import { motionPose } from '../content/animation';
+import { MeleeVfxView } from './MeleeVfxView';
+import { motionPose,HERO_DEATH_FADE } from '../content/animation';
 import type { UnitSnapshot as Unit, WorldSnapshot } from '../simulation/GameWorld';
 import { lerp, type Vec2 } from '../utils/math';
-import { DEFAULT_PROJECTION, fitMapProjection, SmoothCameraFollow,screenVisible,worldToScreen, type Projection } from './IsoProjection';
+import { DEFAULT_PROJECTION, fitMapProjection, SmoothCameraFollow,screenVisible,worldToScreen,worldLengthToScreen, type Projection } from './GroundProjection';
 import { box,color,disk,graphics,setText,text,uiNode } from './Primitives';
+import {DEFAULT_HERO_PALETTE,HERO_PALETTES} from '../content/hero-palettes';
 interface UnitView {node:Node;body:AnimatedUnit|MonsterVisual;bars:Graphics;ring:Graphics;kind:Unit['kind']}
 /** Nodes are retained/recycled. Only dynamic vector paths are redrawn. */
 export class ArenaView {
@@ -27,10 +31,11 @@ export class ArenaView {
   private readonly effects:Graphics;
   private readonly projectiles:Graphics;
   private readonly pixelVfx:PixelVfxView;
+  private readonly meleeVfx:MeleeVfxView;private readonly dangerOverlay:Graphics;
   private readonly targeting:Graphics;private readonly colliders:Graphics;
   private readonly units=new Map<string,UnitView>();
   private readonly spare:UnitView[]=[];
-  private readonly guidance:LevelGuidanceView;private readonly environment:EnvironmentView;private visualTime=0;private lastTick=0;
+  private readonly guidance:LevelGuidanceView;private readonly environment:EnvironmentView;private visualTime=0;private heroVisualTime=0;private lastTick=0;
   private readonly obstacles:{node:Node;y:number}[]=[];
   private readonly numbers:Label[]=[];
   constructor(private readonly root:Node,private readonly art:ArtLibrary) {
@@ -39,6 +44,8 @@ export class ArenaView {
     this.objects=uiNode('Depth sorted actors and props',root);this.environment=new EnvironmentView(this.floor,ground,this.objects,art);this.interactions=new InteractionView(this.objects,art);
     this.projectiles=graphics('Projectile batch',root);this.effects=graphics('Effect batch',root);
     this.pixelVfx=new PixelVfxView(uiNode('Bounded pixel flipbooks',root),art);
+    this.meleeVfx=new MeleeVfxView(uiNode('Continuous melee light',root),art);
+    this.dangerOverlay=graphics('Essential danger borders',root);
     this.guidance=new LevelGuidanceView(root);
     this.colliders=graphics('Collision debug',root);
     for(let i=0;i<40;i++) {const label=text(`Floating number ${i}`,root,'',17,0,0,140,36);label.node.active=false;this.numbers.push(label);}
@@ -58,8 +65,9 @@ export class ArenaView {
   update(state:WorldSnapshot,alpha:number,pointer:Vec2,dt=0,debug=false):void {
     if(state.tick<this.lastTick)this.visualTime=state.time;this.lastTick=state.tick;
     if(!state.paused)this.visualTime=['camp','cleared','fighting'].includes(state.phase)?state.time:Math.max(this.visualTime,state.time)+Math.min(dt,.05);
+    if(!state.paused)this.heroVisualTime=this.visualTime+alpha*FIXED_DT;
     this.obstacles.length=0;this.obstacles.push(...this.environment.update(this.visualTime,this.camera));
-    const visible=(u:Unit)=>u.alive||this.visualTime-u.diedAt<.9;
+    const visible=(u:Unit)=>u.alive||this.visualTime-u.diedAt<(u.kind==='hero'?HERO_DEATH_FADE.lifetime:.9);
     const alive=new Set(state.units.filter(visible).map(u=>u.id));
     for(const [id,view] of this.units)if(!alive.has(id)){view.node.active=false;this.spare.push(view);this.units.delete(id);}
     const order=[...this.obstacles,...this.interactions.update(state,this.camera)];
@@ -68,38 +76,42 @@ export class ArenaView {
       if(!screenVisible(projected,150)){const cached=this.units.get(u.id);if(cached)cached.node.active=false;continue;}
       let v=this.units.get(u.id);
       if(!v){v=this.spare.pop() ?? this.makeView(u.kind);v.node.active=true;if(v.kind!==u.kind){v.kind=u.kind;v.body.node.destroy();v.body=u.kind==='hero'?new AnimatedUnit(v.node,u.kind,this.art):new MonsterVisual(v.node,u.kind,this.art);v.body.node.setSiblingIndex(1);}this.units.set(u.id,v);}
-      v.node.active=true;if(v.body instanceof MonsterVisual)v.body.update(u,state.enemies?.units.find(pose=>pose.id===u.id),this.visualTime);else v.body.update(motionPose(u,this.visualTime),state.party?.find(p=>p.id===u.id)?.appearance??state.appearance);
+      const paletteId=state.party?.find(p=>p.id===u.id)?.paletteId??DEFAULT_HERO_PALETTE;
+      v.node.active=true;if(v.body instanceof MonsterVisual)v.body.update(u,state.enemies?.units.find(pose=>pose.id===u.id),this.visualTime);else v.body.update(motionPose(u,this.heroVisualTime),paletteId);
       const p=worldToScreen({x:lerp(u.previous.x,u.x,alpha),y:lerp(u.previous.y,u.y,alpha)},this.camera);
       v.node.setScale(this.camera.zoom,this.camera.zoom,1);
       v.node.setPosition(Math.round(p.x),Math.round(p.y));order.push({node:v.node,y:p.y});
       const bar=v.bars;bar.node.active=u.alive;bar.node.setPosition(0,v.body.height-47+4);bar.clear();box(bar,-19,47,38,5,'#354D49',2);box(bar,-18,48,36*u.hp/u.maxHp,3,u.kind==='hero'?'#95D4B5':'#DA957E',1);
       if(u.shield>0)box(bar,-18,54,36*Math.min(1,u.shield/65),3,'#A3CFE3',1);
       const ring=v.ring;ring.clear();if(!u.alive)continue;ring.fillColor=color('#405A4730');ring.ellipse(0,-1,Math.max(18,u.radius*38),Math.max(8,u.radius*18));ring.fill();
-      if(u.kind==='hero'){ring.strokeColor=color(u.id===state.hero.id?'#F2DDAB':'#8DCBE8');ring.lineWidth=2;ring.ellipse(0,0,19,10);ring.stroke();}
+      if(u.kind==='hero'){ring.strokeColor=color(HERO_PALETTES[paletteId].color);ring.lineWidth=u.id===state.hero.id?3:2;ring.circle(0,0,19);ring.stroke();}
       if(u.shield>0){ring.strokeColor=color('#BDE5EF');ring.lineWidth=2;ring.ellipse(0,20,24,31);ring.stroke();}
       for(const [i,status] of u.statuses.entries())disk(ring,-14+i*12,24,4,STATUSES[status.id].color);
-      if(u.windup>0){ring.strokeColor=color('#D87562');ring.lineWidth=3;ring.ellipse(0,0,28,14);ring.stroke();}
+      if(u.windup>0){ring.strokeColor=color('#D87562');ring.lineWidth=3;ring.circle(0,0,28);ring.stroke();}
     }
     order.sort((a,b)=>b.y-a.y);order.forEach((v,i)=>v.node.setSiblingIndex(i));
     this.drawGround(state,pointer);this.drawProjectiles(state,alpha);this.drawEffects(state);
     this.pixelVfx.update(state,this.camera);
-    this.drawColliders(state,debug);this.guidance.update(state,this.camera);
+    this.meleeVfx.update(state,alpha,this.camera,this.cameraKey);
+    // Friendly light never erases hostile warning contours, including ring holes.
+    this.dangerOverlay.clear();if(['camp','fighting','cleared'].includes(state.stagePhase))drawEnemyWarnings(this.dangerOverlay,state.enemies,this.camera,this.visualTime);
+    this.drawColliders(state,debug,alpha);this.guidance.update(state,this.camera);
   }
   private makeView(kind:Unit['kind']):UnitView {
     const node=uiNode('Unit',this.objects);const ring=graphics('Indicators',node),body=kind==='hero'?new AnimatedUnit(node,kind,this.art):new MonsterVisual(node,kind,this.art),bars=graphics('Health',node);
     return {node,body,bars,ring,kind};
   }
-  debug(){return{time:this.visualTime,camera:{...this.camera,origin:{...this.camera.origin}},environment:this.environment.debug(),vfx:this.pixelVfx.debug(),units:Array.from(this.units,([id,v])=>({id,...v.body.debug(),worldScale:{x:v.node.scale.x,y:v.node.scale.y}}))};}
+  get presentationTime():number{return this.heroVisualTime;}
+  debug(){return{time:this.visualTime,camera:{...this.camera,origin:{...this.camera.origin}},environment:this.environment.debug(),vfx:this.pixelVfx.debug(),melee:this.meleeVfx.debug(),units:Array.from(this.units,([id,v])=>({id,...v.body.debug(),worldScale:{x:v.node.scale.x,y:v.node.scale.y}}))};}
 
   private drawGround(state:WorldSnapshot,pointer:Vec2):void {
     const g=this.targeting;g.clear();
-    if(!['camp','cleared','fighting'].includes(state.phase))return;const enemies=state.enemies;if(enemies)drawEnemyWarnings(g,enemies,this.camera,this.visualTime);
+    if(!['camp','cleared','fighting'].includes(state.phase))return;
     const aim=worldToScreen(pointer,this.camera);g.strokeColor=color('#FBF5D4');g.lineWidth=1.5;
-    g.ellipse(aim.x,aim.y,9,5);g.stroke();g.moveTo(aim.x-13,aim.y);g.lineTo(aim.x+13,aim.y);g.stroke();
-    if(state.destination){const p=worldToScreen(state.destination,this.camera);g.strokeColor=color('#548C8A');g.lineWidth=3;g.ellipse(p.x,p.y,14,7);g.stroke();}
+    g.circle(aim.x,aim.y,7);g.stroke();g.moveTo(aim.x-13,aim.y);g.lineTo(aim.x+13,aim.y);g.stroke();
+    if(state.destination){const p=worldToScreen(state.destination,this.camera);g.strokeColor=color('#548C8A');g.lineWidth=3;g.circle(p.x,p.y,11);g.stroke();}
     const collision=new CollisionWorld(mapDefinition(state.mapId));
     for(const zone of state.zones){const shape={kind:'capsule' as const,center:zone.from,end:zone.to,radius:zone.radius};drawWorldShape(g,shape,this.camera,'#BE9E5EAA',1.5,false,shapeContours(shape,collision));}
-    for(const swing of state.swings){const shape={kind:'sector' as const,center:swing.center,facing:swing.facing,radius:swing.radius,arc:swing.arc};drawWorldShape(g,shape,this.camera,swing.age<swing.windup?'#BCA37966':'#99744ACC',swing.age<swing.windup?1:3,false,shapeContours(shape,collision));}
 
   }
   private drawProjectiles(state:WorldSnapshot,alpha:number):void {
@@ -143,14 +155,19 @@ export class ArenaView {
     g.strokeColor=color(tint);g.lineWidth=width;g.moveTo(points[0]!.x,points[0]!.y);
     for(const p of points.slice(1))g.lineTo(p.x,p.y);g.close();g.stroke();
   }
-  private drawColliders(state:WorldSnapshot,enabled:boolean):void {
+  private drawColliders(state:WorldSnapshot,enabled:boolean,alpha:number):void {
     const g=this.colliders;g.clear();if(!enabled)return;g.lineWidth=1.5;
-    const circle=(at:Vec2,radius:number,tint:string)=>{const p=worldToScreen(at,this.camera);g.strokeColor=color(tint);g.ellipse(p.x,p.y,radius*this.camera.tileWidth*this.camera.zoom/Math.SQRT2,radius*this.camera.tileHeight*this.camera.zoom/Math.SQRT2);g.stroke();};
+    const circle=(at:Vec2,radius:number,tint:string)=>{const p=worldToScreen(at,this.camera);g.strokeColor=color(tint);g.circle(p.x,p.y,worldLengthToScreen(radius,this.camera));g.stroke();};
     for(const o of (state.scene.kind==='camp'?campMap(state.mapId):mapDefinition(state.mapId)).obstacles)circle(o,o.radius,'#50635A');
-    for(const u of state.units)if(u.alive)circle(u,u.radius,u.team==='hero'?'#008BA3':'#BD4935');
+    for(const u of state.units)if(u.alive)circle({x:lerp(u.previous.x,u.x,alpha),y:lerp(u.previous.y,u.y,alpha)},u.radius,u.team==='hero'?'#008BA3':'#BD4935');
     for(const p of state.projectiles)circle(p,p.radius,'#CB9A1C');
     for(const p of state.enemies.projectiles)drawWorldShape(g,{kind:'circle',center:p,radius:p.radius},this.camera,'#ED2C63',1.5);
     for(const w of state.enemies.warnings)drawWorldShape(g,w.shape,this.camera,'#EB2C79',1,false,w.contours);
+    const collision=new CollisionWorld(state.scene.kind==='camp'?campMap(state.mapId):mapDefinition(state.mapId));
+    for(const shape of this.meleeVfx.blades())drawWorldShape(g,shape,this.camera,'#00A1BC',1.5,false,shapeContours(shape,collision));
+    for(const s of state.swings)if(s.age>=s.windup){
+      for(const sweep of meleeSweepShapes(s,s.previousAge??s.age,s.age))drawWorldShape(g,sweep,this.camera,'#00A1BC30',.5,false,shapeContours(sweep,collision));
+    }
     for(const c of state.cues)if(c.shape)drawWorldShape(g,c.shape,this.camera,'#00A1BC',1,false,c.contours);
   }
 }

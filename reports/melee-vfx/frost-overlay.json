@@ -1,0 +1,74 @@
+{
+  "transition": {
+    "active": false,
+    "opacity": 0,
+    "sequence": 1,
+    "place": "local:2:frost:level:1:world",
+    "elapsed": 0.22,
+    "duration": 0.22,
+    "title": {
+      "active": false,
+      "name": "霜镜回廊·一",
+      "subtitle": "霜足迎廊",
+      "opacity": 0,
+      "elapsed": 2.36,
+      "duration": 2.36
+    }
+  },
+  "controls": {
+    "mode": "classic",
+    "pointer": {
+      "x": 12,
+      "y": 10
+    },
+    "colliders": true
+  },
+  "melee": {
+    "renderer": "continuous-white-ribbons",
+    "clock": "snapshot phase + sub-tick interpolation",
+    "vertices": 1708,
+    "impacts": 0,
+    "frames": [
+      {
+        "id": 6,
+        "sourceId": "hero",
+        "phase": "active",
+        "age": 0.18994999998807907,
+        "progress": 0.5829166665673257,
+        "opacity": 1,
+        "center": {
+          "x": 8,
+          "y": 8
+        },
+        "facing": {
+          "x": 0.7071067811865475,
+          "y": -0.7071067811865475
+        },
+        "radius": 7,
+        "arc": 2.0420352248333655
+      }
+    ]
+  },
+  "swings": [
+    {
+      "id": 6,
+      "attackId": 6,
+      "sourceId": "hero",
+      "center": {
+        "x": 8,
+        "y": 8
+      },
+      "facing": {
+        "x": 0.7071067811865475,
+        "y": -0.7071067811865475
+      },
+      "radius": 7,
+      "arc": 2.0420352248333655,
+      "age": 0.16666666666666666,
+      "windup": 0.12,
+      "active": 0.12,
+      "damage": 20,
+      "appearance": "physical"
+    }
+  ]
+}

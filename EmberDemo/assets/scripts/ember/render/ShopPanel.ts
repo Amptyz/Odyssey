@@ -1,8 +1,8 @@
 import type { Node } from 'cc';
-import { equipment,equipmentDetails,SHOP_CATALOG,EQUIPMENT_SLOTS,SLOT_NAMES,CATEGORY_NAMES,appearanceLoadout,type EquipmentId } from '../content/equipment';
+import { equipment,equipmentDetails,SHOP_CATALOG,EQUIPMENT_SLOTS,SLOT_NAMES,CATEGORY_NAMES,type EquipmentId } from '../content/equipment';
 import type { WorldSnapshot } from '../simulation/GameWorld';
 import type { GameCommand } from '../platform/protocol';
-import { HeroRig } from './HeroRig';
+import { HeroSprite } from './HeroSprite';
 import { ArtLibrary } from './ArtLibrary';
 import { box,graphics,text,setText } from './Primitives';
 type Button=(title:string,x:number,y:number,width:number,action:()=>void,fill?:string)=>void;
@@ -11,7 +11,7 @@ export function drawShop(root:Node,s:WorldSnapshot,page:number,setPage:(p:number
   text('Shop subtitle',root,`${s.wave===0?'进入营地':`第 ${s.wave} 波后的整备`}  ·  金币 ${s.gold}  ·  固定货架，自由搭配，无职业限制`,16,0,253,1120,34,'#B8D4C7');
   const panel=graphics('Equipment preview panel',root);box(panel,-595,-209,285,430,'#243F46',14);
   text('Preview title',root,'装备即外观',20,-455,186,250,40,'#ECD8AF');
-  const body=new HeroRig(root,art);body.node.setPosition(-455,-8);body.node.setScale(2.5,2.5,1);body.equip(appearanceLoadout(s.equipment,s.purchaseOrder));
+  const body=new HeroSprite(root,art);body.node.setPosition(-455,-8);body.node.setScale(2.5,2.5,1);
   const stats=s.stats;
   text('Build stats',root,`当前最终属性\n生命 ${stats.maxHp}    护甲 ${stats.armor} / 魔抗 ${stats.magicResist}\n攻击 ${stats.attackDamage}    射程 ${stats.attackRange.toFixed(1)}\n攻速 ${(1/stats.attackInterval).toFixed(2)}/秒    移速 ${stats.speed.toFixed(2)}格/秒\n法强 ${stats.abilityPower} / 急速 ${stats.abilityHaste}\n暴击 ${Math.round(stats.critChance*100)}% / 全能吸血 ${Math.round(stats.omnivamp*100)}%\n法术穿透 ${stats.magicPenFlat} / ${Math.round(stats.magicPenPercent*100)}%`,13,-453,-111,255,177,'#D0DFD1');
   let pending:EquipmentId|undefined;
@@ -46,9 +46,9 @@ export function drawShop(root:Node,s:WorldSnapshot,page:number,setPage:(p:number
 export function drawEquipmentDetails(root:Node,s:WorldSnapshot,id:EquipmentId,button:Button,close:()=>void,art:ArtLibrary):void {
   const item=equipment(id),g=graphics('Equipment details background',root);box(g,-590,-290,1180,560,'#263F46',14);
   text('Equipment details title',root,`${item.name} · ${CATEGORY_NAMES[item.category]} · ${item.price} 金`,28,0,220,1080,56,'#EFE2C1');
-  const preview=new HeroRig(root,art);preview.equip({...appearanceLoadout(s.equipment,s.purchaseOrder),[item.category]:id});preview.node.setPosition(-400,-100);preview.node.setScale(3,3,1);
+  art.icon(root,id,170)?.setPosition(-400,30);
   text('Equipment preview note',root,'装备外观预览\n查看不改变当前穿戴',14,-400,-185,280,60,'#B8D4C7');
   text('Equipment details',root,equipmentDetails(id),18,155,15,750,335,'#D2DFD2');
-  text('Equipment appearance rule',root,'六栏不限类型，属性与被动叠加；同部位显示最后购买的装备。普攻形式只由余烬改变。',14,100,-210,900,48,'#B8D4C7');
+  text('Equipment rule',root,'六栏不限类型，装备提供属性与被动；角色形象固定，普攻形式只由余烬改变。',14,100,-210,900,48,'#B8D4C7');
   button('返回工坊',0,-325,300,close,'#547B75');
 }

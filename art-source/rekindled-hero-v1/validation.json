@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-20",
+  "baseline": "8a54f4c",
+  "scope": "world_lore_art_direction_and_protagonist_concept_only",
+  "tool": "image_gen",
+  "candidate": "concept-01.png",
+  "prompt": "prompt.txt",
+  "width": 1536,
+  "height": 1024,
+  "bytes": 2511568,
+  "sha256": "30730164b496c1f79da4fcc85b9b3c82c9301cb38f2a8a5f56cdbfa0b4de82a0",
+  "identical_to_generated_original": true,
+  "visual_review": {
+    "reviewed": true,
+    "confirmed_direction": "Dark and bloody pixel fantasy with readable lighting; no fixed class identity.",
+    "candidate_approved_by_user": false,
+    "usable_for": "Appearance and mood discussion",
+    "limitations": [
+      "Dense frayed cloth, hair strands and surface texture need simplification at actual game scale.",
+      "Adult elongated proportions and face remain proposals; source pixel grid and palette are not production-validated.",
+      "Views are three-quarter studies, not orthographic production turnarounds.",
+      "The cemetery vignette is generated concept art, not a Cocos screenshot.",
+      "No separated body parts, equipment fitting, anchor measurements or animation frames."
+    ]
+  },
+  "runtime_integrated": false,
+  "animation_delivered": false,
+  "cocos_build_run": false,
+  "gameplay_tests_run": false,
+  "model_version": null,
+  "seed": null,
+  "documentation_checks": {
+    "git_diff_check": "passed",
+    "local_link_targets_checked": 238,
+    "missing_local_targets": [],
+    "skill_quick_validate": "passed_with_uv_pyyaml",
+    "skill_ui_metadata": "passed"
+  }
+}

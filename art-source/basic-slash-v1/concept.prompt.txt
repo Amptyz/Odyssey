@@ -1,0 +1,21 @@
+Use case: stylized-concept.
+Asset: polished ART-DIRECTION STORYBOARD for a top-down 2.5D dark-fantasy COARSE PIXEL game, Project Ember. Design a reusable neutral BASIC MELEE SLASH visual effect, plus modular elemental examples. This is a concept board, NOT a ready-to-slice runtime atlas or gameplay screenshot.
+Image 1 provides only the game's chunky pixel density, restrained detail, palette mood. Do NOT draw this hero or any other character, weapons, environment or game UI.
+Large landscape presentation, target 2048x1536. Clean matte slate background #343941 with subtle solid charcoal panels and generous spacing. Crisp legible small English labels, no texture noise, no gradients or glow. All artwork is coarse authored PIXEL clusters, hard stair-step outlines, 3–4 flat values, not smooth vector curves. Effects are not photorealistic. Neutral slash colors off-white #E7E3D8, stone-grey #A9B0B1, slate #626B76, dark outline #30353E. No yellow/fire colors in the neutral base.
+TITLE small at top: "EMBER / BASIC SLASH" and "ONE MOTION — MODULAR ELEMENTS".
+MAIN STUDY: EIGHT sequential keyframe panels in TWO ROWS of FOUR, exactly. Same scale, same invisible root at left-center, same facing RIGHT, same outer radius in every frame. The blade traces a roughly 117-degree CRESCENT ON THE RIGHT SIDE of the root, a ")" shape opening toward the root/left. It NEVER becomes a full circle, full ring, shockwave, vortex, projectile or a filled fan. Interior hollow so ground and bodies stay visible. Slender band thickness about 8–12 percent of radius. The bright core is narrow and tapered; the moving tip sweeps from upper-right to lower-right. Treat the outer radius as fixed; reveal or erase parts of this path over time rather than scaling the whole shape larger. A very faint small root cross and a thin unobtrusive right-facing guide arrow may appear as DESIGN annotations only, identical in each panel, not part of the effect.
+Frame labels and contents:
+"01 READY / 0 ms": EMPTY EFFECT, only faint root cross.
+"02 LOAD / 80 ms": one tiny dim grey pixel wedge at the upper-right start of the arc; no bright full crescent.
+"03 RELEASE / 120 ms": slim ivory upper-right short blade grows along the fixed arc, bright leading tip, short grey inner trailing strip, inner region empty.
+"04 SWEEP / 160 ms": clear strongest right-facing 117-degree crescent, pointed upper and lower ends, ivory blade edge and one subordinate grey trail; large dark hollow interior. NO full circular ring.
+"05 FOLLOW / 200 ms": bright tip reaches lower-right, TOP HALF of the trail already breaks into a few grey stepped pieces, lower arc remains intact. Do not leave the full crescent as bright as frame4.
+"06 BREAK / 240 ms": main blade disappears into just 3–5 dim elongated angular fragments along the same fixed path, NO continuous bright crescent.
+"07 RESIDUE / 300 ms": only TWO small dim pixel clusters remain near the lower end of the path.
+"08 CLEAR / 360 ms": COMPLETELY EMPTY EFFECT, only faint root cross, no residual circle, particles or blade.
+BOTTOM ROW: FOUR larger comparison panels titled "NEUTRAL", "FIRE", "FROST", "DARK". Each shows the EXACT SAME silhouette, arc angle, radius, hollow center, direction and sweep-phase of frame4. This is the SAME base slash with tint and restrained separate particles, not four new attack shapes.
+NEUTRAL: grey-white base only, at most two subdued grey slivers.
+FIRE: base blade tinted pale cream/orange, four or five chunky amber sparks / tiny jagged flames detach upward along the trailing edge. No giant fireball, smoke cloud or broad flame wall.
+FROST: same blade recolored white/ice-blue, four or five sharp chunky triangular ice shards detach tangentially. No snowstorm, snowflake icon, blue circle or ice floor.
+DARK: same blade with READABLE PALE LAVENDER edge and charcoal-violet body, four or five angular dark chips contract inward, no black fog, no giant purple vortex and no skulls.
+Small footer: "CORE SHAPE + TINT + PARTICLES" and "IMPACT BURST IS A SEPARATE ON-HIT LAYER". Layer logic is visible through the shared shape; do not add technical data tables or unnecessary decoration. No blood/gore, no character, no weapons, no scenery, no watercolor, bloom, soft gradients, motion blur or dense glitter. First and last main frames stay empty.

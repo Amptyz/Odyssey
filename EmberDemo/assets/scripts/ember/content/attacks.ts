@@ -6,7 +6,7 @@ export type BasicAttackDefinition = {name:string;range:number;appearance:string}
   | {kind:'melee';arc:number;windup:number;active:number}
   | {kind:'projectile';speed:number;radius:number});
 export const BASIC_ATTACKS={
-  slash:{name:'近战挥砍',range:scaleAttackRange(2.5),kind:'melee',arc:Math.PI*0.65,windup:0.12,active:0.12,appearance:'physical'},
+  slash:{name:'环扫挥砍',range:scaleAttackRange(2.5),kind:'melee',arc:Math.PI*1.7,windup:0.12,active:0.12,appearance:'physical'},
   missile:{name:'飞弹普攻',range:scaleAttackRange(7.5),kind:'projectile',speed:18,radius:scaleAttackRange(0.10),appearance:'mist'},
 } as const satisfies Record<string,BasicAttackDefinition>;
 export type BasicAttackId=keyof typeof BASIC_ATTACKS;

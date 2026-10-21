@@ -1,0 +1,25 @@
+Edit this supplied Project Ember slash concept board. ONE essential silhouette correction: the CURRENT END OF THE SWING MUST BE THE THICKEST part. The previous image is wrong because it is a crescent, fat in the middle and tapering to a thin leading end. Do not preserve that geometry.
+
+Replace each active slash with a CURVED TAPERED SWEEP RIBBON:
+- At the NEWEST / advancing end where the weapon currently is, the ribbon terminates in a BROAD, BRIGHT, DIAGONAL CUTTING FACE. Its radial width is MAXIMUM there, around 70-100 pixels in the large top-left study. This terminal face is a short slightly curved/slanted blade edge, not a pointed needle and not a round ball.
+- Looking BACKWARDS from that newest broad end along the already traveled curve, the ribbon steadily becomes NARROWER, DARKER and MORE TRANSPARENT, until the OLDEST end fades to a fine thin point.
+- The width must increase monotonically along the travel direction: thin old tail -> narrow middle -> wide newest front. The middle must NOT bulge wider than the terminal face.
+- There is only ONE thin endpoint: the oldest tail. The newest endpoint is broad. Never draw a two-pointed crescent, banana, lens, or arc with two tapered ends.
+- Do NOT continue the slash past the broad terminal face into another thin extension. In particular REMOVE the long lower-left taper after the currently bright region. End the forward arc at the thick face at LOWER-RIGHT of the hero in the peak study. The older tail trails backwards up around the right side toward upper-left, progressively narrowing and fading.
+- Maximum brightness and maximum width must coincide at this same terminal face, not somewhere in the middle. Highlight the entire broad cutting face in ivory white. Keep the white zone short along the path so the old wake is not all white.
+
+PRESERVE the approved qualities of this reference: layered INTERNAL directional light streams, overlapping translucent sheets, subtle silver/steel-blue/violet shading, crisp clean outside, no particles, no spikes, no grain, rich interior detail, sharp controlled contour. Use those same details inside the NEW widening-toward-front silhouette. Do not reduce to flat bands or a solid cartoon comet. Keep the pixel hero and its identity unchanged, keep the board layout and eight panels. This is effect design only, no new weapon/equipment item.
+
+Top-left: a large character-scale study of this curved wedge-like slash with THICK terminal cutting face at lower-right and thin old tail at upper-left. Maintain empty space between hero and outer wake.
+Top-right detail inset: enlarge the transition from narrow dim middle to broad white terminal face. Make its cutoff edge and maximum width completely unambiguous. It must end wide rather than curl into a point. Change inset label from "LIGHT + FLOW" to "WIDE END / THIN WAKE".
+Change title to "EMBER / SWEEP PROFILE"; subtitle "THICKEST AT THE MOVING EDGE".
+
+Bottom eight panels retain original labels and times:
+01 and 08: no effect.
+02: tiny very dim preparation trace.
+03 at 120ms: broad white terminal face in upper-right, a short much narrower old wake behind.
+04 at 160ms: broad white terminal face at right-middle; old upper trail narrower, darker, transparent.
+05 at 200ms: broad white terminal face at lower-right; old upper and right-middle trail progressively thinner and darker. No further point extending past the terminal face.
+06: the cutting face is gone, only a low-opacity shrinking old wake.
+07: almost invisible thin wake.
+All active frames 03-05 obey the same width direction. Do not merely alter brightness: physically change the silhouette so the moving end is widest. Keep the frame labels, background, typography and character scale intact.
