@@ -2,7 +2,8 @@ import { FIXED_DT } from '../content/config';
 import type { Swing, WorldSnapshot } from '../simulation/GameWorld';
 import { clamp, lerp, type Vec2 } from '../utils/math';
 import { MELEE_ART, MELEE_BLADE_KEYS } from '../content/melee-motion';
-import { meleeBlade } from '../combat-core/MeleeSweep';
+import { meleeArea,meleePoseIndex } from '../combat-core/MeleeSweep';
+import { MELEE_OUTLINE } from '../content/melee-outline';
 
 export const MELEE_TRAIL_SECONDS = .12;
 export interface MeleeVfxFrame extends Swing {
@@ -81,15 +82,15 @@ export class MeleeVfxTimeline {
   }
 }
 
-/** F3 and gameplay use the same moving blade, not the historical full sector. */
+/** F3 and the image stencil share the current measured curve with gameplay. */
 export function meleeShape(frame: MeleeVfxFrame) {
-  return meleeBlade(frame,frame.phase==='windup'?0:frame.progress);
+  return meleeArea(frame);
 }
 
 /** Nonuniform approved key times. Exact key instants select the original artwork;
  * in-between renders blend adjacent artworks, never substitute a different curve. */
 export function meleeArtSample(frame: MeleeVfxFrame) {
-  const time=frame.phase==='windup'?Math.min(80,frame.progress*120):frame.phase==='active'?120+frame.progress*120
+  const time=frame.phase==='windup'?Math.min(80,frame.progress*120):frame.phase==='active'?120+meleePoseIndex(frame.progress)/MELEE_OUTLINE.poseSteps*120
     :240+clamp((frame.age-frame.windup-frame.active)/MELEE_TRAIL_SECONDS,0,1)*120;
   const times=MELEE_ART.times;
   let a=0;while(a<times.length-2&&time>=times[a+1]!)a++;

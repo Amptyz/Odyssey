@@ -8,7 +8,7 @@ import {AttributeSet,PLAYER_TEMPLATE,movementSpeed,cooldownMultiplier,evaluate,t
 import { Pathfinder } from '../ai/Pathfinder';
 import { CombatEngine } from '../combat-core/CombatEngine';
 import { CollisionWorld } from '../combat-core/CollisionWorld';
-import { meleeSweepShapes } from '../combat-core/MeleeSweep';
+import { activeMeleeArea } from '../combat-core/MeleeSweep';
 import type { Actor, CombatCue, DamageZone, Hit, MissileEffect, PerkId, PerkDefinition, Cause } from '../combat-core/types';
 import {shapeContours,cloneShape} from '../combat-core/ShapeContours';
 import { ENEMIES, FIXED_DT, HERO, SKILLS, type EnemyKind, type SkillId } from '../content/config';
@@ -452,8 +452,9 @@ export class GameWorld {
       const swing=this.swings[i]!,source=this.actors.get(swing.sourceId),before=swing.age;swing.age+=dt;
       if(!source?.alive||(this.players.get(swing.sourceId)?.dashTime??0)>0){this.equipmentEffects.endAttack(swing.sourceId,swing.id);this.swings.splice(i,1);continue;}
       swing.previousCenter={...swing.center};swing.previousAge=before;swing.center={x:source.x,y:source.y};
-      if(swing.age+1e-9>=swing.windup&&before<swing.windup+swing.active){
-        for(const shape of meleeSweepShapes(swing,before,swing.age))for(const target of this.collision.targets(this.actors.values(),source.team,shape)){
+      const shape=activeMeleeArea(swing,before,swing.age);
+      if(shape){
+        for(const target of this.collision.targets(this.actors.values(),source.team,shape)){
           if(swing.hitIds.has(target.id))continue;swing.hitIds.add(target.id);
           this.combat.damage({sourceId:source.id,targetId:target.id,amount:swing.damage,attackId:swing.attackId,cause:'basic',damageType:'physical',area:true,delivery:'attack'});
         }

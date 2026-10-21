@@ -31,17 +31,19 @@ try{
  const s=await state(),target=s.units.filter(u=>u.team==='enemy').sort((a,b)=>Math.hypot(a.x-s.hero.x,a.y-s.hero.y)-Math.hypot(b.x-s.hero.x,b.y-s.hero.y))[0];
  check(target.attributeValues.armor===905,'F2 durable target has the requested armor');
  for(let i=0;i<16;i++){
-  const angle=i*Math.PI/8,position={x:target.x-3*Math.cos(angle),y:target.y-3*Math.sin(angle)};
+  const distance=i%2===0?.7:3,angle=i*Math.PI/8,position={x:target.x-distance*Math.cos(angle),y:target.y-distance*Math.sin(angle)};
   await send({type:'MoveTo',point:position});await page.waitForFunction(p=>{const h=window.__EMBER__.snapshot().hero;return Math.hypot(h.x-p.x,h.y-p.y)<.1;},position);await send({type:'Stop'});
   await page.waitForFunction(()=>window.__EMBER__.snapshot().hero.attackCd<=0);
   const before=(await state()).units.find(u=>u.id===target.id).hp;
-  const pending=capture(target.id);await mouseAttack({x:target.x,y:target.y});const frames=await pending;cases.push({angle,before,frames});
+  const pending=capture(target.id);await mouseAttack({x:target.x,y:target.y});const frames=await pending;cases.push({angle,distance,before,frames});
   let contacts=0;
   for(const sample of frames)for(const frame of sample.melee.frames){
    const live=sample.swings.find(s=>s.id===frame.id);
    if(live)check(frame.age<=live.age+1e-7,`direction ${i}: displayed age is already simulated`);
-   if(frame.blade&&overlaps(frame.blade,sample.target)){
-    contacts++;check(sample.target.hp<before,`direction ${i}: visible blade contact has actual damage`);
+   if(frame.area&&overlaps(frame.area,sample.target)){
+    check(frame.area.kind==='polygon'&&frame.area.points.length>3,`direction ${i}: one measured curved fan`);
+    check(frame.area.points.every(p=>Math.hypot(p.x-frame.center.x,p.y-frame.center.y)<=frame.radius+1e-5),`direction ${i}: curve stays within measured reach`);
+    contacts++;check(sample.target.hp<before,`direction ${i}: visible curved coverage has actual damage`);
    }
   }
   check(contacts>0,`direction ${i}: sampled visible contact`);
@@ -50,10 +52,16 @@ try{
  }
  await page.keyboard.press('F3');await page.waitForFunction(()=>window.__EMBER__.snapshot().hero.attackCd<=0);
  await mouseAttack(target);await page.waitForFunction(()=>window.__EMBER__.art().melee.frames.some(f=>f.phase==='active'&&f.progress>.5));
- await page.screenshot({path:dir+'/blade-collision.png'});
+ await page.screenshot({path:dir+'/measured-curve-collision.png'});
  check(errors.length===0,'no browser errors');status='passed';
 }catch(e){failure=String(e);await page.screenshot({path:dir+'/failure.png'});throw e;}
 finally{
- writeFileSync(dir+'/runtime.json',JSON.stringify({status,failure,scope:'Explicit F2 frozen target with extra armor; real mouse clicks in 16 directions. No world mutation.',checks,errors,cases},null,2)+'\n');
+ // Keep review evidence compact; every captured frame is asserted above.
+ const evidence=cases.map(({frames,...entry})=>{
+  const active=frames.filter(s=>s.melee.frames.some(f=>f.phase==='active'));
+  const compact=s=>s?{time:s.time,tick:s.tick,target:{x:s.target.x,y:s.target.y,radius:s.target.radius,hp:s.target.hp},areas:s.melee.frames.filter(f=>f.area).map(f=>({age:f.age,progress:f.progress,area:{kind:f.area.kind,center:f.area.center,vertices:f.area.points.length,maxRadius:Math.max(...f.area.points.map(p=>Math.hypot(p.x-f.area.center.x,p.y-f.area.center.y)))}}))}:undefined;
+  return {...entry,samples:frames.length,activeSamples:active.length,after:frames.at(-1)?.target?.hp,firstActive:compact(active[0]),firstDamage:compact(frames.find(s=>s.target?.hp<entry.before)),lastActive:compact(active.at(-1))};
+ });
+ writeFileSync(dir+'/runtime.json',JSON.stringify({status,failure,scope:'Explicit F2 frozen target with extra armor; real mouse clicks in 16 directions alternating 0.7-tile close contact and 3-tile range. No world mutation.',assertions:checks.length,checks:Array.from(new Set(checks)),errors,cases:evidence},null,2)+'\n');
  console.log(JSON.stringify({status,failure,checks:checks.length,errors}));await browser.close();
 }

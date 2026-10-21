@@ -46,7 +46,7 @@
 | `combat-core/CombatEngine.ts` | 伤害、治疗、事件队列、规则条件、限频、连锁保护 | 通过 CombatHooks 请求弹体 / 冷却操作 |
 | `combat-core/EffectHandlers.ts` / `StatusSystem.ts` | 效果原语、状态施加与计时 | 不导入 GameWorld 或 Cocos |
 | `combat-core/CollisionWorld.ts` | 形状相交、遮挡、连续弹体命中 | 只使用世界坐标 / 角色体积 / 地形 |
-| `combat-core/MeleeSweep.ts` / `content/melee-motion.ts` | 普攻亮锋的相位多边形与模拟步间扫掠 | GameWorld 提交 CollisionWorld 查询；表现层采样同相位原稿，旧尾迹不参与伤害 |
+| `combat-core/MeleeSweep.ts` / `content/melee-outline.ts` | 普攻实测曲线、相位与步间范围合并 | 离线测量原图材质生成数据；GameWorld提交CollisionWorld；动画、F3与命中共用同一曲面，填到人物中心，同刀每目标一次 |
 | `simulation/EnemySystem.ts` / `content/enemy-actions.ts` | 敌人守区、锁向、分段动作、Boss循环/阶段、敌弹/预警 | GameWorld一次固定步进；共用CombatEngine/CollisionWorld |
 | `simulation/LevelSystem.ts` | 每关起点、路线、固定敌群、清场后出口条件 | maps.waves[].level；GameWorld阶段推进 |
 | `ai/Pathfinder.ts` | 半格网格、移动扫掠、PathfinderPool体型分组 | 敌人使用不小于自身半径的缓存导航；旧EnemyBehaviors不调度新敌人 |

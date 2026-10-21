@@ -33,7 +33,7 @@
 - 先判断能否复用已有配置和处理器。新技能 / 装备 / 敌人变种通常不需要在 `GameWorld` 加 ID 分支。
 - `simulation / combat-core / ai / content / utils` 保持不依赖 `cc`、DOM、真实时钟和全局随机数。输入和 UI 发命令，战斗状态由逻辑层修改，表现层消费快照。
 - 命中使用 `CollisionWorld` 的世界坐标查询；移动使用 `Pathfinder.sweep`。不能用贴图距离、动画回调或 Cocos 刚体另建一套伤害判定。
-- 默认近战按已确认的白色原稿环扫：`content/melee-motion.ts` 配置帧序与归一化亮锋轮廓，`combat-core/MeleeSweep.ts` 扫掠亮锋；内部空洞与旧尾迹不伤害，每刀每目标最多一次。不要恢复117°整块扇区判定或把地形显示遮罩当伤害范围；见[基础近战规格](docs/design/BASIC_MELEE_VFX.md)。
+- 默认近战以实测原稿曲线为准：`scripts/measure-melee.mjs` 离线采样材质可见轮廓，生成 `content/melee-outline.ts`；`MeleeSweep.meleeArea`生成一块填到人物中心的连续曲面，动画、F3和判定共用同一测量相位。不得恢复固定180°圆弧裁剪、任意大圆或外圈亮锋盲区；射程统一缩放曲线，详见[基础近战规格](docs/design/BASIC_MELEE_VFX.md)。
 - 地面采用 `utils/GroundPlane.ts` 的单位正交基和 `render/GroundProjection.ts` 的统一缩放；移动、弹速、射程、碰撞共用欧氏世界距离。不得恢复双轴压缩或按方向加速；鼠标、动画方向、小地图和范围显示共用此变换，见 [战斗平面](docs/GAME_FEEL.md)。
 - 战斗时间使用 `FIXED_DT` / `GameWorld.time`，随机使用已有 `Random`。保留暂停、重开、阶段切换与旧输入清理。
 - 伤害 / 治疗进入 `CombatEngine`；连锁效果保留 `rootId / depth / proc` 等来源信息和预算保护。不要用直接扣 HP 绕过事件链。

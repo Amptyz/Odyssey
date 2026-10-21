@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-22",
+  "baseline": "e7ca279",
+  "scope": "Measured curved attack footprint, shared image/collision phase and scale; retain filled close-contact coverage and remove 180-degree clipping.",
+  "measurement": {
+    "command": "pnpm measure:melee --check",
+    "status": "passed",
+    "sourceSha256": "9d21873c18bb95ba7410b56b1a4b7ad90e5dd1323e75d07a9176b406c293c886",
+    "shaderSamples": 321,
+    "samplingMilliseconds": 0.375,
+    "angularStepDegrees": 0.5,
+    "alphaThreshold": 0.1,
+    "renderPoses": 81,
+    "referenceSourceRadius": 180.40105065097728,
+    "maxArcDegrees": 318.5,
+    "keyframeMaxBoundaryDistanceScreenPixels": 4.103272998469328,
+    "keyframeMaxP95BoundaryDistanceScreenPixels": 2.268822374390171,
+    "report": "reports/melee-outline-measurement.json"
+  },
+  "checks": {
+    "core": {
+      "command": "VITEST_MAX_FORKS=4 pnpm check",
+      "status": "passed",
+      "files": 35,
+      "tests": 434
+    },
+    "creator": {
+      "version": "3.8.8",
+      "target": "web-desktop",
+      "status": "passed"
+    },
+    "alignment": {
+      "command": "pnpm test:melee-alignment",
+      "status": "passed",
+      "directions": 16,
+      "distances": [
+        0.7,
+        3
+      ],
+      "report": "reports/melee-alignment/runtime.json",
+      "assertions": 3730,
+      "browserErrors": 0
+    },
+    "hitboxes": {
+      "command": "pnpm test:hitboxes",
+      "status": "passed",
+      "checks": 94,
+      "report": "reports/browser-hitboxes.json"
+    },
+    "visual": {
+      "command": "pnpm test:melee",
+      "status": "passed",
+      "checks": 30,
+      "report": "reports/melee-vfx-v3/runtime.json"
+    }
+  },
+  "screenshots": [
+    "reports/melee-alignment/measured-curve-collision.png"
+  ],
+  "limits": [
+    "Boundary distance metrics describe the six source key states, not an all-device rasterization guarantee.",
+    "Live multiplayer latency and four-client GPU stress were not tested; core tests cover player-source isolation."
+  ]
+}

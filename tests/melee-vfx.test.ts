@@ -12,22 +12,30 @@ function fixture() {
   world.command({ type: 'Attack', point: { x: world.hero.x + 5, y: world.hero.y } });
   return world;
 }
-const swing: Swing = { id: 12, sourceId: 'hero', center: { x: 0, y: 0 }, facing: { x: 1, y: 0 }, radius: 5, arc: Math.PI * .65, age: .15, windup: .12, active: .12, damage: 20, appearance: 'physical' };
+const swing: Swing = { id: 12, sourceId: 'hero', center: { x: 0, y: 0 }, facing: { x: 1, y: 0 }, radius: 5, arc: Math.PI, age: .15, windup: .12, active: .12, damage: 20, appearance: 'physical' };
 
 describe('ordinary melee visual timing and authoritative geometry', () => {
+  it('samples the image and collision at the identical measured phase without a future envelope',()=>{
+    const frame=sampleMelee({...swing,age:.15},1),near={...frame,age:.1505,progress:(.1505-frame.windup)/frame.active},next={...frame,age:.152,progress:(.152-frame.windup)/frame.active};
+    expect(meleeArtSample(near)).toEqual(meleeArtSample(frame));
+    expect(meleeShape(near)).toEqual(meleeShape(frame));
+    expect(meleeArtSample(next)).not.toEqual(meleeArtSample(frame));
+    expect(meleeShape(next)).not.toEqual(meleeShape(frame));
+  });
   it('interpolates settled poses and origins without showing an untested future blade', () => {
     const settled={...swing,previousAge:.12,previousCenter:{x:-.2,y:-.1}};
     expect(sampleMelee({ ...settled, age: .1,previousAge:.08 }, 1).phase).toBe('windup');
     const a = sampleMelee(settled, 0), b = sampleMelee(settled, .5);
     expect(b.progress).toBeGreaterThan(a.progress);
-    expect(meleeShape(a)).not.toEqual(meleeShape(b)); // the blade moves along the approved poses
+    expect(meleeShape(a)).not.toEqual(meleeShape(b)); // coverage follows the interpolated player centre
+    expect(meleeShape({...a,age:a.windup+a.active*.8,progress:.8})).not.toEqual(meleeShape(a)); // the measured curve grows with the image
     expect(meleeArtSample(a)).not.toEqual(meleeArtSample(b));
     expect(a.age).toBe(.12);expect(b.age).toBe(.135);expect(b.center).toEqual({x:-.1,y:-.05});
     expect(sampleMelee(settled,1).age).toBe(swing.age);
     expect(sampleMelee({...settled,previousAge:.1,age:2/15},.5).phase).toBe('windup');
     expect(swing.age).toBe(.15);
   });
-  it('keeps the moving blade inside reach in arbitrary directions and clips debug terrain contours', () => {
+  it('keeps the measured curve inside reach in arbitrary directions and clips debug terrain contours', () => {
     for (let d = 0; d < 16; d++) {
       const a = d * Math.PI / 8, facing = { x: Math.cos(a), y: Math.sin(a) };
       const frame = sampleMelee({ ...swing, facing }, 0);

@@ -1,13 +1,15 @@
 /** Authored against the approved v7 board, not a regenerated approximation.
- * Pixel coordinates are authoring coordinates only. Runtime collision uses world polygons. */
+ * Frame metadata is shared with the offline outline measurement tool. */
 export const MELEE_ART = {
   resource: 'art/melee-v3/keyframes-source', width: 1448, height: 1086,
-  cellWidth: 356, cellHeight: 282, pivot: { x: 178, y: 138 }, radius: 180,
-  columns: [3, 365, 727, 1089], rows: [90, 423, 756],
+  // Include the upper glow (the old 282px window cut through frames 6/7).
+  cellWidth: 356, cellHeight: 293, pivot: { x: 178, y: 149 }, radius: 180,
+  columns: [3, 365, 727, 1089], rows: [79, 412, 745],
   times: [0, 80, 120, 144, 168, 192, 216, 240, 270, 300, 330, 360],
 } as const;
 
-/** Blade polygons in normalized WORLD units (radius = 1), manually calibrated to the poses. */
+/** Source-art head registration only, used to blend adjacent images.
+ * These points never define damage; meleeArea owns the filled sector. */
 export const MELEE_BLADE_KEYS = [
   { progress: 0, points: [[0.72778,-0.13333],[0.76111,-0.18889],[0.73889,-0.30000],[0.66667,-0.42778],[0.55556,-0.52222],[0.43889,-0.56111],[0.53889,-0.42222],[0.65556,-0.23333]] },
   { progress: .2, points: [[0.63333,0.28889],[0.71111,0.20556],[0.82222,0.02778],[0.86667,-0.11667],[0.81111,-0.26111],[0.70000,-0.33889],[0.72222,-0.13333],[0.65556,0.08333]] },

@@ -10,11 +10,12 @@ import { MeleeVfxTimeline, meleeArtSample, meleeArtHead, meleeShape, type MeleeV
 import type { ArtLibrary } from './ArtLibrary';
 import { meleeRotation } from '../combat-core/MeleeSweep';
 import { MELEE_ART } from '../content/melee-motion';
+import { MELEE_OUTLINE } from '../content/melee-outline';
 
 interface FlowInstance { node: Node; stencil: Graphics; sprite: Sprite; material: Material }
 
 /** Approved source keyframes, rigidly placed around each actual Swing.
- * A terrain stencil clips the image; collision follows the bright head only. */
+ * The measured curved outline clips both the artwork and its coverage cue. */
 export class MeleeVfxView {
   private readonly timeline = new MeleeVfxTimeline();
 
@@ -40,9 +41,12 @@ export class MeleeVfxView {
     for (const frame of this.frames) {
       const at = worldToScreen(frame.center, camera);
       if (!screenVisible(at, worldLengthToScreen(frame.radius, camera))) continue;
-      // The original artwork contains both the moving blade and its old wake.
-      // Only terrain clips the image. Damage uses the independently authored head.
-      const paths = shapeContours({kind:'circle',center:frame.center,radius:frame.radius}, this.collision);
+      const paths = shapeContours(meleeShape(frame), this.collision);
+      // Keep the whole close-to-far active area readable beneath the moving light.
+      if(frame.phase==='active')for(const path of paths){
+        const points=path.map(p=>worldToScreen(p,camera));
+        polygon(this.light,points,'#FFFFFF1A');
+      }
       const sample=meleeArtSample(frame);
       if(sample.time<=0||sample.time>=360)continue;
       const instance = this.instances[index] ?? this.createInstance(); index++;
@@ -54,7 +58,7 @@ export class MeleeVfxView {
         for (const p of points.slice(1)) instance.stencil.lineTo(p.x-at.x, p.y-at.y);
         instance.stencil.close(); instance.stencil.fill(); this.vertices += points.length;
       }
-      const scale=worldLengthToScreen(frame.radius,camera)/MELEE_ART.radius;
+      const scale=worldLengthToScreen(frame.radius,camera)/MELEE_OUTLINE.referenceRadius;
       const rotation=meleeRotation(frame.facing),x=(MELEE_ART.cellWidth/2-MELEE_ART.pivot.x)*scale,y=(MELEE_ART.pivot.y-MELEE_ART.cellHeight/2)*scale;
       instance.sprite.node.setPosition(x*Math.cos(rotation)-y*Math.sin(rotation),x*Math.sin(rotation)+y*Math.cos(rotation));
       instance.sprite.node.angle=rotation*180/Math.PI;
@@ -94,11 +98,11 @@ export class MeleeVfxView {
     const material = this.art.meleeMaterial(); sprite.customMaterial = material;
     const instance = { node, stencil, sprite, material }; this.instances.push(instance); return instance;
   }
-  blades() { return this.frames.filter(f=>f.phase==='active').map(meleeShape); }
+  areas() { return this.frames.filter(f=>f.phase==='active').map(meleeShape); }
   debug() {
     return { renderer: 'approved-keyframe-sequence', texture: MELEE_ART.resource, clock: 'completed simulation interval interpolation', vertices: this.vertices, impacts: this.impacts,
       frames: this.frames.map(f => ({ id: f.id, sourceId: f.sourceId, phase: f.phase, age: f.age, progress: f.progress,
-        art:meleeArtSample(f), blade:f.phase==='active'?meleeShape(f):undefined,
+        art:meleeArtSample(f), area:f.phase==='active'?meleeShape(f):undefined,
         center: { ...f.center }, facing: { ...f.facing }, radius: f.radius, arc: f.arc })) };
   }
 }

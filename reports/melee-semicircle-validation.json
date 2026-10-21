@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-22",
+  "baseline": "e7ca279",
+  "scope": "Replace moving outer-blade polygons with a single filled forward semicircle; fix close-contact melee misses.",
+  "rules": {
+    "arcDegrees": 180,
+    "baseRadius": 5,
+    "innerRadius": 0,
+    "windupSeconds": 0.12,
+    "activeSeconds": 0.12,
+    "damage": "once per attack per target",
+    "facing": "fixed at release",
+    "center": "follows player",
+    "terrain": "CollisionWorld visibility"
+  },
+  "checks": {
+    "core": {
+      "command": "VITEST_MAX_FORKS=4 pnpm check",
+      "tests": 433,
+      "files": 35,
+      "status": "passed"
+    },
+    "creator": {
+      "version": "3.8.8",
+      "target": "web-desktop",
+      "status": "passed"
+    },
+    "hitboxes": {
+      "command": "pnpm test:hitboxes",
+      "checks": 94,
+      "status": "passed"
+    },
+    "alignment": {
+      "command": "pnpm test:melee-alignment",
+      "status": "passed",
+      "directions": 16,
+      "distances": [
+        0.7,
+        3
+      ],
+      "report": "reports/melee-alignment/runtime.json",
+      "assertions": 3120,
+      "browserErrors": 0
+    },
+    "visual": {
+      "command": "pnpm test:melee",
+      "checks": 30,
+      "status": "passed",
+      "report": "reports/melee-vfx-v3/runtime.json"
+    }
+  },
+  "screenshots": [
+    "reports/melee-alignment/semicircle-collision.png"
+  ],
+  "limits": [
+    "No live multiplayer latency or four-client GPU stress run; player-source isolation is covered by core tests."
+  ],
+  "supersededBy": "reports/melee-outline-validation.json"
+}

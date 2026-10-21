@@ -14,7 +14,7 @@
 | 人物与装备 | HeroSprite显示整身PNG，HERO_CLIPS / wholeHeroFrame选择帧；装备图只供ArtLibrary.icon，不接入人物 |
 | 环境 | ENVIRONMENT_APPEARANCES、`content/maps.ts`、`render/EnvironmentView.ts` / `ArenaView.ts`；`utils/GroundPlane.ts` / `render/GroundProjection.ts`统一地面度量 |
 | 技能特效 | EFFECT_APPEARANCES、`render/ArenaView.ts`；复杂新表现需相应 cue 数据 |
-| 普通近战白色环扫 | `content/melee-motion.ts` 定义原稿窗口、关键时刻及世界亮锋轮廓；`combat-core/MeleeSweep.ts` → CollisionWorld 负责扫掠命中，`render/MeleeVfxPlan.ts` → `MeleeVfxView.ts` 按同一相位采样 `art/melee-v3/keyframes-source` 与 `effects/melee-keyframes`；地形 Stencil 只裁剪显示，旧尾迹无伤害，sourceId / attackId 关联真实命中爆点 |
+| 普通近战实测曲线 | `scripts/measure-melee.mjs` → `content/melee-outline.ts`；MeleeSweep.meleeArea按同一测量相位生成填到脚底的曲面。MeleeVfxPlan / MeleeVfxView共用相位、轮廓、源像素尺度和地形遮罩；F3只显示当前一块曲面；sourceId / attackId关联真实伤害 |
 
 `inspect-pixel-art.py` 与旧 `inspect-art.py` 依赖可选 Pillow，只读 PNG、生成 TS 和检查 JSON；它不是去背景、重排像素或任意视频帧导入器。新增布局要先扩展其来源配置，并核对 [动画空间策略](animation.md)。不要在只做审阅或 Prompt 的任务中运行它覆盖已提交数据。
 
@@ -24,7 +24,7 @@
 - 浅色 / 深色底上看边缘，避免背景溢色、漏抠叶片、手指或武器尖端；新像素主体应有干净硬边与二值 alpha；旧非像素图单独记录，不用强阈值清边冒充像素重制。
 - 序列帧看实际速度的循环 / 单播预览，逐帧核对肢体、装备和朝向；怪物缩小到游戏内大小后仍需能读懂攻击。
 - 所有攻击 / 技能特效按[判定一致性](../../../../docs/PIXEL_VFX.md#攻击与技能特效的判定一致性)对照实际形状与相位：范围轮廓清晰，中心、半径、角度、宽度、安全缺口和当前生效时段一致。F3或等效叠层覆盖八方向及中间角、移动 / 范围变化、浅深背景与叠加；核验边界内外目标碰撞体的实际命中，不能只检查动画累计扫过的区域。无独立判定的反馈核对事件锚点；环境、UI与纯装饰特效无需硬边或碰撞匹配。
-- 旋转对齐还要检查时间：普攻亮锋和中心与角色位置使用同一个已完成模拟步的插值，不能把刀光外推到尚未判定的下一步。实机应检查“可见亮锋碰到静止靶时已实际扣血”，不能只核对最终有没有扣血；可复用 `pnpm test:melee-alignment`。
+- 旋转对齐还要检查时间：普攻范围、刀光和中心与角色位置使用同一个已完成模拟步的插值，不能把刀光外推到尚未判定的下一步。实机应检查“当前实测曲面覆盖静止靶时已实际扣血”，不能只核对最终有没有扣血；可复用 `pnpm test:melee-alignment`。
 - 玩家检查八方向、完整肢体连接、共同地面基准、步态首尾及死亡落地；对比购买 / 替换 / 卸装前后同姿态，整身图集和比例必须不变。商店放大图与实际战斗大小都检查。
 - 环境按[环境视角与地面度量](../../../../docs/ART_DIRECTION.md#环境视角与地面度量)核对分类、占地、地面锚点与遮挡：斜俯视只表达物件体积，地面方格 / 圆形范围不压缩。实际绕行前后左右，检查F3底座、脚底、危险圈与镜头移动中的尺度；阴影独立，重复投影、漂浮底座和大物件遮挡缺口必须修正或明确列为待接入。
 - 大图、contact sheet 和静态截图各能发现不同问题；只看 contact sheet 不能证明播放流畅。新素材检查有意设计的像素簇、有限色板与帧间统一网格；自动量化 / 缩小旧图不能直接算作风格通过。

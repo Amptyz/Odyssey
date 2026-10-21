@@ -28,6 +28,7 @@ P0：下一阶段优先完成。P1：首轮内容与体验扩展。P2：有实�
 
 | 完成 | ID | 优先级 | 独立任务 | 前置依赖 | 状态 | 负责人 / 交付证据 |
 | --- | --- | --- | --- | --- | --- | --- |
+| [x] | ATK-02 | P1 | 近战贴身命中与原稿曲线精准对齐 | 用户2026-10-22后续反馈；ATK-01 | 已完成 | 主会话；基线e7ca279；半圆方案已被实测动态曲面替代；[规格](docs/design/BASIC_MELEE_VFX.md)、[测量](reports/melee-outline-measurement.json)、[验收](reports/melee-outline-validation.json)；原图材质321样本、同相位显示 / 判定、贴身与边界拒绝、Creator实机复验 |
 | [x] | AI-01 | P1 | 敌人决策配置、目标策略、冷却与连招及配置 skill | ENE-01 | 已完成 | 当前会话；[配置指南](docs/ENEMY_AI.md)、[skill](.agents/skills/ember-enemy-ai/SKILL.md)、[验收](reports/enemy-ai-validation.json)；363单测 / 14AI浏览器 / 21联机检查；2026-10-19 |
 | [x] | SKL-03 | P1 | 开局空技能槽、奖励装备与存档 / 联机兼容 | SCENE-01 | 已完成 | 当前会话；[验收](reports/empty-skills-validation.json)；386单测 / Creator构建 / 双操作空槽与奖励、战斗、重开、实验 / 场景52项 / 联机21项；2026-10-20 |
 | [x] | SAVE-01 | P1 | 单人保存、继续、文件导入导出与失败反馈 | SCENE-01、SKL-03 | 已完成 | 当前会话；[说明](docs/SAVES.md)、[验收](reports/local-save-validation.json)；396单测 / Creator构建 / 21存取、23空槽、21联机浏览器检查；2026-10-20 |

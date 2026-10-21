@@ -63,6 +63,9 @@ try{
     }
     await devForm(true);s=await shoot(true,`${mode} empty-handed missile`);check(s.stats.attackRange===15&&!Object.keys(s.equipment).length,`${mode}: form perk supplies range without weapon`);
     await page.keyboard.press('Escape');await page.waitForTimeout(80);const before=await state();await page.waitForTimeout(150);check(JSON.stringify((await state()).projectiles)===JSON.stringify(before.projectiles),`${mode}: pause freezes missile bodies`);await page.keyboard.press('Escape');
+    // InputController clears held inputs when it consumes the resumed state.
+    // Let that render finish before issuing a new real key-down event.
+    await page.evaluate(()=>new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve()))));
     if(mode==='wasd'){const before=(await state()).hero;await aim(before.x+8,before.y);await page.mouse.down();await page.keyboard.down('d');await page.waitForTimeout(280);await page.keyboard.up('d');await page.mouse.up();const after=(await state()).hero;check(Math.hypot(after.x-before.x,after.y-before.y)>.3,'WASD moves while holding missile fire');await page.waitForTimeout(100);check(Math.hypot((await state()).hero.x-after.x,(await state()).hero.y-after.y)<.01,'WASD release stops movement');}
     const items:EquipmentId[]=['sword','bow','staff','bulwark','reaver','runeblade'];
     for(const missile of [false,true]){

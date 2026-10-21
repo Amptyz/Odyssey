@@ -1,0 +1,186 @@
+{
+  "source": "EmberDemo/assets/resources/art/melee-v3/keyframes-source.png",
+  "sourceSha256": "9d21873c18bb95ba7410b56b1a4b7ad90e5dd1323e75d07a9176b406c293c886",
+  "referenceRadius": 180.40105065097728,
+  "maxArcDegrees": 318.5,
+  "angularSamples": 720,
+  "poseSteps": 80,
+  "shaderSamples": 321,
+  "measurementIntervalMilliseconds": 0.375,
+  "alphaThreshold": 0.1,
+  "sourcePadding": 0.75,
+  "rotationOffsetDegrees": -278.75,
+  "metrics": [
+    {
+      "progress": 0,
+      "sourceTime": 120,
+      "pixels": 8513,
+      "bounds": [
+        99,
+        159,
+        326,
+        266
+      ],
+      "maxRadius": 154.7646096966129,
+      "startDegrees": 224,
+      "arcDegrees": 131.5,
+      "old180CropPercent": 59.368025372959,
+      "boundaryToArtworkPixels": {
+        "max": 2.0192484094397596,
+        "p95": 1.6572037160232709,
+        "mean": 1.1003833001642227
+      },
+      "worldMaxRadius": 4.289459765842403,
+      "screenMaxRadius": 204.73466094364656,
+      "boundaryToArtworkScreenPixels": {
+        "max": 2.6712188224301414,
+        "p95": 2.1922779476502043
+      }
+    },
+    {
+      "progress": 0.2,
+      "sourceTime": 144,
+      "pixels": 12032,
+      "bounds": [
+        110,
+        71,
+        344,
+        266
+      ],
+      "maxRadius": 167.6466746223543,
+      "startDegrees": 233.5,
+      "arcDegrees": 171.5,
+      "old180CropPercent": 26.25498670212766,
+      "boundaryToArtworkPixels": {
+        "max": 2.1038134906651216,
+        "p95": 1.7131738476615483,
+        "mean": 1.1189158136541435
+      },
+      "worldMaxRadius": 4.6464993972430095,
+      "screenMaxRadius": 221.77605819845726,
+      "boundaryToArtworkScreenPixels": {
+        "max": 2.7830880880606115,
+        "p95": 2.2663195902867046
+      }
+    },
+    {
+      "progress": 0.4,
+      "sourceTime": 168,
+      "pixels": 16945,
+      "bounds": [
+        94,
+        26,
+        338,
+        274
+      ],
+      "maxRadius": 162.20123102658584,
+      "startDegrees": 227,
+      "arcDegrees": 215,
+      "old180CropPercent": 21.29241664207731,
+      "boundaryToArtworkPixels": {
+        "max": 2.2116365610491115,
+        "p95": 1.5530164074090056,
+        "mean": 1.0651401373735074
+      },
+      "worldMaxRadius": 4.495573347308196,
+      "screenMaxRadius": 214.57240194621136,
+      "boundaryToArtworkScreenPixels": {
+        "max": 2.9257248304026966,
+        "p95": 2.0544508737113523
+      }
+    },
+    {
+      "progress": 0.6,
+      "sourceTime": 192,
+      "pixels": 21142,
+      "bounds": [
+        61,
+        8,
+        336,
+        273
+      ],
+      "maxRadius": 159.66664481733812,
+      "startDegrees": 229.5,
+      "arcDegrees": 276,
+      "old180CropPercent": 14.170844763976918,
+      "boundaryToArtworkPixels": {
+        "max": 2.284231033618983,
+        "p95": 1.570013215211012,
+        "mean": 1.067299435579379
+      },
+      "worldMaxRadius": 4.425324692987679,
+      "screenMaxRadius": 211.2194542070608,
+      "boundaryToArtworkScreenPixels": {
+        "max": 3.0217584440118466,
+        "p95": 2.076935572824991
+      }
+    },
+    {
+      "progress": 0.8,
+      "sourceTime": 216,
+      "pixels": 32156,
+      "bounds": [
+        15,
+        5,
+        340,
+        276
+      ],
+      "maxRadius": 174.94672786823523,
+      "startDegrees": 209.5,
+      "arcDegrees": 318.5,
+      "old180CropPercent": 24.78542107227267,
+      "boundaryToArtworkPixels": {
+        "max": 2.293090709062294,
+        "p95": 1.6464432963929931,
+        "mean": 1.0947472055176528
+      },
+      "worldMaxRadius": 4.848827854298516,
+      "screenMaxRadius": 231.43313631919708,
+      "boundaryToArtworkScreenPixels": {
+        "max": 3.033478711659036,
+        "p95": 2.1780432277815285
+      }
+    },
+    {
+      "progress": 1,
+      "sourceTime": 240,
+      "pixels": 20027,
+      "bounds": [
+        20,
+        14,
+        336,
+        273
+      ],
+      "maxRadius": 170.02049358940263,
+      "startDegrees": 225,
+      "arcDegrees": 298.5,
+      "old180CropPercent": 18.28531482498627,
+      "boundaryToArtworkPixels": {
+        "max": 3.101777887338539,
+        "p95": 1.7150657715944213,
+        "mean": 1.1125443631290568
+      },
+      "worldMaxRadius": 4.712292222686165,
+      "screenMaxRadius": 224.91633052759605,
+      "boundaryToArtworkScreenPixels": {
+        "max": 4.103272998469328,
+        "p95": 2.268822374390171
+      }
+    }
+  ],
+  "error": {
+    "maxVisiblePixelOutside": 0,
+    "maxRadialBinPadding": 25.24592788838129,
+    "meanRadialBinPadding": 1.184886404021146
+  },
+  "oldCircle": {
+    "referenceRadius": 180,
+    "arcDegrees": 180
+  },
+  "screenPixelsPerSourcePixel": 1.32287776478738,
+  "defaultCamera": {
+    "pixelsPerWorldUnit": 47.72970773009195,
+    "baseReach": 5,
+    "pixelsPerSourcePixel": 1.32287776478738
+  }
+}

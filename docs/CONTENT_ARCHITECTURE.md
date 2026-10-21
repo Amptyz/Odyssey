@@ -217,7 +217,7 @@ trainingBlade: {
 - `HitShape` 支持circle / sector / capsule / rectangle / ring；`targets` 统一处理存活、敌我、整圆与攻击形状相交、障碍遮挡及稳定排序。扇形边缘与外圆弧都考虑目标半径，不再只检查目标中心夹角。当前范围 / 近战 / 尸爆 / 电弧搜寻都使用它。
 - `firstImpact` 对弹体上一位置到下一位置执行连续圆扫掠，并考虑目标一帧内的相对移动。角色、地图障碍和边界按最早接触排序，墙与目标同时命中时墙优先；当前弹体命中一个敌人后消失。最后不足一帧的剩余射程也会检测，避免提前消失和高速穿透。
 - `content/attacks.ts` 注册 `slash`（默认挥砍）与 `missile`（飞弹）形式。共同字段为 `name / range / appearance`，近战额外配置 `arc / windup / active`，远程配置 `speed / radius`。余烬通过 `basicAttack` 引用形式；CombatEngine 解析并维护单一形态射程来源，GameWorld 只按行为 kind 发射。伤害、攻速、最终射程读取单位统一属性；装备模块没有普攻解析 API。
-- 默认近战已改为原稿环扫：`content/melee-motion.ts` 的 `MELEE_BLADE_KEYS` 定义亮锋世界轮廓，`MeleeSweep` 按实际相位扫掠；`arc` 只描述近似尾迹幅度，不能据此恢复整扇区伤害。`MELEE_ART` 是表现层原图窗口 / 原点 / 非均匀时序；碰撞不读取图片。改变形状需同时检查相位外形、内部空洞、遮挡、步间防漏判及一次命中，见[近战规格](design/BASIC_MELEE_VFX.md)。
+- 默认近战为原稿实测曲面，填到脚底，无贴身盲区。`scripts/measure-melee.mjs`复现材质采样，生成`content/melee-outline.ts`；`MeleeSweep.meleeArea`与meleePoseIndex是空间 / 相位唯一入口，表现层使用相同相位和referenceRadius缩放。slash.range统一控制尺寸，windup / active控制实际时间；arc仅报告测量最大覆盖角，不用于圆形裁剪。改原图、窗口或材质后执行`node --import tsx scripts/measure-melee.mjs`并构建；测量参数和报告见[近战规格](design/BASIC_MELEE_VFX.md)。
 - 新形式余烬最小配置：`{id:'missileAttack',name:'飞弹普攻',description:'…',color:'#ADC8E8',basicAttack:'missile',rules:[]}`。先在 `BASIC_ATTACKS` 注册语义 ID，再在 `PERKS` 引用；不要用 sword/bow 等物品 ID 命名行为。同种 melee/projectile 行为不需要新增 GameWorld ID 分支。
 - 多个改变形式的余烬按获得顺序取最后一个，普通余烬不覆盖；不能累加多个形式的 range。统一属性仍可叠加明确的额外射程修正。通过 `CombatEngine.addPerk` 授予，禁止只向 perks Set 塞 ID 而跳过属性同步。快照 `basicAttack` 和 `action.basicAttack` 分别用于 HUD、出手动作；每玩家独立发送，v3 存档仅保存余烬 ID 并在恢复时重建。新局 / 退出 F2 回到 slash。
 - 近战挥击在前摇后短暂生效，朝向在出手时固定，中心跟随角色移动；同一挥击的 `hitIds` 保证每个敌人最多命中一次，可以同时打到多个相交敌人。冲刺会取消尚未完成的挥击。近战怪物前摇时保存朝向，结束后通过同一扇形查询结算。

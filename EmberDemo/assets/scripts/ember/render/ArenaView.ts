@@ -1,4 +1,3 @@
-import { meleeSweepShapes } from '../combat-core/MeleeSweep';
 import {FIXED_DT} from '../content/config';
 import {campMap} from '../content/scenes';
 import {InteractionView} from './InteractionView';
@@ -164,10 +163,7 @@ export class ArenaView {
     for(const p of state.enemies.projectiles)drawWorldShape(g,{kind:'circle',center:p,radius:p.radius},this.camera,'#ED2C63',1.5);
     for(const w of state.enemies.warnings)drawWorldShape(g,w.shape,this.camera,'#EB2C79',1,false,w.contours);
     const collision=new CollisionWorld(state.scene.kind==='camp'?campMap(state.mapId):mapDefinition(state.mapId));
-    for(const shape of this.meleeVfx.blades())drawWorldShape(g,shape,this.camera,'#00A1BC',1.5,false,shapeContours(shape,collision));
-    for(const s of state.swings)if(s.age>=s.windup){
-      for(const sweep of meleeSweepShapes(s,s.previousAge??s.age,s.age))drawWorldShape(g,sweep,this.camera,'#00A1BC30',.5,false,shapeContours(sweep,collision));
-    }
+    for(const shape of this.meleeVfx.areas())drawWorldShape(g,shape,this.camera,'#00A1BC',1.5,false,shapeContours(shape,collision));
     for(const c of state.cues)if(c.shape)drawWorldShape(g,c.shape,this.camera,'#00A1BC',1,false,c.contours);
   }
 }
